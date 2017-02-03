@@ -1,0 +1,12 @@
+{
+    "name": "xoco70/laravel-tournaments",
+    "description": "A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed",
+    "type": "library",
+    "authors": [
+        {
+            "name": "julien",
+            "email": "xoco70@hotmail.com"
+        }
+    ],
+    "require": {}
+}
