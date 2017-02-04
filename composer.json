@@ -1,0 +1,28 @@
+{
+    "name": "xoco70/laravel-tournaments",
+    "description": "A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed",
+    "type": "Project",
+    "authors": [
+        {
+            "name": "juliatzin",
+            "email": "xoco70@hotmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "tournaments\\": "src/"
+        },
+
+        "classmap": [
+            "tests"
+        ]
+    },
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev":{
+        "symfony/var-dumper": "~2.6",
+        "phpunit/phpunit": "^5.7",
+        "fzaninotto/faker": "1.4"
+    }
+}

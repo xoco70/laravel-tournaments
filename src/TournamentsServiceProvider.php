@@ -13,13 +13,13 @@ class TournamentsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/views', 'timezones');
+        $this->loadViewsFrom(__DIR__ . '/views', 'tournaments');
         $this->loadMigrationsFrom(__DIR__ . '/migrations/');
         $this->loadTranslationsFrom(__DIR__.'/translations', 'laravel-tournaments');
         $this->publishes([ __DIR__.'/translations' => resource_path('lang/vendor/laravel-tournaments'),]);
         $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/laravel-tournaments')]);
         $this->publishes([__DIR__ . '/config/laravel-tournaments.php' => config_path('laravel-tournaments.php'),]);
-
+        $this->publishes([__DIR__ . '/migrations' => $this->app->databasePath() . '/migrations'], 'migrations');
 
     }
 
