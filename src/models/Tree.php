@@ -1,13 +1,12 @@
 <?php
 
-namespace App;
+namespace Xoco70\LaravelTournaments;
 
 
-use App\TreeGen\PreliminaryTreeGen;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use OwenIt\Auditing\AuditingTrait;
+use Xoco70\LaravelTournaments\TreeGen\PreliminaryTreeGen;
 
 class Tree extends Model
 {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Contracts;
+namespace Xoco70\LaravelTournaments\Contracts;
 
 
 interface TreeGenerable

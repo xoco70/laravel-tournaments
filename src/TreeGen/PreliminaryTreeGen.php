@@ -1,18 +1,18 @@
 <?php
 
 
-namespace App\TreeGen;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
 
-use App\Championship;
-use App\ChampionshipSettings;
-use App\Contracts\TreeGenerable;
-use App\Exceptions\TreeGenerationException;
-use App\Team;
-use App\Tree;
 use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Xoco70\LaravelTournaments\Championship;
+use Xoco70\LaravelTournaments\ChampionshipSettings;
+use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
+use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
+use Xoco70\LaravelTournaments\Team;
+use Xoco70\LaravelTournaments\Tree;
 
 class PreliminaryTreeGen implements TreeGenerable
 {

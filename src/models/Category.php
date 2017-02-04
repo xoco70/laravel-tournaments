@@ -1,10 +1,8 @@
 <?php
 
-namespace App;
+namespace Xoco70\LaravelTournaments;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
-use OwenIt\Auditing\AuditingTrait;
 
 /**
  * @property mixed team

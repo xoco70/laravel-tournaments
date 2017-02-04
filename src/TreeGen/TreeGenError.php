@@ -1,16 +1,7 @@
 <?php
 
 
-namespace App\TreeGen;
-
-
-use App\Championship;
-use App\ChampionshipSettings;
-use App\Contracts\TreeGenerable;
-use App\Tree;
-use App\User;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
 class TreeGenError 
 {

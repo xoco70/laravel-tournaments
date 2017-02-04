@@ -1,10 +1,11 @@
 <?php
 
 
-namespace App\TreeGen;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
 
-use App\Contracts\TreeGenerable;
+
+use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
 
 class DirectEliminationTreeGen implements TreeGenerable
 {

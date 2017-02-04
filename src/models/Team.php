@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Xoco70\LaravelTournaments;
 
 use Illuminate\Database\Eloquent\Model;
 

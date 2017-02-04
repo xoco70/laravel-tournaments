@@ -1,13 +1,10 @@
 <?php
 
-namespace App;
+namespace Xoco70\LaravelTournaments;
 
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\AuditingTrait;
 
 
 /**
@@ -91,15 +88,6 @@ class Tournament extends Model
     }
 
     /**
-     * Get All Tournaments levels
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function level()
-    {
-        return $this->belongsTo(TournamentLevel::class, 'level_id', 'id');
-    }
-
-    /**
      * Get Full venue object
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -167,26 +155,6 @@ class Tournament extends Model
     {
         return $this->hasManyThrough(Tree::class, Championship::class);
     }
-
-
-    /**
-     * Get all Invitations that belongs to a tournament
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function invites()
-    {
-        return $this->morphMany(Invite::class, 'object');
-    }
-
-    /**
-     * Get Category List with <Select> Format
-     * @return mixed
-     */
-    public function getCategoryList()
-    {
-        return $this->categories->pluck('id')->all();
-    }
-
 
     public function getDateAttribute($date)
     {
@@ -302,78 +270,6 @@ class Tournament extends Model
     {
         return $this->deleted_at != null;
     }
-
-
-    /**
-     * Create and Configure Championships depending the rule ( IKF, EKF, LAKF, etc )
-     * @param $ruleId
-     */
-    public function setAndConfigureCategories($ruleId)
-    {
-        if ($ruleId == 0) return; // No Rules Selected
-
-        $options = $this->loadRulesOptions($ruleId);
-
-        // Create Tournament Categories
-        $arrCategories = array_keys($options);
-        $this->categories()->sync($arrCategories);
-
-        // Configure each category creating categorySetting Object
-
-        foreach ($this->championships as $championship) {
-            $rules = $options[$championship->category->id];
-            $rules['championship_id'] = $championship->id;
-            ChampionshipSettings::create($rules);
-        }
-
-    }
-
-    private function loadRulesOptions($ruleId)
-    {
-        switch ($ruleId) {
-            case 0: // No preset selected
-                return null;
-            case 1:
-                return $options = config('options.ikf_settings');
-                break;
-            case 2:
-                return $options = config('options.ekf_settings');
-                break;
-            case 3:
-                return $options = config('options.lakc_settings');
-                break;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * create a category List with Category name associated to championshipId
-     *
-     * @return array
-     */
-    public function buildCategoryList()
-    {
-        $cts = Championship::with('category','settings')
-            ->whereHas('category', function($query){
-                return $query->where('isTeam',1);
-
-            })
-            ->where('tournament_id', $this->id)
-            ->get();
-        $array = [];
-        foreach ($cts as $ct) {
-
-            $array[$ct->id] = $ct->category->alias != ''
-                ? $ct->category->alias
-                : trim($ct->category->buildName());
-
-        }
-
-        return $array;
-
-    }
-
 
     /**
      * Check if the tournament has a Team Championship
