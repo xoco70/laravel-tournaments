@@ -51,7 +51,6 @@ class CreateTournamentTable extends Migration {
 	{
 		DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 		Schema::dropIfExists('tournament');
-		Schema::dropIfExists('tournamentLevel');
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 	}
 }
