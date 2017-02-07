@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Model::unguard();
-        $this->command->info('Seeding!');
+
+        $this->command->info('Seeding...');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
         Model::reguard();
     }
 }
