@@ -1,11 +1,10 @@
 <?php
 
-use App\Championship;
-use App\Competitor;
-use App\Tournament;
-use App\Venue;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
+use Xoco70\LaravelTournaments\Championship;
+use Xoco70\LaravelTournaments\Tournament;
+use Xoco70\LaravelTournaments\Venue;
 
 class TournamentSeeder extends Seeder
 {

@@ -1,21 +1,21 @@
 <?php
 
-namespace Xoco70\LaravelTournaments;
+    namespace Xoco70\LaravelTournaments;
 
-use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Database\Eloquent\Model;
 
-class Venue extends Model
-{
-    protected $table = 'venue';
-    public $timestamps = true;
-    protected $fillable = [
-        'venue_name',
-        'address',
-        'details',
-        'city',
-        'CP',
-        'state',
-        'latitude',
-        'longitude',
-    ];
-}
+    class Venue extends Model
+    {
+        protected $table = 'venue';
+        public $timestamps = true;
+        protected $fillable = [
+            'venue_name',
+            'address',
+            'details',
+            'city',
+            'CP',
+            'state',
+            'latitude',
+            'longitude',
+        ];
+    }

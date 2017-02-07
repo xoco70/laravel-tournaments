@@ -1,7 +1,7 @@
 <?php
 
-use App\Category;
 use Illuminate\Database\Seeder;
+use Xoco70\LaravelTournaments\Category;
 
 class CategorySeeder extends Seeder
 {

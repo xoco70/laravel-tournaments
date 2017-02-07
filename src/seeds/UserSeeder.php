@@ -1,15 +1,7 @@
 <?php
 
-use App\Association;
-use App\Club;
-use App\Country;
-use App\Federation;
-use App\Grade;
-use App\User;
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Config;
-use Webpatser\Countries\Countries;
+use Xoco70\LaravelTournaments\User;
 
 class UserSeeder extends Seeder
 {
