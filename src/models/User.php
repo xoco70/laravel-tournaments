@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\LaravelTournaments;
+namespace Xoco70\LaravelTournaments\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -21,7 +21,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, SoftDeletes, Notifiable;
+    use Authenticatable, Authorizable, CanResetPassword, Notifiable;
 
 
     /**
@@ -30,7 +30,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var string
      */
     protected $table = 'users';
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at'];
 //    protected $appends = [''];
 
     /**

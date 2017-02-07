@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Xoco70\LaravelTournaments\Venue;
+use Xoco70\LaravelTournaments\Models\Venue;
 
 class VenueSeeder extends Seeder
 {

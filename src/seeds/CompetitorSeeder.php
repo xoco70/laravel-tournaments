@@ -3,8 +3,8 @@
 use App\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Xoco70\LaravelTournaments\Championship;
-use Xoco70\LaravelTournaments\Competitor;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\Competitor;
 
 
 class CompetitorSeeder extends Seeder
@@ -23,8 +23,8 @@ class CompetitorSeeder extends Seeder
 
         foreach ($championships as $championship) {
             $users = factory(User::class, $faker->numberBetween(15, 50))->create(
-                [   'password' => bcrypt('111111'),
-                    'verified' => 1]);
+                [   'password' => bcrypt('111111')
+                ]);
             foreach ($users as $user) {
                 factory(Competitor::class)->create([
                     'championship_id' => $championship->id,

@@ -2,9 +2,9 @@
 
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
-use Xoco70\LaravelTournaments\Championship;
-use Xoco70\LaravelTournaments\Tournament;
-use Xoco70\LaravelTournaments\Venue;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\Venue;
+use Xoco70\LaravelTournaments\Models\Tournament;
 
 class TournamentSeeder extends Seeder
 {
