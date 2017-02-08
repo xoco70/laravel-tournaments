@@ -18,7 +18,7 @@ class TournamentsServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/migrations/');
         $this->loadTranslationsFrom(__DIR__.'/translations', 'laravel-tournaments');
 //        $this->publishes([__DIR__ . '/models' => base_path('app')]);
-        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/laravel-tournaments')]);
+//        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/laravel-tournaments')]);
 //        $this->publishes([__DIR__ . '/config/laravel-tournaments.php' => config_path('laravel-tournaments.php'),]);
         $this->publishes([__DIR__ . '/migrations' => $this->app->databasePath() . '/migrations'], 'migrations');
         $this->publishes([__DIR__ . '/seeds' => $this->app->databasePath() . '/seeds'], 'seeds');
