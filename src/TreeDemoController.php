@@ -10,7 +10,12 @@ class TreeDemoController extends Controller
 
     public function index()
     {
-        $tournament = Tournament::firstOrFail();
+        $tournament = Tournament::with(
+            'competitors',
+            'championshipSettings',
+            'championships.settings',
+            'championships.category')->first();
+
         return view('laravel-tournaments::tree_demo.index')
             ->with('tournament', $tournament);
     }

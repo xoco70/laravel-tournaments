@@ -9,14 +9,37 @@
 
 </head>
 <body>
+<?php
+$championship = $tournament->championships[0];
+$setting = $championship->settings
+    ?? new \Xoco70\LaravelTournaments\Models\ChampionshipSettings(config('laravel-tournaments.default_settings'));
+
+$treeType = $setting->treeType;
+$hasPreliminary = $setting->hasPreliminary;
+$hasEncho = $setting->hasEncho;
+$teamSize = $setting->teamSize;
+$enchoQty = $setting->enchoQty;
+$fightingAreas = $setting->fightingAreas; // 0
+
+$fightDuration = $setting->fightDuration;
+$enchoDuration = $setting->enchoDuration;
+
+
+$categoryId = $championship->category->id;
+$disableEncho = $hasEncho ? "" : "disabled";
+$disablePreliminary = $hasPreliminary ? "" : "disabled";
+
+//$currency = Auth::user()->country->currency_code;
+
+        ?>
 <div class="container">
     <div class="content">
-        <h1 align="center">{{ $tournament->name }}</h1>
+{{--        <h1 align="center">{{ $tournament->name }}</h1>--}}
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 @include('laravel-tournaments::partials.settings')
             </div>
-            <div class="col-md-6">2</div>
+            {{--<div class="col-md-6">2</div>--}}
         </div>
     </div>
 </div>

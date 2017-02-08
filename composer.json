@@ -18,8 +18,7 @@
         ]
     },
     "require": {
-        "php": ">=7.0.0",
-        "laravelcollective/html": "5.4.*-dev"
+        "php": ">=7.0.0"
     },
     "require-dev":{
         "symfony/var-dumper": "~2.6",
