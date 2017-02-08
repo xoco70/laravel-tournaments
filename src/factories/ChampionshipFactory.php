@@ -1,9 +1,9 @@
 <?php
 
 
-use Xoco70\LaravelTournaments\Models\Category;
-use Xoco70\LaravelTournaments\Models\Championship;
-use Xoco70\LaravelTournaments\Models\Tournament;
+use Xoco70\KendoTournaments\Models\Category;
+use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\Tournament;
 
 $factory->define(Championship::class, function (Faker\Generator $faker) {
     $tournaments = Tournament::all()->pluck('id')->toArray();

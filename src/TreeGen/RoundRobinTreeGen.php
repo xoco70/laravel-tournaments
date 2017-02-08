@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Xoco70\LaravelTournaments\TreeGen;
+namespace Xoco70\KendoTournaments\TreeGen;
 
 
 
-use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
+use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 
 class RoundRobinTreeGen implements TreeGenerable
 {

@@ -1,18 +1,18 @@
 <?php
 
 
-namespace Xoco70\LaravelTournaments\TreeGen;
+namespace Xoco70\KendoTournaments\TreeGen;
 
 
 use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Xoco70\LaravelTournaments\Championship;
-use Xoco70\LaravelTournaments\ChampionshipSettings;
-use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
-use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
-use Xoco70\LaravelTournaments\Team;
-use Xoco70\LaravelTournaments\Tree;
+use Xoco70\KendoTournaments\Championship;
+use Xoco70\KendoTournaments\ChampionshipSettings;
+use Xoco70\KendoTournaments\Contracts\TreeGenerable;
+use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
+use Xoco70\KendoTournaments\Team;
+use Xoco70\KendoTournaments\Tree;
 
 class PreliminaryTreeGen implements TreeGenerable
 {

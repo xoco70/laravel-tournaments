@@ -2,9 +2,9 @@
 
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
-use Xoco70\LaravelTournaments\Models\Championship;
-use Xoco70\LaravelTournaments\Models\Competitor;
-use Xoco70\LaravelTournaments\Models\User;
+use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\Competitor;
+use Xoco70\KendoTournaments\Models\User;
 
 
 class CompetitorSeeder extends Seeder

@@ -19,9 +19,9 @@
 {{--<div class="row">--}}
 
 {{--<div class="col-lg-2">--}}
-{{--{!!  Form::label('fightDuration', trans('laravel-tournaments::categories.fightDuration')) !!}--}}
+{{--{!!  Form::label('fightDuration', trans('kendo-tournaments::categories.fightDuration')) !!}--}}
 {{--<i class="icon-help" data-popup="tooltip" title="" data-placement="right"--}}
-{{--data-original-title="{{trans('laravel-tournaments::categories.fightDurationTooltip')}}"></i>--}}
+{{--data-original-title="{{trans('kendo-tournaments::categories.fightDurationTooltip')}}"></i>--}}
 
 {{--<div class="input-group">--}}
 {{--{!!  Form::input('text','fightDuration',$fightDuration, ['class' => 'form-control fightDuration','id' => 'fightDuration']) !!}--}}
@@ -30,9 +30,9 @@
 {{--</div>--}}
 {{--<div class="col-lg-2">--}}
 {{--<div class="form-group">--}}
-{{--{!!  Form::label('cost', trans('laravel-tournaments::categories.cost'). ' ('. $currency  .')' ) !!}--}}
+{{--{!!  Form::label('cost', trans('kendo-tournaments::categories.cost'). ' ('. $currency  .')' ) !!}--}}
 {{--<i class="icon-help" data-popup="tooltip" title="" data-placement="right"--}}
-{{--data-original-title="{{trans('laravel-tournaments::categories.costTooltip')}}"></i>--}}
+{{--data-original-title="{{trans('kendo-tournaments::categories.costTooltip')}}"></i>--}}
 {{--{!!  Form::input('number','cost',old('cost'), ['class' => 'form-control']) !!}--}}
 {{--</div>--}}
 {{--</div>--}}
@@ -40,8 +40,8 @@
 {{--@if ($tournament->championships->get($key)->category->isTeam())--}}
 
 {{--<div class="col-lg-3">--}}
-{{--{!!  Form::label('teamSize', trans('laravel-tournaments::categories.teamSize')) !!}--}}
-{{--{!!  Form::select('teamSize', config('laravel-tournaments.teamSize'),old('teamSize'), ['class' => 'form-control']) !!}--}}
+{{--{!!  Form::label('teamSize', trans('kendo-tournaments::categories.teamSize')) !!}--}}
+{{--{!!  Form::select('teamSize', config('kendo-tournaments.teamSize'),old('teamSize'), ['class' => 'form-control']) !!}--}}
 {{--</div>--}}
 {{--@endif--}}
 
@@ -51,7 +51,7 @@
     <div class="col-lg-2">
         <div class="checkbox-switch">
 
-            {!!  Form::label('hasPreliminary', trans('laravel-tournaments::categories.hasPreliminary')) !!}
+            {!!  Form::label('hasPreliminary', trans('kendo-tournaments::categories.hasPreliminary')) !!}
             <br/>
 
             {!!   Form::hidden('hasPreliminary', 0,['id'=>'hasPreliminary' ]) !!}
@@ -63,14 +63,14 @@
 
     <div class="col-lg-3">
         <div class="form-group">
-            {!!  Form::label('preliminaryGroupSize', trans('laravel-tournaments::categories.preliminaryGroupSize')) !!}
-            {!!  Form::select('preliminaryGroupSize', config('laravel-tournaments.preliminaryGroupSize'), 3,['class' => 'form-control',1]) !!}
+            {!!  Form::label('preliminaryGroupSize', trans('kendo-tournaments::categories.preliminaryGroupSize')) !!}
+            {!!  Form::select('preliminaryGroupSize', config('kendo-tournaments.preliminaryGroupSize'), 3,['class' => 'form-control',1]) !!}
         </div>
     </div>
     <div class="col-lg-4">
         <div class="form-group">
-            {!!  Form::label('preliminaryWinner', trans('laravel-tournaments::categories.preliminaryWinner')) !!}
-            {!!  Form::select('preliminaryWinner', config('laravel-tournaments.preliminaryWinner'), old('preliminaryWinner'),['class' => 'form-control',$disablePreliminary]) !!}
+            {!!  Form::label('preliminaryWinner', trans('kendo-tournaments::categories.preliminaryWinner')) !!}
+            {!!  Form::select('preliminaryWinner', config('kendo-tournaments.preliminaryWinner'), old('preliminaryWinner'),['class' => 'form-control',$disablePreliminary]) !!}
         </div>
     </div>
 
@@ -78,11 +78,11 @@
 <hr/>
 <div class="row">
     <div class="col-lg-3">
-        {!!  Form::label('treeType', trans('laravel-tournaments::categories.treeType')) !!}
+        {!!  Form::label('treeType', trans('kendo-tournaments::categories.treeType')) !!}
         {!!  Form::select('treeType',
         [
-        0 => trans('laravel-tournaments::categories.roundRobin'),
-        1 => trans('laravel-tournaments::categories.direct_elimination')]
+        0 => trans('kendo-tournaments::categories.roundRobin'),
+        1 => trans('kendo-tournaments::categories.direct_elimination')]
         , $treeType ,['class' => 'form-control']) !!}
     </div>
 
@@ -93,8 +93,8 @@
 
     <div class="col-lg-3">
         <div class="form-group">
-            {!!  Form::label('limitByEntity', trans('laravel-tournaments::categories.limitByEntity')) !!}
-            {!!  Form::select('limitByEntity', config('laravel-tournaments.limitByEntity'), old('limitByEntity'),['class' => 'form-control', "disabled"]) !!}
+            {!!  Form::label('limitByEntity', trans('kendo-tournaments::categories.limitByEntity')) !!}
+            {!!  Form::select('limitByEntity', config('kendo-tournaments.limitByEntity'), old('limitByEntity'),['class' => 'form-control', "disabled"]) !!}
 
         </div>
     </div>
@@ -106,7 +106,7 @@
         <div class="checkbox-switch">
             <label>
 
-                {!!  Form::label('hasEncho', trans('laravel-tournaments::categories.hasEncho')) !!}
+                {!!  Form::label('hasEncho', trans('kendo-tournaments::categories.hasEncho')) !!}
                 <br/>
                 {!!   Form::hidden('hasEncho', 0,['id'=>'hasEncho' ]) !!}
                 {!!   Form::checkbox('hasEncho', 1, $setting->hasEncho, // $hasPreliminary
@@ -117,13 +117,13 @@
     </div>
     <div class="col-lg-4">
         <div class="form-group">
-            {!!  Form::label('enchoQty', trans('laravel-tournaments::categories.enchoQty')) !!}
-            {!!  Form::select('enchoQty', config('laravel-tournaments.enchoQty'), old('enchoQty'),['class' => 'form-control',$disableEncho]) !!}
-            <small class="display-block">{{ trans('laravel-tournaments::categories.encho_infinite') }}</small>
+            {!!  Form::label('enchoQty', trans('kendo-tournaments::categories.enchoQty')) !!}
+            {!!  Form::select('enchoQty', config('kendo-tournaments.enchoQty'), old('enchoQty'),['class' => 'form-control',$disableEncho]) !!}
+            <small class="display-block">{{ trans('kendo-tournaments::categories.encho_infinite') }}</small>
         </div>
     </div>
     <div class="col-lg-4">
-        {!!  Form::label('enchoDuration', trans('laravel-tournaments::categories.enchoDuration')) !!}
+        {!!  Form::label('enchoDuration', trans('kendo-tournaments::categories.enchoDuration')) !!}
         <div class="input-group ">
             {!!  Form::input('text','enchoDuration', $enchoDuration, ['class' => 'form-control enchoDuration','id' => 'enchoDuration', $disableEncho]) !!}
             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
@@ -131,7 +131,7 @@
     </div>
     <div class="col-lg-2">
         <div class="form-group">
-            {!!  Form::label('enchoGoldPoint', trans('laravel-tournaments::categories.enchoGoldPoint')) !!}
+            {!!  Form::label('enchoGoldPoint', trans('kendo-tournaments::categories.enchoGoldPoint')) !!}
             {!!  Form::select('enchoGoldPoint', [0,1,2,3,4,5,6,7,8,9,10], old('enchoGoldPoint'),['class' => 'form-control',$disableEncho]) !!}
         </div>
     </div>
@@ -142,7 +142,7 @@
         <div class="checkbox-switch">
             <label>
 
-                {!!  Form::label('hasHantei', trans('laravel-tournaments::categories.hasHantei')) !!}
+                {!!  Form::label('hasHantei', trans('kendo-tournaments::categories.hasHantei')) !!}
                 <br/>
                 {!!   Form::hidden('hasHantei', 0,['id'=>'hasHantei' ]) !!}
                 {!!   Form::checkbox('hasHantei', 1,$setting->hasHantei,
@@ -154,7 +154,7 @@
     <div class="checkbox-switch">
     <label>
 
-    {{--{!!  Form::label('hanteiLimit', trans('laravel-tournaments::categories.hanteiLimit')) !!}--}}
+    {{--{!!  Form::label('hanteiLimit', trans('kendo-tournaments::categories.hanteiLimit')) !!}--}}
     {{--{!!  Form::select('hanteiLimit', $hanteiLimit , old('hanteiLimit'),['class' => 'form-control']) !!}--}}
 
     </label>

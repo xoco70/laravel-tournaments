@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Xoco70\LaravelTournaments\TreeGen;
+namespace Xoco70\KendoTournaments\TreeGen;
 
 class TreeGenError 
 {

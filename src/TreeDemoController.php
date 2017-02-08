@@ -1,9 +1,9 @@
 <?php
 
-namespace Xoco70\LaravelTournaments;
+namespace Xoco70\KendoTournaments;
 
 use App\Http\Controllers\Controller;
-use Xoco70\LaravelTournaments\Models\Tournament;
+use Xoco70\KendoTournaments\Models\Tournament;
 
 class TreeDemoController extends Controller
 {
@@ -16,7 +16,7 @@ class TreeDemoController extends Controller
             'championships.settings',
             'championships.category')->first();
 
-        return view('laravel-tournaments::tree_demo.index')
+        return view('kendo-tournaments::tree_demo.index')
             ->with('tournament', $tournament);
     }
 

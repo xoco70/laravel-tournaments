@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\LaravelTournaments;
+namespace Xoco70\KendoTournaments;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -14,16 +14,16 @@ class TournamentsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadRoutesFrom(__DIR__.'/web.php');
-        $this->loadViewsFrom(__DIR__ . '/views', 'laravel-tournaments');
+        $this->loadViewsFrom(__DIR__ . '/views', 'kendo-tournaments');
         $this->loadMigrationsFrom(__DIR__ . '/migrations/');
-        $this->loadTranslationsFrom(__DIR__.'/translations', 'laravel-tournaments');
+        $this->loadTranslationsFrom(__DIR__.'/translations', 'kendo-tournaments');
 
-//        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/laravel-tournaments')]);
-        $this->publishes([__DIR__ . '/config/laravel-tournaments.php' => config_path('laravel-tournaments.php'),]);
+//        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/kendo-tournaments')]);
+        $this->publishes([__DIR__ . '/config/kendo-tournaments.php' => config_path('kendo-tournaments.php'),]);
         $this->publishes([__DIR__ . '/migrations' => $this->app->databasePath() . '/migrations'], 'migrations');
         $this->publishes([__DIR__ . '/seeds' => $this->app->databasePath() . '/seeds'], 'seeds');
         $this->publishes([__DIR__ . '/factories' => $this->app->databasePath() . '/factories'], 'factories');
-        $this->publishes([__DIR__.'/assets' => public_path('vendor/laravel-tournaments'),], 'public');
+        $this->publishes([__DIR__.'/assets' => public_path('vendor/kendo-tournaments'),], 'public');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Xoco70\LaravelTournaments\Exceptions;
+namespace Xoco70\KendoTournaments\Exceptions;
 
 
 class TreeGenerationException extends \Exception

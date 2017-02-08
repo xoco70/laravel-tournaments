@@ -1,7 +1,7 @@
 <?php
 
 
-use Xoco70\LaravelTournaments\Models\Tree;
+use Xoco70\KendoTournaments\Models\Tree;
 
 $factory->define(Tree::class, function (Faker\Generator $faker) {
 
