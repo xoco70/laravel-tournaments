@@ -35,6 +35,7 @@ class TournamentsServiceProvider extends ServiceProvider
     {
         // Replace HTML:: y FORM:: by native html
         include __DIR__.'/web.php';
-        $this->app->make(TreeDemoController::class);
+        $this->app->make(TreeController::class);
+        $this->app->make(FightController::class);
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-Route::group(['middleware' => ['web']], function () {
-    Route::get('/kendo-tournaments', 'Xoco70\KendoTournaments\TreeDemoController@index')->name('tree_demo.index');
+Route::group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function () {
+    Route::get('/', 'Xoco70\KendoTournaments\TreeController@index')->name('tree.index');
+    Route::post('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@store')->name('tree.index');
 });
 
 

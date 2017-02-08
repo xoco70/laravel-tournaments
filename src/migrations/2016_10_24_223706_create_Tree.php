@@ -27,7 +27,7 @@ class CreateTree extends Migration
 
             $table->integer('c5')->nullable()->unsigned()->index();
 
-            $table->tinyInteger("isTeam")->unsigned();
+            $table->tinyInteger("isTeam")->unsigned()->default(0);
             $table->tinyInteger("area");
             $table->tinyInteger("order");
             $table->timestamps();

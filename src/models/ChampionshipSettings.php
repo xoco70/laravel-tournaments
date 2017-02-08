@@ -4,6 +4,7 @@ namespace Xoco70\KendoTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Http\Request;
 
 class ChampionshipSettings extends Model
 {
@@ -21,5 +22,24 @@ class ChampionshipSettings extends Model
     public function championship()
     {
         return $this->belongsTo(Championship::class);
+    }
+
+    /**
+     * @param Request $request
+     * @param Championship $championship
+     * @return ChampionshipSettings
+     */
+    public static function createOrUpdate(Request $request, Championship $championship): ChampionshipSettings
+    {
+        $request->request->add(['championship_id' => $championship->id]);
+        $arrSettings = $request->except('_token');
+        $settings = static::where(['championship_id' => $championship->id])->first();
+        if ($settings == null) {
+            $settings = new ChampionshipSettings($arrSettings);
+        } else {
+            $settings->fill($arrSettings);
+        }
+        $settings->save();
+        return $settings;
     }
 }

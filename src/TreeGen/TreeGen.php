@@ -4,28 +4,28 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 
-use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Xoco70\KendoTournaments\Championship;
-use Xoco70\KendoTournaments\ChampionshipSettings;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
-use Xoco70\KendoTournaments\Team;
-use Xoco70\KendoTournaments\Tree;
+use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\ChampionshipSettings;
+use Xoco70\KendoTournaments\Models\Team;
+use Xoco70\KendoTournaments\Models\Tree;
+use Xoco70\KendoTournaments\Models\User;
 
-class PreliminaryTreeGen implements TreeGenerable
+class TreeGen implements TreeGenerable
 {
 
     protected $groupBy;
-    public $championship, $error;
+    public $championship, $settings;
 
 
-    public function __construct(Championship $championship, $groupBy)
+    public function __construct(Championship $championship, $groupBy, $settings)
     {
         $this->championship = $championship;
         $this->groupBy = $groupBy;
-//        $this->error = null;
+        $this->settings = $settings;
     }
 
     /**
@@ -40,17 +40,17 @@ class PreliminaryTreeGen implements TreeGenerable
 
         // Get Settings
         $trees = new Collection();
-        $settings = $this->championship->settings ??  new ChampionshipSettings(config('options.default_settings'));
 
         // Get Areas
-        $areas = $settings->fightingAreas;
+        $areas = $this->settings->fightingAreas;
 
         $this->championship->category->isTeam()
             ? $fighters = $this->championship->teams
             : $fighters = $this->championship->users;
 
-        if ($fighters->count() / $areas < config('constants.MIN_COMPETITORS_X_AREA')) {
-            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => Config::get('constants.MIN_COMPETITORS_X_AREA')]));
+
+        if ($fighters->count() / $areas < config('kendo-tournaments.MIN_COMPETITORS_X_AREA')) {
+            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => Config::get('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
 
         }
 
@@ -68,7 +68,7 @@ class PreliminaryTreeGen implements TreeGenerable
 
             // Chunking to make small round robin groups
                 if ($this->championship->hasPreliminary()) {
-                $roundRobinGroups = $users->chunk($settings->preliminaryGroupSize)->shuffle();
+                $roundRobinGroups = $users->chunk($this->settings->preliminaryGroupSize)->shuffle();
 
             } else if ($this->championship->isDirectEliminationType()) {
                 $roundRobinGroups = $users->chunk(2)->shuffle();

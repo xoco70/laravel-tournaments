@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laravel Tournaments</title>
+    <title>Laravel Kendo Tournaments</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -33,21 +33,28 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
 
 //$currency = Auth::user()->country->currency_code;
 
-        ?>
+?>
+@if (isset($message))
+    <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+        {{ $message }}</div>
+@endif
+@if (isset($error))
+    <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+        {{ $error }}</div>
+@endif
+
+
 <div class="container">
     <div class="content">
         <h1 align="center">{{ $tournament->name }}</h1>
-        <div class="row">
-            <div class="col-md-12">
-                @include('kendo-tournaments::partials.settings')
-            </div>
-            {{--<div class="col-md-6">2</div>--}}
-        </div>
+        @include('kendo-tournaments::partials.settings')
     </div>
 </div>
 </body>
-<script src="/vendor/kendo-tournaments/js/jquery.js" ></script>
-<script  src="/vendor/kendo-tournaments/js/bootstrap.js"></script>
+<script src="/vendor/kendo-tournaments/js/jquery.js"></script>
+<script src="/vendor/kendo-tournaments/js/bootstrap.js"></script>
 <script src="/vendor/kendo-tournaments/js/bootstrap-switch.min.js"></script>
 <script src="/vendor/kendo-tournaments/js/jquery.timepicker.js"></script>
 

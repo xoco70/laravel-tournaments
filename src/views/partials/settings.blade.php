@@ -1,52 +1,41 @@
-@if (is_null($championship->settings))
-    {!! Form::open([
-                 'id' => 'form_',
-                 'data-championship' => $championship->id,
-                 'class' => 'form-settings',
-
+{!! Form::open([
+             'id' => 'form_',
+             'data-championship' => $championship->id,
+             'class' => 'form-settings',
+             'action' => ['\Xoco70\KendoTournaments\TreeController@store', $championship->id ]
 ]) !!}
-@else
-    {!! Form::model($setting,
-                ['method'=>"PATCH",
-                'class' => 'form-settings',
-                 'id' => 'form_',
-                 'data-championship' => $championship->id,
-                 'data-setting' => $setting->id,
-                               ]) !!}
 
-@endif
+<div class="row">
 
-{{--<div class="row">--}}
+    <div class="col-lg-2">
+        {!!  Form::label('fightDuration', trans('kendo-tournaments::categories.fightDuration')) !!}
+        <i class="icon-help" data-popup="tooltip" title="" data-placement="right"
+           data-original-title="{{trans('kendo-tournaments::categories.fightDurationTooltip')}}"></i>
 
-{{--<div class="col-lg-2">--}}
-{{--{!!  Form::label('fightDuration', trans('kendo-tournaments::categories.fightDuration')) !!}--}}
-{{--<i class="icon-help" data-popup="tooltip" title="" data-placement="right"--}}
-{{--data-original-title="{{trans('kendo-tournaments::categories.fightDurationTooltip')}}"></i>--}}
+        <div class="input-group">
+            {!!  Form::input('text','fightDuration',$fightDuration, ['class' => 'form-control fightDuration','id' => 'fightDuration']) !!}
+            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
+        </div>
+    </div>
+    {{--<div class="col-lg-2">--}}
+        {{--<div class="form-group">--}}
+            {{--{!!  Form::label('cost', trans('kendo-tournaments::categories.cost'). ' ('. $currency  .')' ) !!}--}}
+            {{--<i class="icon-help" data-popup="tooltip" title="" data-placement="right"--}}
+               {{--data-original-title="{{trans('kendo-tournaments::categories.costTooltip')}}"></i>--}}
+            {{--{!!  Form::input('number','cost',old('cost'), ['class' => 'form-control']) !!}--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
-{{--<div class="input-group">--}}
-{{--{!!  Form::input('text','fightDuration',$fightDuration, ['class' => 'form-control fightDuration','id' => 'fightDuration']) !!}--}}
-{{--<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>--}}
-{{--</div>--}}
-{{--</div>--}}
-{{--<div class="col-lg-2">--}}
-{{--<div class="form-group">--}}
-{{--{!!  Form::label('cost', trans('kendo-tournaments::categories.cost'). ' ('. $currency  .')' ) !!}--}}
-{{--<i class="icon-help" data-popup="tooltip" title="" data-placement="right"--}}
-{{--data-original-title="{{trans('kendo-tournaments::categories.costTooltip')}}"></i>--}}
-{{--{!!  Form::input('number','cost',old('cost'), ['class' => 'form-control']) !!}--}}
-{{--</div>--}}
-{{--</div>--}}
+    {{--@if ($tournament->championships->get($key)->category->isTeam())--}}
 
-{{--@if ($tournament->championships->get($key)->category->isTeam())--}}
+        {{--<div class="col-lg-3">--}}
+            {{--{!!  Form::label('teamSize', trans('kendo-tournaments::categories.teamSize')) !!}--}}
+            {{--{!!  Form::select('teamSize', config('kendo-tournaments.teamSize'),old('teamSize'), ['class' => 'form-control']) !!}--}}
+        {{--</div>--}}
+    {{--@endif--}}
 
-{{--<div class="col-lg-3">--}}
-{{--{!!  Form::label('teamSize', trans('kendo-tournaments::categories.teamSize')) !!}--}}
-{{--{!!  Form::select('teamSize', config('kendo-tournaments.teamSize'),old('teamSize'), ['class' => 'form-control']) !!}--}}
-{{--</div>--}}
-{{--@endif--}}
-
-{{--</div>--}}
-{{--<hr/>--}}
+</div>
+<hr/>
 <div class="row">
     <div class="col-lg-2">
         <div class="checkbox-switch">
@@ -151,23 +140,22 @@
         </div>
     </div>
     <div class="col-lg-3">
-    <div class="checkbox-switch">
-    <label>
+        <div class="checkbox-switch">
+            <label>
 
-    {{--{!!  Form::label('hanteiLimit', trans('kendo-tournaments::categories.hanteiLimit')) !!}--}}
-    {{--{!!  Form::select('hanteiLimit', $hanteiLimit , old('hanteiLimit'),['class' => 'form-control']) !!}--}}
+                {{--{!!  Form::label('hanteiLimit', trans('kendo-tournaments::categories.hanteiLimit')) !!}--}}
+                {{--{!!  Form::select('hanteiLimit', $hanteiLimit , old('hanteiLimit'),['class' => 'form-control']) !!}--}}
 
-    </label>
-    </div>
-    </div>
-
+            </label>
+        </div>
     </div>
 
-    <div align="right">
-        <button type="submit" class="btn btn-success save_category" id="save">
-            Generate Tree
-        </button>
-    </div>
+</div>
+
+<div align="right">
+    <button type="submit" class="btn btn-success save_category" id="save">
+        Generate Tree
+    </button>
 </div>
 
 {!! Form::close() !!}

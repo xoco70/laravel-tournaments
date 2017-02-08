@@ -1,5 +1,8 @@
 <?php
 return array(
+
+    'MIN_COMPETITORS_X_AREA' => 2,
+
     'hanteiLimit' => [
         '1' => '-',
         '2' => '1/8 Final',

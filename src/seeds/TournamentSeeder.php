@@ -38,6 +38,6 @@ class TournamentSeeder extends Seeder
         ]);
 
         Championship::truncate();
-        factory(Championship::class)->create(['tournament_id' => 1]);
+        factory(Championship::class)->create(['tournament_id' => 1, 'category_id' => 1]);
     }
 }
