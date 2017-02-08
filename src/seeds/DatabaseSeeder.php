@@ -15,7 +15,11 @@ class DatabaseSeeder extends Seeder
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
+        DB::table('competitor')->truncate();
+        DB::table('tournament')->truncate();
+        DB::table('category')->truncate();
         DB::table('users')->truncate();
+        DB::table('venue')->truncate();
 
 
         $this->call(VenueSeeder::class);

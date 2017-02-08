@@ -13,7 +13,8 @@ class TournamentsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/views', 'tournaments');
+        $this->loadRoutesFrom(__DIR__.'/web.php');
+        $this->loadViewsFrom(__DIR__ . '/views', 'laravel-tournaments');
         $this->loadMigrationsFrom(__DIR__ . '/migrations/');
         $this->loadTranslationsFrom(__DIR__.'/translations', 'laravel-tournaments');
 //        $this->publishes([__DIR__ . '/models' => base_path('app')]);
@@ -32,6 +33,6 @@ class TournamentsServiceProvider extends ServiceProvider
     public function register()
     {
         include __DIR__.'/web.php';
-        $this->app->make(TimezonesController::class);
+        $this->app->make(TreeDemoController::class);
     }
 }

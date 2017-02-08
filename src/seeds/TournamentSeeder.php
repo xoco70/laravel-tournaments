@@ -23,6 +23,7 @@ class TournamentSeeder extends Seeder
         $faker = Faker\Factory::create();
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
         Tournament::create([
+            'id' => 1,
             'user_id' => 1,
             'name' => "Test Tournament",
             'dateIni' =>  $dateIni,
@@ -38,13 +39,5 @@ class TournamentSeeder extends Seeder
 
         Championship::truncate();
         factory(Championship::class)->create(['tournament_id' => 1]);
-        for ($i = 0; $i < 10; $i++) {
-            try {
-                factory(Championship::class)->create();
-            } catch (QueryException $e) {
-            } catch (PDOException $e) {
-
-            }
-        }
     }
 }

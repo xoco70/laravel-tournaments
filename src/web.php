@@ -1,3 +1,4 @@
 <?php
 
-Route::get('timezones/{timezone}', 'Xoco70\LaravelTournaments\TimezonesController@index');
+
+Route::get('treeDemo', 'Xoco70\LaravelTournaments\TreeDemoController@index')->name('tree_demo.index');

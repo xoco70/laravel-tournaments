@@ -31,10 +31,6 @@ class CreateTournamentTable extends Migration {
             $table->tinyInteger('type')->default(1); // 1= local, 2= state, 3= national, 4=continent, 5=world
             $table->integer("venue_id")->nullable()->unsigned();
 			$table->integer("level_id")->unsigned()->default(1);
-			$table->foreign('level_id')
-					->references('id')
-					->on('tournamentLevel')
-					->onUpdate('cascade');
 
             $table->foreign('venue_id')
                 ->references('id')
