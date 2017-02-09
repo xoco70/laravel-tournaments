@@ -84,12 +84,11 @@
         <div class="form-group">
             {!!  Form::label('limitByEntity', trans('kendo-tournaments::categories.limitByEntity')) !!}
             {!!  Form::select('limitByEntity', config('kendo-tournaments.limitByEntity'), old('limitByEntity'),['class' => 'form-control', "disabled"]) !!}
-
         </div>
     </div>
 
 </div>
-<hr/>
+{{--<hr/>--}}
 {{--<div class="row">--}}
     {{--<div class="col-lg-2">--}}
         {{--<div class="checkbox-switch">--}}
@@ -125,32 +124,32 @@
         {{--</div>--}}
     {{--</div>--}}
 {{--</div>--}}
-<hr/>
-<div class="row">
-    <div class="col-lg-2">
-        <div class="checkbox-switch">
-            <label>
+{{--<hr/>--}}
+{{--<div class="row">--}}
+    {{--<div class="col-lg-2">--}}
+        {{--<div class="checkbox-switch">--}}
+            {{--<label>--}}
 
-                {!!  Form::label('hasHantei', trans('kendo-tournaments::categories.hasHantei')) !!}
-                <br/>
-                {!!   Form::hidden('hasHantei', 0,['id'=>'hasHantei' ]) !!}
-                {!!   Form::checkbox('hasHantei', 1,$setting->hasHantei,
-                ['class' => 'switch', 'data-on-text'=>"Si", 'data-off-text'=>"No", 'id'=>'hasHantei']) !!}
-            </label>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="checkbox-switch">
-            <label>
+                {{--{!!  Form::label('hasHantei', trans('kendo-tournaments::categories.hasHantei')) !!}--}}
+                {{--<br/>--}}
+                {{--{!!   Form::hidden('hasHantei', 0,['id'=>'hasHantei' ]) !!}--}}
+                {{--{!!   Form::checkbox('hasHantei', 1,$setting->hasHantei,--}}
+                {{--['class' => 'switch', 'data-on-text'=>"Si", 'data-off-text'=>"No", 'id'=>'hasHantei']) !!}--}}
+            {{--</label>--}}
+        {{--</div>--}}
+    {{--</div>--}}
+    {{--<div class="col-lg-3">--}}
+        {{--<div class="checkbox-switch">--}}
+            {{--<label>--}}
 
                 {{--{!!  Form::label('hanteiLimit', trans('kendo-tournaments::categories.hanteiLimit')) !!}--}}
                 {{--{!!  Form::select('hanteiLimit', $hanteiLimit , old('hanteiLimit'),['class' => 'form-control']) !!}--}}
 
-            </label>
-        </div>
-    </div>
+            {{--</label>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
-</div>
+{{--</div>--}}
 
 <div align="right">
     <button type="submit" class="btn btn-success save_category" id="save">

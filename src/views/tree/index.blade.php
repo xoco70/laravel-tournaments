@@ -7,6 +7,8 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/bootstrap-switch.min.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.timepicker.css">
+    <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.bracket.min.css">
+    <link rel="stylesheet" href="/vendor/kendo-tournaments/css/custom.css">
 
 
 </head>
@@ -21,7 +23,7 @@ $hasPreliminary = $setting->hasPreliminary;
 $hasEncho = $setting->hasEncho;
 $teamSize = $setting->teamSize;
 $enchoQty = $setting->enchoQty;
-$fightingAreas = $setting->fightingAreas; // 0
+$fightingAreas = $setting->fightingAreas;
 
 $fightDuration = $setting->fightDuration;
 $enchoDuration = $setting->enchoDuration;
@@ -31,49 +33,54 @@ $categoryId = $championship->category->id;
 $disableEncho = $hasEncho ? "" : "disabled";
 $disablePreliminary = $hasPreliminary ? "" : "disabled";
 
-//$currency = Auth::user()->country->currency_code;
-
 ?>
-@if (isset($message))
-    <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span>
-        </button>
-        {{ $message }}</div>
-@endif
-@if (isset($error))
-    <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span>
-        </button>
-        {{ $error }}</div>
-@endif
+@include('kendo-tournaments::partials.errors')
 
 <div class="container">
     <div class="content">
         <h1 align="center">{{ $tournament->name }}</h1>
         @include('kendo-tournaments::partials.settings')
         @if ($championship->tree->count()>0)
+            <h1>Tree</h1>
+            <hr/>
             @if ($championship->hasPreliminary())
-                Si Hay Arboles preliminarios
+                @include('kendo-tournaments::partials.tree.preliminary')
             @else
                 @if ($championship->isDirectEliminationType())
-                    Si Hay Arboles de Elimination directa
+                    @include('kendo-tournaments::partials.tree.directElimination')
                 @elseif ($championship->isRoundRobinType())
-                    Si Hay Arboles de Round Robin
+                    @include('kendo-tournaments::partials.tree.roundRobin')
                 @else
-                    Si hay arboles de ningun tipo
+                    Ooooops. Problem
                 @endif
             @endif
+        <br/>
+            <h1>Fight List</h1>
+            <hr/>
+            <div align="center">
+                @include('kendo-tournaments::partials.fights')
+            </div>
+
         @endif
     </div>
 </div>
 </body>
+
+
 <script src="/vendor/kendo-tournaments/js/jquery.js"></script>
 <script src="/vendor/kendo-tournaments/js/bootstrap.js"></script>
 <script src="/vendor/kendo-tournaments/js/bootstrap-switch.min.js"></script>
 <script src="/vendor/kendo-tournaments/js/jquery.timepicker.js"></script>
+<script src="/vendor/kendo-tournaments/js/jquery.bracket.min.js"></script>
 
 <script>
-    $(".switch").bootstrapSwitch();
+    @if ($championship->isDirectEliminationType() && $championship->tree->count())
+    $('#brackets_{{ $championship->id }}').bracket({
+        init: minimalData_{{ $championship->id }},
+        teamWidth: 100
+    });
+    @endif
+        $(".switch").bootstrapSwitch();
     $('input[name="hasEncho"]').on('switchChange.bootstrapSwitch', function (event, state) {
         let isChecked = $(this).is(':checked');
         $(this).closest('form').find('[name="enchoQty"]').prop('disabled', !isChecked);
