@@ -4,6 +4,7 @@
   "type": "Project",
   "homepage": "https://github.com/xoco70/kendo-tournaments",
   "license": "Apache License 2.0",
+  "version": "0.7",
   "authors": [
     {
       "name": "juliatzin",
@@ -25,14 +26,17 @@
       "tests/BrowserKitTestCase.php"
     ]
   },
+  "minimum-stability": "stable",
   "require": {
-    "php": ">=7.0.0"
-  },
-  "require-dev": {
+    "php": ">=7.0.0",
+    "illuminate/config": "5.1.* || 5.2.* || 5.3.* || 5.4.* ",
+    "illuminate/database": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
+    "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
     "symfony/var-dumper": "~2.6",
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.4",
     "laravel/browser-kit-testing": "^1.0"
+
   },
   "scripts": {
     "test": "phpunit"
