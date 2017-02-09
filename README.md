@@ -22,7 +22,7 @@ Then, update `config/app.php` by adding an entry for the service provider.
 Finally, from the command line again, publish the default configuration file:
 
 ```shell
-php artisan vendor:publish --provider="Xoco70\KendoTournaments\TournamentsServiceProvider"
+php artisan vendor:publish --provider="kendo-tournaments"
 ```
 
 #Run the demo
