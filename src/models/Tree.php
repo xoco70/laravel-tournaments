@@ -178,34 +178,34 @@ class Tree extends Model
      */
     public static function getGenerationStrategy(Championship $championship)
     {
-        $tournament = $championship->tournament;
-        switch ($tournament->level_id) {
-            case Config::get('constants.ND'):
-                return new TreeGen($championship, null);
-                break;
-            case Config::get('constants.local'):
-                return new TreeGen($championship, null);
-                break;
-            case Config::get('constants.district'):
-                return new TreeGen($championship, 'club_id');
-                break;
-            case Config::get('constants.city'):
-                return new TreeGen($championship, 'club_id');
-                break;
-            case Config::get('constants.state'):
-                return new TreeGen($championship, 'club_id');
-                break;
-            case Config::get('constants.regional'):
-                return new TreeGen($championship, 'club_id');
-                break;
-            case Config::get('constants.national'):
-                return new TreeGen($championship, 'association_id');
-                break;
-            case Config::get('constants.international'):
-                return new TreeGen($championship, 'federation_id');
-                break;
-        }
-        return null;
+//        $tournament = $championship->tournament;
+//        switch ($tournament->level_id) {
+//            case Config::get('kendo-tournaments.ND'):
+//                return new TreeGen($championship, null);
+//                break;
+//            case Config::get('kendo-tournaments.local'):
+//                return new TreeGen($championship, null);
+//                break;
+//            case Config::get('kendo-tournaments.district'):
+//                return new TreeGen($championship, 'club_id');
+//                break;
+//            case Config::get('kendo-tournaments.city'):
+//                return new TreeGen($championship, 'club_id');
+//                break;
+//            case Config::get('kendo-tournaments.state'):
+//                return new TreeGen($championship, 'club_id');
+//                break;
+//            case Config::get('kendo-tournaments.regional'):
+//                return new TreeGen($championship, 'club_id');
+//                break;
+//            case Config::get('kendo-tournaments.national'):
+//                return new TreeGen($championship, 'association_id');
+//                break;
+//            case Config::get('kendo-tournaments.international'):
+//                return new TreeGen($championship, 'federation_id');
+//                break;
+//        }
+//        return null;
 
         // get Area number
         // get tournament type, and get criteria to repart
@@ -238,9 +238,9 @@ class Tree extends Model
             } else {
                 Fight::saveRoundRobinFights($championship, $tree);
             }
-        } elseif ($settings->treeType == config('constants.DIRECT_ELIMINATION')) {
+        } elseif ($settings->treeType == config('kendo-tournaments.DIRECT_ELIMINATION')) {
             Fight::saveFightRound($tree); // Always C1 x C2
-        } elseif ($settings->treeType == config('constants.ROUND_ROBIN')) {
+        } elseif ($settings->treeType == config('kendo-tournaments.ROUND_ROBIN')) {
             Fight::saveRoundRobinFights($championship, $tree);
 
         }

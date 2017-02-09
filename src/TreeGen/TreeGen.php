@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Config;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Team;
 use Xoco70\KendoTournaments\Models\Tree;
 use Xoco70\KendoTournaments\Models\User;
@@ -37,8 +36,6 @@ class TreeGen implements TreeGenerable
     {
         // If previous trees already exist, delete all
         $this->championship->tree()->delete();
-
-        // Get Settings
         $trees = new Collection();
 
         // Get Areas
@@ -78,6 +75,7 @@ class TreeGen implements TreeGenerable
                 // Not so good, Round Robin has no trees
                 $pt = new Tree;
                 $pt->area = $area;
+                $pt->order = 1;
                 $pt->championship_id = $this->championship->id;
                 if ($this->championship->category->isTeam()) {
                     $pt->isTeam = 1;

@@ -1,7 +1,7 @@
 <?php
 return array(
 
-    'MIN_COMPETITORS_X_AREA' => 2,
+
 
     'hanteiLimit' => [
         '1' => '-',
@@ -16,7 +16,7 @@ return array(
 //        '3' => 'F',
 //    ],
 
-    'preliminaryGroupSize' => [3 => 3,4 => 4, 5 => 5],
+    'preliminaryGroupSize' => [3 => 3, 4 => 4, 5 => 5],
     'preliminaryWinner' => [1 => 1], // , 2 => 2, 3 => 3
     'enchoQty' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     'teamSize' => [2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10],
@@ -43,6 +43,21 @@ return array(
         'seedQuantity' => '4',
 
     ],
+
+    'MIN_COMPETITORS_X_AREA' => 2,
+    // Tournament Levels
+    'ND' => 1,
+    'local' => 2,
+    'district' => 3,
+    'city' => 4,
+    'state' => 5,
+    'regional' => 6,
+    'national' => 7,
+    'international' => 8,
+
+
+    'ROUND_ROBIN' => 0,
+    'DIRECT_ELIMINATION' => 1,
 
 
 );

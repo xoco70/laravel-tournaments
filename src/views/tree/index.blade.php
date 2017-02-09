@@ -36,20 +36,34 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
 ?>
 @if (isset($message))
     <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span>
+        </button>
         {{ $message }}</div>
 @endif
 @if (isset($error))
     <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span>
+        </button>
         {{ $error }}</div>
 @endif
-
 
 <div class="container">
     <div class="content">
         <h1 align="center">{{ $tournament->name }}</h1>
         @include('kendo-tournaments::partials.settings')
+        @if ($championship->tree->count()>0)
+            @if ($championship->hasPreliminary())
+                Si Hay Arboles preliminarios
+            @else
+                @if ($championship->isDirectEliminationType())
+                    Si Hay Arboles de Elimination directa
+                @elseif ($championship->isRoundRobinType())
+                    Si Hay Arboles de Round Robin
+                @else
+                    Si hay arboles de ningun tipo
+                @endif
+            @endif
+        @endif
     </div>
 </div>
 </body>
