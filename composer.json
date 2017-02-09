@@ -11,11 +11,18 @@
     "autoload": {
         "psr-4": {
             "tournaments\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         },
-
         "classmap": [
-            "tests"
+            "tests",
+            "tests/TestCase.php",
+            "tests/BrowserKitTestCase.php"
         ]
+
     },
     "require": {
         "php": ">=7.0.0"
@@ -23,6 +30,8 @@
     "require-dev":{
         "symfony/var-dumper": "~2.6",
         "phpunit/phpunit": "^5.7",
-        "fzaninotto/faker": "1.4"
+        "fzaninotto/faker": "1.4",
+        "laravel/browser-kit-testing": "^1.0"
+
     }
 }
