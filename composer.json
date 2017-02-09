@@ -1,37 +1,40 @@
 {
-    "name": "xoco70/kendo-tournaments",
-    "description": "A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed",
-    "type": "Project",
-    "authors": [
-        {
-            "name": "juliatzin",
-            "email": "xoco70@hotmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "tournaments\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        },
-        "classmap": [
-            "tests",
-            "tests/TestCase.php",
-            "tests/BrowserKitTestCase.php"
-        ]
-
-    },
-    "require": {
-        "php": ">=7.0.0"
-    },
-    "require-dev":{
-        "symfony/var-dumper": "~2.6",
-        "phpunit/phpunit": "^5.7",
-        "fzaninotto/faker": "1.4",
-        "laravel/browser-kit-testing": "^1.0"
-
+  "name": "xoco70/kendo-tournaments",
+  "description": "A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed",
+  "type": "Project",
+  "homepage": "https://github.com/xoco70/kendo-tournaments",
+  "license": "Apache License 2.0",
+  "authors": [
+    {
+      "name": "juliatzin",
+      "email": "xoco70@hotmail.com"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Xoco70\\KendoTournaments\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Xoco70\\KendoTournaments\\Tests\\": "tests"
+    },
+    "classmap": [
+      "tests",
+      "tests/TestCase.php",
+      "tests/BrowserKitTestCase.php"
+    ]
+  },
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "~2.6",
+    "phpunit/phpunit": "^5.7",
+    "fzaninotto/faker": "1.4",
+    "laravel/browser-kit-testing": "^1.0"
+  },
+  "scripts": {
+    "test": "phpunit"
+  }
 }
