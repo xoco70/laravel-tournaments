@@ -29,7 +29,6 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.0.0",
-    "laravel/laravel": "5.*",
     "illuminate/config": "5.1.* || 5.2.* || 5.3.* || 5.4.* ",
     "illuminate/database": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
     "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
