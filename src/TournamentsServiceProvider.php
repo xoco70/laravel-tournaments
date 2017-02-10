@@ -2,6 +2,7 @@
 
 namespace Xoco70\KendoTournaments;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class TournamentsServiceProvider extends ServiceProvider
@@ -9,26 +10,30 @@ class TournamentsServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
+     * @param Router $router
      * @return void
      */
-    public function boot()
+    public function boot(Router $router)
     {
-        $this->loadRoutesFrom(__DIR__.'/web.php');
 
-        $viewPath = __DIR__.'/../resources/views';
+        $viewPath = __DIR__ . '/../resources/views';
         $this->loadViewsFrom($viewPath, 'kendo-tournaments');
 //        $this->publishes([ $viewPath => base_path('resources/views/vendor/kendo-tournaments'),], 'kendo-tournaments');
 
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadTranslationsFrom(__DIR__ . '/../translations', 'kendo-tournaments');
 
 //        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/kendo-tournaments')]);
-        $this->publishes([__DIR__ . '/../config/kendo-tournaments.php' => config_path('kendo-tournaments.php'),'kendo-tournaments']);
+        $this->publishes([__DIR__ . '/../config/kendo-tournaments.php' => config_path('kendo-tournaments.php'), 'kendo-tournaments']);
         $this->publishes([__DIR__ . '/../database/migrations' => $this->app->databasePath() . '/migrations'], 'kendo-tournaments');
         $this->publishes([__DIR__ . '/../database/seeds' => $this->app->databasePath() . '/seeds'], 'kendo-tournaments');
         $this->publishes([__DIR__ . '/../database/factories' => $this->app->databasePath() . '/factories'], 'kendo-tournaments');
         $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/kendo-tournaments'),], 'kendo-tournaments');
 
+        $router->group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function ($router) {
+            $router->get('/', 'Xoco70\KendoTournaments\TreeController@index')->name('tree.index');
+            $router->post('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@store')->name('tree.index');
+        });
     }
 
     /**
@@ -39,7 +44,7 @@ class TournamentsServiceProvider extends ServiceProvider
     public function register()
     {
         // Replace HTML:: y FORM:: by native html
-        include __DIR__.'/web.php';
+        include __DIR__ . '/web.php';
         $this->app->make(TreeController::class);
         $this->app->make(FightController::class);
     }
