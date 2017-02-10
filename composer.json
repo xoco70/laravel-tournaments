@@ -19,7 +19,7 @@
     "psr-4": {
       "Xoco70\\KendoTournaments\\Tests\\": "tests"
     },
-    "classmap": [
+    "4classmap": [
       "tests",
       "tests/TestCase.php",
       "tests/BrowserKitTestCase.php"
@@ -32,9 +32,9 @@
     "illuminate/config": "5.1.* || 5.2.* || 5.3.* || 5.4.* ",
     "illuminate/database": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
     "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
-    "symfony/var-dumper": "~2.6",
+    "symfony/var-dumper": "~3.1.10",
     "phpunit/phpunit": "^5.7",
-    "fzaninotto/faker": "1.6",
+    "fzaninotto/faker": "1.4",
     "laravel/browser-kit-testing": "^1.0"
   },
   "scripts": {
