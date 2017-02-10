@@ -8,7 +8,6 @@ $directEliminationTree = $championship->tree->map(function ($item, $key) use ($c
         $user1 = $item->user1 != null ? $item->user1->name : "Bye";
         $user2 = $item->user2 != null ? $item->user2->name : "Bye";
     }
-//    dump([$user1, $user2]);
     return [$user1, $user2];
 })->toArray();
 ?>
