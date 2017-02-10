@@ -7,7 +7,7 @@ Kendo- Tournaments is A Laravel 5.3+ Package that allows you to generate Tournam
 First, you'll need to install the package via Composer:
 
 ```shell
-$ composer require xoco70/kendo-tournaments
+$ composer require "xoco70/kendo-tournaments":^0.7
 ```
 
 Then, update `config/app.php` by adding an entry for the service provider.
