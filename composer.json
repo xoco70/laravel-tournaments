@@ -2,6 +2,7 @@
   "name": "xoco70/kendo-tournaments",
   "description": "A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed",
   "type": "Project",
+  "language":"PHP",
   "homepage": "https://github.com/xoco70/kendo-tournaments",
   "license": "Apache License 2.0",
   "authors": [
