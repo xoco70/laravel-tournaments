@@ -60,7 +60,7 @@ class Category extends Model
 
     public function settings()
     {
-        return $this->hasOne('App\ChampionshipSettings');
+        return $this->hasOne(ChampionshipSettings::class);
     }
     public function championship()
     {
