@@ -87,10 +87,7 @@ class TreeController extends Controller
                 ->with('error', "Error Generating Tree");
         }
 
-        return view('kendo-tournaments::tree.index')
-            ->with('tournament', $tournament)
-            ->with('message', "Tree Generated")
-            ->with('settings', $tournament->championships[0]->setting);
+        return redirect()->back();
     }
 
 

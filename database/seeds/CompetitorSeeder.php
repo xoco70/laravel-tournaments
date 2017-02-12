@@ -26,6 +26,7 @@ class CompetitorSeeder extends Seeder
         $users[] = factory(User::class)->create(['name' => 't2']);
         $users[] = factory(User::class)->create(['name' => 't3']);
         $users[] = factory(User::class)->create(['name' => 't4']);
+        $users[] = factory(User::class)->create(['name' => 't5']);
 
         foreach ($users as $id => $user) {
             factory(Competitor::class)->create([
