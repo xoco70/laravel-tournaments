@@ -11,7 +11,7 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Team;
-use Xoco70\KendoTournaments\Models\Tree;
+use Xoco70\KendoTournaments\Models\Round;
 
 class TreeGen implements TreeGenerable
 {
@@ -73,7 +73,7 @@ class TreeGen implements TreeGenerable
                 $roundRobinGroups = new Collection();
 
                 // Not so good, Round Robin has no trees
-                $pt = new Tree;
+                $pt = new Round;
                 $pt->area = $area;
                 $pt->order = 1;
                 $pt->championship_id = $this->championship->id;
@@ -91,7 +91,7 @@ class TreeGen implements TreeGenerable
 
                 $robinGroup = $robinGroup->shuffle()->values();
 
-                $pt = new Tree;
+                $pt = new Round;
                 $pt->area = $area;
                 $pt->order = $order;
                 if ($this->championship->category->isTeam()) {

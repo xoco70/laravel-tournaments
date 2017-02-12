@@ -33,7 +33,7 @@ class Fight extends Model
      * @param Championship $championship
      * @return mixed
      */
-    private static function getActorsToFights(Championship $championship, Tree $treeGroup = null)
+    private static function getActorsToFights(Championship $championship, Round $treeGroup = null)
     {
         if ($treeGroup->c1 == null && $treeGroup->c2 == null && $treeGroup->c3 == null && $treeGroup->c4 == null && $treeGroup->c5 == null) { // This is a Preliminary Tree with comp > 3 We get Fighters from tree
             if ($championship->category->isTeam) {

@@ -24,11 +24,11 @@ class TournamentsServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../translations', 'kendo-tournaments');
 
 //        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/kendo-tournaments')]);
-        $this->publishes([__DIR__ . '/../config/kendo-tournaments.php' => config_path('kendo-tournaments.php'), 'kendo-tournaments']);
-        $this->publishes([__DIR__ . '/../database/migrations' => $this->app->databasePath() . '/migrations'], 'kendo-tournaments');
-        $this->publishes([__DIR__ . '/../database/seeds' => $this->app->databasePath() . '/seeds'], 'kendo-tournaments');
-        $this->publishes([__DIR__ . '/../database/factories' => $this->app->databasePath() . '/factories'], 'kendo-tournaments');
-        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/kendo-tournaments'),], 'kendo-tournaments');
+        $this->publishes([__DIR__ . '/../config/kendo-tournaments.php' => config_path('kendo-tournaments.php'), 'config']);
+        $this->publishes([__DIR__ . '/../database/migrations' => $this->app->databasePath() . '/migrations'], 'migrations');
+        $this->publishes([__DIR__ . '/../database/seeds' => $this->app->databasePath() . '/seeds'], 'seeds');
+        $this->publishes([__DIR__ . '/../database/factories' => $this->app->databasePath() . '/factories'], 'seeds');
+        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/kendo-tournaments'),], 'assets');
 
         $router->group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function ($router) {
             $router->get('/', 'Xoco70\KendoTournaments\TreeController@index')->name('tree.index');

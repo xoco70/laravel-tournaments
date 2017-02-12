@@ -1,9 +1,9 @@
 <?php
 
 
-use Xoco70\KendoTournaments\Models\Tree;
+use Xoco70\KendoTournaments\Models\Round;
 
-$factory->define(Tree::class, function (Faker\Generator $faker) {
+$factory->define(Round::class, function (Faker\Generator $faker) {
 
     return [
 //        'name' => $faker->name,

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Xoco70\KendoTournaments\Models\User;
+use App\User;
 
 class UserSeeder extends Seeder
 {

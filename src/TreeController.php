@@ -8,7 +8,7 @@ use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Tournament;
-use Xoco70\KendoTournaments\Models\Tree;
+use Xoco70\KendoTournaments\Models\Round;
 use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class TreeController extends Controller
@@ -64,7 +64,7 @@ class TreeController extends Controller
             $championship->tree = $tree;
 
 
-            Tree::generateFights($tree, $settings, $championship);
+            Round::generateFights($tree, $settings, $championship);
 
         } catch (TreeGenerationException $e) {
             return view('kendo-tournaments::tree.index')

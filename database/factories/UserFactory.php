@@ -1,7 +1,7 @@
 <?php
 
 
-use Xoco70\KendoTournaments\Models\User;
+use App\User;
 
 $factory->define(User::class, function (Faker\Generator $faker) {
 

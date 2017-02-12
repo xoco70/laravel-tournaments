@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFights extends Migration
+class CreateFightTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,10 +15,10 @@ class CreateFights extends Migration
     {
         Schema::create('fight', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('tree_id')->unsigned()->index();
-            $table->foreign('tree_id')
+            $table->integer('round_id')->unsigned()->index();
+            $table->foreign('round_id')
                 ->references('id')
-                ->on('tree')
+                ->on('round')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('c1')->nullable()->unsigned()->index();

@@ -126,7 +126,7 @@ class Championship extends Model
      */
     public function tree()
     {
-        return $this->hasMany(Tree::class, 'championship_id');
+        return $this->hasMany(Round::class, 'championship_id');
     }
 
     /**
@@ -135,7 +135,7 @@ class Championship extends Model
      */
     public function fights()
     {
-        return $this->hasManyThrough(Fight::class, Tree::class);
+        return $this->hasManyThrough(Fight::class, Round::class);
     }
 
 

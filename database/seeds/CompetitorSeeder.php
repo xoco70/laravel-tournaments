@@ -4,7 +4,7 @@ use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\User;
+use App\User;
 
 
 class CompetitorSeeder extends Seeder

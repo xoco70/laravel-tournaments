@@ -9,7 +9,7 @@ use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Tournament;
-use Xoco70\KendoTournaments\Models\User;
+use App\User;
 
 class PreliminaryTreeTest extends BrowserKitTestCase
 {
