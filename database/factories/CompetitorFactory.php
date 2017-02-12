@@ -1,8 +1,8 @@
 <?php
 
+use App\User;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
-use App\User;
 
 $factory->define(Competitor::class, function (Faker\Generator $faker) {
     $tcs = Championship::all()->pluck('id')->toArray();

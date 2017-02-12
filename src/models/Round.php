@@ -5,6 +5,7 @@ namespace Xoco70\KendoTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Round extends Model
 {
@@ -51,17 +52,16 @@ class Round extends Model
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'round_team');
+        return $this->belongsToMany(Team::class, 'round_team')->withTimestamps();
     }
 
     public function competitors()
     {
-        return $this->belongsToMany(Competitor::class, 'round_competitor');
+        return $this->belongsToMany(Competitor::class, 'round_competitor')->withTimestamps();
     }
 
 
     /**
-     * @param Collection $rounds
      * @param $settings
      * @param Championship $championship
      */
@@ -82,6 +82,46 @@ class Round extends Model
             }
         } else {
             Fight::saveRoundRobinFights($championship, $rounds);
+        }
+    }
+
+
+    /**
+     * Supercharge of sync Many2Many function.
+     * Original sync doesn't insert NULL ids
+     * @param $fighters
+     */
+    public function syncTeams($fighters)
+    {
+        $this->teams()->detach();
+        foreach ($fighters as $fighter) {
+            if ($fighter != null) {
+                $this->teams()->attach($fighter);
+            } else {
+                // Insert row manually
+                DB::table('round_team')->insertGetId(
+                    ['team_id' => null, 'round_id' => $this->id]
+                );
+            }
+        }
+    }
+
+    /**
+     * Supercharge of sync Many2Many function.
+     * Original sync doesn't insert NULL ids
+     * @param $fighters
+     */
+    public function syncCompetitors($fighters)
+    {
+        $this->competitors()->detach();
+        foreach ($fighters as $fighter) {
+            if ($fighter != null) {
+                $this->competitors()->attach($fighter);
+            } else {
+                DB::table('round_competitor')->insertGetId(
+                    ['competitor_id' => null, 'round_id' => $this->id]
+                );
+            }
         }
     }
 }

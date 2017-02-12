@@ -9,8 +9,8 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Team;
 use Xoco70\KendoTournaments\Models\Round;
+use Xoco70\KendoTournaments\Models\Team;
 
 class TreeGen implements TreeGenerable
 {
@@ -69,14 +69,13 @@ class TreeGen implements TreeGenerable
             } else if ($this->championship->isDirectEliminationType()) {
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
             } else {
-                $fightersGroup = $fightersByEntity;
+                $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
             }
 
             $order = 1;
 
             // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup as $fighters) {
-
                 $fighters = $fighters->pluck('id')->shuffle();
 
                 $round = new Round;
@@ -90,13 +89,9 @@ class TreeGen implements TreeGenerable
 
                 // Add all competitors to Pivot Table
                 if ($this->championship->category->isTeam()) {
-                    $round->teams()->sync($fighters);
+                    $round->syncTeams($fighters);
                 } else {
-                    $round->competitors()->detach();
-                    foreach ($fighters as $fighter) {
-                        $round->competitors()->attach($fighter);
-                    }
-//                    $round->competitors()->sync($fighters);
+                    $round->syncCompetitors($fighters);
                 }
 
 
@@ -280,4 +275,6 @@ class TreeGen implements TreeGenerable
 
         return $newFighters;
     }
+
+
 }

@@ -1,6 +1,7 @@
 <?php
 namespace Xoco70\KendoTournaments\Tests;
 
+use App\User;
 use BrowserKitTestCase;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -9,7 +10,6 @@ use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Tournament;
-use App\User;
 
 class PreliminaryTreeTest extends BrowserKitTestCase
 {

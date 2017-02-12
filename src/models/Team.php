@@ -31,7 +31,7 @@ class Team extends Model
 
     public function rounds()
     {
-        return $this->belongsToMany(Round::class,'round_team');
+        return $this->belongsToMany(Round::class,'round_team')->withTimestamps();
     }
 
 }

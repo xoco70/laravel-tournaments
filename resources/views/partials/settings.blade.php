@@ -15,13 +15,13 @@
             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
         </div>
     </div>
-    <div class="col-lg-2">
-        {!!  Form::label('numFighters', "Fighter Quantity") !!}
+    {{--<div class="col-lg-2">--}}
+        {{--{!!  Form::label('numFighters', "Fighter Quantity") !!}--}}
 
-        <div class="input-group">
-            {!!  Form::select('numFighters',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],old('numFighters'), ['class' => 'form-control','id' => 'numFighters']) !!}
-        </div>
-    </div>
+        {{--<div class="input-group">--}}
+            {{--{!!  Form::select('numFighters',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],old('numFighters'), ['class' => 'form-control','id' => 'numFighters']) !!}--}}
+        {{--</div>--}}
+    {{--</div>--}}
 
     {{--<div class="col-lg-2">--}}
         {{--<div class="form-group">--}}

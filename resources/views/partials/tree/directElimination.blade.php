@@ -2,13 +2,13 @@
 $directEliminationTree = $championship->tree->map(function ($item, $key) use ($championship) {
     if ($championship->category->isTeam()){
 
-        $user1 = $item->team1 != null ? $item->team1->name : "Bye";
-        $user2 = $item->team2 != null ? $item->team2->name : "Bye";
+        $fighter1 = $item->team1 != null ? $item->team1->name : "Bye";
+        $fighter2 = $item->team2 != null ? $item->team2->name : "Bye";
     }else{
-        $user1 = $item->user1 != null ? $item->user1->name : "Bye";
-        $user2 = $item->user2 != null ? $item->user2->name : "Bye";
+        $fighter1 = $item->competitors[0] != null ? $item->competitor[0]->user->name : "Bye";
+        $fighter2 = $item->competitors[1] != null ? $item->competitor[1]->user->name : "Bye";
     }
-    return [$user1, $user2];
+    return [$fighter1, $fighter2];
 })->toArray();
 ?>
 @if (Request::is('championships/'.$championship->id.'/pdf'))

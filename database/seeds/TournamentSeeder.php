@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Seeder;
 use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\Venue;
 use Xoco70\KendoTournaments\Models\Tournament;
+use Xoco70\KendoTournaments\Models\Venue;
 
 class TournamentSeeder extends Seeder
 {

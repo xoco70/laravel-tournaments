@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.timepicker.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.bracket.min.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/custom.css">
-
+<style>
+    .bg-grey{
+        background-color: #CCC;
+    }
+</style>
 
 </head>
 <body>
@@ -74,7 +78,7 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
 <script src="/vendor/kendo-tournaments/js/jquery.bracket.min.js"></script>
 
 <script>
-    @if ($championship->settings->treeType == 1  &&  !$championship->settings->hasPreliminary && $championship->tree->count())
+    @if ($championship->settings!=null &&  $championship->settings->treeType == 1  &&  !$championship->settings->hasPreliminary && $championship->tree->count())
         $('#brackets_{{ $championship->id }}').bracket({
             init: minimalData_{{ $championship->id }},
             teamWidth: 100

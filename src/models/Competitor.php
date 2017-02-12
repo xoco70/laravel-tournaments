@@ -76,7 +76,7 @@ class Competitor extends Model
 
     public function rounds()
     {
-        return $this->belongsToMany(Round::class,'round_competitor');
+        return $this->belongsToMany(Round::class,'round_competitor')->withTimestamps();
     }
 
 }

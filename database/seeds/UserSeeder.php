@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\User;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
@@ -14,5 +14,6 @@ class UserSeeder extends Seeder
     {
         $this->command->info('Users seeding!');
         User::truncate();
+//        factory(User::class, 4)->create();
     }
 }
