@@ -13,9 +13,9 @@ class CreateRoundTeamTable extends Migration
      */
     public function up()
     {
-        Schema::create('team_round', function (Blueprint $table) {
+        Schema::create('round_team', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('team_id')->unsigned()->index();
+            $table->integer('team_id')->unsigned()->nullable()->index();
             $table->integer('round_id')->unsigned()->index(); // A checar
             $table->timestamps();
 
@@ -44,7 +44,7 @@ class CreateRoundTeamTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('team_round');
+        Schema::dropIfExists('round_team');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
 
     }

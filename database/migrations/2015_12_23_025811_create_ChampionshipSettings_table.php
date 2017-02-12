@@ -45,11 +45,11 @@ class CreateChampionshipSettingsTable extends Migration
             // Rules
             $table->boolean('hasEncho')->default(1);
             $table->tinyInteger('enchoQty')->default(0);
-            $table->text('enchoDuration');
-            $table->boolean('hasHantei');
+            $table->text('enchoDuration')->nullable();
+            $table->boolean('hasHantei')->default(false);
             $table->smallInteger('cost')->nullable(); // Cost of competition
 
-            $table->text('fightDuration'); // Can't apply default because text
+            $table->text('fightDuration')->nullable(); // Can't apply default because text
             $table->smallInteger('hanteiLimit')->default(0); // 0 = none, 1 = 1/8, 2 = 1/4, 3=1/2, 4 = FINAL
             $table->smallInteger('enchoGoldPoint')->default(0); // 0 = none, 1 = 1/8, 2 = 1/4, 3=1/2, 4 = FINAL
 
