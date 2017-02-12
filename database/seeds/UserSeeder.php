@@ -13,6 +13,6 @@ class UserSeeder extends Seeder
     public function run()
     {
         $this->command->info('Users seeding!');
-        factory(User::class, 10)->create();
+        User::truncate();
     }
 }

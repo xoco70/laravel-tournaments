@@ -9,14 +9,20 @@
 
     <div class="col-lg-2">
         {!!  Form::label('fightDuration', trans('kendo-tournaments::categories.fightDuration')) !!}
-        <i class="icon-help" data-popup="tooltip" title="" data-placement="right"
-           data-original-title="{{trans('kendo-tournaments::categories.fightDurationTooltip')}}"></i>
 
         <div class="input-group">
             {!!  Form::input('text','fightDuration',$fightDuration, ['class' => 'form-control fightDuration','id' => 'fightDuration']) !!}
             <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>
         </div>
     </div>
+    <div class="col-lg-2">
+        {!!  Form::label('numFighters', "Fighter Quantity") !!}
+
+        <div class="input-group">
+            {!!  Form::select('numFighters',[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],old('numFighters'), ['class' => 'form-control','id' => 'numFighters']) !!}
+        </div>
+    </div>
+
     {{--<div class="col-lg-2">--}}
         {{--<div class="form-group">--}}
             {{--{!!  Form::label('cost', trans('kendo-tournaments::categories.cost'). ' ('. $currency  .')' ) !!}--}}
@@ -53,7 +59,7 @@
     <div class="col-lg-3">
         <div class="form-group">
             {!!  Form::label('preliminaryGroupSize', trans('kendo-tournaments::categories.preliminaryGroupSize')) !!}
-            {!!  Form::select('preliminaryGroupSize', config('kendo-tournaments.preliminaryGroupSize'), 3,['class' => 'form-control',1]) !!}
+            {!!  Form::select('preliminaryGroupSize', config('kendo-tournaments.preliminaryGroupSize'), old('preliminaryGroupSize'),['class' => 'form-control',1]) !!}
         </div>
     </div>
     <div class="col-lg-4">

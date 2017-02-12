@@ -16,22 +16,7 @@ class CompetitorSeeder extends Seeder
      */
     public function run()
     {
-        $this->command->info('Competitors seeding!');
-        $faker = Faker::create();
-
-        $championship = Championship::where('tournament_id', 1)->first();
-
-
-        $users = factory(User::class, $faker->numberBetween(15, 50))->create(
-            ['password' => bcrypt('111111')]);
-
-        foreach ($users as $user) {
-            factory(Competitor::class)->create([
-                'championship_id' => $championship->id,
-                'user_id' => $user->id,
-                'confirmed' => 1,
-            ]);
-        }
+        Competitor::truncate();
 
     }
 }

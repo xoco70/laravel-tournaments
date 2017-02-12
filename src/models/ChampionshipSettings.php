@@ -32,7 +32,7 @@ class ChampionshipSettings extends Model
     public static function createOrUpdate(Request $request, Championship $championship): ChampionshipSettings
     {
         $request->request->add(['championship_id' => $championship->id]);
-        $arrSettings = $request->except('_token');
+        $arrSettings = $request->except('_token', 'numFighters');
         $settings = static::where(['championship_id' => $championship->id])->first();
         if ($settings == null) {
             $settings = new ChampionshipSettings($arrSettings);

@@ -20,6 +20,12 @@ class CreateRoundTable extends Migration
             $table->tinyInteger("order");
             $table->timestamps();
             $table->engine = 'InnoDB';
+
+            $table->foreign('championship_id')
+                ->references('id')
+                ->onUpdate('cascade')
+                ->on('championship')
+                ->onDelete('cascade');
         });
 
     }

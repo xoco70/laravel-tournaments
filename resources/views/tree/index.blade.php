@@ -54,7 +54,7 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
                     Ooooops. Problem
                 @endif
             @endif
-        <br/>
+            <br/>
             <h1>Fight List</h1>
             <hr/>
             <div align="center">
@@ -74,11 +74,11 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
 <script src="/vendor/kendo-tournaments/js/jquery.bracket.min.js"></script>
 
 <script>
-    @if ($championship->isDirectEliminationType() && $championship->tree->count())
-    $('#brackets_{{ $championship->id }}').bracket({
-        init: minimalData_{{ $championship->id }},
-        teamWidth: 100
-    });
+    @if ($championship->settings->treeType == 1  &&  !$championship->settings->hasPreliminary && $championship->tree->count())
+        $('#brackets_{{ $championship->id }}').bracket({
+            init: minimalData_{{ $championship->id }},
+            teamWidth: 100
+        });
     @endif
         $(".switch").bootstrapSwitch();
     $('input[name="hasEncho"]').on('switchChange.bootstrapSwitch', function (event, state) {

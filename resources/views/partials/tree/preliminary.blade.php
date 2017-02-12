@@ -15,11 +15,11 @@
                 <th class="p-10">Competitor 3</th>
                 @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 3)
                     <th class="p-10"></th>
-                    <th class="p-10">{{trans_choice('core.competitor',1)}} 4</th>
+                    <th class="p-10">Competitor 4</th>
                 @endif
                 @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 4)
                     <th class="p-10"></th>
-                    <th class="p-10">{{trans_choice('core.competitor',1)}} 5</th>
+                    <th class="p-10">Competitor 5</th>
                 @endif
             </tr>
 
@@ -53,7 +53,7 @@
                         <td class="p-10">d</td>
                         <td class="p-10">{{ $fighter4 }}</td>
                     @endif
-                    @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 3)
+                    @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 4)
                         <td class="p-10">e</td>
                         <td class="p-10">{{ $fighter5 }}</td>
                     @endif
