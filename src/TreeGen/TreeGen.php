@@ -70,17 +70,6 @@ class TreeGen implements TreeGenerable
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
             } else {
                 $fightersGroup = $fightersByEntity;
-
-//                // Not so good, Round Robin has no trees
-//                $round = new Round;
-//                $round->area = $area;
-//                $round->order = 1;
-//                $round->championship_id = $this->championship->id;
-//                if ($this->championship->category->isTeam()) {
-//                    $round->isTeam = 1;
-//                }
-//                $round->save();
-//                $tree->push($round);
             }
 
             $order = 1;
@@ -93,7 +82,6 @@ class TreeGen implements TreeGenerable
                 $round = new Round;
                 $round->area = $area;
                 $round->order = $order;
-//                if ($this->championship->category->isTeam()) {
                 $round->championship_id = $this->championship->id;
 
                 $round->save();
@@ -105,7 +93,7 @@ class TreeGen implements TreeGenerable
                     $round->teams()->sync($fighters);
                 } else {
                     $round->competitors()->detach();
-                    foreach ($fighters as $fighter){
+                    foreach ($fighters as $fighter) {
                         $round->competitors()->attach($fighter);
                     }
 //                    $round->competitors()->sync($fighters);

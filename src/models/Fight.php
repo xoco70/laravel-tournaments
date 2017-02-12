@@ -86,46 +86,50 @@ class Fight extends Model
         return $this->belongsTo(Team::class, 'c2', 'id');
     }
 
-//    /**
-//     * Save a Fight.
-//     * @param $rounds
-//     * @param int $numRound
-//     */
-//    public static function saveFightRound($rounds, $numRound = 1)
-//    {
-//
-//        $c1 = $c2 = $c3 = null;
-//        $order = 0;
-//
-//        foreach ($rounds as $round) {
-//            if ($round->championship->isTeam) {
-//                $fighters = $round->teams;
-//            } else {
-//                $fighters = $round->competitors;
-//            }
-//            switch ($numRound) {
-//                case 1:
-//                    $c1 = $round->c1 ?? null;
-//                    $c2 = $round->c2 ?? null;
-//                    break;
-//                case 2:
-//                    $c1 = $round->c2 ?? null;
-//                    $c2 = $round->c3 ?? null;
-//                    break;
-//                case 3:
-//                    $c1 = $round->c3 ?? null;
-//                    $c2 = $round->c1 ?? null;
-//                    break;
-//            }
-//            $fight = new Fight();
-//            $fight->tree_id = $round->id;
-//            $fight->c1 = $c1;
-//            $fight->c2 = $c2;
-//            $fight->order = $order++;
-//            $fight->area = $round->area;
-//            $fight->save();
-//        }
-//    }
+    /**
+     * Save a Fight.
+     * @param $rounds
+     * @param int $numRound
+     */
+    public static function savePreliminaryFightRound($rounds, $numRound = 1)
+    {
+
+        $c1 = $c2 = $c3 = null;
+        $order = 0;
+
+        foreach ($rounds as $round) {
+            if ($round->championship->isTeam) {
+                $fighter1 = isset($round->teams[0]) ? $round->teams[0] : null;
+                $fighter2 = isset($round->teams[1]) ? $round->teams[1] : null;
+                $fighter3 = isset($round->teams[2]) ? $round->teams[2] : null;
+            } else {
+                $fighter1 = isset($round->competitors[0])  ? $round->competitors[0] : null;
+                $fighter2 = isset($round->competitors[1])  ? $round->competitors[1] : null;
+                $fighter3 = isset($round->competitors[2])  ? $round->competitors[2] : null;
+            }
+            switch ($numRound) {
+                case 1:
+                    $c1 = $fighter1;
+                    $c2 = $fighter2;
+                    break;
+                case 2:
+                    $c1 = $fighter2;
+                    $c2 = $fighter3;
+                    break;
+                case 3:
+                    $c1 = $fighter3;
+                    $c2 = $fighter1;
+                    break;
+            }
+            $fight = new Fight();
+            $fight->round_id = $round->id;
+            $fight->c1 = $c1 != null ? $c1->id : null;
+            $fight->c2 = $c2 != null ? $c2->id : null;
+            $fight->order = $order++;
+            $fight->area = $round->area;
+            $fight->save();
+        }
+    }
 
 
 //    public static function saveRoundRobinFight(Championship $championship, $tree)

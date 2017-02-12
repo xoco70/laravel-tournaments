@@ -75,23 +75,13 @@ class Round extends Model
         })->toArray();
         Fight::destroy($arrRoundsId);
 
-        Fight::saveRoundRobinFights($championship, $rounds);
+        if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
 
-
-//        if ($settings->hasPreliminary) {
-//            if ($settings->preliminaryGroupSize == 3) {
-//                for ($numRound = 1; $numRound <= $settings->preliminaryGroupSize; $numRound++) {
-//
-//                }
-//            } else {
-//                Fight::saveRoundRobinFights($championship, $tree);
-//            }
-//        } elseif ($settings->treeType == config('kendo-tournaments.DIRECT_ELIMINATION')) {
-//            Fight::saveFightRound($tree); // Always C1 x C2
-//        } elseif ($settings->treeType == config('kendo-tournaments.ROUND_ROBIN')) {
-//            Fight::saveRoundRobinFights($championship, $tree);
-//
-//        }
-
+            for ($numRound = 1; $numRound <= $settings->preliminaryGroupSize; $numRound++) {
+                Fight::savePreliminaryFightRound($rounds, $numRound);
+            }
+        } else {
+            Fight::saveRoundRobinFights($championship, $rounds);
+        }
     }
 }
