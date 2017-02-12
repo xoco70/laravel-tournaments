@@ -28,4 +28,10 @@ class Team extends Model
     {
         return $this->hasManyThrough(Category::class, Championship::class);
     }
+
+    public function rounds()
+    {
+        return $this->belongsToMany(Round::class,'round_team');
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -69,8 +70,13 @@ class Competitor extends Model
      */
     public function user()
     {
-        return self::find($this->user_id);
+        return $this->belongsTo(User::class);
     }
 
+
+    public function rounds()
+    {
+        return $this->belongsToMany(Round::class,'round_competitor');
+    }
 
 }

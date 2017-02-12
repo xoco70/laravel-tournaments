@@ -3,13 +3,12 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
-
-use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Team;
 use Xoco70\KendoTournaments\Models\Round;
 
@@ -36,89 +35,88 @@ class TreeGen implements TreeGenerable
     {
         // If previous trees already exist, delete all
         $this->championship->tree()->delete();
-        $trees = new Collection();
+        $tree = new Collection();
 
         // Get Areas
         $areas = $this->settings->fightingAreas;
 
+
         $this->championship->category->isTeam()
             ? $fighters = $this->championship->teams
-            : $fighters = $this->championship->users;
+            : $fighters = $this->championship->competitors;
 
 
         if ($fighters->count() / $areas < config('kendo-tournaments.MIN_COMPETITORS_X_AREA')) {
             throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => Config::get('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
 
         }
-
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
-        $users = $this->getUsersByEntity();
+        $fightersByEntity = $this->getFightersByEntity($fighters);
 
         // Chunk user by areas
 
-        $usersByArea = $users->chunk(sizeof($users) / $areas);
+        $usersByArea = $fightersByEntity->chunk(sizeof($fightersByEntity) / $areas);
 
         $area = 1;
 
         // loop on areas
-        foreach ($usersByArea as $users) {
+        foreach ($usersByArea as $fightersByEntity) {
 
             // Chunking to make small round robin groups
-                if ($this->championship->hasPreliminary()) {
-                $roundRobinGroups = $users->chunk($this->settings->preliminaryGroupSize)->shuffle();
+            if ($this->championship->hasPreliminary()) {
+                $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize)->shuffle();
 
             } else if ($this->championship->isDirectEliminationType()) {
-                $roundRobinGroups = $users->chunk(2)->shuffle();
-            }else{
-                $roundRobinGroups = new Collection();
+                $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
+            } else {
+                $fightersGroup = $fightersByEntity;
 
-                // Not so good, Round Robin has no trees
-                $pt = new Round;
-                $pt->area = $area;
-                $pt->order = 1;
-                $pt->championship_id = $this->championship->id;
-                if ($this->championship->category->isTeam()) {
-                    $pt->isTeam = 1;
-                }
-                $pt->save();
-                $trees->push($pt);
+//                // Not so good, Round Robin has no trees
+//                $round = new Round;
+//                $round->area = $area;
+//                $round->order = 1;
+//                $round->championship_id = $this->championship->id;
+//                if ($this->championship->category->isTeam()) {
+//                    $round->isTeam = 1;
+//                }
+//                $round->save();
+//                $tree->push($round);
             }
 
             $order = 1;
 
             // Before doing anything, check last group if numUser = 1
-            foreach ($roundRobinGroups as $robinGroup) {
+            foreach ($fightersGroup as $fighters) {
 
-                $robinGroup = $robinGroup->shuffle()->values();
+                $fighters = $fighters->pluck('id')->shuffle();
 
-                $pt = new Round;
-                $pt->area = $area;
-                $pt->order = $order;
-                if ($this->championship->category->isTeam()) {
-                    $pt->isTeam = 1;
-                }
-                $pt->championship_id = $this->championship->id;
+                $round = new Round;
+                $round->area = $area;
+                $round->order = $order;
+//                if ($this->championship->category->isTeam()) {
+                $round->championship_id = $this->championship->id;
 
-
-                $c1 = $robinGroup->get(0);
-                $c2 = $robinGroup->get(1);
-                $c3 = $robinGroup->get(2);
-                $c4 = $robinGroup->get(3);
-                $c5 = $robinGroup->get(4);
-
-                if (isset($c1)) $pt->c1 = $c1->id;
-                if (isset($c2)) $pt->c2 = $c2->id;
-                if (isset($c3)) $pt->c3 = $c3->id;
-                if (isset($c4)) $pt->c4 = $c4->id;
-                if (isset($c5)) $pt->c5 = $c5->id;
-                $pt->save();
-                $trees->push($pt);
+                $round->save();
+                $tree->push($round);
                 $order++;
+
+                // Add all competitors to Pivot Table
+                if ($this->championship->category->isTeam()) {
+                    $round->teams()->sync($fighters);
+                } else {
+                    $round->competitors()->detach();
+                    foreach ($fighters as $fighter){
+                        $round->competitors()->attach($fighter);
+                    }
+//                    $round->competitors()->sync($fighters);
+                }
+
+
             }
             $area++;
         }
 
-        return $trees;
+        return $tree;
     }
 
     /**
@@ -143,39 +141,30 @@ class TreeGen implements TreeGenerable
      * Countries for Internation Tournament, State for a National Tournament, etc
      * @return Collection
      */
-    private function getUsersByEntity(): Collection
+    private function getFightersByEntity($fighters): Collection
     {
-//        $competitors = new Collection();
-
         // Right now, we are treating users and teams as equals.
         // It doesn't matter right now, because we only need name attribute which is common to both models
 
         // $this->groupBy contains federation_id, association_id, club_id, etc.
-        if ($this->championship->category->isTeam()) {
-            if (($this->groupBy) != null) {
-                $userGroups = $this->championship->teams->groupBy($this->groupBy); // Collection of Collection
-            } else {
-                $userGroups = $this->championship->teams->chunk(1); // Collection of Collection
-            }
+        if (($this->groupBy) != null) {
+            $fighterGroups = $fighters->groupBy($this->groupBy); // Collection of Collection
         } else {
-            if (($this->groupBy) != null) {
-                $userGroups = $this->championship->users->groupBy($this->groupBy); // Collection of Collection
-            } else {
-                $userGroups = $this->championship->users->chunk(1); // Collection of Collection
-            }
+            $fighterGroups = $fighters->chunk(1); // Collection of Collection
         }
 
-        $tmpUserGroups = clone $userGroups;
 
-        $byeGroup = $this->getByeGroup($this->championship);
+        $tmpFighterGroups = clone $fighterGroups;
+
+        $byeGroup = $this->getByeGroup($this->championship, $fighters);
 
 
         // Get biggest competitor's group
-        $max = $this->getMaxCompetitorByEntity($tmpUserGroups);
+        $max = $this->getMaxCompetitorByEntity($tmpFighterGroups);
 
         // We reacommodate them so that we can mix them up and they don't fight with another competitor of his entity.
 
-        $competitors = $this->repart($userGroups, $max);
+        $competitors = $this->repart($fighterGroups, $max);
 
         $competitors = $this->insertByes($competitors, $byeGroup);
 
@@ -188,16 +177,12 @@ class TreeGen implements TreeGenerable
      * @param Championship $championship
      * @return Collection
      */
-    private function getByeGroup(Championship $championship)
+    private function getByeGroup(Championship $championship, $fighters)
     {
         $groupSizeDefault = 3;
         $preliminaryGroupSize = 2;
 
-        if ($championship->category->isTeam) {
-            $userCount = $championship->teams->count();
-        } else {
-            $userCount = $championship->users->count();
-        }
+        $fighterCount = $fighters->count();
 
         if ($championship->hasPreliminary()) {
             $preliminaryGroupSize = $championship->settings != null
@@ -210,17 +195,17 @@ class TreeGen implements TreeGenerable
             // No Preliminary and No Direct Elimination --> Round Robin
             // Should Have no tree
         }
-        $treeSize = $this->getTreeSize($userCount, $preliminaryGroupSize);
+        $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize);
 
-        $byeCount = $treeSize - $userCount;
+        $byeCount = $treeSize - $fighterCount;
         return $this->createNullsGroup($byeCount, $championship->category->isTeam);
     }
 
     /**
-     * @param $userCount
+     * @param $fighterCount
      * @return integer
      */
-    private function getTreeSize($userCount, $groupSize)
+    private function getTreeSize($fighterCount, $groupSize)
     {
         $square = collect([1, 2, 4, 8, 16, 32, 64]);
         $squareMultiplied = $square->map(function ($item, $key) use ($groupSize) {
@@ -229,7 +214,7 @@ class TreeGen implements TreeGenerable
 
 
         foreach ($squareMultiplied as $limit) {
-            if ($userCount <= $limit) {
+            if ($fighterCount <= $limit) {
 
                 return $limit;
             }
@@ -246,7 +231,7 @@ class TreeGen implements TreeGenerable
     {
         $isTeam
             ? $null = new Team()
-            : $null = new User();
+            : $null = new Competitor();
 
         $byeGroup = new Collection();
         for ($i = 0; $i < $byeCount; $i++) {
@@ -256,55 +241,55 @@ class TreeGen implements TreeGenerable
     }
 
     /**
-     * @param $userGroups
+     * @param $fighterGroups
      * @param $max
      * @return Collection
      */
-    private function repart($userGroups, $max)
+    private function repart($fighterGroups, $max)
     {
-        $competitors = new Collection;
+        $fighters = new Collection;
         for ($i = 0; $i < $max; $i++) {
-            foreach ($userGroups as $userGroup) {
-                $competitor = $userGroup->values()->get($i);
-                if ($competitor != null) {
-                    $competitors->push($competitor);
+            foreach ($fighterGroups as $fighterGroup) {
+                $fighter = $fighterGroup->values()->get($i);
+                if ($fighter != null) {
+                    $fighters->push($fighter);
                 }
             }
         }
-        return $competitors;
+        return $fighters;
     }
 
     /**
      * Insert byes in an homogen way
-     * @param Collection $competitors
+     * @param Collection $fighters
      * @param Collection $byeGroup
      * @return Collection
      */
-    private function insertByes(Collection $competitors, Collection $byeGroup)
+    private function insertByes(Collection $fighters, Collection $byeGroup)
     {
         $bye = sizeof($byeGroup) > 0 ? $byeGroup[0] : [];
-        $sizeCompetitors = sizeof($competitors);
+        $sizeFighters = sizeof($fighters);
         $sizeGroupBy = sizeof($byeGroup);
 
         $frequency = $sizeGroupBy != 0
-            ? (int)floor($sizeCompetitors / $sizeGroupBy)
+            ? (int)floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
-        $newCompetitors = new Collection;
+        $newFighters = new Collection;
         $i = 0;
         $byeCount = 0;
-        foreach ($competitors as $competitor) {
+        foreach ($fighters as $fighter) {
 
             if ($frequency != -1 && $i % $frequency == 0 && $byeCount < $sizeGroupBy) {
-                $newCompetitors->push($bye);
+                $newFighters->push($bye);
                 $byeCount++;
             }
-            $newCompetitors->push($competitor);
+            $newFighters->push($fighter);
             $i++;
 
         }
 
-        return $newCompetitors;
+        return $newFighters;
     }
 }

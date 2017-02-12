@@ -45,10 +45,6 @@ class TreeController extends Controller
         $tournament = Tournament::with(
             'competitors',
             'championshipSettings'
-//            'championships.settings',
-//            'championships.category',
-//            'championships.teams',
-//            'championships.users'
             )->first();
 
         $championship = Championship::with('teams','users','category','settings')->find($championship->id);

@@ -33,37 +33,18 @@ class Fight extends Model
      * @param Championship $championship
      * @return mixed
      */
-    private static function getActorsToFights(Championship $championship, Round $treeGroup = null)
+    private static function getActorsToFights(Championship $championship, Round $round = null)
     {
-        if ($treeGroup->c1 == null && $treeGroup->c2 == null && $treeGroup->c3 == null && $treeGroup->c4 == null && $treeGroup->c5 == null) { // This is a Preliminary Tree with comp > 3 We get Fighters from tree
-            if ($championship->category->isTeam) {
-                $fighters = $championship->teams;
-            } else {
-                $fighters = $championship->users;
-            }
-        } else {
-            $fighters = new Collection;
-            if ($championship->category->isTeam) {
-                if ($treeGroup->c1 != null) $fighters->push($treeGroup->team1);
-                if ($treeGroup->c2 != null) $fighters->push($treeGroup->team2);
-                if ($treeGroup->c3 != null) $fighters->push($treeGroup->team3);
-                if ($treeGroup->c4 != null) $fighters->push($treeGroup->team4);
-                if ($treeGroup->c5 != null) $fighters->push($treeGroup->team5);
-            } else {
-                if ($treeGroup->c1 != null) $fighters->push($treeGroup->user1);
-                if ($treeGroup->c2 != null) $fighters->push($treeGroup->user2);
-                if ($treeGroup->c3 != null) $fighters->push($treeGroup->user3);
-                if ($treeGroup->c4 != null) $fighters->push($treeGroup->user4);
-                if ($treeGroup->c5 != null) $fighters->push($treeGroup->user5);
-            }
-        }
+
         if ($championship->category->isTeam) {
+            $fighters = $round->teams;
             if (sizeof($fighters) % 2 != 0) {
                 $fighters->push(new Team(['name' => "BYE"]));
             }
         } else {
+            $fighters = $round->competitors;
             if (sizeof($fighters) % 2 != 0) {
-                $fighters->push(new User(['name' => "BYE"]));
+                $fighters->push(new Competitor());
             }
         }
         return $fighters;
@@ -73,18 +54,18 @@ class Fight extends Model
      * Get First Fighter
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user1()
+    public function competitor1()
     {
-        return $this->belongsTo(User::class, 'c1', 'id');
+        return $this->belongsTo(Competitor::class, 'c1', 'id');
     }
 
     /**
      * Get Second Fighter
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user2()
+    public function competitor2()
     {
-        return $this->belongsTo(User::class, 'c2', 'id');
+        return $this->belongsTo(Competitor::class, 'c2', 'id');
     }
 
     /**
@@ -105,42 +86,46 @@ class Fight extends Model
         return $this->belongsTo(Team::class, 'c2', 'id');
     }
 
-    /**
-     * Save a Fight.
-     * @param $tree
-     * @param int $numRound
-     */
-    public static function saveFightRound($tree, $numRound = 1)
-    {
-
-        $c1 = $c2 = $c3 = null;
-        $order = 0;
-
-        foreach ($tree as $treeGroup) {
-
-            switch ($numRound) {
-                case 1:
-                    $c1 = $treeGroup->c1 ?? null;
-                    $c2 = $treeGroup->c2 ?? null;
-                    break;
-                case 2:
-                    $c1 = $treeGroup->c2 ?? null;
-                    $c2 = $treeGroup->c3 ?? null;
-                    break;
-                case 3:
-                    $c1 = $treeGroup->c3 ?? null;
-                    $c2 = $treeGroup->c1 ?? null;
-                    break;
-            }
-            $fight = new Fight();
-            $fight->tree_id = $treeGroup->id;
-            $fight->c1 = $c1;
-            $fight->c2 = $c2;
-            $fight->order = $order++;
-            $fight->area = $treeGroup->area;
-            $fight->save();
-        }
-    }
+//    /**
+//     * Save a Fight.
+//     * @param $rounds
+//     * @param int $numRound
+//     */
+//    public static function saveFightRound($rounds, $numRound = 1)
+//    {
+//
+//        $c1 = $c2 = $c3 = null;
+//        $order = 0;
+//
+//        foreach ($rounds as $round) {
+//            if ($round->championship->isTeam) {
+//                $fighters = $round->teams;
+//            } else {
+//                $fighters = $round->competitors;
+//            }
+//            switch ($numRound) {
+//                case 1:
+//                    $c1 = $round->c1 ?? null;
+//                    $c2 = $round->c2 ?? null;
+//                    break;
+//                case 2:
+//                    $c1 = $round->c2 ?? null;
+//                    $c2 = $round->c3 ?? null;
+//                    break;
+//                case 3:
+//                    $c1 = $round->c3 ?? null;
+//                    $c2 = $round->c1 ?? null;
+//                    break;
+//            }
+//            $fight = new Fight();
+//            $fight->tree_id = $round->id;
+//            $fight->c1 = $c1;
+//            $fight->c2 = $c2;
+//            $fight->order = $order++;
+//            $fight->area = $round->area;
+//            $fight->save();
+//        }
+//    }
 
 
 //    public static function saveRoundRobinFight(Championship $championship, $tree)
@@ -167,13 +152,13 @@ class Fight extends Model
 //        }
 //    }
 
-    public static function saveRoundRobinFights(Championship $championship, $tree)
+    public static function saveRoundRobinFights(Championship $championship, $rounds)
     {
 
 
-        foreach ($tree as $treeGroup) {
-            $round = [];
-            $fighters = self::getActorsToFights($championship, $treeGroup);
+        foreach ($rounds as $round2) {
+
+            $fighters = self::getActorsToFights($championship, $round2);
 
             $away = $fighters->splice(sizeof($fighters) / 2);  // 2
 
@@ -187,13 +172,15 @@ class Fight extends Model
                     $round[$i][$j]["Home"] = $home[$j];
                     $round[$i][$j]["Away"] = $away[$j];
                     $fight = new Fight();
-                    $fight->tree_id = $tree[0]->id;
+                    $fight->round_id = $rounds[0]->id;
                     $fight->c1 = $round[$i][$j]["Home"]->id;
                     $fight->c2 = $round[$i][$j]["Away"]->id;
                     $fight->order = $order++;
                     $fight->area = 1;
 
-                    if ($fight->c1 != null && $fight->c2 != null) { // We ommit fights that have a BYE
+                    // We ommit fights that have a BYE in Round robins, but not in Preliminary
+
+                    if ($fight->c1 != null && $fight->c2 != null || !$championship->isRoundRobinType()) {
                         $fight->save();
                     }
                 }
