@@ -45,6 +45,5 @@ class TournamentsServiceProvider extends ServiceProvider
     {
         // Replace HTML:: y FORM:: by native html
         $this->app->make(TreeController::class);
-        $this->app->make(FightController::class);
     }
 }
