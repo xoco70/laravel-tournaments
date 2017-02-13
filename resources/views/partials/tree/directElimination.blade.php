@@ -1,5 +1,5 @@
 <?php
-$directEliminationTree = $championship->tree->map(function ($item, $key) use ($championship) {
+$directEliminationTree = $championship->rounds->map(function ($item, $key) use ($championship) {
     if ($championship->category->isTeam()){
 
         $fighter1 = $item->team1 != null ? $item->team1->name : "Bye";

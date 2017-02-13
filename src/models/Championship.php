@@ -120,13 +120,12 @@ class Championship extends Model
     }
 
     /**
-     * A championship has One tree ( But a tree is several rows, a tree is a group of competitors :( )
-     * TODO Maybe I should Redefine the model
+     * A championship has Many Rounds
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function tree()
+    public function rounds()
     {
-        return $this->hasMany(Round::class, 'championship_id');
+        return $this->hasMany(Round::class, 'championship_id', 'round_id');
     }
 
     /**

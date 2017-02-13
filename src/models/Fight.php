@@ -22,7 +22,7 @@ class Fight extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'tree_id',
+        'round_id',
         'c1',
         'c2'
     ];

@@ -22,18 +22,8 @@ class CreateFightTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('c1')->nullable()->unsigned()->index();
-            $table->foreign('c1')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
 
             $table->integer('c2')->nullable()->unsigned()->index();
-            $table->foreign('c2')
-                ->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
 
             $table->tinyInteger("area");
             $table->tinyInteger("order");
