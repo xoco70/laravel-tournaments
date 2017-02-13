@@ -125,7 +125,7 @@ class Championship extends Model
      */
     public function rounds()
     {
-        return $this->hasMany(Round::class, 'championship_id', 'round_id');
+        return $this->hasMany(Round::class);
     }
 
     /**
