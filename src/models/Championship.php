@@ -40,7 +40,7 @@ class Championship extends Model
      */
     public function competitors()
     {
-        return $this->hasMany(Competitor::class, 'championship_id', 'id');
+        return $this->hasMany(Competitor::class);
     }
 
     /**

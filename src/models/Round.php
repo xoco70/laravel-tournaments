@@ -47,7 +47,7 @@ class Round extends Model
      */
     public function fights()
     {
-        return $this->hasMany(Fight::class, 'tree_id', 'id');
+        return $this->hasMany(Fight::class);
     }
 
     public function teams()

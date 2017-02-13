@@ -96,7 +96,7 @@ class Fight extends Model
         $order = 0;
 
         foreach ($rounds as $round) {
-            if ($round->championship->isTeam) {
+            if ($round->championship->category->isTeam()) {
                 $fighter1 = isset($round->teams[0]) ? $round->teams[0] : null;
                 $fighter2 = isset($round->teams[1]) ? $round->teams[1] : null;
                 $fighter3 = isset($round->teams[2]) ? $round->teams[2] : null;
