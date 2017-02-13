@@ -32,7 +32,7 @@
     "illuminate/config": "5.1.* || 5.2.* || 5.3.* || 5.4.* ",
     "illuminate/database": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
     "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
-    "symfony/var-dumper": "~3.1.10",
+    "symfony/var-dumper": "~3.2.3",
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^1.0"
