@@ -1,30 +1,22 @@
 <?php
 namespace Xoco70\KendoTournaments\Tests;
 
-use App\User;
-use BrowserKitTestCase;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Config;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Tournament;
 
-class PreliminaryTreeTest extends BrowserKitTestCase
+class PreliminaryTreeTest extends TestCase
 {
     use DatabaseTransactions;
 
     protected $root, $tournament, $championship;
 
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->root = factory(User::class)->create(['role_id' => Config::get('constants.ROLE_SUPERADMIN')]);
-        $this->logWithUser($this->root);
 
-    }
 
     /** @test */
     public function check_number_of_row_when_generating_tournament()
@@ -52,7 +44,7 @@ class PreliminaryTreeTest extends BrowserKitTestCase
                 ]);
 
 
-                $users = factory(User::class, $numCompetitors)->create(['role_id' => Config::get('constants.ROLE_USER')]);
+                $users = factory(User::class, $numCompetitors)->create();
                 if ($users instanceof User) {
                     $user = $users;
                     $users = new Collection();

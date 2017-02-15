@@ -2,7 +2,7 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
-use App\User;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;

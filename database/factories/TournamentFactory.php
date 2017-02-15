@@ -1,11 +1,15 @@
 <?php
 
-use App\User;
+use Illuminate\Foundation\Auth\User;
 use Xoco70\KendoTournaments\Models\Tournament;
 use Xoco70\KendoTournaments\Models\Venue;
 
 $factory->define(Tournament::class, function (Faker\Generator $faker) {
     $users = User::all()->pluck('id')->toArray();
+    if (sizeof($users) == 0) {
+        $user = factory(\Illuminate\Foundation\Auth\User::class)->create();
+        $users[] = $user->id;
+    }
 
     $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
     $venues = Venue::all()->pluck('id')->toArray();

@@ -29,15 +29,17 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.0.0",
-    "illuminate/config": "5.1.* || 5.2.* || 5.3.* || 5.4.* ",
-    "illuminate/database": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
-    "illuminate/support": "5.1.* || 5.2.* || 5.3.* || 5.4.*",
     "symfony/var-dumper": "~3.2.3",
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^1.0"
+
   },
   "scripts": {
     "test": "phpunit"
+  },
+  "require-dev": {
+    "orchestra/testbench": "~3.0",
+    "orchestra/database": "~3.1"
   }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\User;
+use Illuminate\Foundation\Auth\User;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
 

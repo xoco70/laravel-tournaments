@@ -1,9 +1,9 @@
 <?php
 
 
-use App\User;
+use \Illuminate\Foundation\Auth\User;
 
-$factory->define(User::class, function (Faker\Generator $faker) {
+$factory->define(\Illuminate\Foundation\Auth\User::class, function (Faker\Generator $faker) {
 
     $email = $faker->email;
     return [
