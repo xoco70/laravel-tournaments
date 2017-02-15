@@ -3,9 +3,8 @@
 namespace Xoco70\KendoTournaments\Tests;
 
 
-use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
-use Orchestra\Testbench\TestCase as BaseTestCase;
+use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use Xoco70\KendoTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
@@ -14,6 +13,7 @@ abstract class TestCase extends BaseTestCase
     const DB_NAME = "plugin";
     const DB_USERNAME = 'root';
     const DB_PASSWORD = '';
+
 
     protected $root;
 
@@ -32,10 +32,10 @@ abstract class TestCase extends BaseTestCase
         $this->root = new \Illuminate\Foundation\Auth\User;
         $this->makeSureDatabaseExists();
         parent::setUp();
-        $this->migrateAndSeed();
-        $this->beforeApplicationDestroyed(function () {
-            $this->artisan('migrate:rollback');
-        });
+//        $this->migrateAndSeed();
+//        $this->beforeApplicationDestroyed(function () {
+//            $this->artisan('migrate:rollback');
+//        });
 
 
         $this->withFactories(__DIR__ . '/../database/factories');
@@ -79,7 +79,7 @@ abstract class TestCase extends BaseTestCase
 //        $this->artisan('migrate', [
 //            '--realpath' => realpath(__DIR__ . '/../database/migrations'),
 //        ]);
-//        $this->artisan('db:seed');
+//        $this->artisan('db:seed', ['--class' => CategorySeeder::class]);
 
     }
 

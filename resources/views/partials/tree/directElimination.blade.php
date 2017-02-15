@@ -5,8 +5,8 @@ $directEliminationTree = $championship->rounds->map(function ($item, $key) use (
         $fighter1 = $item->team1 != null ? $item->team1->name : "Bye";
         $fighter2 = $item->team2 != null ? $item->team2->name : "Bye";
     }else{
-        $fighter1 = $item->competitors[0] != null ? $item->competitor[0]->user->name : "Bye";
-        $fighter2 = $item->competitors[1] != null ? $item->competitor[1]->user->name : "Bye";
+        $fighter1 = $item->competitors->get(0) != null ? $item->competitors->get(0)->user->name : "Bye";
+        $fighter2 = $item->competitors->get(1) != null ? $item->competitors->get(1)->user->name : "Bye";
     }
     return [$fighter1, $fighter2];
 })->toArray();

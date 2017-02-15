@@ -39,7 +39,7 @@
     "test": "phpunit"
   },
   "require-dev": {
-    "orchestra/testbench": "~3.0",
+    "orchestra/testbench-browser-kit": "~3.0",
     "orchestra/database": "~3.1"
   }
 }

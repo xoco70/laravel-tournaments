@@ -51,7 +51,7 @@ class PreliminaryTreeTest extends TestCase
                     $users->push($user);
                 }
                 $this->makeCompetitors($championship, $users);
-                $this->generatePreliminaryTree($tournament);
+                $this->clickGenerate($tournament);
                 for ($area = 1; $area <= $numArea; $area++) {
                     $count = Tree::where('championship_id', $championship->id)
                         ->where('area', $area)->count();
@@ -92,10 +92,8 @@ class PreliminaryTreeTest extends TestCase
         }
     }
 
-    public function generatePreliminaryTree(Tournament $tournament)
+    public function clickGenerate(Tournament $tournament)
     {
-        $this->visit('/tournaments/' . $tournament->slug . "/edit")
-            ->click('#competitors')
-            ->press('generate');
-    }
+        $this->visit('http://tournament-plugin.dev/kendo-tournament')->dump();
+            }
 }
