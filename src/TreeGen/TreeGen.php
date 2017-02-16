@@ -35,20 +35,11 @@ class TreeGen implements TreeGenerable
     {
         // If previous trees already exist, delete all
         $this->championship->rounds()->delete();
-        $tree = new Collection();
-
-        // Get Areas
         $areas = $this->settings->fightingAreas;
-
-
-        $this->championship->category->isTeam()
-            ? $fighters = $this->championship->teams
-            : $fighters = $this->championship->competitors;
-
+        $fighters = $this->getFighters();
 
         if ($fighters->count() / $areas < config('kendo-tournaments.MIN_COMPETITORS_X_AREA')) {
-            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => Config::get('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
-
+            throw new TreeGenerationException();
         }
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
         $fightersByEntity = $this->getFightersByEntity($fighters);
@@ -60,44 +51,7 @@ class TreeGen implements TreeGenerable
         $area = 1;
 
         // loop on areas
-        foreach ($usersByArea as $fightersByEntity) {
-
-            // Chunking to make small round robin groups
-            if ($this->championship->hasPreliminary()) {
-                $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize)->shuffle();
-
-            } else if ($this->championship->isDirectEliminationType()) {
-                $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
-            } else {
-                $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
-            }
-
-            $order = 1;
-
-            // Before doing anything, check last group if numUser = 1
-            foreach ($fightersGroup as $fighters) {
-                $fighters = $fighters->pluck('id')->shuffle();
-
-                $round = new Round;
-                $round->area = $area;
-                $round->order = $order;
-                $round->championship_id = $this->championship->id;
-
-                $round->save();
-                $tree->push($round);
-                $order++;
-
-                // Add all competitors to Pivot Table
-                if ($this->championship->category->isTeam()) {
-                    $round->syncTeams($fighters);
-                } else {
-                    $round->syncCompetitors($fighters);
-                }
-
-
-            }
-            $area++;
-        }
+        $tree = $this->generateAllRounds($usersByArea, $area);
 
         return $tree;
     }
@@ -274,6 +228,73 @@ class TreeGen implements TreeGenerable
         }
 
         return $newFighters;
+    }
+
+    private function getFighters()
+    {
+        $this->championship->category->isTeam()
+            ? $fighters = $this->championship->teams
+            : $fighters = $this->championship->competitors;
+        return $fighters;
+    }
+
+    /**
+     * @param $usersByArea
+     * @param $area
+     * @return Collection
+     */
+    public function generateAllRounds($usersByArea, $area)
+    {
+        $rounds = new Collection();
+        foreach ($usersByArea as $fightersByEntity) {
+
+            // Chunking to make small round robin groups
+            if ($this->championship->hasPreliminary()) {
+                $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize)->shuffle();
+
+            } else if ($this->championship->isDirectEliminationType()) {
+                $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
+            } else {
+                $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
+            }
+
+            $order = 1;
+
+            // Before doing anything, check last group if numUser = 1
+            foreach ($fightersGroup as $fighters) {
+                $round = $this->saveRound($area, $fighters, $order, $rounds);
+                $rounds->push($round);
+                $order++;
+            }
+            $area++;
+        }
+        return $rounds;
+    }
+
+    /**
+     * @param $area
+     * @param $fighters
+     * @param $order
+     * @return Round
+     */
+    public function saveRound($area, $fighters, $order)
+    {
+        $fighters = $fighters->pluck('id')->shuffle();
+
+        $round = new Round;
+        $round->area = $area;
+        $round->order = $order;
+        $round->championship_id = $this->championship->id;
+
+        $round->save();
+
+        // Add all competitors to Pivot Table
+        if ($this->championship->category->isTeam()) {
+            $round->syncTeams($fighters);
+        } else {
+            $round->syncCompetitors($fighters);
+        }
+        return $round;
     }
 
 

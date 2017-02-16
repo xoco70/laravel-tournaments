@@ -71,14 +71,11 @@ class TreeController extends Controller
 
         $settings = ChampionshipSettings::createOrUpdate($request, $championship);
 
-
+        //TODO Set groupBy argument to NULL for now
         $generation = new TreeGen($championship, null, $settings);
-        $generation->championship = $championship;
         try {
 
             $rounds = $generation->run();
-            $championship->rounds = $rounds;
-
             Round::generateFights($rounds, $settings, $championship);
 
         } catch (TreeGenerationException $e) {
