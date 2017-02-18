@@ -70,7 +70,7 @@ class Round extends Model
 
         // Delete previous fight for this championship
 
-        $arrRoundsId = $rounds->map(function ($value, $key) {
+        $arrRoundsId = $rounds->map(function($value, $key) {
             return $value->id;
         })->toArray();
         Fight::destroy($arrRoundsId);

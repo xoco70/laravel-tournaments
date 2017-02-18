@@ -2,7 +2,7 @@
 
 use Xoco70\KendoTournaments\Models\Venue;
 
-$factory->define(Venue::class, function (Faker\Generator $faker) {
+$factory->define(Venue::class, function(Faker\Generator $faker) {
 
     return [
         'venue_name' => $faker->colorName,
