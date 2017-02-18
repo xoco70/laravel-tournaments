@@ -60,14 +60,14 @@ class Tournament extends Model
     protected static function boot()
     {
         parent::boot();
-        static::deleting(function ($tournament) {
+        static::deleting(function($tournament) {
             foreach ($tournament->championships as $ct) {
                 $ct->delete();
             }
             $tournament->invites()->delete();
 
         });
-        static::restoring(function ($tournament) {
+        static::restoring(function($tournament) {
 
             foreach ($tournament->championships()->withTrashed()->get() as $ct) {
                 $ct->restore();

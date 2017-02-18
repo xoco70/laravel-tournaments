@@ -33,7 +33,7 @@ class Category extends Model
         'gradeMax',
     ];
 
-    public function getAliasString(){
+    public function getAliasString() {
         return $this->alias;
     }
 

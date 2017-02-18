@@ -86,7 +86,7 @@ class Fight extends Model
 
     /**
      * Save a Fight.
-     * @param $rounds
+     * @param Collection $rounds
      * @param int $numRound
      */
     public static function savePreliminaryFightRound($rounds, $numRound = 1)
@@ -101,9 +101,9 @@ class Fight extends Model
                 $fighter2 = isset($round->teams[1]) ? $round->teams[1] : null;
                 $fighter3 = isset($round->teams[2]) ? $round->teams[2] : null;
             } else {
-                $fighter1 = isset($round->competitors[0])  ? $round->competitors[0] : null;
-                $fighter2 = isset($round->competitors[1])  ? $round->competitors[1] : null;
-                $fighter3 = isset($round->competitors[2])  ? $round->competitors[2] : null;
+                $fighter1 = isset($round->competitors[0]) ? $round->competitors[0] : null;
+                $fighter2 = isset($round->competitors[1]) ? $round->competitors[1] : null;
+                $fighter3 = isset($round->competitors[2]) ? $round->competitors[2] : null;
             }
             switch ($numRound) {
                 case 1:
@@ -154,6 +154,9 @@ class Fight extends Model
 //        }
 //    }
 
+    /**
+     * @param Collection $rounds
+     */
     public static function saveRoundRobinFights(Championship $championship, $rounds)
     {
 
@@ -162,7 +165,7 @@ class Fight extends Model
 
             $fighters = self::getActorsToFights($championship, $round2);
 
-            $away = $fighters->splice(sizeof($fighters) / 2);  // 2
+            $away = $fighters->splice(sizeof($fighters) / 2); // 2
 
             $home = $fighters; // 1
 

@@ -3,7 +3,7 @@
 
 use Xoco70\KendoTournaments\Models\Category;
 
-$factory->define(Category::class, function (Faker\Generator $faker) {
+$factory->define(Category::class, function(Faker\Generator $faker) {
     $name = ['categories.junior',
         'categories.junior_team',
         'categories.men_single',
@@ -18,7 +18,7 @@ $factory->define(Category::class, function (Faker\Generator $faker) {
         'name' => $faker->randomElement($name),
         'alias' => $faker->word,
         'gender' => $faker->randomElement($gender),
-        'isTeam' => $faker->numberBetween(0,1),
+        'isTeam' => $faker->numberBetween(0, 1),
         'ageCategory' => $faker->numberBetween(0, 5),
         'ageMin' => $faker->numberBetween(1, 90),
         'ageMax' => $faker->numberBetween(1, 90),

@@ -23,11 +23,11 @@ class Championship extends Model
     {
         parent::boot();
 
-        static::deleting(function ($championship) {
+        static::deleting(function($championship) {
             $championship->competitors()->delete();
             $championship->settings()->delete();
         });
-        static::restoring(function ($championship) {
+        static::restoring(function($championship) {
             $championship->competitors()->restore();
             $championship->settings()->restore();
 

@@ -19,6 +19,9 @@ class TreeGen implements TreeGenerable
     public $championship, $settings;
 
 
+    /**
+     * @param \Xoco70\KendoTournaments\Models\ChampionshipSettings $settings
+     */
     public function __construct(Championship $championship, $groupBy, $settings)
     {
         $this->championship = $championship;
@@ -145,7 +148,7 @@ class TreeGen implements TreeGenerable
     private function getTreeSize($fighterCount, $groupSize)
     {
         $square = collect([1, 2, 4, 8, 16, 32, 64]);
-        $squareMultiplied = $square->map(function ($item, $key) use ($groupSize) {
+        $squareMultiplied = $square->map(function($item, $key) use ($groupSize) {
             return $item * $groupSize;
         });
 
@@ -179,7 +182,7 @@ class TreeGen implements TreeGenerable
 
     /**
      * @param $fighterGroups
-     * @param $max
+     * @param integer $max
      * @return Collection
      */
     private function repart($fighterGroups, $max)

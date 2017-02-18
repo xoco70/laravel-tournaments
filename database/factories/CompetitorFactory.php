@@ -4,7 +4,7 @@ use Illuminate\Foundation\Auth\User;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
 
-$factory->define(Competitor::class, function (Faker\Generator $faker) {
+$factory->define(Competitor::class, function(Faker\Generator $faker) {
     $tcs = Championship::all()->pluck('id')->toArray();
     $users = User::all()->pluck('id')->toArray();
 

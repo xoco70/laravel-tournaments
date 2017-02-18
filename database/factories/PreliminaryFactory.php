@@ -3,7 +3,7 @@
 
 use Xoco70\KendoTournaments\Models\Round;
 
-$factory->define(Round::class, function (Faker\Generator $faker) {
+$factory->define(Round::class, function(Faker\Generator $faker) {
 
     return [
 //        'name' => $faker->name,

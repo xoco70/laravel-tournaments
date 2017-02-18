@@ -12,7 +12,7 @@ class CreateCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('category', function (Blueprint $table) {
+        Schema::create('category', function(Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('alias')->default('');
@@ -30,13 +30,13 @@ class CreateCategoryTable extends Migration
 //            $table->foreign('gradeMax')
 //                ->references('id')
 //                ->on('grade');
-            $table->unique(['name','alias','gender','isTeam','ageCategory','ageMin','ageMax','gradeCategory','gradeMin','gradeMax'], 'category_fields_unique');
+            $table->unique(['name', 'alias', 'gender', 'isTeam', 'ageCategory', 'ageMin', 'ageMax', 'gradeCategory', 'gradeMin', 'gradeMax'], 'category_fields_unique');
             $table->timestamps();
             $table->engine = 'InnoDB';
 
         });
 
-        Schema::create('championship', function (Blueprint $table) {
+        Schema::create('championship', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('tournament_id')->unsigned()->index();
             $table->integer('category_id')->unsigned()->index();
@@ -62,7 +62,7 @@ class CreateCategoryTable extends Migration
         });
 
 
-        Schema::create('competitor', function (Blueprint $table) {
+        Schema::create('competitor', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('championship_id')->unsigned()->index();
             $table->foreign('championship_id')

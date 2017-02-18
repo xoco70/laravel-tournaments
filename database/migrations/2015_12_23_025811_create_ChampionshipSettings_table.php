@@ -38,7 +38,7 @@ class CreateChampionshipSettingsTable extends Migration
             $table->tinyInteger('teamReserve')->nullable(); // Default is null
 
             // Seed
-            $table->smallInteger('seedQuantity')->nullable();  // Competitors seeded in tree
+            $table->smallInteger('seedQuantity')->nullable(); // Competitors seeded in tree
 
 
             //TODO This should go in another table that is not for tree construction but for rules
