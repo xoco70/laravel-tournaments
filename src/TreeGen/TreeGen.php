@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
@@ -14,10 +13,9 @@ use Xoco70\KendoTournaments\Models\Team;
 
 class TreeGen implements TreeGenerable
 {
-
     protected $groupBy;
-    public $championship, $settings;
-
+    public $championship;
+    public $settings;
 
     /**
      * @param \Xoco70\KendoTournaments\Models\ChampionshipSettings $settings
@@ -30,9 +28,11 @@ class TreeGen implements TreeGenerable
     }
 
     /**
-     * Generate tree groups for a championship
-     * @return Collection
+     * Generate tree groups for a championship.
+     *
      * @throws TreeGenerationException
+     *
+     * @return Collection
      */
     public function run()
     {
@@ -49,7 +49,7 @@ class TreeGen implements TreeGenerable
 
         // Chunk user by areas
 
-        $usersByArea = $fightersByEntity->chunk(sizeof($fightersByEntity) / $areas);
+        $usersByArea = $fightersByEntity->chunk(count($fightersByEntity) / $areas);
 
         $area = 1;
 
@@ -61,6 +61,7 @@ class TreeGen implements TreeGenerable
 
     /**
      * @param $userGroups
+     *
      * @return int
      */
     private function getMaxCompetitorByEntity($userGroups): int
@@ -68,17 +69,18 @@ class TreeGen implements TreeGenerable
         // Surely there is a Laravel function that does it ;)
         $max = 0;
         foreach ($userGroups as $userGroup) {
-            if (sizeof($userGroup) > $max) {
-                $max = sizeof($userGroup);
+            if (count($userGroup) > $max) {
+                $max = count($userGroup);
             }
-
         }
+
         return $max;
     }
 
     /**
      * Get Competitor's list ordered by entities
-     * Countries for Internation Tournament, State for a National Tournament, etc
+     * Countries for Internation Tournament, State for a National Tournament, etc.
+     *
      * @return Collection
      */
     private function getFightersByEntity($fighters): Collection
@@ -93,11 +95,9 @@ class TreeGen implements TreeGenerable
             $fighterGroups = $fighters->chunk(1); // Collection of Collection
         }
 
-
         $tmpFighterGroups = clone $fighterGroups;
 
         $byeGroup = $this->getByeGroup($this->championship, $fighters);
-
 
         // Get biggest competitor's group
         $max = $this->getMaxCompetitorByEntity($tmpFighterGroups);
@@ -109,12 +109,13 @@ class TreeGen implements TreeGenerable
         $competitors = $this->insertByes($competitors, $byeGroup);
 
         return $competitors;
-
     }
 
     /**
-     * Calculate the Byes need to fill the Championship Tree
+     * Calculate the Byes need to fill the Championship Tree.
+     *
      * @param Championship $championship
+     *
      * @return Collection
      */
     private function getByeGroup(Championship $championship, $fighters)
@@ -128,9 +129,8 @@ class TreeGen implements TreeGenerable
             $preliminaryGroupSize = $championship->settings != null
                 ? $championship->settings->preliminaryGroupSize
                 : $groupSizeDefault;
-        } else if ($championship->isDirectEliminationType()) {
+        } elseif ($championship->isDirectEliminationType()) {
             $preliminaryGroupSize = 2;
-
         } else {
             // No Preliminary and No Direct Elimination --> Round Robin
             // Should Have no tree
@@ -138,33 +138,34 @@ class TreeGen implements TreeGenerable
         $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize);
 
         $byeCount = $treeSize - $fighterCount;
+
         return $this->createNullsGroup($byeCount, $championship->category->isTeam);
     }
 
     /**
      * @param $fighterCount
-     * @return integer
+     *
+     * @return int
      */
     private function getTreeSize($fighterCount, $groupSize)
     {
         $square = collect([1, 2, 4, 8, 16, 32, 64]);
-        $squareMultiplied = $square->map(function($item, $key) use ($groupSize) {
+        $squareMultiplied = $square->map(function ($item, $key) use ($groupSize) {
             return $item * $groupSize;
         });
 
-
         foreach ($squareMultiplied as $limit) {
             if ($fighterCount <= $limit) {
-
                 return $limit;
             }
         }
-        return 64 * $groupSize;
 
+        return 64 * $groupSize;
     }
 
     /**
      * @param $byeCount
+     *
      * @return Collection
      */
     private function createNullsGroup($byeCount, $isTeam): Collection
@@ -177,17 +178,19 @@ class TreeGen implements TreeGenerable
         for ($i = 0; $i < $byeCount; $i++) {
             $byeGroup->push($null);
         }
+
         return $byeGroup;
     }
 
     /**
      * @param $fighterGroups
-     * @param integer $max
+     * @param int $max
+     *
      * @return Collection
      */
     private function repart($fighterGroups, $max)
     {
-        $fighters = new Collection;
+        $fighters = new Collection();
         for ($i = 0; $i < $max; $i++) {
             foreach ($fighterGroups as $fighterGroup) {
                 $fighter = $fighterGroup->values()->get($i);
@@ -196,38 +199,39 @@ class TreeGen implements TreeGenerable
                 }
             }
         }
+
         return $fighters;
     }
 
     /**
-     * Insert byes in an homogen way
+     * Insert byes in an homogen way.
+     *
      * @param Collection $fighters
      * @param Collection $byeGroup
+     *
      * @return Collection
      */
     private function insertByes(Collection $fighters, Collection $byeGroup)
     {
-        $bye = sizeof($byeGroup) > 0 ? $byeGroup[0] : [];
-        $sizeFighters = sizeof($fighters);
-        $sizeGroupBy = sizeof($byeGroup);
+        $bye = count($byeGroup) > 0 ? $byeGroup[0] : [];
+        $sizeFighters = count($fighters);
+        $sizeGroupBy = count($byeGroup);
 
         $frequency = $sizeGroupBy != 0
-            ? (int)floor($sizeFighters / $sizeGroupBy)
+            ? (int) floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
-        $newFighters = new Collection;
+        $newFighters = new Collection();
         $i = 0;
         $byeCount = 0;
         foreach ($fighters as $fighter) {
-
             if ($frequency != -1 && $i % $frequency == 0 && $byeCount < $sizeGroupBy) {
                 $newFighters->push($bye);
                 $byeCount++;
             }
             $newFighters->push($fighter);
             $i++;
-
         }
 
         return $newFighters;
@@ -238,12 +242,14 @@ class TreeGen implements TreeGenerable
         $this->championship->category->isTeam()
             ? $fighters = $this->championship->teams
             : $fighters = $this->championship->competitors;
+
         return $fighters;
     }
 
     /**
      * @param $usersByArea
      * @param $area
+     *
      * @return Collection
      */
     public function generateAllRounds($usersByArea, $area)
@@ -254,8 +260,7 @@ class TreeGen implements TreeGenerable
             // Chunking to make small round robin groups
             if ($this->championship->hasPreliminary()) {
                 $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize)->shuffle();
-
-            } else if ($this->championship->isDirectEliminationType()) {
+            } elseif ($this->championship->isDirectEliminationType()) {
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
             } else {
                 $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
@@ -271,6 +276,7 @@ class TreeGen implements TreeGenerable
             }
             $area++;
         }
+
         return $rounds;
     }
 
@@ -278,13 +284,14 @@ class TreeGen implements TreeGenerable
      * @param $area
      * @param $fighters
      * @param $order
+     *
      * @return Round
      */
     public function saveRound($area, $fighters, $order)
     {
         $fighters = $fighters->pluck('id')->shuffle();
 
-        $round = new Round;
+        $round = new Round();
         $round->area = $area;
         $round->order = $order;
         $round->championship_id = $this->championship->id;
@@ -297,8 +304,7 @@ class TreeGen implements TreeGenerable
         } else {
             $round->syncCompetitors($fighters);
         }
+
         return $round;
     }
-
-
 }

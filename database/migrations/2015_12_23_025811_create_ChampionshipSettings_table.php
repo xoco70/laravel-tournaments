@@ -12,7 +12,7 @@ class CreateChampionshipSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('championship_settings', function(Blueprint $table) {
+        Schema::create('championship_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('championship_id')->unsigned()->unique();
             $table->foreign('championship_id')
@@ -20,7 +20,6 @@ class CreateChampionshipSettingsTable extends Migration
                 ->onUpdate('cascade')
                 ->on('championship')
                 ->onDelete('cascade');
-
 
             // Category Section
             $table->tinyInteger('treeType')->default(1); // 0 - RoundRobin; 1 - Direct Elimination;
@@ -40,7 +39,6 @@ class CreateChampionshipSettingsTable extends Migration
             // Seed
             $table->smallInteger('seedQuantity')->nullable(); // Competitors seeded in tree
 
-
             //TODO This should go in another table that is not for tree construction but for rules
             // Rules
             $table->boolean('hasEncho')->default(1);
@@ -52,7 +50,6 @@ class CreateChampionshipSettingsTable extends Migration
             $table->text('fightDuration')->nullable(); // Can't apply default because text
             $table->smallInteger('hanteiLimit')->default(0); // 0 = none, 1 = 1/8, 2 = 1/4, 3=1/2, 4 = FINAL
             $table->smallInteger('enchoGoldPoint')->default(0); // 0 = none, 1 = 1/8, 2 = 1/4, 3=1/2, 4 = FINAL
-
 
             $table->timestamps();
             $table->softDeletes();

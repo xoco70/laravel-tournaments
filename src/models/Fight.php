@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Xoco70\KendoTournaments\Models;
-
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,7 +13,6 @@ class Fight extends Model
     {
         $this->c1 = $userId1;
         $this->c2 = $userId2;
-
     }
 
     protected $table = 'fight';
@@ -24,32 +21,34 @@ class Fight extends Model
     protected $fillable = [
         'round_id',
         'c1',
-        'c2'
+        'c2',
     ];
 
     /**
      * @param Championship $championship
+     *
      * @return mixed
      */
     private static function getActorsToFights(Championship $championship, Round $round = null)
     {
-
         if ($championship->category->isTeam) {
             $fighters = $round->teams;
-            if (sizeof($fighters) % 2 != 0) {
-                $fighters->push(new Team(['name' => "BYE"]));
+            if (count($fighters) % 2 != 0) {
+                $fighters->push(new Team(['name' => 'BYE']));
             }
         } else {
             $fighters = $round->competitors;
-            if (sizeof($fighters) % 2 != 0) {
+            if (count($fighters) % 2 != 0) {
                 $fighters->push(new Competitor());
             }
         }
+
         return $fighters;
     }
 
     /**
-     * Get First Fighter
+     * Get First Fighter.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function competitor1()
@@ -58,7 +57,8 @@ class Fight extends Model
     }
 
     /**
-     * Get Second Fighter
+     * Get Second Fighter.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function competitor2()
@@ -67,7 +67,8 @@ class Fight extends Model
     }
 
     /**
-     * Get First Fighter
+     * Get First Fighter.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function team1()
@@ -76,7 +77,8 @@ class Fight extends Model
     }
 
     /**
-     * Get Second Fighter
+     * Get Second Fighter.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function team2()
@@ -86,12 +88,12 @@ class Fight extends Model
 
     /**
      * Save a Fight.
+     *
      * @param Collection $rounds
-     * @param int $numRound
+     * @param int        $numRound
      */
     public static function savePreliminaryFightRound($rounds, $numRound = 1)
     {
-
         $c1 = $c2 = $c3 = null;
         $order = 0;
 
@@ -119,7 +121,7 @@ class Fight extends Model
                     $c2 = $fighter1;
                     break;
             }
-            $fight = new Fight();
+            $fight = new self();
             $fight->round_id = $round->id;
             $fight->c1 = $c1 != null ? $c1->id : null;
             $fight->c2 = $c2 != null ? $c2->id : null;
@@ -128,7 +130,6 @@ class Fight extends Model
             $fight->save();
         }
     }
-
 
 //    public static function saveRoundRobinFight(Championship $championship, $tree)
 //    {
@@ -159,27 +160,24 @@ class Fight extends Model
      */
     public static function saveRoundRobinFights(Championship $championship, $rounds)
     {
-
-
         foreach ($rounds as $round2) {
-
             $fighters = self::getActorsToFights($championship, $round2);
 
-            $away = $fighters->splice(sizeof($fighters) / 2); // 2
+            $away = $fighters->splice(count($fighters) / 2); // 2
 
             $home = $fighters; // 1
 
             $order = 1;
 
-            for ($i = 0; $i < sizeof($home) + sizeof($away) - 1; $i++) { // 0 -> 2
-                for ($j = 0; $j < sizeof($home); $j++) {  // 1 no mas
+            for ($i = 0; $i < count($home) + count($away) - 1; $i++) { // 0 -> 2
+                for ($j = 0; $j < count($home); $j++) {  // 1 no mas
 
-                    $round[$i][$j]["Home"] = $home[$j];
-                    $round[$i][$j]["Away"] = $away[$j];
-                    $fight = new Fight();
+                    $round[$i][$j]['Home'] = $home[$j];
+                    $round[$i][$j]['Away'] = $away[$j];
+                    $fight = new self();
                     $fight->round_id = $rounds[0]->id;
-                    $fight->c1 = $round[$i][$j]["Home"]->id;
-                    $fight->c2 = $round[$i][$j]["Away"]->id;
+                    $fight->c1 = $round[$i][$j]['Home']->id;
+                    $fight->c2 = $round[$i][$j]['Away']->id;
                     $fight->order = $order++;
                     $fight->area = 1;
 
@@ -189,7 +187,7 @@ class Fight extends Model
                         $fight->save();
                     }
                 }
-                if (sizeof($home) + sizeof($away) - 1 > 2) {
+                if (count($home) + count($away) - 1 > 2) {
                     $away->prepend($home->splice(1, 1)->shift());
                     $home->push($away->pop());
                     $order++;
@@ -197,7 +195,5 @@ class Fight extends Model
             }
 //            return $round;
         }
-
     }
-
 }

@@ -1,8 +1,9 @@
 <?php
+
 namespace Xoco70\KendoTournaments\Tests;
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
@@ -13,10 +14,9 @@ class PreliminaryTreeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $root, $tournament, $championship;
-
-
-
+    protected $root;
+    protected $tournament;
+    protected $championship;
 
     /** @test */
     public function check_number_of_row_when_generating_tournament()
@@ -31,18 +31,17 @@ class PreliminaryTreeTest extends TestCase
 
                 $championship = factory(Championship::class)->create([
                     'tournament_id' => $tournament->id,
-                    'category_id' => 1,
+                    'category_id'   => 1,
                 ]);
 
                 factory(ChampionshipSettings::class)->create([
-                    'championship_id' => $championship->id,
-                    'hasPreliminary' => 1,
-                    'teamSize' => null,
-                    'fightingAreas' => $numArea,
-                    'preliminaryWinner' => 1,
+                    'championship_id'      => $championship->id,
+                    'hasPreliminary'       => 1,
+                    'teamSize'             => null,
+                    'fightingAreas'        => $numArea,
+                    'preliminaryWinner'    => 1,
                     'preliminaryGroupSize' => 3,
                 ]);
-
 
                 $users = factory(User::class, $numCompetitors)->create();
                 if ($users instanceof User) {
@@ -56,28 +55,25 @@ class PreliminaryTreeTest extends TestCase
                     $count = Tree::where('championship_id', $championship->id)
                         ->where('area', $area)->count();
 
-
-                    if ((int )($numCompetitors / $numArea) <= 1) {
+                    if ((int) ($numCompetitors / $numArea) <= 1) {
                         $this->assertTrue($count == 0);
                     } else {
-                        $expected = (int)($numGroupsExpected[$numCompetitors - 1] / $numArea);
+                        $expected = (int) ($numGroupsExpected[$numCompetitors - 1] / $numArea);
 
                         if ($count != $expected) {
-                            dd(["Type" => "RoundRobin"],
-                                ["NumCompetitors" => $numCompetitors],
-                                ["NumArea" => $numArea],
-                                ["Real" => $count],
-                                ["Excepted" => $expected],
-                                ["numGroupsExpected[" . ($numCompetitors - 1) . "]" => $numGroupsExpected[$numCompetitors - 1] . " / " . $numArea]);
+                            dd(['Type' => 'RoundRobin'],
+                                ['NumCompetitors'                                   => $numCompetitors],
+                                ['NumArea'                                          => $numArea],
+                                ['Real'                                             => $count],
+                                ['Excepted'                                         => $expected],
+                                ['numGroupsExpected['.($numCompetitors - 1).']' => $numGroupsExpected[$numCompetitors - 1].' / '.$numArea]);
                         }
                         $this->assertTrue($count == $expected);
                     }
                 }
             }
         }
-
     }
-
 
     /**
      * @param $users
@@ -86,14 +82,14 @@ class PreliminaryTreeTest extends TestCase
     {
         foreach ($users as $user) {
             factory(Competitor::class)->create([
-                'user_id' => $user->id,
+                'user_id'         => $user->id,
                 'championship_id' => $championship->id,
-                'confirmed' => 1]);
+                'confirmed'       => 1, ]);
         }
     }
 
     public function clickGenerate(Tournament $tournament)
     {
         $this->visit('http://tournament-plugin.dev/kendo-tournament')->dump();
-            }
+    }
 }

@@ -16,7 +16,5 @@ class VenueSeeder extends Seeder
         $this->command->info('Venues seeding!');
         DB::table('venue')->truncate();
         factory(Venue::class, 5)->create();
-
-
     }
 }

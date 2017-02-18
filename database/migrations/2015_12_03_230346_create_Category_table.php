@@ -12,7 +12,7 @@ class CreateCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('category', function(Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('alias')->default('');
@@ -33,14 +33,13 @@ class CreateCategoryTable extends Migration
             $table->unique(['name', 'alias', 'gender', 'isTeam', 'ageCategory', 'ageMin', 'ageMax', 'gradeCategory', 'gradeMin', 'gradeMax'], 'category_fields_unique');
             $table->timestamps();
             $table->engine = 'InnoDB';
-
         });
 
-        Schema::create('championship', function(Blueprint $table) {
+        Schema::create('championship', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('tournament_id')->unsigned()->index();
             $table->integer('category_id')->unsigned()->index();
-            $table->unique(array('tournament_id', 'category_id'));
+            $table->unique(['tournament_id', 'category_id']);
 
             $table->foreign('tournament_id')
                 ->references('id')
@@ -53,16 +52,12 @@ class CreateCategoryTable extends Migration
                 ->on('category')
                 ->onDelete('cascade');
 
-
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';
-
-
         });
 
-
-        Schema::create('competitor', function(Blueprint $table) {
+        Schema::create('competitor', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('championship_id')->unsigned()->index();
             $table->foreign('championship_id')
@@ -71,7 +66,6 @@ class CreateCategoryTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')
                 ->references('id')
@@ -79,15 +73,13 @@ class CreateCategoryTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->unique(array('championship_id', 'user_id'));
+            $table->unique(['championship_id', 'user_id']);
 
             $table->boolean('confirmed');
 
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';
-
-
         });
     }
 
@@ -103,7 +95,5 @@ class CreateCategoryTable extends Migration
         Schema::dropIfExists('championship');
         Schema::dropIfExists('category');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-
-
     }
 }

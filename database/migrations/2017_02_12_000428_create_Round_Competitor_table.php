@@ -13,12 +13,11 @@ class CreateRoundCompetitorTable extends Migration
      */
     public function up()
     {
-        Schema::create('round_competitor', function(Blueprint $table) {
+        Schema::create('round_competitor', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('competitor_id')->unsigned()->nullable()->index();
             $table->integer('round_id')->unsigned()->index(); // A checar
             $table->timestamps();
-
 
             $table->foreign('competitor_id')
                 ->references('id')
@@ -46,6 +45,5 @@ class CreateRoundCompetitorTable extends Migration
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('round_competitor');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-
     }
 }

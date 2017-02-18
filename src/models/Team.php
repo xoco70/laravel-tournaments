@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
-
     protected $table = 'team';
     public $timestamps = true;
     protected $fillable = ['name', 'championship_id'];
 
-
     /**
-     * A Team belongs to a Championship
+     * A Team belongs to a Championship.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function championship()
@@ -31,7 +30,6 @@ class Team extends Model
 
     public function rounds()
     {
-        return $this->belongsToMany(Round::class,'round_team')->withTimestamps();
+        return $this->belongsToMany(Round::class, 'round_team')->withTimestamps();
     }
-
 }

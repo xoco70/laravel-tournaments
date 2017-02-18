@@ -5,10 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateTeamTable extends Migration
 {
-
     public function up()
     {
-        Schema::create('team', function(Blueprint $table) {
+        Schema::create('team', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->integer('championship_id')->unsigned()->index(); // A checar
@@ -16,7 +15,6 @@ class CreateTeamTable extends Migration
             $table->string('entity_type')->nullable(); // Club, Assoc, Fed
             $table->integer('entity_id')->unsigned()->nullable()->index();
             $table->timestamps();
-
 
             $table->foreign('championship_id')
                 ->references('id')
@@ -30,10 +28,8 @@ class CreateTeamTable extends Migration
 
     public function down()
     {
-
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::drop('team');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-
     }
 }

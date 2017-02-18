@@ -2,7 +2,6 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +13,10 @@ class Round extends Model
     protected $guarded = ['id'];
 
     /**
-     * Check if Request contains tournamentSlug / Should Move to TreeRequest When Built
+     * Check if Request contains tournamentSlug / Should Move to TreeRequest When Built.
+     *
      * @param $request
+     *
      * @return bool
      */
     public static function hasTournamentInRequest($request)
@@ -24,15 +25,16 @@ class Round extends Model
     }
 
     /**
-     * Check if Request contains championshipId / Should Move to TreeRequest When Built
+     * Check if Request contains championshipId / Should Move to TreeRequest When Built.
+     *
      * @param $request
+     *
      * @return bool
      */
     public static function hasChampionshipInRequest($request)
     {
         return $request->championshipId != null; // has return false, don't know why
     }
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -60,7 +62,6 @@ class Round extends Model
         return $this->belongsToMany(Competitor::class, 'round_competitor')->withTimestamps();
     }
 
-
     /**
      * @param $settings
      * @param Championship $championship
@@ -70,13 +71,12 @@ class Round extends Model
 
         // Delete previous fight for this championship
 
-        $arrRoundsId = $rounds->map(function($value, $key) {
+        $arrRoundsId = $rounds->map(function ($value, $key) {
             return $value->id;
         })->toArray();
         Fight::destroy($arrRoundsId);
 
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
-
             for ($numRound = 1; $numRound <= $settings->preliminaryGroupSize; $numRound++) {
                 Fight::savePreliminaryFightRound($rounds, $numRound);
             }
@@ -85,10 +85,10 @@ class Round extends Model
         }
     }
 
-
     /**
      * Supercharge of sync Many2Many function.
-     * Original sync doesn't insert NULL ids
+     * Original sync doesn't insert NULL ids.
+     *
      * @param $fighters
      */
     public function syncTeams($fighters)
@@ -108,7 +108,8 @@ class Round extends Model
 
     /**
      * Supercharge of sync Many2Many function.
-     * Original sync doesn't insert NULL ids
+     * Original sync doesn't insert NULL ids.
+     *
      * @param $fighters
      */
     public function syncCompetitors($fighters)

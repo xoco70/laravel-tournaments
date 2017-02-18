@@ -2,34 +2,30 @@
 
 namespace Xoco70\KendoTournaments\Tests;
 
-
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use Xoco70\KendoTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
-
-    const DB_NAME = "plugin";
+    const DB_NAME = 'plugin';
     const DB_USERNAME = 'root';
     const DB_PASSWORD = '';
-
 
     protected $root;
 
     protected function getPackageProviders($app)
     {
         return [TournamentsServiceProvider::class,
-            ConsoleServiceProvider::class];
+            ConsoleServiceProvider::class, ];
     }
-
 
     /**
      * Setup the test environment.
      */
     public function setUp()
     {
-        $this->root = new \Illuminate\Foundation\Auth\User;
+        $this->root = new \Illuminate\Foundation\Auth\User();
         $this->makeSureDatabaseExists();
         parent::setUp();
 //        $this->migrateAndSeed();
@@ -37,14 +33,12 @@ abstract class TestCase extends BaseTestCase
 //            $this->artisan('migrate:rollback');
 //        });
 
-
-        $this->withFactories(__DIR__ . '/../database/factories');
-
+        $this->withFactories(__DIR__.'/../database/factories');
     }
 
     private function makeSureDatabaseExists()
     {
-        $this->runQuery('CREATE DATABASE IF NOT EXISTS ' . static::DB_NAME);
+        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
     }
 
     /**
@@ -54,35 +48,33 @@ abstract class TestCase extends BaseTestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Foundation\Application $app
+     *
      * @return void
      */
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
-            'driver'   => 'mysql',
-            'host' => '127.0.0.1',
-            'database' => static::DB_NAME,
-            'username' => static::DB_USERNAME,
-            'password' => static::DB_PASSWORD,
-            'prefix'   => 'ken_',
-            'charset' => 'utf8',
+            'driver'    => 'mysql',
+            'host'      => '127.0.0.1',
+            'database'  => static::DB_NAME,
+            'username'  => static::DB_USERNAME,
+            'password'  => static::DB_PASSWORD,
+            'prefix'    => 'ken_',
+            'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'strict' => false,
+            'strict'    => false,
         ]);
     }
 
-
     private function migrateAndSeed()
     {
-//        $this->artisan('migrate', [
+        //        $this->artisan('migrate', [
 //            '--realpath' => realpath(__DIR__ . '/../database/migrations'),
 //        ]);
 //        $this->artisan('db:seed', ['--class' => CategorySeeder::class]);
-
     }
-
 
     /**
      * @param $query
@@ -95,7 +87,6 @@ abstract class TestCase extends BaseTestCase
         $command = "mysql -u $dbUsername ";
         $command .= $dbPassword ? " -p$dbPassword" : '';
         $command .= " -e '$query'";
-        exec($command . ' 2>/dev/null');
+        exec($command.' 2>/dev/null');
     }
-
 }
