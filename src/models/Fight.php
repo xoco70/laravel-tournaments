@@ -3,6 +3,7 @@
 namespace Xoco70\KendoTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Fight extends Model
 {
@@ -90,23 +91,26 @@ class Fight extends Model
      * Save a Fight.
      *
      * @param Collection $rounds
-     * @param int        $numRound
+     * @param int $numRound
      */
     public static function savePreliminaryFightRound($rounds, $numRound = 1)
     {
-        $c1 = $c2 = $c3 = null;
+        
+        $c1 = $c2 = null;
         $order = 0;
 
         foreach ($rounds as $round) {
+
             if ($round->championship->category->isTeam()) {
-                $fighter1 = isset($round->teams[0]) ? $round->teams[0] : null;
-                $fighter2 = isset($round->teams[1]) ? $round->teams[1] : null;
-                $fighter3 = isset($round->teams[2]) ? $round->teams[2] : null;
+                $fighters = $round->teams;
             } else {
-                $fighter1 = isset($round->competitors[0]) ? $round->competitors[0] : null;
-                $fighter2 = isset($round->competitors[1]) ? $round->competitors[1] : null;
-                $fighter3 = isset($round->competitors[2]) ? $round->competitors[2] : null;
+                $fighters = $round->competitors;
             }
+
+            $fighter1 = $fighters->get(0);
+            $fighter2 = $fighters->get(1);
+            $fighter3 = $fighters->get(2);
+
             switch ($numRound) {
                 case 1:
                     $c1 = $fighter1;
