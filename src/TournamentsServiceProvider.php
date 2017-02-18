@@ -28,9 +28,9 @@ class TournamentsServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../database/migrations' => $this->app->databasePath() . '/migrations'], 'migrations');
         $this->publishes([__DIR__ . '/../database/seeds' => $this->app->databasePath() . '/seeds'], 'seeds');
         $this->publishes([__DIR__ . '/../database/factories' => $this->app->databasePath() . '/factories'], 'seeds');
-        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/kendo-tournaments'),], 'assets');
+        $this->publishes([__DIR__ . '/../resources/assets' => public_path('vendor/kendo-tournaments'), ], 'assets');
 
-        $router->group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function ($router) {
+        $router->group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function($router) {
             $router->get('/', 'Xoco70\KendoTournaments\TreeController@index')->name('tree.index');
             $router->post('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@store')->name('tree.index');
         });

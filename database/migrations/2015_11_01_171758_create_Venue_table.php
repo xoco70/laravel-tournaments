@@ -12,7 +12,7 @@ class CreateVenueTable extends Migration
      */
     public function up()
     {
-        Schema::create('venue', function (Blueprint $table) {
+        Schema::create('venue', function(Blueprint $table) {
             $table->increments('id');
             $table->string("venue_name");
             $table->string("address")->nullable();
