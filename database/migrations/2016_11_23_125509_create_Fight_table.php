@@ -13,7 +13,7 @@ class CreateFightTable extends Migration
      */
     public function up()
     {
-        Schema::create('fight', function(Blueprint $table) {
+        Schema::create('fight', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('round_id')->unsigned()->index();
             $table->foreign('round_id')
@@ -25,8 +25,8 @@ class CreateFightTable extends Migration
 
             $table->integer('c2')->nullable()->unsigned()->index();
 
-            $table->tinyInteger("area");
-            $table->tinyInteger("order");
+            $table->tinyInteger('area');
+            $table->tinyInteger('order');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

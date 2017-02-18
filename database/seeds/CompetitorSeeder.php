@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Auth\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Foundation\Auth\User;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
-
 
 class CompetitorSeeder extends Seeder
 {
@@ -21,7 +20,6 @@ class CompetitorSeeder extends Seeder
 
         $championship = Championship::where('tournament_id', 1)->first();
 
-
         $users[] = factory(User::class)->create(['name' => 't1']);
         $users[] = factory(User::class)->create(['name' => 't2']);
         $users[] = factory(User::class)->create(['name' => 't3']);
@@ -31,10 +29,9 @@ class CompetitorSeeder extends Seeder
         foreach ($users as $id => $user) {
             factory(Competitor::class)->create([
                 'championship_id' => $championship->id,
-                'user_id' => $user->id,
-                'confirmed' => 1,
+                'user_id'         => $user->id,
+                'confirmed'       => 1,
             ]);
         }
-
     }
 }

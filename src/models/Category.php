@@ -33,13 +33,13 @@ class Category extends Model
         'gradeMax',
     ];
 
-    public function getAliasString() {
+    public function getAliasString()
+    {
         return $this->alias;
     }
 
     public function getNameAttribute($name)
     {
-
         return trans($name);
     }
 
@@ -62,6 +62,7 @@ class Category extends Model
     {
         return $this->hasOne(ChampionshipSettings::class);
     }
+
     public function championship()
     {
         return $this->hasMany(Championship::class);
@@ -74,16 +75,16 @@ class Category extends Model
 
     public function isForMen()
     {
-        return $this->gender == "M";
+        return $this->gender == 'M';
     }
 
     public function isForWomen()
     {
-        return $this->gender == "F";
+        return $this->gender == 'F';
     }
 
     public function isMixt()
     {
-        return $this->gender == "X";
+        return $this->gender == 'X';
     }
 }

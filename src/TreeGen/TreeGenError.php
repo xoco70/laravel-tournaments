@@ -1,14 +1,15 @@
 <?php
 
-
 namespace Xoco70\KendoTournaments\TreeGen;
 
-class TreeGenError 
+class TreeGenError
 {
-    protected $status, $error;
+    protected $status;
+    protected $error;
 
     /**
      * TreeGenError constructor.
+     *
      * @param $status
      * @param $error
      */
@@ -17,6 +18,4 @@ class TreeGenError
         $this->status = $status;
         $this->error = $error;
     }
-
-
 }

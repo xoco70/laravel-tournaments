@@ -2,16 +2,15 @@
 
 use Xoco70\KendoTournaments\Models\Venue;
 
-$factory->define(Venue::class, function(Faker\Generator $faker) {
-
+$factory->define(Venue::class, function (Faker\Generator $faker) {
     return [
         'venue_name' => $faker->colorName,
-        'address' => $faker->streetName,
-        'details' => $faker->streetName,
-        'city' => $faker->city,
-        'CP' => $faker->postcode,
-        'state' => $faker->colorName,
-        'latitude' => $faker->latitude,
-        'longitude' => $faker->longitude
+        'address'    => $faker->streetName,
+        'details'    => $faker->streetName,
+        'city'       => $faker->city,
+        'CP'         => $faker->postcode,
+        'state'      => $faker->colorName,
+        'latitude'   => $faker->latitude,
+        'longitude'  => $faker->longitude,
     ];
 });

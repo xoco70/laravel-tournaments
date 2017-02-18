@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
-
     public function run()
     {
         Model::unguard();
@@ -21,7 +20,6 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->truncate();
         DB::table('venue')->truncate();
 
-
         $this->call(VenueSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
@@ -29,7 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CompetitorSeeder::class);
 
         $this->command->info('All tables seeded!');
-
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 

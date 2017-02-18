@@ -2,11 +2,9 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
-
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use Illuminate\Foundation\Auth\User;
 
 /**
  * @property mixed type
@@ -20,7 +18,6 @@ class Tournament extends Model
 {
     use SoftDeletes;
 
-
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -30,8 +27,8 @@ class Tournament extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
-            ]
+                'source' => 'name',
+            ],
         ];
     }
 
@@ -51,35 +48,29 @@ class Tournament extends Model
         'rule_id',
         'type',
         'venue_id',
-        'level_id'
+        'level_id',
     ];
-
 
     protected $dates = ['dateIni', 'dateFin', 'registerDateLimit', 'created_at', 'updated_at', 'deleted_at'];
 
     protected static function boot()
     {
         parent::boot();
-        static::deleting(function($tournament) {
+        static::deleting(function ($tournament) {
             foreach ($tournament->championships as $ct) {
                 $ct->delete();
             }
             $tournament->invites()->delete();
-
         });
-        static::restoring(function($tournament) {
-
+        static::restoring(function ($tournament) {
             foreach ($tournament->championships()->withTrashed()->get() as $ct) {
                 $ct->restore();
             }
-
         });
-
     }
 
-
     /**
-     * A tournament is owned by a user
+     * A tournament is owned by a user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -89,7 +80,8 @@ class Tournament extends Model
     }
 
     /**
-     * Get Full venue object
+     * Get Full venue object.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function venue()
@@ -97,10 +89,10 @@ class Tournament extends Model
         return $this->belongsTo(Venue::class);
     }
 
-
     /**
      * We can use $tournament->categories()->attach(id);
-     * Or         $tournament->categories()->sync([1, 2, 3]);
+     * Or         $tournament->categories()->sync([1, 2, 3]);.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categories()
@@ -111,7 +103,8 @@ class Tournament extends Model
     }
 
     /**
-     * Get All categoriesTournament that belongs to a tournament
+     * Get All categoriesTournament that belongs to a tournament.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function championships()
@@ -119,9 +112,9 @@ class Tournament extends Model
         return $this->hasMany(Championship::class);
     }
 
-
     /**
-     * Get All categoriesSettings that belongs to a tournament
+     * Get All categoriesSettings that belongs to a tournament.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function championshipSettings()
@@ -130,7 +123,8 @@ class Tournament extends Model
     }
 
     /**
-     * çGet All teams that belongs to a tournament
+     * çGet All teams that belongs to a tournament.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function teams()
@@ -139,8 +133,10 @@ class Tournament extends Model
     }
 
     /**
-     * Get All competitors that belongs to a tournament
+     * Get All competitors that belongs to a tournament.
+     *
      * @param null $championshipId
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function competitors($championshipId = null)
@@ -149,7 +145,8 @@ class Tournament extends Model
     }
 
     /**
-     * Get All trees that belongs to a tournament
+     * Get All trees that belongs to a tournament.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function trees()
@@ -178,7 +175,8 @@ class Tournament extends Model
     }
 
     /**
-     * Check if the tournament is Open
+     * Check if the tournament is Open.
+     *
      * @return bool
      */
     public function isOpen()
@@ -187,7 +185,8 @@ class Tournament extends Model
     }
 
     /**
-     * * Check if the tournament needs Invitation
+     * * Check if the tournament needs Invitation.
+     *
      * @return bool
      */
     public function needsInvitation()
@@ -273,8 +272,9 @@ class Tournament extends Model
     }
 
     /**
-     * Check if the tournament has a Team Championship
-     * @return integer
+     * Check if the tournament has a Team Championship.
+     *
+     * @return int
      */
     public function hasTeamCategory()
     {
@@ -283,6 +283,4 @@ class Tournament extends Model
             ->where('isTeam', '1')
             ->count();
     }
-
-
 }

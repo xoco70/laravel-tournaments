@@ -2,8 +2,8 @@
 
 namespace Xoco70\KendoTournaments;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
@@ -18,6 +18,7 @@ class TreeController extends Controller
      * Display a listing of trees.
      *
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
@@ -31,20 +32,18 @@ class TreeController extends Controller
         return view('kendo-tournaments::tree.index')
             ->with('tournament', $tournament)
             ->with('settings', $tournament->championships[0]->setting);
-
     }
 
     /**
-     * Build Tree
+     * Build Tree.
      *
-     * @param Request $request
+     * @param Request      $request
      * @param Championship $championship
+     *
      * @return \Illuminate\Http\Response|string
      */
     public function store(Request $request, Championship $championship)
     {
-
-
         DB::table('fight')->delete();
         DB::table('round')->delete();
         DB::table('round_competitor')->delete();
@@ -74,18 +73,14 @@ class TreeController extends Controller
         //TODO Set groupBy argument to NULL for now
         $generation = new TreeGen($championship, null, $settings);
         try {
-
             $rounds = $generation->run();
             Round::generateFights($rounds, $settings, $championship);
-
         } catch (TreeGenerationException $e) {
             return view('kendo-tournaments::tree.index')
                 ->with('tournament', $tournament)
-                ->with('error', "Error Generating Tree");
+                ->with('error', 'Error Generating Tree');
         }
 
         return redirect()->back();
     }
-
-
 }

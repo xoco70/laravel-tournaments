@@ -22,17 +22,16 @@ class TournamentSeeder extends Seeder
         $faker = Faker\Factory::create();
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
         Tournament::create([
-            'id' => 1,
-            'user_id' => 1,
-            'name' => "Test Tournament",
-            'dateIni' =>  $dateIni,
-            'dateFin' =>  $dateIni,
-            'registerDateLimit' =>  $dateIni,
-            'sport' => 1,
-            'type' => 0,
-            'level_id' => 7,
-            'venue_id' => $faker->randomElement($venues),
-
+            'id'                => 1,
+            'user_id'           => 1,
+            'name'              => 'Test Tournament',
+            'dateIni'           => $dateIni,
+            'dateFin'           => $dateIni,
+            'registerDateLimit' => $dateIni,
+            'sport'             => 1,
+            'type'              => 0,
+            'level_id'          => 7,
+            'venue_id'          => $faker->randomElement($venues),
 
         ]);
 

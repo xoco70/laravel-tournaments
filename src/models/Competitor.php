@@ -2,9 +2,9 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
 
 class Competitor extends Model
@@ -12,25 +12,25 @@ class Competitor extends Model
     use SoftDeletes;
     protected $DATES = ['created_at', 'updated_at', 'deleted_at'];
 
-
     protected $table = 'competitor';
     public $timestamps = true;
     protected $fillable = [
-        "tournament_category_id",
-        "user_id",
-        "confirmed",
+        'tournament_category_id',
+        'user_id',
+        'confirmed',
     ];
 
-
     /**
-     * Get the Competitor's Championship
+     * Get the Competitor's Championship.
+     *
      * @param $ctId
+     *
      * @return Collection
      */
     public function championship($ctId)
     {
         //TODO Surely I could Refactor it to Eloquent - Should Debug that. $ctId <> $championshipId ???
-        $competitor = Competitor::where('championship_id', $ctId)->first();
+        $competitor = self::where('championship_id', $ctId)->first();
         $championshipId = $competitor->championship_id;
         $championship = Championship::find($championshipId);
 
@@ -38,8 +38,10 @@ class Competitor extends Model
     }
 
     /**
-     * Not sure I use it, I could use $competitor->championship->category
+     * Not sure I use it, I could use $competitor->championship->category.
+     *
      * @param $ctuId
+     *
      * @return mixed
      */
     public function category($ctuId)
@@ -47,13 +49,15 @@ class Competitor extends Model
         $championship = $this->championship($ctuId);
         $categoryId = $championship->category_id;
         $cat = Category::find($categoryId);
+
         return $cat;
     }
 
-
     /**
-     * Get the tournament where Competitors is competing
+     * Get the tournament where Competitors is competing.
+     *
      * @param $ctuId
+     *
      * @return mixed
      */
     public function tournament($ctuId)
@@ -61,11 +65,13 @@ class Competitor extends Model
         $tc = $this->championship($ctuId);
         $tourmanentId = $tc->tournament_id;
         $tour = Tournament::findOrNew($tourmanentId);
+
         return $tour;
     }
 
     /**
-     * Get User from Competitor
+     * Get User from Competitor.
+     *
      * @return mixed
      */
     public function user()
@@ -73,10 +79,8 @@ class Competitor extends Model
         return $this->belongsTo(User::class);
     }
 
-
     public function rounds()
     {
-        return $this->belongsToMany(Round::class,'round_competitor')->withTimestamps();
+        return $this->belongsToMany(Round::class, 'round_competitor')->withTimestamps();
     }
-
 }

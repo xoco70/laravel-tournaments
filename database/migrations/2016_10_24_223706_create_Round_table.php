@@ -13,11 +13,11 @@ class CreateRoundTable extends Migration
      */
     public function up()
     {
-        Schema::create('round', function(Blueprint $table) {
+        Schema::create('round', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('championship_id')->unsigned()->index();
-            $table->tinyInteger("area");
-            $table->tinyInteger("order");
+            $table->tinyInteger('area');
+            $table->tinyInteger('order');
             $table->timestamps();
             $table->engine = 'InnoDB';
 
@@ -27,7 +27,6 @@ class CreateRoundTable extends Migration
                 ->on('championship')
                 ->onDelete('cascade');
         });
-
     }
 
     /**

@@ -1,8 +1,8 @@
 <?php
 
-    namespace Xoco70\KendoTournaments\Models;
+namespace Xoco70\KendoTournaments\Models;
 
-    use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
     class Venue extends Model
     {

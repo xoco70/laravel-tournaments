@@ -16,7 +16,8 @@ class ChampionshipSettings extends Model
     protected $guarded = ['id'];
 
     /**
-     * A Setting belongs to a Championship
+     * A Setting belongs to a Championship.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function championship()
@@ -25,8 +26,9 @@ class ChampionshipSettings extends Model
     }
 
     /**
-     * @param Request $request
+     * @param Request      $request
      * @param Championship $championship
+     *
      * @return ChampionshipSettings
      */
     public static function createOrUpdate(Request $request, Championship $championship): ChampionshipSettings
@@ -35,11 +37,12 @@ class ChampionshipSettings extends Model
         $arrSettings = $request->except('_token', 'numFighters');
         $settings = static::where(['championship_id' => $championship->id])->first();
         if ($settings == null) {
-            $settings = new ChampionshipSettings($arrSettings);
+            $settings = new self($arrSettings);
         } else {
             $settings->fill($arrSettings);
         }
         $settings->save();
+
         return $settings;
     }
 }
