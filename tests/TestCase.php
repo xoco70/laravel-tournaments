@@ -13,6 +13,7 @@ abstract class TestCase extends BaseTestCase
     const DB_PASSWORD = '';
 
     protected $root;
+    protected $baseUrl ="http://tournament-plugin.dev";
 
     protected function getPackageProviders($app)
     {
@@ -28,6 +29,7 @@ abstract class TestCase extends BaseTestCase
         $this->root = new \Illuminate\Foundation\Auth\User();
         $this->makeSureDatabaseExists();
         parent::setUp();
+
 //        $this->migrateAndSeed();
 //        $this->beforeApplicationDestroyed(function () {
 //            $this->artisan('migrate:rollback');

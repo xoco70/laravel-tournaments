@@ -90,6 +90,6 @@ class PreliminaryTreeTest extends TestCase
 
     public function clickGenerate(Tournament $tournament)
     {
-        $this->visit('http://tournament-plugin.dev/kendo-tournament')->dump();
+        $this->visit('/kendo-tournaments')->dump();
     }
 }
