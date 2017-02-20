@@ -14,6 +14,7 @@ class CreateChampionshipSettingsTable extends Migration
     {
         Schema::create('championship_settings', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('alias')->nullable();
             $table->integer('championship_id')->unsigned()->unique();
             $table->foreign('championship_id')
                 ->references('id')

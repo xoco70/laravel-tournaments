@@ -22,7 +22,6 @@ class Category extends Model
     protected $fillable = [
         'id',
         'name',
-        'alias',
         'gender',
         'isTeam',
         'ageCategory',
@@ -33,13 +32,10 @@ class Category extends Model
         'gradeMax',
     ];
 
-    public function getAliasString()
-    {
-        return $this->alias;
-    }
 
     public function getNameAttribute($name)
     {
+
         return trans($name);
     }
 
@@ -58,11 +54,10 @@ class Category extends Model
         return $this->belongsToMany('App\Tournament');
     }
 
-    public function settings()
-    {
-        return $this->hasOne(ChampionshipSettings::class);
-    }
-
+//    public function settings()
+//    {
+//        return $this->hasOne(ChampionshipSettings::class);
+//    }
     public function championship()
     {
         return $this->hasMany(Championship::class);

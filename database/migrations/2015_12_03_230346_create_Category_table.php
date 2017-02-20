@@ -15,7 +15,6 @@ class CreateCategoryTable extends Migration
         Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('alias')->default('');
             $table->string('gender')->nullable();
             $table->integer('isTeam')->unsigned()->default(0);
             $table->integer('ageCategory')->unsigned()->default(0); // 0 = none, 1 = child, 2= teenager, 3 = adult, 4 = master
