@@ -28,6 +28,23 @@
                 </select>
             </div>
         </div>
+        <div class="col-lg-3">
+            {!!  Form::label('numFighters', "Fighter Quantity") !!}
+
+            <div class="input-group">
+                <label for="preliminaryGroupSize">Fighter Qty</label>
+                <select class="form-control" id="numFighters" name="numFighters">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+        </div>
 
 
     </div>
@@ -64,4 +81,4 @@
         </button>
     </div>
 
-{!! Form::close() !!}
+</form>

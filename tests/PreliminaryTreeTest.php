@@ -2,7 +2,7 @@
 
 namespace Xoco70\KendoTournaments\Tests;
 
-use Illuminate\Database\Eloquent\Collection;
+
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
@@ -27,8 +27,8 @@ class PreliminaryTreeTest extends TestCase
         $numAreas = [1, 2, 4];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->initialize($numArea, $numCompetitors);
-                $this->clickGenerate();
+//                $this->initialize($numArea, $numCompetitors);
+                $this->clickGenerate($numArea, $numCompetitors, $hasPreliminary = 1, $hasRoundRobin = 0 );
                 $this->check_assertion($numArea, $this->championship, $numCompetitors, $numGroupsExpected);
             }
         }
@@ -47,9 +47,11 @@ class PreliminaryTreeTest extends TestCase
         }
     }
 
-    public function clickGenerate()
+    public function clickGenerate($numAreas, $numCompetitors, $hasRoundRobin)
     {
         $this->visit('/kendo-tournaments')
+            ->select($numAreas, 'fightingAreas')
+            ->select($hasRoundRobin, 'treeType')
             ->press('save');
     }
 
