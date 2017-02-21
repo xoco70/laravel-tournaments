@@ -2,7 +2,7 @@
 
 namespace Xoco70\KendoTournaments\Tests;
 
-use Illuminate\Database\Eloquent\Collection;
+
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
@@ -13,22 +13,35 @@ use Xoco70\KendoTournaments\Models\Tournament;
 
 class PreliminaryTreeTest extends TestCase
 {
-//    use DatabaseTransactions;
+    use DatabaseTransactions;
 
     protected $root;
     protected $tournament, $championship, $settings, $users;
 
 
+
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->tournament = $tournament = Tournament::with(
+            'competitors',
+            'championshipSettings'
+        )->first();
+
+
+        $this->championship = Championship::with('teams', 'users', 'category', 'settings')->find($tournament->championships[0]->id);
+    }
+
     /** @test */
     public function check_number_of_row_when_generating_tournament()
     {
-        $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-        $numGroupsExpected = [0, 1, 1, 2, 2, 2, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8];
+        $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
+        $numGroupsExpected = [0, 1, 1, 2, 2, 2, 4, 4];
         $numAreas = [1, 2, 4];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->initialize($numArea, $numCompetitors);
-                $this->clickGenerate();
+                $this->clickGenerate($numArea, $numCompetitors, $hasRoundRobin = 0 );
                 $this->check_assertion($numArea, $this->championship, $numCompetitors, $numGroupsExpected);
             }
         }
@@ -47,9 +60,12 @@ class PreliminaryTreeTest extends TestCase
         }
     }
 
-    public function clickGenerate()
+    public function clickGenerate($numAreas, $numCompetitors, $hasRoundRobin)
     {
         $this->visit('/kendo-tournaments')
+            ->select($numAreas, 'fightingAreas')
+            ->select($hasRoundRobin, 'treeType')
+            ->select($numCompetitors, 'numFighters')
             ->press('save');
     }
 
@@ -62,6 +78,9 @@ class PreliminaryTreeTest extends TestCase
     private function check_assertion($numArea, $championship, $numCompetitors, $numGroupsExpected)
     {
         for ($area = 1; $area <= $numArea; $area++) {
+            if ($this->championship == null){
+                dd($numArea,$numCompetitors);
+            }
             $count = Round::where('championship_id', $this->championship->id)
                 ->where('area', $area)->count();
 

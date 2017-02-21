@@ -2,12 +2,14 @@
 
 namespace Xoco70\KendoTournaments;
 
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
+use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Round;
 use Xoco70\KendoTournaments\Models\Tournament;
 use Xoco70\KendoTournaments\TreeGen\TreeGen;
@@ -48,25 +50,21 @@ class TreeController extends Controller
         DB::table('round')->delete();
         DB::table('round_competitor')->delete();
         DB::table('round_team')->delete();
-
-        $tournament = Tournament::with(
-            'competitors',
-            'championshipSettings'
-        )->first();
+        DB::table('competitor')->delete();
 
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
 
-//        $numFighters = $request->numFighters;
+        $numFighters = $request->numFighters;
 
-//        $users = factory(User::class, (int)$numFighters)->create();
-//
-//        foreach ($users as $user) {
-//            factory(Competitor::class)->create([
-//                'championship_id' => $championship->id,
-//                'user_id' => $user->id,
-//                'confirmed' => 1,
-//            ]);
-//        }
+        $users = factory(User::class, (int)$numFighters)->create();
+
+        foreach ($users as $user) {
+            factory(Competitor::class)->create([
+                'championship_id' => $championship->id,
+                'user_id' => $user->id,
+                'confirmed' => 1,
+            ]);
+        }
 
         $settings = ChampionshipSettings::createOrUpdate($request, $championship);
 
@@ -76,11 +74,10 @@ class TreeController extends Controller
             $rounds = $generation->run();
             Round::generateFights($rounds, $settings, $championship);
         } catch (TreeGenerationException $e) {
-            return view('kendo-tournaments::tree.index')
-                ->with('tournament', $tournament)
-                ->with('error', 'Error Generating Tree');
+            redirect()->back()
+                ->withErrors([$numFighters ."-".$e->getMessage()]);
         }
 
-        return redirect()->back();
+        return redirect()->back()->with(['success' => "Success"]);
     }
 }
