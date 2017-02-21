@@ -20,7 +20,7 @@
 <?php
 $championship = $tournament->championships[0];
 $setting = $championship->settings
-    ?? new \Xoco70\KendoTournaments\Models\ChampionshipSettings(config('kendo-tournaments.default_settings'));
+    ?? new \Xoco70\KendoTournaments\Models\ChampionshipSettings(\Xoco70\KendoTournaments\Models\ChampionshipSettings::DEFAULT_SETTINGS);
 
 $treeType = $setting->treeType;
 $hasPreliminary = $setting->hasPreliminary;

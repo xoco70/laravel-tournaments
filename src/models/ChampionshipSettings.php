@@ -20,7 +20,26 @@ class ChampionshipSettings extends Model
         PRELIMINARY_WINNERS = [1 => 1], // , 2 => 2, 3 => 3
         TEAM_SIZE = [2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10],
         TEAM_RESERVE = [1 => 1, 2 => 2, 3 => 3, 4 => 4],
-        LIMIT_BY_ENTITY = [0 => '-', 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10];
+        LIMIT_BY_ENTITY = [0 => '-', 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10],
+        DEFAULT_SETTINGS = [
+        'fightingAreas' => '1',
+        'fightDuration' => '05:00',
+        'hasPreliminary' => '1',
+        'preliminaryGroupSize' => '3',
+        'preliminaryDuration' => '05:00',
+        'preliminaryWinner' => '1',
+        'hasEncho' => '1',
+        'enchoQty' => '1',
+        'enchoDuration' => '0',
+        'hasHantei' => '0',
+        'hanteiLimit' => '0', // 1/2 Finals
+        'enchoGoldPoint' => '0', // Step where Encho has no more time limit
+        'limitByEntity' => '4',
+        'cost' => '',
+        'treeType' => '1',
+        'seedQuantity' => '4',
+
+    ];
 
     /**
      * A Setting belongs to a Championship.
