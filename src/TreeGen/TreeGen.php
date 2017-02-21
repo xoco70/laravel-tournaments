@@ -3,10 +3,10 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Round;
 use Xoco70\KendoTournaments\Models\Team;
@@ -41,7 +41,7 @@ class TreeGen implements TreeGenerable
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
 
-        if ($fighters->count() / $areas < config('kendo-tournaments.MIN_COMPETITORS_X_AREA')) {
+        if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException();
         }
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
@@ -218,7 +218,7 @@ class TreeGen implements TreeGenerable
         $sizeGroupBy = count($byeGroup);
 
         $frequency = $sizeGroupBy != 0
-            ? (int) floor($sizeFighters / $sizeGroupBy)
+            ? (int)floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
