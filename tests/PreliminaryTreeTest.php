@@ -39,8 +39,22 @@ class PreliminaryTreeTest extends TestCase
         $numAreas = [1, 2, 4];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->clickGenerate($numArea, $numCompetitors, $hasRoundRobin = 0, $hasPreliminary = true);
-                $this->checkAssertion($numArea, $this->championship, $numCompetitors, $numGroupsExpected);
+                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = false, $hasPreliminary = true);
+                $this->checkAssertion($numArea, $numCompetitors, $numGroupsExpected);
+            }
+        }
+    }
+
+    /** @test */
+    public function check_number_of_row_when_generating_round_robin_tree()
+    {
+        $competitorsInTree = [1, 2, 3, 4, 5, 6]; // ,  7,  8,  9, 10, 11, 12, 13, 14
+        $numFightsExpected = [0, 1, 3, 6, 10, 15]; // , 21, 28, 36, 45, 55, 66, 78, 91
+        $numAreas = [1];
+        foreach ($numAreas as $numArea) {
+            foreach ($competitorsInTree as $numCompetitors) {
+                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = true, $hasPreliminary = false);
+                $this->checkAssertion($numArea, $numCompetitors, $numFightsExpected);
             }
         }
     }
@@ -58,16 +72,20 @@ class PreliminaryTreeTest extends TestCase
         }
     }
 
-    public function clickGenerate($numAreas, $numCompetitors, $hasRoundRobin, $hasPreliminary)
+    public function clickGenerate($numAreas, $numCompetitors, $preliminaryGroupSize, $hasRoundRobin, $hasPreliminary)
     {
+
         $this->visit('/kendo-tournaments')
             ->select($numAreas, 'fightingAreas')
-            ->select($hasRoundRobin, 'treeType')
+            ->select($hasRoundRobin ? 0 : 1, 'treeType')
+            ->select($preliminaryGroupSize, 'preliminaryGroupSize')
             ->select($numCompetitors, 'numFighters');
 
 
         if ($hasPreliminary) {
             $this->check('hasPreliminary');
+        }else{
+            $this->uncheck('hasPreliminary');
         }
 
 
@@ -76,11 +94,10 @@ class PreliminaryTreeTest extends TestCase
 
     /**
      * @param $numArea
-     * @param $championship
      * @param $numCompetitors
      * @param $numGroupsExpected
      */
-    private function checkAssertion($numArea, $championship, $numCompetitors, $numGroupsExpected)
+    private function checkAssertion($numArea, $numCompetitors, $numGroupsExpected)
     {
         for ($area = 1; $area <= $numArea; $area++) {
             $count = Round::where('championship_id', $this->championship->id)
@@ -92,8 +109,7 @@ class PreliminaryTreeTest extends TestCase
                 $expected = (int)($numGroupsExpected[$numCompetitors - 1] / $numArea);
 
                 if ($count != $expected) {
-                    dd(['Type' => 'Preliminary'],
-                        ['NumCompetitors' => $numCompetitors],
+                    dd(['NumCompetitors' => $numCompetitors],
                         ['NumArea' => $numArea],
                         ['Real' => $count],
                         ['Excepted' => $expected],
