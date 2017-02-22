@@ -46,6 +46,7 @@ class TreeController extends Controller
      */
     public function store(Request $request, Championship $championship)
     {
+
         DB::table('fight')->delete();
         DB::table('round')->delete();
         DB::table('round_competitor')->delete();
@@ -67,6 +68,7 @@ class TreeController extends Controller
         }
 
         $settings = ChampionshipSettings::createOrUpdate($request, $championship);
+
 
         //TODO Set groupBy argument to NULL for now
         $generation = new TreeGen($championship, null, $settings);

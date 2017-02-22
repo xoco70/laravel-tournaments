@@ -112,7 +112,7 @@ class Championship extends Model
      */
     public function isRoundRobinType()
     {
-        return $this->settings != null && $this->settings->treeType == Config::get('kendo-tournaments.ROUND_ROBIN');
+        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::ROUND_ROBIN;
     }
 
     /**
@@ -122,7 +122,7 @@ class Championship extends Model
      */
     public function isDirectEliminationType()
     {
-        return $this->settings == null || $this->settings->treeType == Config::get('kendo-tournaments.DIRECT_ELIMINATION');
+        return $this->settings == null || $this->settings->treeType == ChampionshipSettings::DIRECT_ELIMINATION;
     }
 
     /**

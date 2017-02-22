@@ -55,7 +55,6 @@ class TreeGen implements TreeGenerable
 
         // loop on areas
         $tree = $this->generateAllRounds($usersByArea, $area);
-
         return $tree;
     }
 
@@ -256,13 +255,12 @@ class TreeGen implements TreeGenerable
     {
         $rounds = new Collection();
         foreach ($usersByArea as $fightersByEntity) {
-
             // Chunking to make small round robin groups
             if ($this->championship->hasPreliminary()) {
                 $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize)->shuffle();
             } elseif ($this->championship->isDirectEliminationType()) {
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
-            } else {
+            } else { // Round Robin
                 $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
             }
 
