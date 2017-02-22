@@ -51,7 +51,7 @@ class TreeController extends Controller
         DB::table('round_competitor')->delete();
         DB::table('round_team')->delete();
         DB::table('competitor')->delete();
-
+        
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
 
         $numFighters = $request->numFighters;
@@ -78,6 +78,8 @@ class TreeController extends Controller
                 ->withErrors([$numFighters ."-".$e->getMessage()]);
         }
 
-        return redirect()->back()->with(['success' => "Success"]);
+        return redirect()->back()
+            ->with('numFighters', $numFighters)
+            ->with(['success' , "Success"]);
     }
 }
