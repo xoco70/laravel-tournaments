@@ -1,4 +1,6 @@
 <?php
+use Xoco70\KendoTournaments\TreeGen\DirectEliminationTreeGen;
+
 $directEliminationTree = $championship->rounds->map(function ($item, $key) use ($championship) {
     if ($championship->category->isTeam()){
 
@@ -10,12 +12,14 @@ $directEliminationTree = $championship->rounds->map(function ($item, $key) use (
     }
     return [$fighter1, $fighter2];
 })->toArray();
+
+$directEliminationTree = array_flatten($directEliminationTree);
 ?>
 @if (Request::is('championships/'.$championship->id.'/pdf'))
     <h1> {{$championship->buildName()}}</h1>
 @endif
+<?php
+$brackets = new DirectEliminationTreeGen($directEliminationTree, "", 1);
 
-<div id="brackets_{{ $championship->id }}"></div>
-<script>
-    var minimalData_{{ $championship->id }} = {!!     json_encode([ 'teams' => $directEliminationTree ] ) !!};
-</script>
+$brackets->printBrackets();
+?>

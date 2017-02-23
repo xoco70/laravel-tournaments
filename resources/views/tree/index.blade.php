@@ -7,13 +7,13 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/bootstrap-switch.min.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.timepicker.css">
-    <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.bracket.min.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/custom.css">
-<style>
-    .bg-grey{
-        background-color: #CCC;
-    }
-</style>
+    <link rel="stylesheet" href="/vendor/kendo-tournaments/css/brackets.css">
+    <style>
+        .bg-grey {
+            background-color: #CCC;
+        }
+    </style>
 
 </head>
 <body>
@@ -36,7 +36,7 @@ $enchoDuration = $setting->enchoDuration;
 $categoryId = $championship->category->id;
 $disableEncho = $hasEncho ? "" : "disabled";
 $disablePreliminary = $hasPreliminary ? "" : "disabled";
-
+$fights = $championship->fights;
 ?>
 @include('kendo-tournaments::partials.errors')
 
@@ -59,7 +59,12 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
                 @endif
             @endif
             <br/>
-            <h1>Fight List</h1>
+            @if ($championship->isDirectEliminationType())
+                <h1 style=" margin-top: {{ 65* sizeof($fights )*2 }}px; ">Fight List</h1>
+            @else
+                <h1>Fight List</h1>
+            @endif
+
             <hr/>
             <div align="center">
                 @include('kendo-tournaments::partials.fights')
@@ -78,13 +83,7 @@ $disablePreliminary = $hasPreliminary ? "" : "disabled";
 <script src="/vendor/kendo-tournaments/js/jquery.bracket.min.js"></script>
 
 <script>
-    @if ($championship->settings!=null &&  $championship->settings->treeType == 1  &&  !$championship->settings->hasPreliminary && $championship->rounds->count())
-        $('#brackets_{{ $championship->id }}').bracket({
-            init: minimalData_{{ $championship->id }},
-            teamWidth: 100
-        });
-    @endif
-        $(".switch").bootstrapSwitch();
+    $(".switch").bootstrapSwitch();
     $('input[name="hasEncho"]').on('switchChange.bootstrapSwitch', function (event, state) {
         let isChecked = $(this).is(':checked');
         $(this).closest('form').find('[name="enchoQty"]').prop('disabled', !isChecked);
