@@ -3,10 +3,8 @@
 namespace Xoco70\KendoTournaments\Tests;
 
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Round;
 use Xoco70\KendoTournaments\Models\Tournament;
@@ -33,18 +31,17 @@ class TreeTest extends TestCase
 
     /** @test */
     public function check_number_of_row_when_generating_preliminary_tree()
-{
-    $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
-    $numGroupsExpected = [0, 1, 1, 2, 2, 2, 4, 4];
-    $numFightsExpected = [0, 1, 1, 2, 2, 2, 4, 4];
-    $numAreas = [1, 2, 4];
-    foreach ($numAreas as $numArea) {
-        foreach ($competitorsInTree as $numCompetitors) {
-            $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = false, $hasPreliminary = true);
-            $this->checkAssertion($numArea, $numCompetitors, $numGroupsExpected);
+    {
+        $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
+        $numGroupsExpected = [0, 1, 1, 2, 2, 2, 4, 4];
+        $numAreas = [1, 2, 4];
+        foreach ($numAreas as $numArea) {
+            foreach ($competitorsInTree as $numCompetitors) {
+                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = false, $hasPreliminary = true);
+                $this->checkAssertion($numArea, $numCompetitors, $numGroupsExpected);
+            }
         }
     }
-}
 
     /** @test */
     public function check_number_of_row_when_generating_round_robin_tree()
@@ -67,7 +64,6 @@ class TreeTest extends TestCase
     {
         $competitorsInTree = [1, 2, 3, 4, 5, 6]; // ,  7,  8,  9, 10, 11, 12, 13, 14
         $numGroupsExpected = [0, 1, 2, 2, 4, 4]; // , 21, 28, 36, 45, 55, 66, 78, 91
-        $numFightsExpected = [0, 1, 3, 6, 10, 15]; // , 21, 28, 36, 45, 55, 66, 78, 91
         $numAreas = [1];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
@@ -103,7 +99,7 @@ class TreeTest extends TestCase
 
         if ($hasPreliminary) {
             $this->check('hasPreliminary');
-        }else{
+        } else {
             $this->uncheck('hasPreliminary');
         }
 
@@ -137,31 +133,5 @@ class TreeTest extends TestCase
                 $this->assertTrue($count == $expected);
             }
         }
-    }
-
-    /**
-     * @param $numArea
-     * @param $numCompetitors
-     */
-    private function initialize($numArea, $numCompetitors)
-    {
-        $this->tournament = factory(Tournament::class)->create();
-
-        $this->championship = factory(Championship::class)->create([
-            'tournament_id' => $this->tournament->id,
-            'category_id' => 1,
-        ]);
-
-        $this->settings = factory(ChampionshipSettings::class)->create([
-            'championship_id' => $this->championship->id,
-            'hasPreliminary' => 1,
-            'teamSize' => null,
-            'fightingAreas' => $numArea,
-            'preliminaryWinner' => 1,
-            'preliminaryGroupSize' => 3,
-        ]);
-
-        $this->users = factory(User::class, $numCompetitors)->create();
-        $this->makeCompetitors($this->championship, $this->users);
     }
 }

@@ -35,7 +35,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
             //Make sure there's at least 2 teams
 
-            if(count($teams) == 1){
+            if (count($teams) == 1) {
                 $teams[] = 'Team 2';
             }
 
@@ -45,21 +45,21 @@ class DirectEliminationTreeGen implements TreeGenerable
 
 
         //Calculate the size of the first full round - for example if you have 5 teams, then the first full round will consist of 4 teams
-        $minimumFirstRoundSize = pow(2, ceil(log($this->noTeams)/log(2)));
+        $minimumFirstRoundSize = pow(2, ceil(log($this->noTeams) / log(2)));
         $this->noRounds = log($minimumFirstRoundSize, 2);
         $noByesToAdd = $minimumFirstRoundSize - $this->noTeams;
 
         //Add the byes to the teams array
-        for($i = 0; $i < $noByesToAdd; $i++){
+        for ($i = 0; $i < $noByesToAdd; $i++) {
             $teams[] = null;
         }
 
         //Order the teams in a seeded order - this is required regardless of whether it is a seeded tournament or not, as it prevents BYEs playing eachother
-        for($i = 0; $i < log($this->noTeams / 2, 2); $i++){
+        for ($i = 0; $i < log($this->noTeams / 2, 2); $i++) {
 
             $out = array();
 
-            foreach($teams as $player){
+            foreach ($teams as $player) {
                 $splice = pow(2, $i);
                 $out = array_merge($out, array_splice($teams, 0, $splice));
                 $out = array_merge($out, array_splice($teams, -$splice));
@@ -91,14 +91,14 @@ class DirectEliminationTreeGen implements TreeGenerable
         $matches = array_chunk($teams, 2);
 
         //Only check for BYEs if there are more than 2 teams
-        if($this->noTeams > 2){
+        if ($this->noTeams > 2) {
 
-            foreach($matches as $key => &$match){
+            foreach ($matches as $key => &$match) {
 
                 $matchNumber = $key + 1;
 
                 //If both teams are present, then that means they haven't had a BYE to the next round, so they must play in the first round
-                if($match[0] && $match[1]){
+                if ($match[0] && $match[1]) {
 
                     //Add the match to the first round
                     $this->brackets[$roundNumber][$matchNumber] = $match;
@@ -106,7 +106,7 @@ class DirectEliminationTreeGen implements TreeGenerable
                     //Set the match to null as the result of the above match hasn't yet been determined
                     $match = null;
 
-                }else{
+                } else {
 
                     //If only the first or second player exists, then replace the multidimensional array with the existing player
                     $match = $match[0] ? $match[0] : $match[1];
@@ -121,17 +121,17 @@ class DirectEliminationTreeGen implements TreeGenerable
         }
 
         //If there's already a match in the match array, then that means the next round is round 2, so increase the round number
-        if(count($this->brackets)) $roundNumber++;
+        if (count($this->brackets)) $roundNumber++;
 
         //Create the first full round of teams, some may be blank if waiting on the results of a previous round
-        for($i = 0; $i < count($matches); $i++){
-            $this->brackets[$roundNumber][$i+1] = $matches[$i];
+        for ($i = 0; $i < count($matches); $i++) {
+            $this->brackets[$roundNumber][$i + 1] = $matches[$i];
         }
 
         //Create the result of the empty rows for this tournament
 
-        for($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++){
-            for($matchNumber = 1; $matchNumber <= ($minimumFirstRoundSize/pow(2, $roundNumber)); $matchNumber++){
+        for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
+            for ($matchNumber = 1; $matchNumber <= ($minimumFirstRoundSize / pow(2, $roundNumber)); $matchNumber++) {
                 $this->brackets[$roundNumber][$matchNumber] = array(null, null);
             }
         }
@@ -148,9 +148,9 @@ class DirectEliminationTreeGen implements TreeGenerable
         $matchSpacingMultiplier = 0.5;
         $playerWrapperHeightMultiplier = 1;
 
-        foreach($this->brackets as $roundNumber => &$round){
+        foreach ($this->brackets as $roundNumber => &$round) {
 
-            foreach($round as $matchNumber => &$match){
+            foreach ($round as $matchNumber => &$match) {
 
                 //Give teams a nicer index
 
@@ -172,9 +172,9 @@ class DirectEliminationTreeGen implements TreeGenerable
 
                 //Adjust the positions depending on the match number
 
-                if(!($matchNumber % 2)){
+                if (!($matchNumber % 2)) {
                     $match['hConnector2Top'] = $match['vConnectorTop'] -= ($match['vConnectorHeight'] - $this->borderWidth);
-                }else{
+                } else {
                     $match['hConnector2Top'] = $match['vConnectorTop'] + ($match['vConnectorHeight'] - $this->borderWidth);
                 }
 
@@ -196,24 +196,24 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         echo '<div id="brackets-wrapper">';
 
-        foreach($this->brackets as $roundNumber => $round) {
+        foreach ($this->brackets as $roundNumber => $round) {
 
-            foreach($round as $matchNumber => $match) {
+            foreach ($round as $matchNumber => $match) {
 
-                echo '<div class="match-wrapper" style="top: '.$match['matchWrapperTop'].'px; left: '.$match['matchWrapperLeft'].'px; width: '.$this->matchWrapperWidth.'px;">
+                echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
                         <input type="text" class="score">'
-                    .$this->getPlayerList($match['playerA']).
+                    . $this->getPlayerList($match['playerA']) .
                     '<div class="match-divider">
                         </div>
                         <input type="text" class="score">'
-                    .$this->getPlayerList($match['playerB']).
+                    . $this->getPlayerList($match['playerB']) .
                     '</div>';
 
                 if ($roundNumber != $this->noRounds) {
 
-                    echo '<div class="vertical-connector" style="top: '.$match['vConnectorTop'].'px; left: '.$match['vConnectorLeft'].'px; height: '.$match['vConnectorHeight'].'px;"></div>
-                          <div class="horizontal-connector" style="top: '.$match['hConnectorTop'].'px; left: '.$match['hConnectorLeft'].'px;"></div>
-                          <div class="horizontal-connector" style="top: '.$match['hConnector2Top'].'px; left: '.$match['hConnector2Left'].'px;"></div>';
+                    echo '<div class="vertical-connector" style="top: ' . $match['vConnectorTop'] . 'px; left: ' . $match['vConnectorLeft'] . 'px; height: ' . $match['vConnectorHeight'] . 'px;"></div>
+                          <div class="horizontal-connector" style="top: ' . $match['hConnectorTop'] . 'px; left: ' . $match['hConnectorLeft'] . 'px;"></div>
+                          <div class="horizontal-connector" style="top: ' . $match['hConnector2Top'] . 'px; left: ' . $match['hConnector2Left'] . 'px;"></div>';
 
                 }
 
@@ -225,31 +225,32 @@ class DirectEliminationTreeGen implements TreeGenerable
 
     }
 
-    private function printRoundTitles(){
+    private function printRoundTitles()
+    {
 
-        if($this->noTeams == 2){
+        if ($this->noTeams == 2) {
 
             $roundTitles = array('Final');
 
-        }elseif($this->noTeams <= 4){
+        } elseif ($this->noTeams <= 4) {
 
             $roundTitles = array('Semi-Finals', 'Final');
 
-        }elseif($this->noTeams <= 8){
+        } elseif ($this->noTeams <= 8) {
 
             $roundTitles = array('Quarter-Finals', 'Semi-Finals', 'Final');
 
-        }else{
+        } else {
 
             $roundTitles = array('Quarter-Finals', 'Semi-Finals', 'Final');
             $noRounds = ceil(log($this->noTeams, 2));
-            $noTeamsInFirstRound = pow(2, ceil(log($this->noTeams)/log(2)));
+            $noTeamsInFirstRound = pow(2, ceil(log($this->noTeams) / log(2)));
             $tempRounds = array();
 
             //The minus 3 is to ignore the final, semi final and quarter final rounds
 
-            for($i = 0; $i < $noRounds - 3; $i++){
-                $tempRounds[] = 'Last '.$noTeamsInFirstRound;
+            for ($i = 0; $i < $noRounds - 3; $i++) {
+                $tempRounds[] = 'Last ' . $noTeamsInFirstRound;
                 $noTeamsInFirstRound /= 2;
             }
 
@@ -259,11 +260,11 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         echo '<div id="round-titles-wrapper">';
 
-        foreach($roundTitles as $key => $roundTitle) {
+        foreach ($roundTitles as $key => $roundTitle) {
 
             $left = $key * ($this->matchWrapperWidth + $this->roundSpacing - 1);
 
-            echo '<div class="round-title" style="left: '.$left.'px;">' . $roundTitle . '</div>';
+            echo '<div class="round-title" style="left: ' . $left . 'px;">' . $roundTitle . '</div>';
 
         }
 
@@ -275,18 +276,15 @@ class DirectEliminationTreeGen implements TreeGenerable
     {
 
         $html = '<select>
-                <option'.($selected == '' ? ' selected' : '').'></option>';
-
-        foreach(array_merge($this->brackets[1], $this->brackets[2]) as $bracket){
-
-            if($bracket['playerA'] != ''){
-                $html .= '<option'.($selected == $bracket['playerA'] ? ' selected' : '').'>'.$bracket['playerA'].'</option>';
+                <option' . ($selected == '' ? ' selected' : '') . '></option>';
+        foreach (array_merge($this->brackets[1]) as $bracket) { // Bug Fix 24-02-2017 , $this->brackets[2]
+            if ($bracket['playerA'] != '') {
+                $html .= '<option' . ($selected == $bracket['playerA'] ? ' selected' : '') . '>' . $bracket['playerA'] . '</option>';
             }
 
-            if($bracket['playerB'] != ''){
-                $html .= '<option'.($selected == $bracket['playerB'] ? ' selected' : '').'>'.$bracket['playerB'].'</option>';
+            if ($bracket['playerB'] != '') {
+                $html .= '<option' . ($selected == $bracket['playerB'] ? ' selected' : '') . '>' . $bracket['playerB'] . '</option>';
             }
-
         }
 
         $html .= '</select>';
