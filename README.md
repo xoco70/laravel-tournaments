@@ -1,3 +1,6 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
 # 
 
 Kendo- Tournaments is A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed   
