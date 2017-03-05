@@ -6,15 +6,15 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 
 class DirectEliminationTreeGen implements TreeGenerable
 {
-    private $names;
-    private $brackets = array();
-    private $noTeams;
-    private $noRounds;
-    private $playerWrapperHeight = 30;
-    private $matchWrapperWidth = 150;
-    private $roundSpacing = 40;
-    private $matchSpacing = 42;
-    private $borderWidth = 3;
+    public $names;
+    public $brackets = array();
+    public $noTeams;
+    public $noRounds;
+    public $playerWrapperHeight = 30;
+    public $matchWrapperWidth = 150;
+    public $roundSpacing = 40;
+    public $matchSpacing = 42;
+    public $borderWidth = 3;
 
     public function __construct($names)
     {
@@ -150,7 +150,7 @@ class DirectEliminationTreeGen implements TreeGenerable
     /**
      * Print Round Titles
      */
-    private function printRoundTitles()
+    public function printRoundTitles()
     {
 
         if ($this->noTeams == 2) {
