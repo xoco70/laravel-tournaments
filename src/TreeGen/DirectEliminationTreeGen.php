@@ -150,7 +150,7 @@ class DirectEliminationTreeGen implements TreeGenerable
     /**
      * Print Round Titles
      */
-    public function printRoundTitles()
+    private function printRoundTitles()
     {
 
         if ($this->noTeams == 2) {
