@@ -129,7 +129,7 @@ class Championship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function fightersGroup()
+    public function fightersGroups()
     {
         return $this->hasMany(FightersGroup::class);
     }

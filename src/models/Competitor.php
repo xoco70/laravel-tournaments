@@ -79,7 +79,7 @@ class Competitor extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function fightersGroup()
+    public function fightersGroups()
     {
         return $this->belongsToMany(FightersGroup::class, 'fighters_group_competitor')->withTimestamps();
     }

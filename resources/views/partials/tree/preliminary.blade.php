@@ -3,7 +3,7 @@
     @if (Request::is('championships/'.$championship->id.'/pdf'))
         <h1> {{$championship->buildName()}}</h1>
     @endif
-    @foreach($championship->fightersGroup->groupBy('area') as $groupsByArea)
+    @foreach($championship->fightersGroups->groupBy('area') as $groupsByArea)
         <table class="table-bordered" cellpadding="5" cellspacing="0">
             <tr>
                 <th class="p-10">Areas</th>

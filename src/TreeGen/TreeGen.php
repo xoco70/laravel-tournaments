@@ -37,7 +37,7 @@ class TreeGen implements TreeGenerable
     public function run()
     {
         // If previous trees already exist, delete all
-        $this->championship->fightersGroup()->delete();
+        $this->championship->fightersGroups()->delete();
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
 
