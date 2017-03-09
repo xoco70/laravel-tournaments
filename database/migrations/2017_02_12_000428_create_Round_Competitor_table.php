@@ -16,7 +16,8 @@ class CreateRoundCompetitorTable extends Migration
         Schema::create('round_competitor', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('competitor_id')->unsigned()->nullable()->index();
-            $table->integer('round_id')->unsigned()->index(); // A checar
+            $table->integer('round_id')->unsigned()->index();
+            $table->integer('order')->unsigned();
             $table->timestamps();
 
             $table->foreign('competitor_id')

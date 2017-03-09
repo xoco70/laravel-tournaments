@@ -42,7 +42,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
 
         //Order the teams in a seeded order - this is required regardless of whether it is a seeded tournament or not, as it prevents BYEs playing eachother
-        $teams = $this->orderTeamsInSeededOrder($teams);
+//        $teams = $this->orderTeamsInSeededOrder($teams);
 
         $roundNumber = 1;
 
@@ -57,7 +57,6 @@ class DirectEliminationTreeGen implements TreeGenerable
         for ($i = 0; $i < $countMatches; $i++) {
             $this->brackets[$roundNumber][$i + 1] = $matches[$i];
         }
-
         $this->assignPositions();
 
     }
@@ -150,7 +149,7 @@ class DirectEliminationTreeGen implements TreeGenerable
     /**
      * Print Round Titles
      */
-    private function printRoundTitles()
+    public function printRoundTitles()
     {
 
         if ($this->noTeams == 2) {
