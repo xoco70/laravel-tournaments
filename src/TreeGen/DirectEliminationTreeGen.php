@@ -39,6 +39,12 @@ class DirectEliminationTreeGen implements TreeGenerable
         //Calculate the size of the first full round - for example if you have 5 teams, then the first full round will consist of 4 teams
         $minimumFirstRoundSize = pow(2, ceil(log($this->noTeams) / log(2)));
         $this->noRounds = log($minimumFirstRoundSize, 2);
+        $noByesToAdd = $minimumFirstRoundSize - $this->noTeams;
+
+        //Add the byes to the teams array
+        for ($i = 0; $i < $noByesToAdd; $i++) {
+            $teams[] = null;
+        }
 
 
         //Order the teams in a seeded order - this is required regardless of whether it is a seeded tournament or not, as it prevents BYEs playing eachother
@@ -49,16 +55,45 @@ class DirectEliminationTreeGen implements TreeGenerable
         //Group 2 teams into a match
         $matches = array_chunk($teams, 2);
 
+//        if ($this->noTeams > 2) {
+//
+//            foreach ($matches as $key => &$match) {
+//
+//                $matchNumber = $key + 1;
+//
+//
+//                //Add the match to the first round
+//                $this->brackets[$roundNumber][$matchNumber] = $match;
+//
+//                //Set the match to null as the result of the above match hasn't yet been determined
+//                $match = null;
+//
+//
+//            }
+//
+//            //Now all of the blank spaces except the ones awaiting first round results have gone, group the single dimension array into a multiple dimensional array, so opponents share the same parent array
+//            $matches = array_chunk($matches, 2);
+//
+//        }
+
 
         //If there's already a match in the match array, then that means the next round is round 2, so increase the round number
         if (count($this->brackets)) $roundNumber++;
+
         $countMatches = count($matches);
         //Create the first full round of teams, some may be blank if waiting on the results of a previous round
         for ($i = 0; $i < $countMatches; $i++) {
             $this->brackets[$roundNumber][$i + 1] = $matches[$i];
         }
-        $this->assignPositions();
 
+        //Create the result of the empty rows for this tournament
+
+        for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
+            for ($matchNumber = 1; $matchNumber <= ($minimumFirstRoundSize / pow(2, $roundNumber)); $matchNumber++) {
+                $this->brackets[$roundNumber][$matchNumber] = array(null, null);
+            }
+        }
+        $this->assignPositions();
     }
 
     private function assignPositions()
@@ -113,36 +148,36 @@ class DirectEliminationTreeGen implements TreeGenerable
     public function printBrackets()
     {
 
-        $this->printRoundTitles();
-
-        echo '<div id="brackets-wrapper">';
-
-        foreach ($this->brackets as $roundNumber => $round) {
-
-            foreach ($round as $matchNumber => $match) {
-
-                echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
-                        <input type="text" class="score">'
-                    . $this->getPlayerList($match['playerA']) .
-                    '<div class="match-divider">
-                        </div>
-                        <input type="text" class="score">'
-                    . $this->getPlayerList($match['playerB']) .
-                    '</div>';
-
-                if ($roundNumber != $this->noRounds) {
-
-                    echo '<div class="vertical-connector" style="top: ' . $match['vConnectorTop'] . 'px; left: ' . $match['vConnectorLeft'] . 'px; height: ' . $match['vConnectorHeight'] . 'px;"></div>
-                          <div class="horizontal-connector" style="top: ' . $match['hConnectorTop'] . 'px; left: ' . $match['hConnectorLeft'] . 'px;"></div>
-                          <div class="horizontal-connector" style="top: ' . $match['hConnector2Top'] . 'px; left: ' . $match['hConnector2Left'] . 'px;"></div>';
-
-                }
-
-            }
-
-        }
-
-        echo '</div>';
+//        $this->printRoundTitles();
+//
+//        echo '<div id="brackets-wrapper">';
+//
+//        foreach ($this->brackets as $roundNumber => $round) {
+//
+//            foreach ($round as $matchNumber => $match) {
+//
+//                echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
+//                        <input type="text" class="score">'
+//                    . $this->getPlayerList($match['playerA']) .
+//                    '<div class="match-divider">
+//                        </div>
+//                        <input type="text" class="score">'
+//                    . $this->getPlayerList($match['playerB']) .
+//                    '</div>';
+//
+//                if ($roundNumber != $this->noRounds) {
+//
+//                    echo '<div class="vertical-connector" style="top: ' . $match['vConnectorTop'] . 'px; left: ' . $match['vConnectorLeft'] . 'px; height: ' . $match['vConnectorHeight'] . 'px;"></div>
+//                          <div class="horizontal-connector" style="top: ' . $match['hConnectorTop'] . 'px; left: ' . $match['hConnectorLeft'] . 'px;"></div>
+//                          <div class="horizontal-connector" style="top: ' . $match['hConnector2Top'] . 'px; left: ' . $match['hConnector2Left'] . 'px;"></div>';
+//
+//                }
+//
+//            }
+//
+//        }
+//
+//        echo '</div>';
 
     }
 
@@ -200,7 +235,7 @@ class DirectEliminationTreeGen implements TreeGenerable
      * @param $selected
      * @return string
      */
-    private function getPlayerList($selected)
+    public function getPlayerList($selected)
     {
 
         $html = '<select>
