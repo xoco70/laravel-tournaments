@@ -10,7 +10,7 @@ use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Round;
+use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Tournament;
 use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
@@ -48,9 +48,9 @@ class TreeController extends Controller
     {
 
         DB::table('fight')->delete();
-        DB::table('round')->delete();
-        DB::table('round_competitor')->delete();
-        DB::table('round_team')->delete();
+        DB::table('fighters_groups')->delete();
+        DB::table('fighters_group_competitor')->delete();
+        DB::table('fighters_group_team')->delete();
         DB::table('competitor')->delete();
         
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
@@ -73,8 +73,8 @@ class TreeController extends Controller
         //TODO Set groupBy argument to NULL for now
         $generation = new TreeGen($championship, null, $settings);
         try {
-            $rounds = $generation->run();
-            Round::generateFights($rounds, $settings, $championship);
+            $groups = $generation->run();
+            FightersGroup::generateFights($groups, $settings, $championship);
         } catch (TreeGenerationException $e) {
             redirect()->back()
                 ->withErrors([$numFighters ."-".$e->getMessage()]);

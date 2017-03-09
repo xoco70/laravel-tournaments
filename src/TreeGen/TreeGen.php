@@ -8,7 +8,7 @@ use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Round;
+use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Team;
 
 class TreeGen implements TreeGenerable
@@ -37,7 +37,7 @@ class TreeGen implements TreeGenerable
     public function run()
     {
         // If previous trees already exist, delete all
-        $this->championship->rounds()->delete();
+        $this->championship->fightersGroup()->delete();
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
 
@@ -54,7 +54,7 @@ class TreeGen implements TreeGenerable
         $area = 1;
 
         // loop on areas
-        $tree = $this->generateAllRounds($usersByArea, $area);
+        $tree = $this->generateAllGroups($usersByArea, $area);
         return $tree;
     }
 
@@ -251,9 +251,9 @@ class TreeGen implements TreeGenerable
      *
      * @return Collection
      */
-    public function generateAllRounds($usersByArea, $area)
+    public function generateAllGroups($usersByArea, $area)
     {
-        $rounds = new Collection();
+        $groups = new Collection();
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
             if ($this->championship->hasPreliminary()) {
@@ -268,14 +268,14 @@ class TreeGen implements TreeGenerable
 
             // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup as $fighters) {
-                $round = $this->saveRound($area, $fighters, $order, $rounds);
-                $rounds->push($round);
+                $group = $this->saveGroup($area, $fighters, $order, $groups);
+                $groups->push($group);
                 $order++;
             }
             $area++;
         }
 
-        return $rounds;
+        return $groups;
     }
 
     /**
@@ -283,26 +283,26 @@ class TreeGen implements TreeGenerable
      * @param $fighters
      * @param $order
      *
-     * @return Round
+     * @return FightersGroup
      */
-    public function saveRound($area, $fighters, $order)
+    public function saveGroup($area, $fighters, $order)
     {
         $fighters = $fighters->pluck('id')->shuffle();
 
-        $round = new Round();
-        $round->area = $area;
-        $round->order = $order;
-        $round->championship_id = $this->championship->id;
+        $group = new FightersGroup();
+        $group->area = $area;
+        $group->order = $order;
+        $group->championship_id = $this->championship->id;
 
-        $round->save();
+        $group->save();
 
         // Add all competitors to Pivot Table
         if ($this->championship->category->isTeam()) {
-            $round->syncTeams($fighters);
+            $group->syncTeams($fighters);
         } else {
-            $round->syncCompetitors($fighters);
+            $group->syncCompetitors($fighters);
         }
 
-        return $round;
+        return $group;
     }
 }

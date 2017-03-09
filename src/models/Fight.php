@@ -20,7 +20,7 @@ class Fight extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'round_id',
+        'group_id',
         'c1',
         'c2',
     ];
@@ -30,15 +30,15 @@ class Fight extends Model
      *
      * @return mixed
      */
-    private static function getActorsToFights(Championship $championship, Round $round = null)
+    private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
     {
         if ($championship->category->isTeam) {
-            $fighters = $round->teams;
+            $fighters = $group->teams;
             if (count($fighters) % 2 != 0) {
                 $fighters->push(new Team(['name' => 'BYE']));
             }
         } else {
-            $fighters = $round->competitors;
+            $fighters = $group->competitors;
             if (count($fighters) % 2 != 0) {
                 $fighters->push(new Competitor());
             }
@@ -90,28 +90,28 @@ class Fight extends Model
     /**
      * Save a Fight.
      *
-     * @param Collection $rounds
-     * @param int $numRound
+     * @param Collection $groups
+     * @param int $numGroup
      */
-    public static function savePreliminaryFightRound($rounds, $numRound = 1)
+    public static function savePreliminaryFightGroup($groups, $numGroup = 1)
     {
         
         $c1 = $c2 = null;
         $order = 0;
 
-        foreach ($rounds as $round) {
+        foreach ($groups as $group) {
 
-            if ($round->championship->category->isTeam()) {
-                $fighters = $round->teams;
+            if ($group->championship->category->isTeam()) {
+                $fighters = $group->teams;
             } else {
-                $fighters = $round->competitors;
+                $fighters = $group->competitors;
             }
 
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
             $fighter3 = $fighters->get(2);
 
-            switch ($numRound) {
+            switch ($numGroup) {
                 case 1:
                     $c1 = $fighter1;
                     $c2 = $fighter2;
@@ -126,11 +126,11 @@ class Fight extends Model
                     break;
             }
             $fight = new self();
-            $fight->round_id = $round->id;
+            $fight->fighters_group_id = $group->id;
             $fight->c1 = $c1 != null ? $c1->id : null;
             $fight->c2 = $c2 != null ? $c2->id : null;
             $fight->order = $order++;
-            $fight->area = $round->area;
+            $fight->area = $group->area;
             $fight->save();
         }
     }
@@ -160,12 +160,12 @@ class Fight extends Model
 //    }
 
     /**
-     * @param Collection $rounds
+     * @param Collection $groups
      */
-    public static function saveRoundRobinFights(Championship $championship, $rounds)
+    public static function saveGroupdRobinFights(Championship $championship, $groups)
     {
-        foreach ($rounds as $round2) {
-            $fighters = self::getActorsToFights($championship, $round2);
+        foreach ($groups as $group) {
+            $fighters = self::getActorsToFights($championship, $group);
 
             $away = $fighters->splice(count($fighters) / 2); // 2
 
@@ -179,7 +179,7 @@ class Fight extends Model
                     $round[$i][$j]['Home'] = $home[$j];
                     $round[$i][$j]['Away'] = $away[$j];
                     $fight = new self();
-                    $fight->round_id = $rounds[0]->id;
+                    $fight->fighters_group_id = $groups[0]->id;
                     $fight->c1 = $round[$i][$j]['Home']->id;
                     $fight->c2 = $round[$i][$j]['Away']->id;
                     $fight->order = $order++;

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRoundTable extends Migration
+class CreateFightersGroupTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRoundTable extends Migration
      */
     public function up()
     {
-        Schema::create('round', function (Blueprint $table) {
+        Schema::create('fighters_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('championship_id')->unsigned()->index();
             $table->tinyInteger('area');
@@ -37,7 +37,7 @@ class CreateRoundTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('round');
+        Schema::dropIfExists('fighters_groups');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

@@ -29,7 +29,7 @@ class CreateCategoryTable extends Migration
 //            $table->foreign('gradeMax')
 //                ->references('id')
 //                ->on('grade');
-            $table->unique(['name', 'alias', 'gender', 'isTeam', 'ageCategory', 'ageMin', 'ageMax', 'gradeCategory', 'gradeMin', 'gradeMax'], 'category_fields_unique');
+            $table->unique(['name', 'gender', 'isTeam', 'ageCategory', 'ageMin', 'ageMax', 'gradeCategory', 'gradeMin', 'gradeMax'], 'category_fields_unique');
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

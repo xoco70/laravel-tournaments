@@ -6,7 +6,7 @@ namespace Xoco70\KendoTournaments\Tests;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Round;
+use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Tournament;
 
 class TreeTest extends TestCase
@@ -115,7 +115,7 @@ class TreeTest extends TestCase
     private function checkAssertion($numArea, $numCompetitors, $numGroupsExpected)
     {
         for ($area = 1; $area <= $numArea; $area++) {
-            $count = Round::where('championship_id', $this->championship->id)
+            $count = FightersGroup::where('championship_id', $this->championship->id)
                 ->where('area', $area)->count();
 
             if ((int)($numCompetitors / $numArea) <= 1) {

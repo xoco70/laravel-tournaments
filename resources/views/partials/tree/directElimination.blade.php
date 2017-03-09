@@ -1,7 +1,7 @@
 <?php
 use Xoco70\KendoTournaments\TreeGen\DirectEliminationTreeGen;
 
-$directEliminationTree = $championship->rounds->map(function ($item, $key) use ($championship) {
+$directEliminationTree = $championship->fightersGroup->map(function ($item, $key) use ($championship) {
     if ($championship->category->isTeam()){
 
         $fighter1 = $item->team1 != null ? $item->team1->name : "Bye";

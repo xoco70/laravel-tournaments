@@ -129,9 +129,9 @@ class Championship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function rounds()
+    public function fightersGroup()
     {
-        return $this->hasMany(Round::class);
+        return $this->hasMany(FightersGroup::class);
     }
 
     /**
@@ -141,7 +141,7 @@ class Championship extends Model
      */
     public function fights()
     {
-        return $this->hasManyThrough(Fight::class, Round::class);
+        return $this->hasManyThrough(Fight::class, FightersGroup::class);
     }
 
     public function buildName()

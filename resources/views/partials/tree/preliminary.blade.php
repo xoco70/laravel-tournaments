@@ -3,7 +3,7 @@
     @if (Request::is('championships/'.$championship->id.'/pdf'))
         <h1> {{$championship->buildName()}}</h1>
     @endif
-    @foreach($championship->rounds->groupBy('area') as $roundsByArea)
+    @foreach($championship->fightersGroup->groupBy('area') as $groupsByArea)
         <table class="table-bordered" cellpadding="5" cellspacing="0">
             <tr>
                 <th class="p-10">Areas</th>
@@ -23,25 +23,25 @@
                 @endif
             </tr>
 
-            @foreach($roundsByArea as $round)
+            @foreach($groupsByArea as $group)
                 <?php
                 if ($championship->category->isTeam) {
-                    $fighter1 = $round->teams->get(0) != null ? $round->teams->get(0)->name : '';
-                    $fighter2 = $round->teams->get(1) != null ? $round->teams->get(1)->name : '';
-                    $fighter3 = $round->teams->get(2) != null ? $round->teams->get(2)->name : '';
-                    $fighter4 = $round->teams->get(3) != null ? $round->teams->get(3)->name : '';
-                    $fighter5 = $round->teams->get(4) != null ? $round->teams->get(4)->name : '';
+                    $fighter1 = $group->teams->get(0) != null ? $group->teams->get(0)->name : '';
+                    $fighter2 = $group->teams->get(1) != null ? $group->teams->get(1)->name : '';
+                    $fighter3 = $group->teams->get(2) != null ? $group->teams->get(2)->name : '';
+                    $fighter4 = $group->teams->get(3) != null ? $group->teams->get(3)->name : '';
+                    $fighter5 = $group->teams->get(4) != null ? $group->teams->get(4)->name : '';
                 } else {
-                    $fighter1 = $round->competitors->get(0) != null ? $round->competitors->get(0)->user->name : '';
-                    $fighter2 = $round->competitors->get(1) != null ? $round->competitors->get(1)->user->name : '';
-                    $fighter3 = $round->competitors->get(2) != null ? $round->competitors->get(2)->user->name : '';
-                    $fighter4 = $round->competitors->get(3) != null ? $round->competitors->get(3)->user->name : '';
-                    $fighter5 = $round->competitors->get(4) != null ? $round->competitors->get(4)->user->name : '';
+                    $fighter1 = $group->competitors->get(0) != null ? $group->competitors->get(0)->user->name : '';
+                    $fighter2 = $group->competitors->get(1) != null ? $group->competitors->get(1)->user->name : '';
+                    $fighter3 = $group->competitors->get(2) != null ? $group->competitors->get(2)->user->name : '';
+                    $fighter4 = $group->competitors->get(3) != null ? $group->competitors->get(3)->user->name : '';
+                    $fighter5 = $group->competitors->get(4) != null ? $group->competitors->get(4)->user->name : '';
 
                 }
                 ?>
                 <tr>
-                    <td class="p-10">{{$round->area}}</td>
+                    <td class="p-10">{{$group->area}}</td>
                     <td class="p-10">a</td>
                     <td class="p-10">{{ $fighter1 }}</td>
                     <td class="p-10">b</td>

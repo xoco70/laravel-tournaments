@@ -44,7 +44,7 @@ $fights = $championship->fights;
     <div class="content">
         <h1 align="center">{{ $tournament->name }}</h1>
         @include('kendo-tournaments::partials.settings')
-        @if ($championship->rounds->count()>0)
+        @if ($championship->fightersGroup->count()>0)
             <h1>Tree</h1>
             <hr/>
             @if ($championship->hasPreliminary())

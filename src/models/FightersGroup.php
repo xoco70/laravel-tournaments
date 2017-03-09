@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class Round extends Model
+class FightersGroup extends Model
 {
-    protected $table = 'round';
+    protected $table = 'fighters_groups';
     public $timestamps = true;
     protected $guarded = ['id'];
 
@@ -54,34 +54,34 @@ class Round extends Model
 
     public function teams()
     {
-        return $this->belongsToMany(Team::class, 'round_team')->withTimestamps();
+        return $this->belongsToMany(Team::class, 'fighters_group_team')->withTimestamps();
     }
 
     public function competitors()
     {
-        return $this->belongsToMany(Competitor::class, 'round_competitor')->withTimestamps();
+        return $this->belongsToMany(Competitor::class, 'fighters_group_competitor')->withTimestamps();
     }
 
     /**
      * @param $settings
      * @param Championship $championship
      */
-    public static function generateFights(Collection $rounds, $settings, Championship $championship = null)
+    public static function generateFights(Collection $fightersGroup, $settings, Championship $championship = null)
     {
 
         // Delete previous fight for this championship
 
-        $arrRoundsId = $rounds->map(function ($value, $key) {
+        $arrGroupsId = $fightersGroup->map(function ($value, $key) {
             return $value->id;
         })->toArray();
-        Fight::destroy($arrRoundsId);
+        Fight::destroy($arrGroupsId);
 
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
-            for ($numRound = 1; $numRound <= $settings->preliminaryGroupSize; $numRound++) {
-                Fight::savePreliminaryFightRound($rounds, $numRound);
+            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
+                Fight::savePreliminaryFightGroup($fightersGroup, $numGroup);
             }
         } else {
-            Fight::saveRoundRobinFights($championship, $rounds);
+            Fight::saveGroupdRobinFights($championship, $fightersGroup);
         }
     }
 
@@ -99,8 +99,8 @@ class Round extends Model
                 $this->teams()->attach($fighter);
             } else {
                 // Insert row manually
-                DB::table('round_team')->insertGetId(
-                    ['team_id' => null, 'round_id' => $this->id]
+                DB::table('fighters_group_team')->insertGetId(
+                    ['team_id' => null, 'fighters_group_id' => $this->id]
                 );
             }
         }
@@ -119,8 +119,8 @@ class Round extends Model
             if ($fighter != null) {
                 $this->competitors()->attach($fighter);
             } else {
-                DB::table('round_competitor')->insertGetId(
-                    ['competitor_id' => null, 'round_id' => $this->id]
+                DB::table('fighters_group_competitor')->insertGetId(
+                    ['competitor_id' => null, 'fighters_group_id' => $this->id]
                 );
             }
         }

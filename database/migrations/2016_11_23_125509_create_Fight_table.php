@@ -15,10 +15,10 @@ class CreateFightTable extends Migration
     {
         Schema::create('fight', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('round_id')->unsigned()->index();
-            $table->foreign('round_id')
+            $table->integer('fighters_group_id')->unsigned()->index();
+            $table->foreign('fighters_group_id')
                 ->references('id')
-                ->on('round')
+                ->on('fighters_groups')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('c1')->nullable()->unsigned()->index();

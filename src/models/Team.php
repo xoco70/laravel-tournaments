@@ -28,8 +28,8 @@ class Team extends Model
         return $this->hasManyThrough(Category::class, Championship::class);
     }
 
-    public function rounds()
+    public function fightersGroup()
     {
-        return $this->belongsToMany(Round::class, 'round_team')->withTimestamps();
+        return $this->belongsToMany(FightersGroup::class, 'round_team')->withTimestamps();
     }
 }
