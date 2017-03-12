@@ -22,8 +22,21 @@ class CreateFightTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('c1')->nullable()->unsigned()->index();
-
             $table->integer('c2')->nullable()->unsigned()->index();
+            $table->char('point1_c1')->nullable();
+            $table->char('point2_c1')->nullable();
+            $table->char('point1_c2')->nullable();
+            $table->char('point2_c2')->nullable();
+            $table->integer('winner_id')->unsigned()->nullable();
+
+            $table->boolean('hansoku1_c1')->nullable();
+            $table->boolean('hansoku2_c1')->nullable();
+            $table->boolean('hansoku3_c1')->nullable();
+            $table->boolean('hansoku4_c1')->nullable();
+            $table->boolean('hansoku1_c2')->nullable();
+            $table->boolean('hansoku2_c2')->nullable();
+            $table->boolean('hansoku3_c2')->nullable();
+            $table->boolean('hansoku4_c2')->nullable();
 
             $table->tinyInteger('area');
             $table->tinyInteger('order');
