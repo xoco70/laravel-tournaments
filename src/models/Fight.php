@@ -187,7 +187,7 @@ class Fight extends Model
 
                     // We ommit fights that have a BYE in Round robins, but not in Preliminary
 
-                    if ($fight->c1 != null && $fight->c2 != null || !$championship->isRoundRobinType()) {
+                    if ($fight->c1 != null && $fight->c2 != null || !$championship->isPlayOffType()) {
                         $fight->save();
                     }
                 }

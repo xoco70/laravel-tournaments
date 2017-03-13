@@ -109,7 +109,7 @@ class Championship extends Model
      *
      * @return bool
      */
-    public function isRoundRobinType()
+    public function isPlayOffType()
     {
         return $this->settings != null && $this->settings->treeType == ChampionshipSettings::ROUND_ROBIN;
     }

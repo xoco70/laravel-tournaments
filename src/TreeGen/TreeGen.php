@@ -52,9 +52,17 @@ class TreeGen implements TreeGenerable
         $usersByArea = $fightersByEntity->chunk(count($fightersByEntity) / $areas);
 
         $area = 1;
-
+        $round = 1;
+        $winnersPerGroup = $this->settings->preliminaryWinner;
         // loop on areas
-        $tree = $this->generateAllGroups($usersByArea, $area);
+        $tree = $this->generateGroupsForFirstRound($usersByArea, $area, $round );
+        $round++;
+
+        $numGroups = sizeof($tree);
+        $numActiveFighters = $numGroups * $winnersPerGroup;
+
+
+
         return $tree;
     }
 
@@ -251,7 +259,7 @@ class TreeGen implements TreeGenerable
      *
      * @return Collection
      */
-    public function generateAllGroups($usersByArea, $area)
+    public function generateGroupsForFirstRound($usersByArea, $area, $round)
     {
         $groups = new Collection();
         foreach ($usersByArea as $fightersByEntity) {
@@ -268,7 +276,7 @@ class TreeGen implements TreeGenerable
 
             // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup as $fighters) {
-                $group = $this->saveGroup($area, $fighters, $order, $groups);
+                $group = $this->saveGroup($area, $fighters, $order, $round);
                 $groups->push($group);
                 $order++;
             }
@@ -282,18 +290,18 @@ class TreeGen implements TreeGenerable
      * @param $area
      * @param $fighters
      * @param $order
-     *
+     * @param $round
      * @return FightersGroup
      */
-    public function saveGroup($area, $fighters, $order)
+    public function saveGroup($area, $fighters, $order,$round)
     {
         $fighters = $fighters->pluck('id')->shuffle();
 
         $group = new FightersGroup();
         $group->area = $area;
         $group->order = $order;
+        $group->round = $round;
         $group->championship_id = $this->championship->id;
-
         $group->save();
 
         // Add all competitors to Pivot Table

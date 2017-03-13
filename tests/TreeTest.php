@@ -37,7 +37,7 @@ class TreeTest extends TestCase
         $numAreas = [1, 2, 4];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = false, $hasPreliminary = true);
+                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasPlayOff = false, $hasPreliminary = true);
                 $this->checkAssertion($numArea, $numCompetitors, $numGroupsExpected);
             }
         }
@@ -52,7 +52,7 @@ class TreeTest extends TestCase
         $numAreas = [1];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = true, $hasPreliminary = false);
+                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasPlayOff = true, $hasPreliminary = false);
                 $this->checkAssertion($numArea, $numCompetitors, $numGroupsExpected);
 
             }
@@ -67,7 +67,7 @@ class TreeTest extends TestCase
         $numAreas = [1];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasRoundRobin = false, $hasPreliminary = false);
+                $this->clickGenerate($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasPlayOff = false, $hasPreliminary = false);
                 $this->checkAssertion($numArea, $numCompetitors, $numGroupsExpected);
 
             }
@@ -87,12 +87,12 @@ class TreeTest extends TestCase
         }
     }
 
-    public function clickGenerate($numAreas, $numCompetitors, $preliminaryGroupSize, $hasRoundRobin, $hasPreliminary)
+    public function clickGenerate($numAreas, $numCompetitors, $preliminaryGroupSize, $hasPlayOff, $hasPreliminary)
     {
 
         $this->visit('/kendo-tournaments')
             ->select($numAreas, 'fightingAreas')
-            ->select($hasRoundRobin ? 0 : 1, 'treeType')
+            ->select($hasPlayOff ? 0 : 1, 'treeType')
             ->select($preliminaryGroupSize, 'preliminaryGroupSize')
             ->select($numCompetitors, 'numFighters');
 

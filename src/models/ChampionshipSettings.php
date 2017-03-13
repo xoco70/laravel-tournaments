@@ -17,7 +17,7 @@ class ChampionshipSettings extends Model
     protected $guarded = ['id'];
 
     const MIN_COMPETITORS_BY_AREA = 2,
-        ROUND_ROBIN = 0,
+        PLAYOFF = 0,
         DIRECT_ELIMINATION = 1,
         PRELIMINARY_GROUP_SIZE = [3 => 3, 4 => 4, 5 => 5],
         PRELIMINARY_WINNERS = [1 => 1], // , 2 => 2, 3 => 3

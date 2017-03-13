@@ -52,8 +52,8 @@ $fights = $championship->fights;
             @else
                 @if ($championship->isDirectEliminationType())
                     @include('kendo-tournaments::partials.tree.directElimination')
-                @elseif ($championship->isRoundRobinType())
-                    @include('kendo-tournaments::partials.tree.roundRobin')
+                @elseif ($championship->isPlayOffType())
+                    @include('kendo-tournaments::partials.tree.playOff')
                 @else
                     Ooooops. Problem
                 @endif
