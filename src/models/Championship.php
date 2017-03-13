@@ -111,7 +111,7 @@ class Championship extends Model
      */
     public function isPlayOffType()
     {
-        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::ROUND_ROBIN;
+        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::PLAY_OFF;
     }
 
     /**
@@ -144,12 +144,25 @@ class Championship extends Model
         return $this->hasManyThrough(Fight::class, FightersGroup::class);
     }
 
+    private function hasNoCustomSettings()
+    {
+        return
+            ($this->settings->ageCategory == null || $this->settings->ageCategory == 0) &&
+            $this->settings->ageMin == null &&
+            $this->settings->ageMax == null &&
+            $this->settings->gradeMin == null &&
+            $this->settings->gradeMax == null &&
+            ($this->settings->gradeCategory == null || $this->settings->gradeCategory == 0);
+    }
+
     public function buildName()
     {
-
-
         if ($this->settings != null && $this->settings->alias != null && $this->settings->alias != '')
             return $this->settings->alias;
+
+        if ($this->hasNoCustomSettings()) {
+            return $this->category->name;
+        }
 
         $genders = [
             'M' => trans('categories.male'),
