@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFightersGroupTeamTable extends Migration
+class CreateCompetitorTeamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateFightersGroupTeamTable extends Migration
      */
     public function up()
     {
-        Schema::create('fighter_team', function (Blueprint $table) {
+        Schema::create('competitor_team', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('team_id')->unsigned()->nullable()->index();
-            $table->integer('fighter_id')->unsigned()->index();
+            $table->integer('competitor_id')->unsigned()->index();
+            $table->integer('order')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('team_id')
@@ -25,7 +26,13 @@ class CreateFightersGroupTeamTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->unique(['team_id', 'fighters_id']);
+            $table->foreign('competitor_id')
+                ->references('id')
+                ->on('competitor')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->unique(['team_id', 'competitor_id']);
         });
     }
 
@@ -37,7 +44,7 @@ class CreateFightersGroupTeamTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('fighter_team');
+        Schema::dropIfExists('competitor_team');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
