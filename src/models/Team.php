@@ -32,4 +32,9 @@ class Team extends Model
     {
         return $this->belongsToMany(FightersGroup::class, 'round_team')->withTimestamps();
     }
+
+    public function competitors()
+    {
+        return $this->belongsToMany(Competitor::class);
+    }
 }
