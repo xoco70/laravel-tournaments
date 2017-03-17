@@ -43,6 +43,16 @@ class Championship extends Model
     }
 
     /**
+     * A championship has many Competitors.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function competitorsWithUser()
+    {
+        return $this->hasMany(Competitor::class)->with('user');
+    }
+
+    /**
      * A championship belongs to a Category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -147,6 +157,7 @@ class Championship extends Model
     private function hasNoCustomSettings()
     {
         return
+            $this->settings == null ||
             ($this->settings->ageCategory == null || $this->settings->ageCategory == 0) &&
             $this->settings->ageMin == null &&
             $this->settings->ageMax == null &&

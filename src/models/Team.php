@@ -37,4 +37,12 @@ class Team extends Model
     {
         return $this->belongsToMany(Competitor::class);
     }
+
+    public function competitorsWithUser()
+    {
+        return $this->belongsToMany(Competitor::class)->with('user');
+
+
+    }
+
 }
