@@ -35,7 +35,7 @@ class Team extends Model
 
     public function competitors()
     {
-        return $this->belongsToMany(Competitor::class);
+        return $this->belongsToMany(Competitor::class)->withTimestamps();
     }
 
     public function competitorsWithUser()
