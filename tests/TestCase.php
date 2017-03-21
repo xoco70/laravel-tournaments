@@ -8,6 +8,7 @@ use Xoco70\KendoTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
+    const DB_HOST ='127.0.0.1';
     const DB_NAME = 'plugin';
     const DB_USERNAME = 'root';
     const DB_PASSWORD = '';
@@ -30,11 +31,6 @@ abstract class TestCase extends BaseTestCase
         $this->makeSureDatabaseExists();
         parent::setUp();
 
-//        $this->migrateAndSeed();
-//        $this->beforeApplicationDestroyed(function () {
-//            $this->artisan('migrate:rollback');
-//        });
-
         $this->withFactories(__DIR__.'/../database/factories');
     }
 
@@ -42,10 +38,6 @@ abstract class TestCase extends BaseTestCase
     {
         $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
     }
-
-    /**
-     * @param \Illuminate\Foundation\Auth\User $newUser
-     */
 
     /**
      * Define environment setup.
@@ -59,10 +51,10 @@ abstract class TestCase extends BaseTestCase
         $app['config']->set('database.default', 'mysql');
         $app['config']->set('database.connections.mysql', [
             'driver'    => 'mysql',
-            'host'      => '127.0.0.1',
-            'database'  => static::DB_NAME,
-            'username'  => static::DB_USERNAME,
-            'password'  => static::DB_PASSWORD,
+            'host'      => $_SERVER['DB_HOST'] ?? static::DB_HOST,
+            'database'  => $_SERVER['DB_NAME'] ?? static::DB_NAME,
+            'username'  => $_SERVER['DB_USERNAME'] ?? static::DB_USERNAME,
+            'password'  => $_SERVER['DB_PASSWORD'] ?? static::DB_PASSWORD,
             'prefix'    => 'ken_',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
@@ -70,13 +62,6 @@ abstract class TestCase extends BaseTestCase
         ]);
     }
 
-    private function migrateAndSeed()
-    {
-        //        $this->artisan('migrate', [
-//            '--realpath' => realpath(__DIR__ . '/../database/migrations'),
-//        ]);
-//        $this->artisan('db:seed', ['--class' => CategorySeeder::class]);
-    }
 
     /**
      * @param $query
