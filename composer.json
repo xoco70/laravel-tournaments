@@ -13,16 +13,18 @@
   "autoload": {
     "psr-4": {
       "Xoco70\\KendoTournaments\\": "src"
-    }
+    },
+    "classmap": [
+      "src/"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
       "Xoco70\\KendoTournaments\\Tests\\": "tests"
     },
-    "4classmap": [
+    "classmap": [
       "tests",
-      "tests/TestCase.php",
-      "tests/BrowserKitTestCase.php"
+      "tests/TestCase.php"
     ]
   },
   "minimum-stability": "dev",
@@ -33,7 +35,6 @@
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^1.0"
-
   },
   "scripts": {
     "test": "phpunit"
