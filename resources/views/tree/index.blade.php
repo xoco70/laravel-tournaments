@@ -9,11 +9,7 @@
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/jquery.timepicker.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/custom.css">
     <link rel="stylesheet" href="/vendor/kendo-tournaments/css/brackets.css">
-    <style>
-        .bg-grey {
-            background-color: #CCC;
-        }
-    </style>
+
 
 </head>
 <body>

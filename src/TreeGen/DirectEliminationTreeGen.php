@@ -55,28 +55,6 @@ class DirectEliminationTreeGen implements TreeGenerable
         //Group 2 teams into a match
         $matches = array_chunk($teams, 2);
 
-//        if ($this->noTeams > 2) {
-//
-//            foreach ($matches as $key => &$match) {
-//
-//                $matchNumber = $key + 1;
-//
-//
-//                //Add the match to the first round
-//                $this->brackets[$roundNumber][$matchNumber] = $match;
-//
-//                //Set the match to null as the result of the above match hasn't yet been determined
-//                $match = null;
-//
-//
-//            }
-//
-//            //Now all of the blank spaces except the ones awaiting first round results have gone, group the single dimension array into a multiple dimensional array, so opponents share the same parent array
-//            $matches = array_chunk($matches, 2);
-//
-//        }
-
-
         //If there's already a match in the match array, then that means the next round is round 2, so increase the round number
         if (count($this->brackets)) $roundNumber++;
 
@@ -148,36 +126,36 @@ class DirectEliminationTreeGen implements TreeGenerable
     public function printBrackets()
     {
 
-//        $this->printRoundTitles();
-//
-//        echo '<div id="brackets-wrapper">';
-//
-//        foreach ($this->brackets as $roundNumber => $round) {
-//
-//            foreach ($round as $matchNumber => $match) {
-//
-//                echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
-//                        <input type="text" class="score">'
-//                    . $this->getPlayerList($match['playerA']) .
-//                    '<div class="match-divider">
-//                        </div>
-//                        <input type="text" class="score">'
-//                    . $this->getPlayerList($match['playerB']) .
-//                    '</div>';
-//
-//                if ($roundNumber != $this->noRounds) {
-//
-//                    echo '<div class="vertical-connector" style="top: ' . $match['vConnectorTop'] . 'px; left: ' . $match['vConnectorLeft'] . 'px; height: ' . $match['vConnectorHeight'] . 'px;"></div>
-//                          <div class="horizontal-connector" style="top: ' . $match['hConnectorTop'] . 'px; left: ' . $match['hConnectorLeft'] . 'px;"></div>
-//                          <div class="horizontal-connector" style="top: ' . $match['hConnector2Top'] . 'px; left: ' . $match['hConnector2Left'] . 'px;"></div>';
-//
-//                }
-//
-//            }
-//
-//        }
-//
-//        echo '</div>';
+        $this->printRoundTitles();
+
+        echo '<div id="brackets-wrapper">';
+
+        foreach ($this->brackets as $roundNumber => $round) {
+
+            foreach ($round as $matchNumber => $match) {
+
+                echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
+                        <input type="text" class="score">'
+                    . $this->getPlayerList($match['playerA']) .
+                    '<div class="match-divider">
+                        </div>
+                        <input type="text" class="score">'
+                    . $this->getPlayerList($match['playerB']) .
+                    '</div>';
+
+                if ($roundNumber != $this->noRounds) {
+
+                    echo '<div class="vertical-connector" style="top: ' . $match['vConnectorTop'] . 'px; left: ' . $match['vConnectorLeft'] . 'px; height: ' . $match['vConnectorHeight'] . 'px;"></div>
+                          <div class="horizontal-connector" style="top: ' . $match['hConnectorTop'] . 'px; left: ' . $match['hConnectorLeft'] . 'px;"></div>
+                          <div class="horizontal-connector" style="top: ' . $match['hConnector2Top'] . 'px; left: ' . $match['hConnector2Left'] . 'px;"></div>';
+
+                }
+
+            }
+
+        }
+
+        echo '</div>';
 
     }
 

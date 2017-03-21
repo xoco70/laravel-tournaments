@@ -63,8 +63,8 @@ class FightersGroup extends Model
     }
 
     /**
+     * @param Collection $fightersGroup
      * @param $settings
-     * @param Championship $championship
      */
     public static function generateFights(Collection $fightersGroup, $settings, Championship $championship = null)
     {
@@ -76,8 +76,11 @@ class FightersGroup extends Model
         })->toArray();
         Fight::destroy($arrGroupsId);
 
+
+
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
+
                 Fight::savePreliminaryFightGroup($fightersGroup, $numGroup);
             }
         } else {

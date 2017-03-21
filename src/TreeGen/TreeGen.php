@@ -2,6 +2,7 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
+use App\User;
 use Illuminate\Support\Collection;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
@@ -13,7 +14,7 @@ use Xoco70\KendoTournaments\Models\Team;
 
 class TreeGen implements TreeGenerable
 {
-    protected $groupBy;
+    protected $groupBy, $tree;
     public $championship;
     public $settings;
 
@@ -36,6 +37,7 @@ class TreeGen implements TreeGenerable
      */
     public function run()
     {
+        $this->tree = new Collection();
         // If previous trees already exist, delete all
         $this->championship->fightersGroups()->delete();
         $areas = $this->settings->fightingAreas;
@@ -53,17 +55,13 @@ class TreeGen implements TreeGenerable
 
         $area = 1;
         $round = 1;
-        $winnersPerGroup = $this->settings->preliminaryWinner;
-        // loop on areas
-        $tree = $this->generateGroupsForFirstRound($usersByArea, $area, $round );
-        $round++;
+        $numFighters = sizeof($usersByArea->collapse());
 
-        $numGroups = sizeof($tree);
-        $numActiveFighters = $numGroups * $winnersPerGroup;
+        $this->generateGroupsForRound($usersByArea, $area, $round);
 
+        $this->pushEmptyGroupsToTree($numFighters);
 
-
-        return $tree;
+        return $this->tree;
     }
 
     /**
@@ -259,31 +257,28 @@ class TreeGen implements TreeGenerable
      *
      * @return Collection
      */
-    public function generateGroupsForFirstRound($usersByArea, $area, $round)
+    public function generateGroupsForRound($usersByArea, $area, $round)
     {
         $groups = new Collection();
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
             if ($this->championship->hasPreliminary()) {
                 $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize)->shuffle();
-            } elseif ($this->championship->isDirectEliminationType()) {
+            } elseif ($this->championship->isDirectEliminationType() || $round>1) {
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
             } else { // Round Robin
                 $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
             }
-
             $order = 1;
 
             // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup as $fighters) {
                 $group = $this->saveGroup($area, $fighters, $order, $round);
-                $groups->push($group);
+                $this->tree->push($group);
                 $order++;
             }
             $area++;
         }
-
-        return $groups;
     }
 
     /**
@@ -293,7 +288,7 @@ class TreeGen implements TreeGenerable
      * @param $round
      * @return FightersGroup
      */
-    public function saveGroup($area, $fighters, $order,$round)
+    public function saveGroup($area, $fighters, $order, $round)
     {
         $fighters = $fighters->pluck('id')->shuffle();
 
@@ -312,5 +307,26 @@ class TreeGen implements TreeGenerable
         }
 
         return $group;
+    }
+
+    /**
+     * @param $numFighters
+     */
+    private function pushEmptyGroupsToTree($numFighters)
+    {
+        $numRounds = log($numFighters, 2);
+
+        $roundNumber = 1;
+        for ($roundNumber += 1; $roundNumber <= $numRounds; $roundNumber++) {
+            for ($matchNumber = 1; $matchNumber <= ($numFighters / pow(2, $roundNumber)); $matchNumber++) {
+                $group = new FightersGroup();
+                $group->championship_id = $this->championship->id;
+                $group->round = $roundNumber;
+                $group->area = 1; // Change this
+                $group->order = 1; // Change this
+                $this->tree->push($group);
+                $group->save();
+            }
+        }
     }
 }
