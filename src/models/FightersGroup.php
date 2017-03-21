@@ -2,6 +2,7 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -77,14 +78,13 @@ class FightersGroup extends Model
         Fight::destroy($arrGroupsId);
 
 
-
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
 
                 Fight::savePreliminaryFightGroup($fightersGroup, $numGroup);
             }
         } else {
-            Fight::saveGroupdRobinFights($championship, $fightersGroup);
+            Fight::saveGroupFights($championship, $fightersGroup);
         }
     }
 
@@ -123,7 +123,10 @@ class FightersGroup extends Model
                 $this->competitors()->attach($fighter);
             } else {
                 DB::table('fighters_group_competitor')->insertGetId(
-                    ['competitor_id' => null, 'fighters_group_id' => $this->id]
+                    ['competitor_id' => null, 'fighters_group_id' => $this->id,
+                        "created_at" => Carbon::now(),
+                        "updated_at" => Carbon::now(),
+                    ]
                 );
             }
         }

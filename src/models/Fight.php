@@ -34,14 +34,23 @@ class Fight extends Model
     {
         if ($championship->category->isTeam) {
             $fighters = $group->teams;
-            if (count($fighters) % 2 != 0) {
+            if (sizeof($fighters) == 0){
+                $fighters->push(new Team());
+                $fighters->push(new Team());
+            } else if (count($fighters) % 2 != 0) {
                 $fighters->push(new Team(['name' => 'BYE']));
             }
+
         } else {
             $fighters = $group->competitors;
-            if (count($fighters) % 2 != 0) {
+            if (sizeof($fighters) == 0){ // If
+                $fighters->push(new Competitor());
+                $fighters->push(new Competitor());
+            }else if (count($fighters) % 2 != 0) { // If fighter is not pair, add a BYE
                 $fighters->push(new Competitor());
             }
+
+
         }
 
         return $fighters;
@@ -95,7 +104,7 @@ class Fight extends Model
      */
     public static function savePreliminaryFightGroup($groups, $numGroup = 1)
     {
-        
+
         $c1 = $c2 = null;
         $order = 0;
 
@@ -135,34 +144,11 @@ class Fight extends Model
         }
     }
 
-//    public static function saveRoundRobinFight(Championship $championship, $tree)
-//    {
-//        $championship->category->isTeam
-//            ? $fighters = $championship->teams
-//            : $fighters = $championship->users;
-//
-//        $reverseFighters = $fighters->reverse();
-//        $order = 0;
-//        foreach ($reverseFighters as $reverse) {
-//            foreach ($fighters as $fighter) {
-//                if ($fighter->id != $reverse->id) {
-//                    $fight = new Fight();
-//                    $fight->tree_id = $tree[0]->id;
-//                    $fight->c1 = $fighter->id;
-//                    $fight->c2 = $reverse->id;
-//                    $fight->order = $order++;
-//                    $fight->area = 1;
-//                    $fight->save();
-//                    $order++;
-//                }
-//            }
-//        }
-//    }
 
     /**
      * @param Collection $groups
      */
-    public static function saveGroupdRobinFights(Championship $championship, $groups)
+    public static function saveGroupFights(Championship $championship, $groups)
     {
         foreach ($groups as $group) {
             $fighters = self::getActorsToFights($championship, $group);
@@ -179,17 +165,14 @@ class Fight extends Model
                     $round[$i][$j]['Home'] = $home[$j];
                     $round[$i][$j]['Away'] = $away[$j];
                     $fight = new self();
-                    $fight->fighters_group_id = $groups[0]->id;
+                    $fight->fighters_group_id = $group->id;
                     $fight->c1 = $round[$i][$j]['Home']->id;
                     $fight->c2 = $round[$i][$j]['Away']->id;
                     $fight->order = $order++;
                     $fight->area = 1;
 
-                    // We ommit fights that have a BYE in Round robins, but not in Preliminary
+                    $fight->save();
 
-                    if ($fight->c1 != null && $fight->c2 != null || !$championship->isPlayOffType()) {
-                        $fight->save();
-                    }
                 }
                 if (count($home) + count($away) - 1 > 2) {
                     $away->prepend($home->splice(1, 1)->shift());
@@ -197,7 +180,6 @@ class Fight extends Model
                     $order++;
                 }
             }
-//            return $round;
         }
     }
 }

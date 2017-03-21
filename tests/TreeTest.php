@@ -116,7 +116,9 @@ class TreeTest extends TestCase
     {
         for ($area = 1; $area <= $numArea; $area++) {
             $count = FightersGroup::where('championship_id', $this->championship->id)
-                ->where('area', $area)->count();
+                ->where('area', $area)
+                ->where('round', 1)
+                ->count();
 
             if ((int)($numCompetitors / $numArea) <= 1) {
                 $this->assertTrue($count == 0);
