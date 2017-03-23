@@ -131,7 +131,7 @@ class Championship extends Model
      */
     public function isDirectEliminationType()
     {
-        return $this->settings == null || $this->settings->treeType == ChampionshipSettings::DIRECT_ELIMINATION;
+        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::DIRECT_ELIMINATION;
     }
 
     /**

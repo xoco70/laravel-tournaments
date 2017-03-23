@@ -15,6 +15,7 @@ class CreateFightersGroupTable extends Migration
     {
         Schema::create('fighters_groups', function (Blueprint $table) {
             $table->increments('id');
+            $table->tinyInteger('short_id');
             $table->integer('championship_id')->unsigned()->index();
             $table->tinyInteger('round')->default(0); // Eliminitory, 1/8, 1/4, etc.
             $table->tinyInteger('area');
