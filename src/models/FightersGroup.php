@@ -131,4 +131,38 @@ class FightersGroup extends Model
             }
         }
     }
+
+
+    /**
+     * Get the many 2 many relationship with
+     * @return Collection
+     */
+    public function competitorsWithNull()
+    {
+        $competitors = new Collection();
+        $fgcs = FighterGroupCompetitor::where('fighters_group_id', $this->id)
+            ->with('competitor')
+            ->get();
+        foreach ($fgcs as $fgc) {
+            $competitors->push($fgc->competitor ?? new Competitor());
+        }
+
+        return $competitors;
+
+    }
+
+
+    public function teamsWithNull()
+    {
+        $teams = new Collection();
+        $fgcs = FighterGroupTeam::where('fighters_group_id', $this->id)
+            ->with('team')
+            ->get();
+        foreach ($fgcs as $fgc) {
+            $teams->push($fgc->team ?? new Team());
+        }
+
+        return $teams;
+
+    }
 }
