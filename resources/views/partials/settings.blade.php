@@ -20,9 +20,11 @@ if (session()->has('numFighters')) {
                 <br/>
 
                 <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
-                <input class="switch" data-on-text="Si" data-off-text="No" id="hasPreliminary"
-                       @if ($setting->hasPreliminary == 1) checked @endif
-                       name="hasPreliminary" type="checkbox" value="1">
+                <select class="form-control" id="numFighters" name="numFighters">
+                    <option value="0">NO</option>
+                    <option value="1" selected>YES</option>
+
+                </select>
 
             </div>
         </div>

@@ -267,9 +267,9 @@ class TreeGen implements TreeGenerable
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
             } else { // Round Robin
                 $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
+
             }
             $order = 1;
-
             // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup as $fighters) {
                 $group = $this->saveGroupAndSync($fighters, $area, $order, $round);
@@ -278,6 +278,7 @@ class TreeGen implements TreeGenerable
             }
             $area++;
         }
+
     }
 
     /**
