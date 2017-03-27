@@ -190,7 +190,7 @@ class Championship extends Model
     }
 
     public function getSettings(){
-        return $this->getSettings ?? new ChampionshipSettings(config('options.default_settings'));
+        return $this->settings ?? new ChampionshipSettings(config('options.default_settings'));
     }
 
 }
