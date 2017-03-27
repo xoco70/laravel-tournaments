@@ -188,4 +188,9 @@ class Championship extends Model
 
         return $teamText . ' ' . $genders[$this->category->gender] . ' ' . $ageCategoryText . ' ' . $gradeText;
     }
+
+    public function getSettings(){
+        return $this->getSettings ?? new ChampionshipSettings(config('options.default_settings'));
+    }
+
 }
