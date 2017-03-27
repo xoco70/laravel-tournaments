@@ -259,7 +259,6 @@ class TreeGen implements TreeGenerable
     public function generateGroupsForRound($usersByArea, $area, $round)
     {
         $groups = new Collection();
-        dd($this->championship->settings);
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
             if ($this->championship->hasPreliminary()) {
