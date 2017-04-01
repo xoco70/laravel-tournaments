@@ -6,11 +6,8 @@ if (session()->has('numFighters')) {
 }
 
 ?>
-<form method="POST" action="http://tournament-plugin.dev/kendo-tournaments/championships/1/trees"
-      accept-charset="UTF-8"
-      class="form-settings">
+<form method="POST" action="{{ route('tree.store', ['championship' => $championship])}}" accept-charset="UTF-8" class="form-settings">
     {{ csrf_field() }}
-
 
     <div class="row">
         <div class="col-lg-2">
@@ -20,7 +17,7 @@ if (session()->has('numFighters')) {
                 <br/>
 
                 <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
-                <select class="form-control" id="numFighters" name="numFighters">
+                <select class="form-control" id="numFighters" name="hasPreliminary">
                     <option value="0">NO</option>
                     <option value="1" selected>YES</option>
 
@@ -63,8 +60,10 @@ if (session()->has('numFighters')) {
 
             <label for="treeType">Tree Type</label>
             <select class="form-control" id="treeType" name="treeType">
-                <option value="0" @if ($setting->treeType == 0) selected @endif >{{ trans('kendo-tournaments::categories.roundRobin') }}</option>
-                <option value="1"  @if ($setting->treeType == 1) selected @endif>{{ trans('kendo-tournaments::categories.direct_elimination') }}</option>
+                <option value="0"
+                        @if ($setting->treeType == 0) selected @endif >{{ trans('kendo-tournaments::categories.roundRobin') }}</option>
+                <option value="1"
+                        @if ($setting->treeType == 1) selected @endif>{{ trans('kendo-tournaments::categories.direct_elimination') }}</option>
             </select>
         </div>
 

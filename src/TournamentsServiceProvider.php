@@ -31,7 +31,7 @@ class TournamentsServiceProvider extends ServiceProvider
 
         $router->group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function ($router) {
             $router->get('/', 'Xoco70\KendoTournaments\TreeController@index')->name('tree.index');
-            $router->post('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@store')->name('tree.index');
+            $router->post('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@store')->name('tree.store');
         });
     }
 
