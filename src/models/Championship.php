@@ -154,6 +154,16 @@ class Championship extends Model
         return $this->hasManyThrough(Fight::class, FightersGroup::class);
     }
 
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function firstRoundFights()
+    {
+        return $this->hasManyThrough(Fight::class, FightersGroup::class)
+            ->where('fighters_groups.round', 1);
+    }
+
     private function hasNoCustomSettings()
     {
         return
@@ -189,7 +199,8 @@ class Championship extends Model
         return $teamText . ' ' . $genders[$this->category->gender] . ' ' . $ageCategoryText . ' ' . $gradeText;
     }
 
-    public function getSettings(){
+    public function getSettings()
+    {
         return $this->settings ?? new ChampionshipSettings(config('options.default_settings'));
     }
 
