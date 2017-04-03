@@ -8,7 +8,7 @@ class Team extends Model
 {
     protected $table = 'team';
     public $timestamps = true;
-    protected $fillable = ['name', 'championship_id'];
+    protected $fillable = ['short_id', 'name', 'championship_id'];
 
     /**
      * A Team belongs to a Championship.
