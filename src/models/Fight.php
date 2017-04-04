@@ -182,4 +182,57 @@ class Fight extends Model
             }
         }
     }
+
+    public function getFighter1Name($group)
+    {
+        $isTeam = $group->championship->category->isTeam;
+        if ($isTeam) {
+
+            return $this->team1 == null ? '' : $this->team1->name;
+        }
+
+        return
+            $this->competitor1 == null ? '' : $this->competitor1->firstname
+            . " " .
+            $this->competitor1 == null ? '' : $this->competitor1 == null ? '' : $this->competitor1->lastname;
+
+    }
+
+    public function getFighter2Name($group)
+    {
+        $isTeam = $group->championship->category->isTeam;
+        if ($isTeam) {
+
+            return $this->team2 == null ? '' : $this->team2->name;
+        }
+
+        return
+            $this->competitor2 == null ? '' : $this->competitor2->firstname
+            . " " .
+            $this->competitor2 == null ? '' : $this->competitor2 == null ? '' : $this->competitor2->lastname;
+
+    }
+
+
+    public function getFighter1ShortId($group)
+    {
+        $isTeam = $group->championship->category->isTeam;
+        if ($isTeam) {
+            return $this->team1 == null ? '' : $this->team1->short_id;
+        }
+
+        return $this->competitor1 == null ? '' : $this->competitor1->short_id;
+
+    }
+
+    public function getFighter2ShortId($group)
+    {
+        $isTeam = $group->championship->category->isTeam;
+        if ($isTeam) {
+            return $this->team2 == null ? '' : $this->team2->short_id;
+        }
+
+        return $this->competitor2 == null ? '' : $this->competitor2->short_id;
+
+    }
 }

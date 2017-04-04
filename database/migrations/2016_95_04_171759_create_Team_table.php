@@ -9,7 +9,7 @@ class CreateTeamTable extends Migration
     {
         Schema::create('team', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('short_id')->unsigned()->nullable();
+            $table->integer('short_id')->unsigned()->nullable() ;
             $table->string('name');
             $table->integer('championship_id')->unsigned()->index(); // A checar
             $table->string('picture')->nullable();
