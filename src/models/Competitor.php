@@ -83,4 +83,11 @@ class Competitor extends Model
     {
         return $this->belongsToMany(FightersGroup::class, 'fighters_group_competitor')->withTimestamps();
     }
+
+    public function getName()
+    {
+        if ($this == null) return "BYE";
+        if ($this->user == null) return "BYE";
+        return $this->user->name;
+    }
 }

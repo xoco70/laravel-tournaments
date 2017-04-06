@@ -21,7 +21,7 @@ $directEliminationTree = array_flatten($directEliminationTree);
     <h1> {{$championship->buildName()}}</h1>
 @endif
 <?php
-$brackets = new DirectEliminationTreeGen($directEliminationTree, "", 1);
+$brackets = new DirectEliminationTreeGen($directEliminationTree, $championship);
 
 $brackets->printBrackets();
 ?>

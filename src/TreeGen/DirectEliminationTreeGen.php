@@ -3,11 +3,14 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
+use Xoco70\KendoTournaments\Models\Competitor;
+use Xoco70\KendoTournaments\Models\Team;
 
 class DirectEliminationTreeGen implements TreeGenerable
 {
     public $names;
-    public $brackets = array();
+    public $brackets = [];
+    public $championship;
     public $noTeams;
     public $noRounds;
     public $playerWrapperHeight = 30;
@@ -16,11 +19,10 @@ class DirectEliminationTreeGen implements TreeGenerable
     public $matchSpacing = 42;
     public $borderWidth = 3;
 
-    public function __construct($names)
+    public function __construct($names, $championship)
     {
 
         $this->names = $names;
-
         $this->run();
 
     }
@@ -68,7 +70,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
             for ($matchNumber = 1; $matchNumber <= ($minimumFirstRoundSize / pow(2, $roundNumber)); $matchNumber++) {
-                $this->brackets[$roundNumber][$matchNumber] = array(null, null);
+                $this->brackets[$roundNumber][$matchNumber] = [$this->getNewFighter(), $this->getNewFighter()];
             }
         }
         $this->assignPositions();
@@ -256,5 +258,13 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         }
         return $teams;
+    }
+
+    public function getNewFighter()
+    {
+        if ($this->championship->category->isTeam()) {
+            return new Team;
+        }
+        return new Competitor;
     }
 }
