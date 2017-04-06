@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class FightersGroup extends Model
 {
@@ -164,5 +165,21 @@ class FightersGroup extends Model
 
         return $teams;
 
+    }
+
+    public function getFighters()
+    {
+
+        if ($this->championship->category->isTeam()) {
+            $fighters = $this->teamsWithNull();
+        } else {
+            $fighters = $this->competitorsWithNull();
+        }
+
+        if (sizeof($fighters) == 0) {
+            $treeGen = new TreeGen($this->championship, null, null);
+            $fighters = $treeGen->createByeGroup(2);
+        }
+        return $fighters;
     }
 }
