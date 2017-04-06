@@ -26,11 +26,20 @@ class Fight extends Model
     ];
 
     /**
+     * Get First Fighter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(\Xoco70\KendoTournaments\Models\FightersGroup::class, 'fighters_group_id');
+    }
+    /**
      * @param Championship $championship
      *
      * @return mixed
      */
-    private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
+    private static function getActorsToFights(\Xoco70\KendoTournaments\Models\Championship $championship, FightersGroup $group = null)
     {
         if ($championship->category->isTeam) {
             $fighters = $group->teams;
@@ -63,7 +72,7 @@ class Fight extends Model
      */
     public function competitor1()
     {
-        return $this->belongsTo(Competitor::class, 'c1', 'id');
+        return $this->belongsTo(\Xoco70\KendoTournaments\Models\Competitor::class, 'c1', 'id');
     }
 
     /**
@@ -73,7 +82,7 @@ class Fight extends Model
      */
     public function competitor2()
     {
-        return $this->belongsTo(Competitor::class, 'c2', 'id');
+        return $this->belongsTo(\Xoco70\KendoTournaments\Models\Competitor::class, 'c2', 'id');
     }
 
     /**
@@ -83,7 +92,7 @@ class Fight extends Model
      */
     public function team1()
     {
-        return $this->belongsTo(Team::class, 'c1', 'id');
+        return $this->belongsTo(\Xoco70\KendoTournaments\Models\Team::class, 'c1', 'id');
     }
 
     /**
@@ -93,7 +102,7 @@ class Fight extends Model
      */
     public function team2()
     {
-        return $this->belongsTo(Team::class, 'c2', 'id');
+        return $this->belongsTo(\Xoco70\KendoTournaments\Models\Team::class, 'c2', 'id');
     }
 
     /**
@@ -146,9 +155,10 @@ class Fight extends Model
 
 
     /**
+     * @param Championship $championship
      * @param Collection $groups
      */
-    public static function saveGroupFights(Championship $championship, $groups)
+    public static function saveGroupFights(\Xoco70\KendoTournaments\Models\Championship $championship, $groups)
     {
         foreach ($groups as $group) {
             $fighters = self::getActorsToFights($championship, $group);
@@ -183,6 +193,9 @@ class Fight extends Model
         }
     }
 
+    /**
+     * @return string
+     */
     public function getFighter1Name()
     {
         $isTeam = $this->group->championship->category->isTeam;
@@ -195,6 +208,9 @@ class Fight extends Model
 
     }
 
+    /**
+     * @return string
+     */
     public function getFighter2Name()
     {
         $isTeam = $this->group->championship->category->isTeam;
@@ -208,6 +224,9 @@ class Fight extends Model
     }
 
 
+    /**
+     * @return string
+     */
     public function getFighter1ShortId()
     {
 
@@ -220,6 +239,9 @@ class Fight extends Model
 
     }
 
+    /**
+     * @return string
+     */
     public function getFighter2ShortId()
     {
 
