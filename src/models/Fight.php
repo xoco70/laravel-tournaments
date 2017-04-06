@@ -34,7 +34,7 @@ class Fight extends Model
     {
         if ($championship->category->isTeam) {
             $fighters = $group->teams;
-            if (sizeof($fighters) == 0){
+            if (sizeof($fighters) == 0) {
                 $fighters->push(new Team());
                 $fighters->push(new Team());
             } else if (count($fighters) % 2 != 0) {
@@ -43,10 +43,10 @@ class Fight extends Model
 
         } else {
             $fighters = $group->competitors;
-            if (sizeof($fighters) == 0){ // If
+            if (sizeof($fighters) == 0) { // If
                 $fighters->push(new Competitor());
                 $fighters->push(new Competitor());
-            }else if (count($fighters) % 2 != 0) { // If fighter is not pair, add a BYE
+            } else if (count($fighters) % 2 != 0) { // If fighter is not pair, add a BYE
                 $fighters->push(new Competitor());
             }
 
@@ -183,40 +183,35 @@ class Fight extends Model
         }
     }
 
-    public function getFighter1Name($group)
+    public function getFighter1Name()
     {
-        $isTeam = $group->championship->category->isTeam;
+        $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
 
             return $this->team1 == null ? '' : $this->team1->name;
         }
-
         return
-            $this->competitor1 == null ? '' : $this->competitor1->firstname
-            . " " .
-            $this->competitor1 == null ? '' : $this->competitor1 == null ? '' : $this->competitor1->lastname;
+            $this->competitor1 == null ? 'BYE' : $this->competitor1->user->firstname . " " . $this->competitor1->user->lastname;
 
     }
 
-    public function getFighter2Name($group)
+    public function getFighter2Name()
     {
-        $isTeam = $group->championship->category->isTeam;
+        $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
 
-            return $this->team2 == null ? '' : $this->team2->name;
+            return $this->team2 == null ? 'BYE' : $this->team2->name;
         }
 
         return
-            $this->competitor2 == null ? '' : $this->competitor2->firstname
-            . " " .
-            $this->competitor2 == null ? '' : $this->competitor2 == null ? '' : $this->competitor2->lastname;
-
+            $this->competitor2 == null ? 'BYE' : $this->competitor2->user->firstname . " " . $this->competitor2->user->lastname;
     }
 
 
-    public function getFighter1ShortId($group)
+    public function getFighter1ShortId()
     {
-        $isTeam = $group->championship->category->isTeam;
+
+        $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
             return $this->team1 == null ? '' : $this->team1->short_id;
         }
@@ -225,9 +220,10 @@ class Fight extends Model
 
     }
 
-    public function getFighter2ShortId($group)
+    public function getFighter2ShortId()
     {
-        $isTeam = $group->championship->category->isTeam;
+
+        $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
             return $this->team2 == null ? '' : $this->team2->short_id;
         }
