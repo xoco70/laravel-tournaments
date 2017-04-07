@@ -8,6 +8,7 @@ use Xoco70\KendoTournaments\Models\Team;
 
 class DirectEliminationTreeGen implements TreeGenerable
 {
+    public $firstRoundName;
     public $names;
     public $brackets = [];
     public $championship;
@@ -23,45 +24,51 @@ class DirectEliminationTreeGen implements TreeGenerable
     {
         $this->championship = $championship;
         $this->names = $names;
+
+        $this->firstRoundName = $names->first()->map(function ($item, $key) use ($championship) {
+            $fighters = $item->getFighters();
+            $fighter1 = $fighters->get(0);
+            $fighter2 = $fighters->get(1);
+
+            return [$fighter1, $fighter2];
+        })->flatten()->all();
+
         $this->run();
 
     }
 
     public function run()
     {
-        $teams = [];
-        //If no names have been entered, then use numbers
 
-        if ($this->names != '') {
-            $teams = $this->names;
-            $this->noTeams = count($teams);
-        }
+        $fighters = $this->firstRoundName;
+        $this->noTeams = count($fighters);
 
 
-        //Calculate the size of the first full round - for example if you have 5 teams, then the first full round will consist of 4 teams
-        $minimumFirstRoundSize = pow(2, ceil(log($this->noTeams) / log(2)));
-        $this->noRounds = log($minimumFirstRoundSize, 2);
-        $noByesToAdd = $minimumFirstRoundSize - $this->noTeams;
+        //Calculate the size of the first full round - for example if you have 5 fighters, then the first full round will consist of 4 fighters
+//        $minimumFirstRoundSize = pow(2, ceil(log($this->noTeams) / log(2)));
+//        dd($this->noTeams);
+        $this->noRounds = log($this->noTeams, 2);
+//        $noByesToAdd = $minimumFirstRoundSize - $this->noTeams;
+//        dd($noByesToAdd);
+        //Add the byes to the fighters array
+//        for ($i = 0; $i < $noByesToAdd; $i++) {
+//            $fighters[] = null;
+//        }
 
-        //Add the byes to the teams array
-        for ($i = 0; $i < $noByesToAdd; $i++) {
-            $teams[] = null;
-        }
 
-
-        //Order the teams in a seeded order - this is required regardless of whether it is a seeded tournament or not, as it prevents BYEs playing eachother
-//        $teams = $this->orderTeamsInSeededOrder($teams);
+        //Order the fighters in a seeded order - this is required regardless of whether it is a seeded tournament or not, as it prevents BYEs playing eachother
+//        $fighters = $this->orderTeamsInSeededOrder($fighters);
 
         $roundNumber = 1;
 
-        //Group 2 teams into a match
-        $matches = array_chunk($teams, 2);
+        //Group 2 fighters into a match
+        $matches = array_chunk($fighters, 2);
 
         //If there's already a match in the match array, then that means the next round is round 2, so increase the round number
         if (count($this->brackets)) $roundNumber++;
 
         $countMatches = count($matches);
-        //Create the first full round of teams, some may be blank if waiting on the results of a previous round
+        //Create the first full round of fighters, some may be blank if waiting on the results of a previous round
         for ($i = 0; $i < $countMatches; $i++) {
             $this->brackets[$roundNumber][$i + 1] = $matches[$i];
         }
@@ -69,10 +76,18 @@ class DirectEliminationTreeGen implements TreeGenerable
         //Create the result of the empty rows for this tournament
 
         for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
-            for ($matchNumber = 1; $matchNumber <= ($minimumFirstRoundSize / pow(2, $roundNumber)); $matchNumber++) {
-                $this->brackets[$roundNumber][$matchNumber] = [$this->getNewFighter(), $this->getNewFighter()];
+            for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
+                if ($this->championship->category->isTeam()){
+                    $fighter1 = $this->names->get($roundNumber)[0]->fights[$matchNumber-1]->team1;
+                    $fighter2 = $this->names->get($roundNumber)[0]->fights[$matchNumber-1]->team2;
+                }else{
+                    $fighter1 = $this->names->get($roundNumber)[$matchNumber-1]->fights[0]->competitor1;
+                    $fighter2 = $this->names->get($roundNumber)[$matchNumber-1]->fights[0]->competitor2;
+                }
+                $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
             }
         }
+
         $this->assignPositions();
     }
 
@@ -220,7 +235,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         $html = '<select>
                 <option' . ($selected == '' ? ' selected' : '') . '></option>';
-        foreach (array_merge($this->brackets[1]) as $bracket) { // Bug Fix 24-02-2017 , $this->brackets[2]
+        foreach (array_merge($this->brackets[1], $this->brackets[2]) as $bracket) { // Bug Fix 24-02-2017
             if ($bracket['playerA'] != '') {
                 $html .= '<option' . ($selected == $bracket['playerA'] ? ' selected' : '') . '>' . $bracket['playerA'] . '</option>';
             }
