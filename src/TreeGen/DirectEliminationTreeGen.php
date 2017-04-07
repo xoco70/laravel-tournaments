@@ -21,7 +21,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
     public function __construct($names, $championship)
     {
-
+        $this->championship = $championship;
         $this->names = $names;
         $this->run();
 
