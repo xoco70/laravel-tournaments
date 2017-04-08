@@ -41,7 +41,7 @@ php artisan migrate
 
 Seed dummy data:
 ```shell
-php db:seed
+php artisan db:seed
 ```
 
 You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
