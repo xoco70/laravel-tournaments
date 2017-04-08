@@ -90,4 +90,12 @@ class Competitor extends Model
         if ($this->user == null) return "BYE";
         return $this->user->name;
     }
+
+    public function getFullName()
+    {
+        if ($this == null) return "BYE";
+        if ($this->user == null) return "BYE";
+        return $this->user->firstname . " " . $this->user->lastname;
+    }
+
 }
