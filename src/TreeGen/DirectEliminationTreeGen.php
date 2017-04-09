@@ -235,13 +235,13 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         $html = '<select>
                 <option' . ($selected == '' ? ' selected' : '') . '></option>';
-        foreach (array_merge($this->brackets[1], $this->brackets[2]) as $bracket) { // Bug Fix 24-02-2017
+        foreach (array_merge($this->brackets[1], $this->brackets[2]) as $bracket) {
             if ($bracket['playerA'] != '') {
-                $html .= '<option' . ($selected == $bracket['playerA'] ? ' selected' : '') . '>' . $bracket['playerA'] . '</option>';
+                $html .= '<option' . ($selected == $bracket['playerA'] ? ' selected' : '') . '>' . $bracket['playerA']->getName() . '</option>';
             }
 
             if ($bracket['playerB'] != '') {
-                $html .= '<option' . ($selected == $bracket['playerB'] ? ' selected' : '') . '>' . $bracket['playerB'] . '</option>';
+                $html .= '<option' . ($selected == $bracket['playerB'] ? ' selected' : '') . '>' . $bracket['playerB']->getName(). '</option>';
             }
         }
 
@@ -249,30 +249,6 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         return $html;
 
-    }
-
-    /**
-     * @param $teams
-     * @return array
-     */
-    private function orderTeamsInSeededOrder($teams): array
-    {
-        $logNoTeam = log($this->noTeams / 2, 2);
-
-        for ($i = 0; $i < $logNoTeam; $i++) {
-
-            $out = [];
-
-            foreach ($teams as $player) {
-                $splice = pow(2, $i);
-                $out = array_merge($out, array_splice($teams, 0, $splice));
-                $out = array_merge($out, array_splice($teams, -$splice));
-            }
-
-            $teams = $out;
-
-        }
-        return $teams;
     }
 
     public function getNewFighter()

@@ -46,7 +46,6 @@ class TreeController extends Controller
      */
     public function store(Request $request, Championship $championship)
     {
-
         DB::table('fight')->delete();
         DB::table('fighters_groups')->delete();
         DB::table('fighters_group_competitor')->delete();
