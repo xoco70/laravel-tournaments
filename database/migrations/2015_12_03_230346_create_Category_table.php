@@ -72,6 +72,7 @@ class CreateCategoryTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->unique(['championship_id', 'short_id']);
             $table->unique(['championship_id', 'user_id']);
 
             $table->boolean('confirmed');
