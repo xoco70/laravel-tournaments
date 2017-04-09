@@ -115,7 +115,7 @@ class Fight extends Model
     {
 
         $c1 = $c2 = null;
-        $order = 0;
+        $order = 1;
 
         foreach ($groups as $group) {
 
@@ -147,7 +147,7 @@ class Fight extends Model
             $fight->fighters_group_id = $group->id;
             $fight->c1 = $c1 != null ? $c1->id : null;
             $fight->c2 = $c2 != null ? $c2->id : null;
-            $fight->order = $order++;
+            $fight->short_id = $order++;
             $fight->area = $group->area;
             $fight->save();
         }
@@ -160,14 +160,11 @@ class Fight extends Model
      */
     public static function saveGroupFights(\Xoco70\KendoTournaments\Models\Championship $championship, $groups)
     {
+        $order = 1;
         foreach ($groups as $group) {
             $fighters = self::getActorsToFights($championship, $group);
-
             $away = $fighters->splice(count($fighters) / 2); // 2
-
             $home = $fighters; // 1
-
-            $order = 1;
 
             for ($i = 0; $i < count($home) + count($away) - 1; $i++) { // 0 -> 2
                 for ($j = 0; $j < count($home); $j++) {  // 1 no mas
@@ -178,8 +175,8 @@ class Fight extends Model
                     $fight->fighters_group_id = $group->id;
                     $fight->c1 = $round[$i][$j]['Home']->id;
                     $fight->c2 = $round[$i][$j]['Away']->id;
-                    $fight->order = $order++;
-                    $fight->area = 1;
+                    $fight->short_id = $order++;
+                    $fight->area = $group->area;
 
                     $fight->save();
 
