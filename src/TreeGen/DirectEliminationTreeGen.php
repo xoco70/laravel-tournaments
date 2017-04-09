@@ -235,7 +235,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         $html = '<select>
                 <option' . ($selected == '' ? ' selected' : '') . '></option>';
-        foreach (array_merge($this->brackets[1], $this->brackets[2]) as $bracket) {
+        foreach (array_merge($this->brackets[1]) as $bracket) { // Bug fix
             if ($bracket['playerA'] != '') {
                 $html .= '<option' . ($selected == $bracket['playerA'] ? ' selected' : '') . '>' . $bracket['playerA']->getName() . '</option>';
             }
