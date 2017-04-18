@@ -7,6 +7,7 @@ $factory->define(\Illuminate\Foundation\Auth\User::class, function (Faker\Genera
     return [
         'name'     => $faker->name,
         'email'    => $email,
+        'slug'     => $faker->slug,
         'password' => bcrypt(str_random(10)),
     ];
 });

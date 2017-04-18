@@ -37,15 +37,18 @@ class TreeGen implements TreeGenerable
      */
     public function run()
     {
+
         $this->tree = new Collection();
-        // If previous trees already exist, delete all
+        // If previous trees already exists, delete all
         $this->championship->fightersGroups()->delete();
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
 
+
         if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException();
         }
+
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
         $fightersByEntity = $this->getFightersByEntity($fighters);
 

@@ -11,7 +11,7 @@ class DirectEliminationTest extends TestCase
 //    use DatabaseTransactions;
 
     protected $root;
-    protected $tournament, $championship, $settings, $users;
+    protected $tournament, $championshipWithComp,$championshipWithTeam, $settings, $users;
 
 
     public function setUp()
@@ -23,7 +23,9 @@ class DirectEliminationTest extends TestCase
         )->first();
 
 
-        $this->championship = Championship::with('teams', 'users', 'category', 'settings')->find($tournament->championships[0]->id);
+
+        $this->championshipWithComp = Championship::with('teams', 'users', 'category', 'settings')->find($this->tournament->championships[0]->id);
+        $this->championshipWithTeam = Championship::with('teams', 'users', 'category', 'settings')->find($this->tournament->championships[0]->id);
     }
 
 
@@ -36,7 +38,8 @@ class DirectEliminationTest extends TestCase
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
                 $this->generateTreeWithUI($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasPlayOff = false, $hasPreliminary = 0);
-                parent::checkGroupsNumber($this->championship, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
+                parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
+                parent::checkGroupsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
 
             }
         }
@@ -45,13 +48,13 @@ class DirectEliminationTest extends TestCase
     /** @test */
     public function check_number_of_fights_when_direct_elimination_tree()
     {
-        $competitorsInTree = [ 1, 2, 3, 4, 5, 6, 7, 8];
-        $numFightsExpected = [ 0, 1, 2, 2, 4, 4, 4, 4];
+        $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
+        $numFightsExpected = [0, 1, 2, 2, 4, 4, 4, 4];
         $numAreas = [1, 2];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
                 $this->generateTreeWithUI($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasPlayOff = false, $hasPreliminary = 0);
-                parent::checkFightsNumber($this->championship, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
             }
         }
     }
