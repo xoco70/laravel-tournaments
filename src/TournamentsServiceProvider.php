@@ -18,12 +18,10 @@ class TournamentsServiceProvider extends ServiceProvider
     {
         $viewPath = __DIR__.'/../resources/views';
         $this->loadViewsFrom($viewPath, 'kendo-tournaments');
-//        $this->publishes([ $viewPath => base_path('resources/views/vendor/kendo-tournaments'),], 'kendo-tournaments');
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../translations', 'kendo-tournaments');
 
-//        $this->publishes([__DIR__ . '/views' => base_path('resources/views/vendor/kendo-tournaments')]);
         $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'migrations');
         $this->publishes([__DIR__.'/../database/seeds' => $this->app->databasePath().'/seeds'], 'seeds');
         $this->publishes([__DIR__.'/../database/factories' => $this->app->databasePath().'/factories'], 'seeds');

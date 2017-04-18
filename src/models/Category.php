@@ -54,10 +54,6 @@ class Category extends Model
         return $this->belongsToMany('App\Tournament');
     }
 
-//    public function settings()
-//    {
-//        return $this->hasOne(ChampionshipSettings::class);
-//    }
     public function championship()
     {
         return $this->hasMany(Championship::class);

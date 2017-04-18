@@ -3,12 +3,13 @@
 namespace Xoco70\KendoTournaments\Tests;
 
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Tournament;
 
 class DirectEliminationTest extends TestCase
 {
-//    use DatabaseTransactions;
+    use DatabaseTransactions;
 
     protected $root;
     protected $tournament, $championshipWithComp,$championshipWithTeam, $settings, $users;

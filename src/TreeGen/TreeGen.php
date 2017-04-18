@@ -2,7 +2,6 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
-use App\User;
 use Illuminate\Support\Collection;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
@@ -14,7 +13,8 @@ use Xoco70\KendoTournaments\Models\Team;
 
 class TreeGen implements TreeGenerable
 {
-    protected $groupBy, $tree;
+    protected $groupBy;
+    protected $tree;
     public $championship;
     public $settings;
 

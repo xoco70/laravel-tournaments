@@ -45,19 +45,7 @@ class DirectEliminationTreeGen implements TreeGenerable
 
 
         //Calculate the size of the first full round - for example if you have 5 fighters, then the first full round will consist of 4 fighters
-//        $minimumFirstRoundSize = pow(2, ceil(log($this->noTeams) / log(2)));
-//        dd($this->noTeams);
         $this->noRounds = log($this->noTeams, 2);
-//        $noByesToAdd = $minimumFirstRoundSize - $this->noTeams;
-//        dd($noByesToAdd);
-        //Add the byes to the fighters array
-//        for ($i = 0; $i < $noByesToAdd; $i++) {
-//            $fighters[] = null;
-//        }
-
-
-        //Order the fighters in a seeded order - this is required regardless of whether it is a seeded tournament or not, as it prevents BYEs playing eachother
-//        $fighters = $this->orderTeamsInSeededOrder($fighters);
 
         $roundNumber = 1;
 
