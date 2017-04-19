@@ -25,7 +25,7 @@ class DirectEliminationTreeGen implements TreeGenerable
         $this->championship = $championship;
         $this->names = $names;
 
-        $this->firstRoundName = $names->first()->map(function ($item, $key) use ($championship) {
+        $this->firstRoundName = $names->first()->map(function ($item) use ($championship) {
             $fighters = $item->getFighters();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
