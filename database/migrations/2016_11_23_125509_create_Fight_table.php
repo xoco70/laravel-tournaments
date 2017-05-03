@@ -15,6 +15,7 @@ class CreateFightTable extends Migration
     {
         Schema::create('fight', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('short_id')->unsigned()->nullable();
             $table->integer('fighters_group_id')->unsigned()->index();
             $table->foreign('fighters_group_id')
                 ->references('id')

@@ -52,6 +52,7 @@ class CreateCategoryTable extends Migration
 
         Schema::create('competitor', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('short_id')->unsigned()->nullable();
             $table->integer('championship_id')->unsigned()->index();
             $table->foreign('championship_id')
                 ->references('id')
