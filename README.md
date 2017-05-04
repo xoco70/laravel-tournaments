@@ -46,7 +46,7 @@ php artisan db:seed
 You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
 
 
-## Run Functional Tests (Still not integrated)
+## Run Functional Tests
 
 vendor/bin/phpunit tests
 
