@@ -17,12 +17,13 @@ class TournamentSeeder extends Seeder
         $this->command->info('Tournament seeding!');
         $venues = Venue::all()->pluck('id')->toArray();
 
-        // Tournament creation
         Tournament::truncate();
         $faker = Faker\Factory::create();
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
+
         Tournament::create([
             'id'                => 1,
+            'slug'              => md5(uniqid(rand(), true)),
             'user_id'           => 1,
             'name'              => 'Test Tournament',
             'dateIni'           => $dateIni,

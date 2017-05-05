@@ -39,8 +39,8 @@ class CreateFightTable extends Migration
             $table->boolean('hansoku3_c2')->nullable();
             $table->boolean('hansoku4_c2')->nullable();
 
-            $table->tinyInteger('area');
-            $table->tinyInteger('order');
+            $table->tinyInteger('area')->default(1);
+            $table->tinyInteger('order')->default(1);
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

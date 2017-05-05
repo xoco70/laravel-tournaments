@@ -53,9 +53,7 @@ class TreeController extends Controller
         DB::table('competitor')->delete();
         
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
-
         $numFighters = $request->numFighters;
-
         $users = factory(User::class, (int)$numFighters)->create();
 
         foreach ($users as $user) {
@@ -65,9 +63,7 @@ class TreeController extends Controller
                 'confirmed' => 1,
             ]);
         }
-
         $settings = ChampionshipSettings::createOrUpdate($request, $championship);
-
 
         //TODO Set groupBy argument to NULL for now
         $generation = new TreeGen($championship, null, $settings);
@@ -81,6 +77,7 @@ class TreeController extends Controller
 
         return redirect()->back()
             ->with('numFighters', $numFighters)
+            ->with('hasPreliminary', $settings->hasPreliminary)
             ->with(['success' , "Success"]);
     }
 }

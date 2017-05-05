@@ -6,7 +6,8 @@ if (session()->has('numFighters')) {
 }
 
 ?>
-<form method="POST" action="{{ route('tree.store', ['championship' => $championship])}}" accept-charset="UTF-8" class="form-settings">
+<form method="POST" action="{{ route('tree.store', ['championship' => $championship])}}" accept-charset="UTF-8"
+      class="form-settings">
     {{ csrf_field() }}
 
     <div class="row">
@@ -15,11 +16,11 @@ if (session()->has('numFighters')) {
 
                 <label for="hasPreliminary">Preliminary</label>
                 <br/>
-
                 <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
                 <select class="form-control" id="numFighters" name="hasPreliminary">
-                    <option value="0">NO</option>
-                    <option value="1" selected>YES</option>
+
+                    <option value="0" {{ $hasPreliminary == 0 ? 'selected' :'' }}>NO</option>
+                    <option value="1" {{ $hasPreliminary == 1 ? 'selected' :'' }}>YES</option>
 
                 </select>
 
@@ -48,6 +49,15 @@ if (session()->has('numFighters')) {
                     <option value="6" @if ($numFighters== 6) selected @endif >6</option>
                     <option value="7" @if ($numFighters== 7) selected @endif >7</option>
                     <option value="8" @if ($numFighters== 8) selected @endif >8</option>
+                    <option value="8" @if ($numFighters== 9) selected @endif >9</option>
+                    <option value="8" @if ($numFighters== 10) selected @endif >10</option>
+                    <option value="8" @if ($numFighters== 11) selected @endif >11</option>
+                    <option value="8" @if ($numFighters== 12) selected @endif >12</option>
+                    <option value="8" @if ($numFighters== 13) selected @endif >13</option>
+                    <option value="8" @if ($numFighters== 14) selected @endif >14</option>
+                    <option value="8" @if ($numFighters== 15) selected @endif >15</option>
+                    <option value="8" @if ($numFighters== 16) selected @endif >16</option>
+                    <option value="8" @if ($numFighters== 17) selected @endif >17</option>
                 </select>
             </div>
         </div>

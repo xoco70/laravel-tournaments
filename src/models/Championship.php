@@ -155,7 +155,7 @@ class Championship extends Model
     }
 
     /**
-     *
+     * Get the fights that happen to the first round
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function firstRoundFights()
@@ -201,7 +201,7 @@ class Championship extends Model
 
     public function getSettings()
     {
-        return $this->settings ?? new ChampionshipSettings(config('options.default_settings'));
+        return $setting = $this->settings ?? new ChampionshipSettings(ChampionshipSettings::DEFAULT_SETTINGS);
     }
 
 }

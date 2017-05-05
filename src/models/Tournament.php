@@ -37,6 +37,7 @@ class Tournament extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'dateIni',
         'dateFin',
         'registerDateLimit',
