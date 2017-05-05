@@ -71,7 +71,7 @@ class TreeController extends Controller
         try {
             $groups = $generation->run();
             // Remove groups param
-            FightersGroup::generateFights($groups, $championship);
+            FightersGroup::generateFights($championship);
         } catch (TreeGenerationException $e) {
             redirect()->back()
                 ->withErrors([$numFighters ."-".$e->getMessage()]);

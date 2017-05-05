@@ -68,22 +68,22 @@ class FightersGroup extends Model
     }
 
     /**
-     * @param Collection $fightersGroup
-     * @param $championship->settings
+     * Generate First Round Fights
+     * @param Championship $championship
      */
-    public static function generateFights(Collection $fightersGroup, Championship $championship)
+    public static function generateFights(Championship $championship)
     {
         // Delete previous fight for this championship
 
-        $arrGroupsId = $fightersGroup->map->id->toArray();
+        $arrGroupsId = $championship->fightersGroups->map->id->toArray();
         Fight::destroy($arrGroupsId);
 
         if ($championship->settings->hasPreliminary && $championship->settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $championship->settings->preliminaryGroupSize; $numGroup++) {
-                Fight::savePreliminaryFightGroup($fightersGroup, $numGroup);
+                Fight::savePreliminaryFightGroup($championship->fightersGroups, $numGroup);
             }
         } else {
-            Fight::saveGroupFights($championship, $fightersGroup);
+            Fight::saveGroupFights($championship);
         }
     }
 
@@ -136,7 +136,7 @@ class FightersGroup extends Model
      * Get the many 2 many relationship with
      * @return Collection
      */
-    public function competitorsWithNull()
+    public function competitorsWithNull() : Collection
     {
         $competitors = new Collection();
         $fgcs = FighterGroupCompetitor::where('fighters_group_id', $this->id)
@@ -151,7 +151,7 @@ class FightersGroup extends Model
     }
 
 
-    public function teamsWithNull()
+    public function teamsWithNull() : Collection
     {
         $teams = new Collection();
         $fgcs = FighterGroupTeam::where('fighters_group_id', $this->id)
@@ -165,9 +165,8 @@ class FightersGroup extends Model
 
     }
 
-    public function getFighters()
+    public function getFighters() : Collection
     {
-
         if ($this->championship->category->isTeam()) {
             $fighters = $this->teamsWithNull();
         } else {
@@ -183,14 +182,10 @@ class FightersGroup extends Model
 
     public static function getBaseNumGroups($initialGroupId, $numGroups, $numRound): int
     {
-//        dump("New:". $initialGroupId . " " . $numGroups . " " . $numRound);
-        // numGroups = 4, numRound = 2;
         $parentId = $initialGroupId;
 
         for ($i = 1; $i <= $numRound; $i++) {
             $parentId += $numGroups / $numRound;
-//            dump("parent_id Temporal:" . $parentId);
-
         }
 
         return $parentId;

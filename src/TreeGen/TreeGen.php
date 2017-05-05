@@ -121,7 +121,6 @@ class TreeGen implements TreeGenerable
         $fighterCount = $fighters->count();
 
         if ($championship->hasPreliminary()) {
-            dd($championship->getSettings());
             $preliminaryGroupSize = $championship->settings != null
                 ? $championship->settings->preliminaryGroupSize
                 : $groupSizeDefault;
@@ -395,9 +394,7 @@ class TreeGen implements TreeGenerable
     {
         $parent = null;
         if ($roundNumber != $numRounds) {
-
             $parentIndex = intval(($matchNumber + 1) / 2);
-            dump($matchNumber);
             $parent = $previousRound->get($parentIndex - 1);
         }
         return $parent;
@@ -415,7 +412,7 @@ class TreeGen implements TreeGenerable
                 $fighters = $this->createByeGroup(2);
                 $parent = $this->getParentGroup($roundNumber, $numRounds, $matchNumber, $previousRound);
                 $group = $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent);
-                $this->tree->push($group);
+                $this->tree->prepend($group);
             }
         }
     }
