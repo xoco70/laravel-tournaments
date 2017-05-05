@@ -136,7 +136,7 @@ class Championship extends Model
     }
 
     /**
-     * A championship has Many Rounds.
+     * A championship has Many Groups of Fighters.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
