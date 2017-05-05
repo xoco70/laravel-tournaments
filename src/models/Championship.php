@@ -5,6 +5,7 @@ namespace Xoco70\KendoTournaments\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Collection;
 
 class Championship extends Model
 {
@@ -201,5 +202,15 @@ class Championship extends Model
     public function getSettings()
     {
         return $setting = $this->settings ?? new ChampionshipSettings(ChampionshipSettings::DEFAULT_SETTINGS);
+    }
+
+    /**
+     * Return Groups that belongs to the round in param
+     * @param $round
+     * @return Collection
+     */
+    public function groupsByRound($round) : Collection
+    {
+        return $this->fightersGroups()->where('round',$round)->get();
     }
 }

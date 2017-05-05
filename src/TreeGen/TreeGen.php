@@ -62,7 +62,7 @@ class TreeGen implements TreeGenerable
         $numFighters = sizeof($usersByArea->collapse());
 
         $this->pushEmptyGroupsToTree($numFighters);
-//        $this->generateGroupsForRound($usersByArea, $area, $round);
+        $this->generateGroupsForRound($usersByArea, $area, $round);
 
 
         return $this->tree;
@@ -249,6 +249,8 @@ class TreeGen implements TreeGenerable
      */
     public function generateGroupsForRound($usersByArea, $area, $round)
     {
+        $previousRound = $this->getPreviousRound(1);
+
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
             if ($this->championship->hasPreliminary()) {
@@ -257,18 +259,17 @@ class TreeGen implements TreeGenerable
                 $fightersGroup = $fightersByEntity->chunk(2)->shuffle();
             } else { // Round Robin
                 $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
-
             }
-            $order = 1;
+            $order = sizeof($fightersGroup);
             // Before doing anything, check last group if numUser = 1
-            foreach ($fightersGroup as $fighters) {
-                $group = $this->saveGroupAndSync($fighters, $area, $order, $round);
+            foreach ($fightersGroup->reverse() as $value => $fighters) {
+                $parent = $this->getParentGroup($round, null, $value + 1, $previousRound);
+                $group = $this->saveGroupAndSync($fighters, $area, $order, $round, $parent);
                 $this->tree->push($group);
-                $order++;
+                $order--;
             }
             $area++;
         }
-
     }
 
     /**
@@ -300,31 +301,14 @@ class TreeGen implements TreeGenerable
      */
     private function pushEmptyGroupsToTree($numFighters)
     {
-        $roundNumber = 1;
+        $numFightersEliminatory = $numFighters;
+        // We check what will be the number of groups after the preliminaries
         if ($this->championship->hasPreliminary()) {
-            $numFighters = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
+            $numFightersEliminatory = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         }
-        $parent = null;
-        $group = null;
-        $numRounds = log($numFighters, 2);
-        for ($roundNumber = $numRounds; $roundNumber > 1; $roundNumber--) {
-            for ($matchNumber = ($numFighters / pow(2, $roundNumber)); $matchNumber > 0; $matchNumber--) {
-                $fighters = $this->createByeGroup(2);
-                $group = $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent);
-                $this->tree->push($group);
-            }
-            $parent = $group;
-        }
-
-//        for ($roundNumber += 1; $roundNumber <= $numRounds; $roundNumber++) {
-//            for ($matchNumber = 1; $matchNumber <= ($numFighters / pow(2, $roundNumber)); $matchNumber++) {
-//                $fighters = $this->createByeGroup(2);
-//                $group = $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber);
-//                $this->tree->push($group);
-//            }
-//        }
-
-
+        // We calculate how much rounds we will have
+        $numRounds = intval(log($numFightersEliminatory, 2));
+        $this->pushGroups($numRounds, $numFightersEliminatory);
     }
 
     /**
@@ -384,5 +368,55 @@ class TreeGen implements TreeGenerable
         $fighters = $this->insertByes($fighters, $byeGroup);
 
         return $fighters;
+    }
+
+    /**
+     * @param $currentRound
+     * @param $numRounds
+     * @return Collection
+     */
+    private function getPreviousRound($currentRound, $numRounds = 0)
+    {
+        $previousRound = null;
+        if ($currentRound != $numRounds) {
+            $previousRound = $this->championship->groupsByRound($currentRound + 1);
+        }
+        return $previousRound;
+    }
+
+    /**
+     * @param $roundNumber
+     * @param $numRounds
+     * @param $matchNumber
+     * @param $previousRound
+     * @return mixed
+     */
+    private function getParentGroup($roundNumber, $numRounds = 0, $matchNumber, $previousRound)
+    {
+        $parent = null;
+        if ($roundNumber != $numRounds) {
+
+            $parentIndex = intval(($matchNumber + 1) / 2);
+            dump($matchNumber);
+            $parent = $previousRound->get($parentIndex - 1);
+        }
+        return $parent;
+    }
+
+    /**
+     * @param $numRounds
+     * @param $numFightersEliminatory
+     */
+    private function pushGroups($numRounds, $numFightersEliminatory)
+    {
+        for ($roundNumber = $numRounds; $roundNumber > 1; $roundNumber--) {
+            $previousRound = $this->getPreviousRound($roundNumber, $numRounds);
+            for ($matchNumber = ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber > 0; $matchNumber--) {
+                $fighters = $this->createByeGroup(2);
+                $parent = $this->getParentGroup($roundNumber, $numRounds, $matchNumber, $previousRound);
+                $group = $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent);
+                $this->tree->push($group);
+            }
+        }
     }
 }

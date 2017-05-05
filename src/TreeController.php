@@ -54,6 +54,7 @@ class TreeController extends Controller
         
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
         $numFighters = $request->numFighters;
+
         $users = factory(User::class, (int)$numFighters)->create();
 
         foreach ($users as $user) {
