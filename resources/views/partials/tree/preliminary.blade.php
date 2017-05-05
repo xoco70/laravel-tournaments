@@ -1,5 +1,7 @@
+<?php
+  $settings = $championship->getSettings(); ?>
+?>
 <div align="center">
-
     @if (Request::is('championships/'.$championship->id.'/pdf'))
         <h1> {{$championship->buildName()}}</h1>
     @endif
@@ -13,11 +15,11 @@
                 <th class="p-10">Competitor 2</th>
                 <th class="p-10"></th>
                 <th class="p-10">Competitor 3</th>
-                @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 3)
+                @if ($settings!= null && $settings->preliminaryGroupSize > 3)
                     <th class="p-10"></th>
                     <th class="p-10">Competitor 4</th>
                 @endif
-                @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 4)
+                @if ($settings!= null && $settings->preliminaryGroupSize > 4)
                     <th class="p-10"></th>
                     <th class="p-10">Competitor 5</th>
                 @endif
@@ -49,11 +51,11 @@
                     <td class="p-10">c</td>
                     <td class="p-10">{{ $fighter3 }}</td>
 
-                    @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 3)
+                    @if ($settings!= null && $settings->preliminaryGroupSize > 3)
                         <td class="p-10">d</td>
                         <td class="p-10">{{ $fighter4 }}</td>
                     @endif
-                    @if ($championship->settings!= null && $championship->settings->preliminaryGroupSize > 4)
+                    @if ($settings!= null && $settings->preliminaryGroupSize > 4)
                         <td class="p-10">e</td>
                         <td class="p-10">{{ $fighter5 }}</td>
                     @endif

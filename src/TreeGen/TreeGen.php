@@ -62,8 +62,6 @@ class TreeGen implements TreeGenerable
 
         $this->pushEmptyGroupsToTree($numFighters);
         $this->generateGroupsForRound($usersByArea, $area, $round);
-        
-        return $this->tree;
     }
 
     /**
@@ -261,8 +259,7 @@ class TreeGen implements TreeGenerable
             // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup->reverse() as $value => $fighters) {
                 $parent = $this->getParentGroup($round, null, $value + 1, $previousRound);
-                $group = $this->saveGroupAndSync($fighters, $area, $order, $round, $parent);
-                $this->tree->push($group);
+                $this->saveGroupAndSync($fighters, $area, $order, $round, $parent);
                 $order--;
             }
             $area++;
@@ -312,6 +309,7 @@ class TreeGen implements TreeGenerable
      * @param $area
      * @param $order
      * @param $round
+     * @param $parent
      * @return FightersGroup
      */
     private function saveGroup($area, $order, $round, $parent): FightersGroup
@@ -409,8 +407,7 @@ class TreeGen implements TreeGenerable
             for ($matchNumber = ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber > 0; $matchNumber--) {
                 $fighters = $this->createByeGroup(2);
                 $parent = $this->getParentGroup($roundNumber, $numRounds, $matchNumber, $previousRound);
-                $group = $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent);
-                $this->tree->prepend($group);
+                $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent);
             }
         }
     }

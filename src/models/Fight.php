@@ -115,7 +115,6 @@ class Fight extends Model
      */
     public static function savePreliminaryFightGroup($groups, $numGroup = 1)
     {
-
         $c1 = $c2 = null;
         $order = 1;
 
@@ -162,7 +161,7 @@ class Fight extends Model
     public static function saveGroupFights(Championship $championship)
     {
         $order = 1;
-        foreach ($championship->fightersGroups as $group) {
+        foreach ($championship->fightersGroups()->get()->reverse() as $group) {
             $fighters = self::getActorsToFights($championship, $group);
             $away = $fighters->splice(count($fighters) / 2); // 2
             $home = $fighters; // 1
@@ -178,7 +177,6 @@ class Fight extends Model
                     $fight->c2 = $round[$i][$j]['Away']->id;
                     $fight->short_id = $order++;
                     $fight->area = $group->area;
-
                     $fight->save();
 
                 }
