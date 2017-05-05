@@ -37,7 +37,6 @@ class TreeGen implements TreeGenerable
      */
     public function run()
     {
-
         $this->tree = new Collection();
         // If previous trees already exists, delete all
         $this->championship->fightersGroups()->delete();
@@ -63,8 +62,7 @@ class TreeGen implements TreeGenerable
 
         $this->pushEmptyGroupsToTree($numFighters);
         $this->generateGroupsForRound($usersByArea, $area, $round);
-
-
+        
         return $this->tree;
     }
 

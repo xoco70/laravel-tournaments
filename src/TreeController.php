@@ -69,7 +69,7 @@ class TreeController extends Controller
         //TODO Set groupBy argument to NULL for now
         $generation = new TreeGen($championship, null, $championship->settings);
         try {
-            $groups = $generation->run();
+            $generation->run();
             // Remove groups param
             FightersGroup::generateFights($championship);
         } catch (TreeGenerationException $e) {
