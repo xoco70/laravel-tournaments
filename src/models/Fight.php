@@ -44,7 +44,7 @@ class Fight extends Model
     private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
     {
         if ($championship->category->isTeam) {
-            $fighters = $group->teams;
+            $fighters = $group->teams()->get();
             if (sizeof($fighters) == 0) {
                 $fighters->push(new Team());
                 $fighters->push(new Team());
@@ -53,7 +53,7 @@ class Fight extends Model
             }
 
         } else {
-            $fighters = $group->competitors;
+            $fighters = $group->competitors()->get();
             if (sizeof($fighters) == 0) { // If
                 $fighters->push(new Competitor());
                 $fighters->push(new Competitor());

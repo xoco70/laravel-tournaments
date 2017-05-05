@@ -162,7 +162,8 @@ class Championship extends Model
     public function firstRoundFights()
     {
         return $this->hasManyThrough(Fight::class, FightersGroup::class)
-            ->where('fighters_groups.round', 1);
+            ->where('fighters_groups.round', 1)
+            ->orderby('fighters_groups.id', 'desc');
     }
 
     private function hasNoCustomSettings()
