@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateFightersGroupTable extends Migration
 {
@@ -20,6 +21,8 @@ class CreateFightersGroupTable extends Migration
             $table->tinyInteger('round')->default(0); // Eliminitory, 1/8, 1/4, etc.
             $table->tinyInteger('area');
             $table->tinyInteger('order');
+            NestedSet::columns($table);
+
             $table->timestamps();
             $table->engine = 'InnoDB';
 

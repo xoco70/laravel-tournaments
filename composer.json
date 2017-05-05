@@ -34,7 +34,8 @@
     "symfony/var-dumper": "~3.2.3",
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.*",
-    "laravel/browser-kit-testing": "^1.0"
+    "laravel/browser-kit-testing": "^1.0",
+    "kalnoy/nestedset": "^4.2"
   },
   "scripts": {
     "test": "phpunit"

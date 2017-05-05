@@ -191,7 +191,6 @@ class Championship extends Model
             'X' => trans('categories.mixt')
         ];
 
-
         $teamText = $this->category->isTeam == 1 ? trans_choice('core.team', 1) : trans('categories.single');
         $ageCategoryText = $this->category->getAgeString();
         $gradeText = $this->category->getGradeString();
@@ -203,5 +202,4 @@ class Championship extends Model
     {
         return $setting = $this->settings ?? new ChampionshipSettings(ChampionshipSettings::DEFAULT_SETTINGS);
     }
-
 }

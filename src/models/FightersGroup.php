@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Kalnoy\Nestedset\NodeTrait;
 use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class FightersGroup extends Model
@@ -13,6 +14,8 @@ class FightersGroup extends Model
     protected $table = 'fighters_groups';
     public $timestamps = true;
     protected $guarded = ['id'];
+
+    use NodeTrait;
 
     /**
      * Check if Request contains tournamentSlug / Should Move to TreeRequest When Built.
@@ -70,18 +73,13 @@ class FightersGroup extends Model
      */
     public static function generateFights(Collection $fightersGroup, $settings, Championship $championship = null)
     {
-
         // Delete previous fight for this championship
 
-        $arrGroupsId = $fightersGroup->map(function ($value, $key) {
-            return $value->id;
-        })->toArray();
+        $arrGroupsId = $fightersGroup->map->id->toArray();
         Fight::destroy($arrGroupsId);
-
 
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-
                 Fight::savePreliminaryFightGroup($fightersGroup, $numGroup);
             }
         } else {
@@ -181,5 +179,20 @@ class FightersGroup extends Model
             $fighters = $treeGen->createByeGroup(2);
         }
         return $fighters;
+    }
+
+    public static function getBaseNumGroups($initialGroupId, $numGroups, $numRound): int
+    {
+//        dump("New:". $initialGroupId . " " . $numGroups . " " . $numRound);
+        // numGroups = 4, numRound = 2;
+        $parentId = $initialGroupId;
+
+        for ($i = 1; $i <= $numRound; $i++) {
+            $parentId += $numGroups / $numRound;
+//            dump("parent_id Temporal:" . $parentId);
+
+        }
+
+        return $parentId;
     }
 }
