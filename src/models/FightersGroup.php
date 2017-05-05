@@ -69,17 +69,17 @@ class FightersGroup extends Model
 
     /**
      * @param Collection $fightersGroup
-     * @param $settings
+     * @param $championship->settings
      */
-    public static function generateFights(Collection $fightersGroup, $settings, Championship $championship = null)
+    public static function generateFights(Collection $fightersGroup, Championship $championship)
     {
         // Delete previous fight for this championship
 
         $arrGroupsId = $fightersGroup->map->id->toArray();
         Fight::destroy($arrGroupsId);
 
-        if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
-            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
+        if ($championship->settings->hasPreliminary && $championship->settings->preliminaryGroupSize == 3) {
+            for ($numGroup = 1; $numGroup <= $championship->settings->preliminaryGroupSize; $numGroup++) {
                 Fight::savePreliminaryFightGroup($fightersGroup, $numGroup);
             }
         } else {
