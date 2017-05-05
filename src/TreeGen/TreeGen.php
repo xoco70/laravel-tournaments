@@ -257,7 +257,7 @@ class TreeGen implements TreeGenerable
             }
             $order = sizeof($fightersGroup);
             // Before doing anything, check last group if numUser = 1
-            foreach ($fightersGroup->reverse() as $value => $fighters) {
+            foreach ($fightersGroup as $value => $fighters) {
                 $parent = $this->getParentGroup($round, null, $value + 1, $previousRound);
                 $this->saveGroupAndSync($fighters, $area, $order, $round, $parent);
                 $order--;

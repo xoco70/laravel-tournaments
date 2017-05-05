@@ -82,7 +82,7 @@ class FightersGroup extends Model
 
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-                Fight::savePreliminaryFightGroup($championship->fightersGroups()->get()->reverse(), $numGroup);
+                Fight::savePreliminaryFightGroup($championship->fightersGroups()->get(), $numGroup);
             }
         } else {
             Fight::saveGroupFights($championship);

@@ -1,5 +1,5 @@
 <?php
-  $settings = $championship->getSettings(); ?>
+  $settings = $championship->getSettings();
 ?>
 <div align="center">
     @if (Request::is('championships/'.$championship->id.'/pdf'))

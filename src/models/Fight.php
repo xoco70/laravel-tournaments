@@ -161,7 +161,7 @@ class Fight extends Model
     public static function saveGroupFights(Championship $championship)
     {
         $order = 1;
-        foreach ($championship->fightersGroups()->get()->reverse() as $group) {
+        foreach ($championship->fightersGroups()->get() as $group) {
             $fighters = self::getActorsToFights($championship, $group);
             $away = $fighters->splice(count($fighters) / 2); // 2
             $home = $fighters; // 1

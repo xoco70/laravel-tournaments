@@ -77,36 +77,4 @@ $fights = $championship->fights;
 <script src="/vendor/kendo-tournaments/js/jquery.timepicker.js"></script>
 <script src="/vendor/kendo-tournaments/js/jquery.bracket.min.js"></script>
 
-<script>
-    $(".switch").bootstrapSwitch();
-    $('input[name="hasEncho"]').on('switchChange.bootstrapSwitch', function (event, state) {
-        let isChecked = $(this).is(':checked');
-        $(this).closest('form').find('[name="enchoQty"]').prop('disabled', !isChecked);
-        $(this).closest('form').find('[name="enchoDuration"]').prop('disabled', !isChecked);
-        $(this).closest('form').find('[name="enchoTimeLimitless"]').prop('disabled', !isChecked);
-    });
-    $('input[name="hasPreliminary"]').on('switchChange.bootstrapSwitch', function (event, state) {
-        let isChecked = $(this).is(':checked');
-        $(this).closest('form').find('[name="preliminaryGroupSize"]').prop('disabled', !isChecked);
-        $(this).closest('form').find('[name="preliminaryWinner"]').prop('disabled', !isChecked);
-
-    });
-    $('input[name="hasHantei"]').on('switchChange.bootstrapSwitch', function (event, state) {
-        let isChecked = $(this).is(':checked');
-        $(this).closest('form').find('[name="hanteiLimit"]').prop('disabled', !isChecked);
-    });
-    $('.fightDuration').timepicker(('option', {
-        'minTime': '2:00',
-        'maxTime': '10:00',
-        'timeFormat': 'H:i',
-        'step': '15'
-    }));
-
-    $('.enchoDuration').timepicker(('option', {
-        'minTime': '1:00',
-        'maxTime': '10:00',
-        'timeFormat': 'H:i',
-        'step': '15'
-    }));
-</script>
 </html>

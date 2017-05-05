@@ -142,7 +142,8 @@ class Championship extends Model
      */
     public function fightersGroups()
     {
-        return $this->hasMany(FightersGroup::class);
+        // We order by id desc because when we created groups, we start by the end ( Final is the parent )
+        return $this->hasMany(FightersGroup::class)->orderBy('id', 'desc');
     }
 
     /**
