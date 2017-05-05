@@ -63,13 +63,14 @@ class TreeController extends Controller
                 'confirmed' => 1,
             ]);
         }
-        $settings = ChampionshipSettings::createOrUpdate($request, $championship);
+        $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
 
         //TODO Set groupBy argument to NULL for now
-        $generation = new TreeGen($championship, null, $settings);
+        $generation = new TreeGen($championship, null, $championship->settings);
         try {
             $groups = $generation->run();
-            FightersGroup::generateFights($groups, $settings, $championship);
+            // Remove groups param
+            FightersGroup::generateFights($groups, $championship);
         } catch (TreeGenerationException $e) {
             redirect()->back()
                 ->withErrors([$numFighters ."-".$e->getMessage()]);
@@ -77,7 +78,7 @@ class TreeController extends Controller
 
         return redirect()->back()
             ->with('numFighters', $numFighters)
-            ->with('hasPreliminary', $settings->hasPreliminary)
+            ->with('hasPreliminary', $championship->settings->hasPreliminary)
             ->with(['success' , "Success"]);
     }
 }
