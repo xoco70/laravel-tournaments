@@ -39,7 +39,7 @@ class TreeController extends Controller
     /**
      * Build Tree.
      *
-     * @param Request      $request
+     * @param Request $request
      * @param Championship $championship
      *
      * @return \Illuminate\Http\Response|string
@@ -51,7 +51,7 @@ class TreeController extends Controller
         DB::table('fighters_group_competitor')->delete();
         DB::table('fighters_group_team')->delete();
         DB::table('competitor')->delete();
-        
+
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
         $numFighters = $request->numFighters;
 
@@ -62,25 +62,28 @@ class TreeController extends Controller
                 'championship_id' => $championship->id,
                 'user_id' => $user->id,
                 'confirmed' => 1,
+                'short_id' => $user->id
             ]);
         }
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
 
         //TODO Set groupBy argument to NULL for now
-        $generation = new TreeGen($championship, null, $championship->settings);
+        $generation = new TreeGen($championship, null);
+        $fighterToUpdate = null;
         try {
             $generation->run();
             FightersGroup::generateFights($championship);
-            FightersGroup::generateNextRoundsFights($championship);
-
+            // For Now, We don't generate fights when Preliminary
+            if ($championship->isDirectEliminationType() && !$championship->hasPreliminary()) {
+                FightersGroup::generateNextRoundsFights($championship);
+            }
         } catch (TreeGenerationException $e) {
             redirect()->back()
-                ->withErrors([$numFighters ."-".$e->getMessage()]);
+                ->withErrors([$numFighters . "-" . $e->getMessage()]);
         }
-
         return redirect()->back()
             ->with('numFighters', $numFighters)
             ->with('hasPreliminary', $championship->settings->hasPreliminary)
-            ->with(['success' , "Success"]);
+            ->with(['success', "Success"]);
     }
 }

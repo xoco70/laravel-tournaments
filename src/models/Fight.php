@@ -262,19 +262,40 @@ class Fight extends Model
         dd($this->$fighterToUpdate);
     }
 
+    /**
+     * Returns the parent field that need to be updated
+     * @return null|string
+     */
     public function getParentFighterToUpdate()
     {
-        $parentGroup = $this->group->parent;
-        $childrenGroup = $parentGroup->children;
-        if ($childrenGroup->get(0)->fights->get(0)->c1 != null && $childrenGroup->get(1)->fights->get(0)->c2 != null) {
-            return null;
+        $childrenGroup = $this->group->parent->children;
+        foreach ($childrenGroup as $key => $children) {
+
+            $childFight = $children->fights->get(0);
+
+            // Groups are upside down, so the relation is the opposite
+            if ($childFight->id == $this->id) {
+                if ($key % 2 == 0) {
+                    return "c2";
+                }
+                if ($key % 2 == 1) {
+                    return "c1";
+                }
+
+            }
         }
-        if ($childrenGroup->get(0)->fights->get(0)->c1 !=null) {
-            return "c1";
-        }
-        if ($childrenGroup->get(1)->fights->get(0)->c2  !=null) {
-            return "c2";
-        }
+        return null;
+    }
+
+    /**
+     * In the original fight ( child ) return the field that contains data to copy to parent
+     * @return null|string
+     */
+    public function getValueToUpdate()
+    {
+        if ($this->c1 != null && $this->c2 != null) return null;
+        if ($this->c1 != null) return "c1";
+        if ($this->c2 != null) return "c2";
         return null;
     }
 }

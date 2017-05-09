@@ -2,7 +2,7 @@
 if (session()->has('numFighters')) {
     $numFighters = session('numFighters');
 } else {
-    $numFighters = 5;
+    $numFighters = 9;
 }
 
 ?>

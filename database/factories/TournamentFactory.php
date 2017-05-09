@@ -16,6 +16,7 @@ $factory->define(Tournament::class, function (Faker\Generator $faker) {
 
     return [
         'user_id'           => $faker->randomElement($users),
+        'slug'              => $faker->slug(2),
         'name'              => $faker->name,
         'dateIni'           => $dateIni,
         'dateFin'           => $dateIni,

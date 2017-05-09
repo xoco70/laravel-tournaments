@@ -9,6 +9,7 @@ $factory->define(ChampionshipSettings::class, function (Faker\Generator $faker) 
 
     return [
         'championship_id'      => $faker->randomElement($tcs),
+        'treeType'             =>  $faker->numberBetween(0, 1),
         'alias'                => $faker->word,
         'teamSize'             => $faker->numberBetween(0, 6),
         'fightingAreas'        => $faker->numberBetween(0, 4),

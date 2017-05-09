@@ -2,12 +2,19 @@
 
 namespace Xoco70\KendoTournaments\Tests;
 
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
+use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
+use Xoco70\KendoTournaments\Models\Tournament;
 use Xoco70\KendoTournaments\TournamentsServiceProvider;
+use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -100,7 +107,9 @@ abstract class TestCase extends BaseTestCase
         $this->visit('/kendo-tournaments')
             ->select($hasPreliminary, 'hasPreliminary')
             ->select($numAreas, 'fightingAreas')
-            ->select($hasPlayOff ? 0 : 1, 'treeType')
+            ->select($hasPlayOff
+                ? ChampionshipSettings::PLAY_OFF
+                : ChampionshipSettings::DIRECT_ELIMINATION, 'treeType')
             ->select($preliminaryGroupSize, 'preliminaryGroupSize')
             ->select($numCompetitors, 'numFighters');
 
@@ -179,5 +188,66 @@ abstract class TestCase extends BaseTestCase
                 $this->assertTrue($count == $expected);
             }
         }
+    }
+    /**
+     * @param $treeType
+     * @param $hasPreliminary
+     * @param $fightingAreas
+     * @param $numFighters
+     */
+    public function create_tree($treeType, $hasPreliminary, $fightingAreas, $numFighters)
+    {
+        $user = User::find(1);
+        Auth::login($user);
+        $tournament = factory(Tournament::class)->create(['user_id' => 1]);
+        $championship = factory(Championship::class)->create(
+            ['tournament_id' => $tournament->id,
+                'category_id' => 1 // Not Teams,
+            ]
+        );
+        $settings = factory(ChampionshipSettings::class)->create(
+            ['championship_id' => $championship->id,
+                'fightingAreas' => $fightingAreas,
+                'hasPreliminary' => $hasPreliminary,
+                'treeType' => $treeType
+            ]);
+        $settings->championship_id = $championship->id;
+
+        $championship->settings = $settings;
+        $users = factory(User::class, $numFighters)->create();
+        $competitors = $this->createCompetitors($users, $championship);
+
+        $generation = new TreeGen($championship, null);
+
+        $competitors = $generation->adjustFightersGroupWithByes($competitors, $fighterGroups);
+        $competitors = $competitors->chunk(count($competitors) / $fightingAreas);
+
+        $generation->pushEmptyGroupsToTree($numFighters);
+        $generation->generateGroupsForRound($competitors, $fightingAreas, 1, $shuffle = 0);
+        FightersGroup::generateFights($championship);
+        // For Now, We don't generate fights when Preliminary
+        if ($championship->isDirectEliminationType() && !$championship->hasPreliminary()) {
+            FightersGroup::generateNextRoundsFights($championship);
+        }
+
+    }
+    /**
+     * @param $users
+     * @param $championship
+     * @return Collection
+     */
+    private function createCompetitors($users, $championship)
+    {
+        $competitors = new Collection;
+        $users->each(function ($user) use ($championship, $competitors) {
+            $competitor = factory(Competitor::class)->create(
+                ['user_id' => $user->id,
+                    'championship_id' => $championship->id,
+                    'short_id' =>$user->id,
+                ]);
+            $competitors->push($competitor);
+        });
+        return $competitors;
+
     }
 }

@@ -193,27 +193,32 @@ class FightersGroup extends Model
         return $parentId;
     }
 
+    /**
+     * Problem is I can't make the difference between Bye and Empty :(
+     * @param Championship $championship
+     */
     public static function generateNextRoundsFights(Championship $championship)
     {
         $maxRounds = 4;
-
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
             $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent')->get();
-            foreach ($fightsByRound as $fight) {
+
+            foreach ($fightsByRound as $numFight => $fight) {
+
                 $parentGroup = $fight->group->parent;
-                $children = $parentGroup->children;
+                if ($parentGroup == null ) break;
                 $parentFight = $parentGroup->fights->get(0);
-//                if ($championship->hasPreliminary()) {
-//
-//                }
+
+                // IN this $fight, if it is the first child or the second child --> c1 or c2 in parent
+
+                // IN this $fight, is c1 or c2 has the info?
                 if ($championship->isDirectEliminationType()) {
                     // determine wether c1 or c2 must be updated
                     $fighterToUpdate = $fight->getParentFighterToUpdate();
-
+                    $valueToUpdate = $fight->getValueToUpdate();
                     // First Fight
-                    if ($fighterToUpdate!=null){
-                        $parentFight->$fighterToUpdate = $fight->$fighterToUpdate;
-
+                    if ($valueToUpdate != null) {
+                        $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
                         $parentFight->save();
                     }
                 }
