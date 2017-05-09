@@ -3,6 +3,7 @@
 namespace Xoco70\KendoTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Collection;
@@ -207,12 +208,22 @@ class Championship extends Model
     }
 
     /**
-     * Return Groups that belongs to the round in param
+     * Return Groups that belongs to a round
      * @param $round
-     * @return Collection
+     * @return HasMany
      */
-    public function groupsByRound($round) : Collection
+    public function groupsByRound($round)
     {
-        return $this->fightersGroups()->where('round',$round)->get();
+        return $this->fightersGroups()->where('round',$round);
+    }
+
+    /**
+     * Return Fights that belongs to a round
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function fightsByRound($round)
+    {
+        return $this->hasManyThrough(Fight::class, FightersGroup::class)->where('round',$round);
     }
 }

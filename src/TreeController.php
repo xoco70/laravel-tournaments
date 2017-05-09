@@ -70,8 +70,9 @@ class TreeController extends Controller
         $generation = new TreeGen($championship, null, $championship->settings);
         try {
             $generation->run();
-            // Remove groups param
             FightersGroup::generateFights($championship);
+            FightersGroup::generateNextRoundsFights($championship);
+
         } catch (TreeGenerationException $e) {
             redirect()->back()
                 ->withErrors([$numFighters ."-".$e->getMessage()]);

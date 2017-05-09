@@ -65,12 +65,12 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
             for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
-                if ($this->championship->category->isTeam()){
-                    $fighter1 = $this->names->get($roundNumber)[0]->fights[$matchNumber-1]->team1;
-                    $fighter2 = $this->names->get($roundNumber)[0]->fights[$matchNumber-1]->team2;
-                }else{
-                    $fighter1 = $this->names->get($roundNumber)[$matchNumber-1]->fights[0]->competitor1;
-                    $fighter2 = $this->names->get($roundNumber)[$matchNumber-1]->fights[0]->competitor2;
+                if ($this->championship->category->isTeam()) {
+                    $fighter1 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team1;
+                    $fighter2 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team2;
+                } else {
+                    $fighter1 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor1;
+                    $fighter2 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor2;
                 }
                 $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
             }
@@ -160,8 +160,8 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         }
 
-        echo '</div>';
 
+        echo '</div>';
     }
 
     /**
@@ -223,14 +223,20 @@ class DirectEliminationTreeGen implements TreeGenerable
 
         $html = '<select>
                 <option' . ($selected == '' ? ' selected' : '') . '></option>';
-        foreach (array_merge($this->brackets[1]) as $bracket) { // Bug fix
-            if ($bracket['playerA'] != '') {
-                $html .= '<option' . ($selected == $bracket['playerA'] ? ' selected' : '') . '>' . $bracket['playerA']->getName() . '</option>';
+
+        foreach ($this->championship->competitors as $competitor) {
+
+            if ($competitor != null) {
+                $select = $selected != null && $selected->id == $competitor->id ? ' selected' : '';
+                $html .= '<option' . $select
+                    . ' value='
+                    . ($competitor->id ?? '')
+                    . '>'
+                    . $competitor->getName()
+                    . '</option>';
+
             }
 
-            if ($bracket['playerB'] != '') {
-                $html .= '<option' . ($selected == $bracket['playerB'] ? ' selected' : '') . '>' . $bracket['playerB']->getName(). '</option>';
-            }
         }
 
         $html .= '</select>';

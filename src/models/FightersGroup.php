@@ -138,7 +138,7 @@ class FightersGroup extends Model
      * Get the many 2 many relationship with
      * @return Collection
      */
-    public function competitorsWithNull() : Collection
+    public function competitorsWithNull(): Collection
     {
         $competitors = new Collection();
         $fgcs = FighterGroupCompetitor::where('fighters_group_id', $this->id)
@@ -153,7 +153,7 @@ class FightersGroup extends Model
     }
 
 
-    public function teamsWithNull() : Collection
+    public function teamsWithNull(): Collection
     {
         $teams = new Collection();
         $fgcs = FighterGroupTeam::where('fighters_group_id', $this->id)
@@ -167,7 +167,7 @@ class FightersGroup extends Model
 
     }
 
-    public function getFighters() : Collection
+    public function getFighters(): Collection
     {
         if ($this->championship->category->isTeam()) {
             $fighters = $this->teamsWithNull();
@@ -191,5 +191,33 @@ class FightersGroup extends Model
         }
 
         return $parentId;
+    }
+
+    public static function generateNextRoundsFights(Championship $championship)
+    {
+        $maxRounds = 4;
+
+        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
+            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent')->get();
+            foreach ($fightsByRound as $fight) {
+                $parentGroup = $fight->group->parent;
+                $children = $parentGroup->children;
+                $parentFight = $parentGroup->fights->get(0);
+//                if ($championship->hasPreliminary()) {
+//
+//                }
+                if ($championship->isDirectEliminationType()) {
+                    // determine wether c1 or c2 must be updated
+                    $fighterToUpdate = $fight->getParentFighterToUpdate();
+
+                    // First Fight
+                    if ($fighterToUpdate!=null){
+                        $parentFight->$fighterToUpdate = $fight->$fighterToUpdate;
+
+                        $parentFight->save();
+                    }
+                }
+            }
+        }
     }
 }

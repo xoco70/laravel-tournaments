@@ -36,6 +36,7 @@ class Fight extends Model
     {
         return $this->belongsTo(FightersGroup::class, 'fighters_group_id');
     }
+
     /**
      * @param Championship $championship
      *
@@ -196,12 +197,10 @@ class Fight extends Model
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-
             return $this->team1 == null ? '' : $this->team1->name;
         }
         return
             $this->competitor1 == null ? 'BYE' : $this->competitor1->user->firstname . " " . $this->competitor1->user->lastname;
-
     }
 
     /**
@@ -211,12 +210,12 @@ class Fight extends Model
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-
             return $this->team2 == null ? 'BYE' : $this->team2->name;
         }
 
-        return
-            $this->competitor2 == null ? 'BYE' : $this->competitor2->user->firstname . " " . $this->competitor2->user->lastname;
+        return $this->competitor2 == null
+            ? 'BYE'
+            : $this->competitor2->user->firstname . " " . $this->competitor2->user->lastname;
     }
 
 
@@ -225,14 +224,11 @@ class Fight extends Model
      */
     public function getFighter1ShortId()
     {
-
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
             return $this->team1 == null ? '' : $this->team1->short_id;
         }
-
         return $this->competitor1 == null ? '' : $this->competitor1->short_id;
-
     }
 
     /**
@@ -240,13 +236,45 @@ class Fight extends Model
      */
     public function getFighter2ShortId()
     {
-
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
             return $this->team2 == null ? '' : $this->team2->short_id;
         }
 
         return $this->competitor2 == null ? '' : $this->competitor2->short_id;
+    }
 
+    /**
+     * Update parent Fight
+     */
+    public function updateParentFight($fighterToUpdate, $fight)
+    {
+
+        if ($fight != null && ($fight->c1 != null || $fight->c2 == null)) {
+            $this->$fighterToUpdate = $fight->c1;
+        }
+        if ($fight != null && $fight->c1 == null || $fight->c2 != null) {
+            $this->$fighterToUpdate = $fight->c2;
+        }
+        if ($fight->c1 == null || $fight->c2 == null) {
+            $this->$fighterToUpdate = null;
+        }
+        dd($this->$fighterToUpdate);
+    }
+
+    public function getParentFighterToUpdate()
+    {
+        $parentGroup = $this->group->parent;
+        $childrenGroup = $parentGroup->children;
+        if ($childrenGroup->get(0)->fights->get(0)->c1 != null && $childrenGroup->get(1)->fights->get(0)->c2 != null) {
+            return null;
+        }
+        if ($childrenGroup->get(0)->fights->get(0)->c1 !=null) {
+            return "c1";
+        }
+        if ($childrenGroup->get(1)->fights->get(0)->c2  !=null) {
+            return "c2";
+        }
+        return null;
     }
 }

@@ -9,10 +9,10 @@ use Xoco70\KendoTournaments\Models\Tournament;
 
 class DirectEliminationTest extends TestCase
 {
-    use DatabaseTransactions;
+//    use DatabaseTransactions;
 
     protected $root;
-    protected $tournament, $championshipWithComp,$championshipWithTeam, $settings, $users;
+    protected $tournament, $championshipWithComp, $championshipWithTeam, $settings, $users;
 
 
     public function setUp()
@@ -24,9 +24,8 @@ class DirectEliminationTest extends TestCase
         )->first();
 
 
-
-        $this->championshipWithComp = Championship::with('teams', 'users', 'category', 'settings')->find($this->tournament->championships[0]->id);
-        $this->championshipWithTeam = Championship::with('teams', 'users', 'category', 'settings')->find($this->tournament->championships[0]->id);
+        $this->championshipWithComp = Championship::with('teams', 'users', 'category', 'settings', 'fightersGroups.fights')->find($this->tournament->championships[0]->id);
+        $this->championshipWithTeam = Championship::with('teams', 'users', 'category', 'settings', 'fightersGroups.fights')->find($this->tournament->championships[0]->id);
     }
 
 
@@ -58,6 +57,41 @@ class DirectEliminationTest extends TestCase
                 parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
             }
         }
+    }
+
+    /** @test */
+    public function it_saves_fight_to_next_round_when_possible()
+    {
+        // Get the case when n^2-1 to have a lot of BYES on first round
+        $this->championshipWithComp;
+        $this->generateTreeWithUI($numArea = 1, $numCompetitors = 9, $preliminaryGroupSize = 3, $hasPlayOff = false, $hasPreliminary = 0);
+
+        // if each round, if C1 != Null && C2== null, match(n+1) should be updated
+        // if each round, if C1 == Null && C2== null, match(n+1) should be updated
+        $maxRounds = $this->championshipWithComp->fightersGroups()->max('round');
+
+        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
+            $fightsByRound = $this->championshipWithComp->fightsByRound($numRound)->get();
+            foreach ($fightsByRound as $fight) {
+                $parentFight = $fight->group->parent;
+
+                if ($fight->c1 == null || $fight->c2 != null) {
+                    // Check that match(n+1) has correct value
+                    assertTrue($parentFight->c1, $fight->c2);
+                }
+                if ($fight->c1 != null || $fight->c2 == null) {
+                    // Check that match(n+1) has correct value
+                    assertTrue($parentFight->c1, $fight->c1);
+                }
+                if ($fight->c1 == null || $fight->c2 == null) {
+                    // Check that match(n+1) has correct value
+                    assertTrue($parentFight->c1, null);
+                }
+            }
+
+        }
+
+
     }
 
 

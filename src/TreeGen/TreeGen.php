@@ -374,7 +374,7 @@ class TreeGen implements TreeGenerable
     {
         $previousRound = null;
         if ($currentRound != $numRounds) {
-            $previousRound = $this->championship->groupsByRound($currentRound + 1);
+            $previousRound = $this->championship->groupsByRound($currentRound + 1)->get();
         }
         return $previousRound;
     }
