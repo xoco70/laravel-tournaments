@@ -195,7 +195,7 @@ class Fight extends Model
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
             $teamToUpdate = 'team' . $numFighter;
-            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$dataToGet;
+            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->name;
         }
         $competitorToUpdate = 'competitor' . $numFighter;
         return $this->$competitorToUpdate == null
