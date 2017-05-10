@@ -190,58 +190,28 @@ class Fight extends Model
         }
     }
 
-    /**
-     * @return string
-     */
-    public function getFighter1Name()
+    public function getFighterName($numFighter)
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-            return $this->team1 == null ? '' : $this->team1->name;
+            $teamToUpdate = 'team' . $numFighter;
+            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$dataToGet;
         }
-        return
-            $this->competitor1 == null ? 'BYE' : $this->competitor1->user->firstname . " " . $this->competitor1->user->lastname;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFighter2Name()
-    {
-        $isTeam = $this->group->championship->category->isTeam;
-        if ($isTeam) {
-            return $this->team2 == null ? 'BYE' : $this->team2->name;
-        }
-
-        return $this->competitor2 == null
+        $competitorToUpdate = 'competitor' . $numFighter;
+        return $this->$competitorToUpdate == null
             ? 'BYE'
-            : $this->competitor2->user->firstname . " " . $this->competitor2->user->lastname;
+            : $this->$competitorToUpdate->user->firstname . " " . $this->$competitorToUpdate->user->lastname;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getFighter1ShortId()
+    public function getFighterShortId($numFighter)
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-            return $this->team1 == null ? '' : $this->team1->short_id;
+            $teamToUpdate = 'team' . $numFighter;
+            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->short_id;
         }
-        return $this->competitor1 == null ? '' : $this->competitor1->short_id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFighter2ShortId()
-    {
-        $isTeam = $this->group->championship->category->isTeam;
-        if ($isTeam) {
-            return $this->team2 == null ? '' : $this->team2->short_id;
-        }
-
-        return $this->competitor2 == null ? '' : $this->competitor2->short_id;
+        $competitorToUpdate = 'competitor' . $numFighter;
+        return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
     }
 
     /**
@@ -300,4 +270,5 @@ class Fight extends Model
         }
         return null;
     }
+
 }
