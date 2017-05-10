@@ -126,7 +126,6 @@ class TreeGen implements TreeGenerable
 
         foreach ($squareMultiplied as $limit) {
             if ($fighterCount <= $limit) {
-                dd($limit);
                 return $limit;
             }
         }
