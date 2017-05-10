@@ -40,8 +40,10 @@ class TreeGen implements TreeGenerable
         $usersByArea = $this->getFightersByArea();
         $numFighters = sizeof($usersByArea->collapse());
 
-        $this->pushEmptyGroupsToTree($numFighters);
+
         $this->generateGroupsForRound($usersByArea, $area = 1, $round = 1, $shuffle = 1);
+        $this->pushEmptyGroupsToTree($numFighters);
+        // Now add parents to all
     }
 
     /**
@@ -224,26 +226,15 @@ class TreeGen implements TreeGenerable
      */
     public function generateGroupsForRound($usersByArea, $area, $round, $shuffle)
     {
-        $previousRound = $this->getPreviousRound(1);
-        dump($usersByArea);
-
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
-            if ($this->championship->hasPreliminary()) {
-                $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-                if ($shuffle) $fightersGroup->shuffle();
-            } elseif ($this->championship->isDirectEliminationType() || $round > 1) {
-                $fightersGroup = $fightersByEntity->chunk(2);
-                if ($shuffle) $fightersGroup->shuffle();
-            } else { // Round Robin
-                $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
-            }
-            $order = sizeof($fightersGroup);
+            $fightersGroup = $this->chunkAndShuffle($round, $shuffle, $fightersByEntity);
+            $order = 1;
             // Before doing anything, check last group if numUser = 1
-            foreach ($fightersGroup->reverse() as $value => $fighters) {
-                $parent = $this->getParentGroup($round, null, $value + 1, $previousRound);
-                $this->saveGroupAndSync($fighters, $area, $order, $round, $parent, $shuffle);
-                $order--;
+            foreach ($fightersGroup as $value => $fighters) {
+//                $parent = $this->getParentGroup($round, null, $value + 1, $previousRound);
+                $this->saveGroupAndSync($fighters, $area, $order, $round, $parent = null, $shuffle);
+                $order++;
             }
             $area++;
         }
@@ -285,7 +276,7 @@ class TreeGen implements TreeGenerable
             $numFightersEliminatory = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         }
         // We calculate how much rounds we will have
-        $numRounds = intval(ceil(log($numFightersEliminatory, 2)));
+        $numRounds = intval(log($numFightersEliminatory, 2));
         $this->pushGroups($numRounds, $numFightersEliminatory, $shuffle = 1);
     }
 
@@ -390,18 +381,15 @@ class TreeGen implements TreeGenerable
      */
     private function pushGroups($numRounds, $numFightersEliminatory, $shuffle = true)
     {
-
-        // From last round to first round
-        for ($roundNumber = $numRounds; $roundNumber > 1; $roundNumber--) {
-            $previousRound = $this->getPreviousRound($roundNumber, $numRounds);
+        for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
+//            $previousRound = $this->getPreviousRound($roundNumber, $numRounds);
             // From last match to first match
-            for ($matchNumber = ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber > 0; $matchNumber--) {
-                $parent = $this->getParentGroup($roundNumber, $numRounds, $matchNumber, $previousRound);
+            for ($matchNumber = 1; $matchNumber <= ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber++) {
+//                $parent = $this->getParentGroup($roundNumber, $numRounds, $matchNumber, $previousRound);
                 $fighters = $this->createByeGroup(2);
-                $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent, $shuffle);
+                $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent = null, $shuffle);
             }
         }
-
     }
 
     /**
@@ -423,7 +411,26 @@ class TreeGen implements TreeGenerable
         $fightersWithBye = $this->adjustFightersGroupWithByes($fighters, $fighterByEntity);
 
         // Chunk user by areas
-        $usersByArea = $fightersWithBye->chunk(count($fightersWithBye) / $areas);
-        return $usersByArea;
+        return $fightersWithBye->chunk(count($fightersWithBye) / $areas);
+    }
+
+    /**
+     * @param $round
+     * @param $shuffle
+     * @param $fightersByEntity
+     * @return mixed
+     */
+    private function chunkAndShuffle($round, $shuffle, $fightersByEntity)
+    {
+        if ($this->championship->hasPreliminary()) {
+            $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
+            if ($shuffle) $fightersGroup->shuffle();
+        } elseif ($this->championship->isDirectEliminationType() || $round > 1) {
+            $fightersGroup = $fightersByEntity->chunk(2);
+            if ($shuffle) $fightersGroup->shuffle();
+        } else { // Round Robin
+            $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
+        }
+        return $fightersGroup;
     }
 }

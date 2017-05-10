@@ -51,6 +51,7 @@ class TreeController extends Controller
         DB::table('fighters_group_competitor')->delete();
         DB::table('fighters_group_team')->delete();
         DB::table('competitor')->delete();
+        DB::table('users')->where('id','<>',1)->delete();
 
         $championship = Championship::with('teams', 'users', 'category', 'settings')->find($championship->id);
         $numFighters = $request->numFighters;
