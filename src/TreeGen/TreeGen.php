@@ -27,7 +27,7 @@ class TreeGen implements TreeGenerable
     {
         $this->championship = $championship;
         $this->groupBy = $groupBy;
-        $this->settings = $championship->settings;
+        $this->settings = $championship->getSettings();
         $this->tree = new Collection();
     }
 
