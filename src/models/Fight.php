@@ -270,18 +270,14 @@ class Fight extends Model
     {
         $childrenGroup = $this->group->parent->children;
         foreach ($childrenGroup as $key => $children) {
-
             $childFight = $children->fights->get(0);
-
-            // Groups are upside down, so the relation is the opposite
             if ($childFight->id == $this->id) {
                 if ($key % 2 == 0) {
-                    return "c2";
-                }
-                if ($key % 2 == 1) {
                     return "c1";
                 }
-
+                if ($key % 2 == 1) {
+                    return "c2";
+                }
             }
         }
         return null;

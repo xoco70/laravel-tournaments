@@ -17,6 +17,7 @@ class TreeGen implements TreeGenerable
     protected $tree;
     public $championship;
     public $settings;
+    protected $numFighters;
 
     /**
      * @param Championship $championship
@@ -40,9 +41,9 @@ class TreeGen implements TreeGenerable
         $usersByArea = $this->getFightersByArea();
         $numFighters = sizeof($usersByArea->collapse());
 
-
         $this->generateGroupsForRound($usersByArea, $area = 1, $round = 1, $shuffle = 1);
         $this->pushEmptyGroupsToTree($numFighters);
+        $this->addParentToChildren($numFighters);
         // Now add parents to all
     }
 
@@ -60,8 +61,14 @@ class TreeGen implements TreeGenerable
                 $max = count($userGroup);
             }
         }
-
         return $max;
+
+//        return $userGroups
+//            ->sortByDesc(function ($group) {
+//                return $group->count();
+//            })
+//            ->first()
+//            ->count();
     }
 
     /**
@@ -132,7 +139,6 @@ class TreeGen implements TreeGenerable
                 return $limit;
             }
         }
-
         return 64 * $groupSize;
     }
 
@@ -230,9 +236,7 @@ class TreeGen implements TreeGenerable
             // Chunking to make small round robin groups
             $fightersGroup = $this->chunkAndShuffle($round, $shuffle, $fightersByEntity);
             $order = 1;
-            // Before doing anything, check last group if numUser = 1
             foreach ($fightersGroup as $value => $fighters) {
-//                $parent = $this->getParentGroup($round, null, $value + 1, $previousRound);
                 $this->saveGroupAndSync($fighters, $area, $order, $round, $parent = null, $shuffle);
                 $order++;
             }
@@ -343,34 +347,25 @@ class TreeGen implements TreeGenerable
     /**
      * Get All Groups on previous round
      * @param $currentRound
-     * @param $numRounds
      * @return Collection
      */
-    private function getPreviousRound($currentRound, $numRounds = 0)
+    private function getPreviousRound($currentRound)
     {
-        $previousRound = null;
-        if ($currentRound != $numRounds) {
-            $previousRound = $this->championship->groupsByRound($currentRound + 1)->get();
-        }
-
+        $previousRound = $this->championship->groupsByRound($currentRound + 1)->get();
+        dump("previous". $previousRound->pluck('id'));
         return $previousRound;
     }
 
     /**
      * Get the next group on the right ( parent ), final round being the ancestor
-     * @param $roundNumber
-     * @param $numRounds
      * @param $matchNumber
      * @param $previousRound
      * @return mixed
      */
-    private function getParentGroup($roundNumber, $numRounds = 0, $matchNumber, $previousRound)
+    private function getParentGroup($matchNumber, $previousRound)
     {
-        $parent = null;
-        if ($roundNumber != $numRounds) { // Final, there is no more parent
-            $parentIndex = intval(($matchNumber + 1) / 2);
-            $parent = $previousRound->get($parentIndex - 1);
-        }
+        $parentIndex = intval(($matchNumber + 1) / 2);
+        $parent = $previousRound->get($parentIndex - 1);
         return $parent;
     }
 
@@ -382,10 +377,8 @@ class TreeGen implements TreeGenerable
     private function pushGroups($numRounds, $numFightersEliminatory, $shuffle = true)
     {
         for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
-//            $previousRound = $this->getPreviousRound($roundNumber, $numRounds);
             // From last match to first match
             for ($matchNumber = 1; $matchNumber <= ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber++) {
-//                $parent = $this->getParentGroup($roundNumber, $numRounds, $matchNumber, $previousRound);
                 $fighters = $this->createByeGroup(2);
                 $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent = null, $shuffle);
             }
@@ -432,5 +425,31 @@ class TreeGen implements TreeGenerable
             $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
         }
         return $fightersGroup;
+    }
+
+    /**
+     * Attach a parent to every child for nestedSet Navigation
+     */
+    private function addParentToChildren($numFightersEliminatory)
+    {
+        $numRounds = intval(log($numFightersEliminatory, 2));
+
+        $groupsDesc = $this->championship
+            ->fightersGroups()
+            ->where('round', '<', $numRounds)
+            ->orderByDesc('id')->get();
+
+        $groupsDescByRound = $groupsDesc->groupBy('round');
+
+        foreach ($groupsDescByRound as $round => $groups) {
+            $previousRound = $this->getPreviousRound($round, $numRounds);
+            foreach ($groups->reverse()->values() as $matchNumber => $group) {
+                $parent = $this->getParentGroup($matchNumber + 1, $previousRound);
+                $group->parent_id = $parent->id;
+                $group->save();
+            }
+        }
+
+
     }
 }
