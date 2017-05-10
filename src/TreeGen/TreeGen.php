@@ -251,7 +251,7 @@ class TreeGen implements TreeGenerable
     {
         $fighters = $fighters->pluck('id');
         if ($shuffle) {
-            $fighters->shuffle();
+            $fighters = $fighters->shuffle();
         }
         $group = $this->saveGroup($area, $order, $round, $parent);
 
@@ -418,12 +418,12 @@ class TreeGen implements TreeGenerable
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
             if ($shuffle) {
-                $fightersGroup->shuffle();
+                $fightersGroup = $fightersGroup->shuffle();
             }
         } elseif ($this->championship->isDirectEliminationType() || $round > 1) {
             $fightersGroup = $fightersByEntity->chunk(2);
             if ($shuffle) {
-                $fightersGroup->shuffle();
+                $fightersGroup = $fightersGroup->shuffle();
             }
         } else { // Round Robin
             $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
