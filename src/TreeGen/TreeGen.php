@@ -54,21 +54,13 @@ class TreeGen implements TreeGenerable
      */
     private function getMaxFightersByEntity($userGroups): int
     {
-        // Surely there is a Laravel function that does it ;)
-        $max = 0;
-        foreach ($userGroups as $userGroup) {
-            if (count($userGroup) > $max) {
-                $max = count($userGroup);
-            }
-        }
-        return $max;
+        return $userGroups
+            ->sortByDesc(function ($group) {
+                return $group->count();
+            })
+            ->first()
+            ->count();
 
-//        return $userGroups
-//            ->sortByDesc(function ($group) {
-//                return $group->count();
-//            })
-//            ->first()
-//            ->count();
     }
 
     /**
@@ -352,7 +344,6 @@ class TreeGen implements TreeGenerable
     private function getPreviousRound($currentRound)
     {
         $previousRound = $this->championship->groupsByRound($currentRound + 1)->get();
-        dump("previous". $previousRound->pluck('id'));
         return $previousRound;
     }
 
