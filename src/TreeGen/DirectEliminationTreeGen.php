@@ -25,7 +25,7 @@ class DirectEliminationTreeGen implements TreeGenerable
         $this->championship = $championship;
         $this->names = $names;
 
-        $this->firstRoundName = $names->first()->map(function ($item) use ($championship) {
+        $this->firstRoundName = $names->first()->map(function($item) use ($championship) {
             $fighters = $item->getFighters();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
@@ -53,7 +53,9 @@ class DirectEliminationTreeGen implements TreeGenerable
         $matches = array_chunk($fighters, 2);
 
         //If there's already a match in the match array, then that means the next round is round 2, so increase the round number
-        if (count($this->brackets)) $roundNumber++;
+        if (count($this->brackets)) {
+            $roundNumber++;
+        }
 
         $countMatches = count($matches);
         //Create the first full round of fighters, some may be blank if waiting on the results of a previous round

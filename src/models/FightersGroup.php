@@ -206,7 +206,7 @@ class FightersGroup extends Model
             foreach ($fightsByRound as $numFight => $fight) {
 
                 $parentGroup = $fight->group->parent;
-                if ($parentGroup == null ) break;
+                if ($parentGroup == null) break;
                 $parentFight = $parentGroup->fights->get(0);
 
                 // IN this $fight, if it is the first child or the second child --> c1 or c2 in parent
