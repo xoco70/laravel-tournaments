@@ -229,7 +229,6 @@ class Fight extends Model
         if ($fight->c1 == null || $fight->c2 == null) {
             $this->$fighterToUpdate = null;
         }
-        dd($this->$fighterToUpdate);
     }
 
     /**
