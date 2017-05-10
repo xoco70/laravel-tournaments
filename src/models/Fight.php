@@ -289,9 +289,15 @@ class Fight extends Model
      */
     public function getValueToUpdate()
     {
-        if ($this->c1 != null && $this->c2 != null) return null;
-        if ($this->c1 != null) return "c1";
-        if ($this->c2 != null) return "c2";
+        if ($this->c1 != null && $this->c2 != null) {
+            return null;
+        }
+        if ($this->c1 != null) {
+            return "c1";
+        }
+        if ($this->c2 != null) {
+            return "c2";
+        }
         return null;
     }
 }
