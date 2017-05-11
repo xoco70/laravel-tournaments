@@ -85,42 +85,14 @@ class TreeGen implements TreeGenerable
     }
 
     /**
-     * Calculate the Byes need to fill the Championship Tree.
-     * @param Championship $championship
-     * @return Collection
-     */
-    private function getByeGroup(Championship $championship, $fighters)
-    {
-        $groupSizeDefault = 3;
-        $preliminaryGroupSize = 2;
-
-        $fighterCount = $fighters->count();
-
-        if ($championship->hasPreliminary()) {
-            $preliminaryGroupSize = $championship->settings != null
-                ? $championship->settings->preliminaryGroupSize
-                : $groupSizeDefault;
-        } elseif ($championship->isDirectEliminationType()) {
-            $preliminaryGroupSize = 2;
-        } else {
-            // No Preliminary and No Direct Elimination --> Round Robin
-            // Should Have no tree
-        }
-        $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize);
-        $byeCount = $treeSize - $fighterCount;
-
-        return $this->createNullsGroup($byeCount, $championship->category->isTeam);
-    }
-
-    /**
      * Get the size the first round will have
      * @param $fighterCount
      * @return int
      */
-    private function getTreeSize($fighterCount, $groupSize)
+    protected function getTreeSize($fighterCount, $groupSize)
     {
         $square = collect([1, 2, 4, 8, 16, 32, 64]);
-        $squareMultiplied = $square->map(function($item, $key) use ($groupSize) {
+        $squareMultiplied = $square->map(function ($item, $key) use ($groupSize) {
             return $item * $groupSize;
         });
 
@@ -130,24 +102,6 @@ class TreeGen implements TreeGenerable
             }
         }
         return 64 * $groupSize;
-    }
-
-    /**
-     * Create Bye Groups to adjust tree
-     * @param $byeCount
-     * @return Collection
-     */
-    private function createNullsGroup($byeCount, $isTeam): Collection
-    {
-        $isTeam
-            ? $null = new Team()
-            : $null = new Competitor();
-
-        $byeGroup = new Collection();
-        for ($i = 0; $i < $byeCount; $i++) {
-            $byeGroup->push($null);
-        }
-        return $byeGroup;
     }
 
     /**
@@ -207,19 +161,6 @@ class TreeGen implements TreeGenerable
     }
 
     /**
-     * Fighter is the name for competitor or team, depending on the case
-     * @return Collection
-     */
-    private function getFighters()
-    {
-        $this->championship->category->isTeam()
-            ? $fighters = $this->championship->teams
-            : $fighters = $this->championship->competitors;
-
-        return $fighters;
-    }
-
-    /**
      * @param Collection $usersByArea
      * @param integer $area
      * @param integer $round
@@ -233,52 +174,16 @@ class TreeGen implements TreeGenerable
             $fightersGroup = $this->chunkAndShuffle($round, $shuffle, $fightersByEntity);
             $order = 1;
             foreach ($fightersGroup as $value => $fighters) {
-                $this->saveGroupAndSync($fighters, $area, $order, $round, $parent = null, $shuffle);
+                $fighters = $fighters->pluck('id');
+                if ($shuffle) {
+                    $fighters = $fighters->shuffle();
+                }
+                $group = $this->saveGroup($area, $order, $round, $parent = null);
+                $this->syncGroup($group, $fighters);
                 $order++;
             }
             $area++;
         }
-    }
-
-    /**
-     * @param $fighters
-     * @param $area
-     * @param integer $order
-     * @param $round
-     * @return FightersGroup
-     */
-    public function saveGroupAndSync($fighters, $area, $order, $round, $parent, $shuffle)
-    {
-        $fighters = $fighters->pluck('id');
-        if ($shuffle) {
-            $fighters = $fighters->shuffle();
-        }
-        $group = $this->saveGroup($area, $order, $round, $parent);
-
-        // Add all competitors to Pivot Table
-        if ($this->championship->category->isTeam()) {
-            $group->syncTeams($fighters);
-        } else {
-            $group->syncCompetitors($fighters);
-        }
-
-        return $group;
-    }
-
-    /**
-     * Create empty groups for direct Elimination Tree
-     * @param $numFighters
-     */
-    public function pushEmptyGroupsToTree($numFighters)
-    {
-        $numFightersEliminatory = $numFighters;
-        // We check what will be the number of groups after the preliminaries
-        if ($this->championship->hasPreliminary()) {
-            $numFightersEliminatory = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
-        }
-        // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersEliminatory, 2));
-        $this->pushGroups($numRounds, $numFightersEliminatory, $shuffle = 1);
     }
 
     /**
@@ -288,7 +193,7 @@ class TreeGen implements TreeGenerable
      * @param $parent
      * @return FightersGroup
      */
-    private function saveGroup($area, $order, $round, $parent): FightersGroup
+    protected function saveGroup($area, $order, $round, $parent): FightersGroup
     {
         $group = new FightersGroup();
         $group->area = $area;
@@ -302,15 +207,10 @@ class TreeGen implements TreeGenerable
         return $group;
     }
 
-    private function createByeFighter()
-    {
-        return $this->championship->category->isTeam
-            ? new Team()
-            : new Competitor();
-    }
 
     /**
      * @param integer $groupSize
+     * @return Collection
      */
     public function createByeGroup($groupSize): Collection
     {
@@ -372,13 +272,14 @@ class TreeGen implements TreeGenerable
      * @param integer $numRounds
      * @param $numFightersEliminatory
      */
-    private function pushGroups($numRounds, $numFightersEliminatory, $shuffle = true)
+    protected function pushGroups($numRounds, $numFightersEliminatory, $shuffle = true)
     {
         for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
             // From last match to first match
             for ($matchNumber = 1; $matchNumber <= ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
-                $this->saveGroupAndSync($fighters, $area = 1, $order = $matchNumber, $roundNumber, $parent = null, $shuffle);
+                $group = $this->saveGroup($area = 1, $order = $matchNumber, $roundNumber, $parent = null);
+                $this->syncGroup($group, $fighters);
             }
         }
     }

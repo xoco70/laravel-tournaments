@@ -12,6 +12,8 @@ use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Tournament;
+use Xoco70\KendoTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
+use Xoco70\KendoTournaments\TreeGen\DirectEliminationTeamTreeGen;
 use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class TreeController extends Controller
@@ -69,7 +71,21 @@ class TreeController extends Controller
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
 
         //TODO Set groupBy argument to NULL for now
+//        if ($championship->hasPreliminary() && $championship->category->isTeam()){
+//            $generation = new PreliminaryTeamTreeGen($championship, null);
+//        }
+//        if ($championship->hasPreliminary() && !$championship->category->isTeam()){
+//            $generation = new PreliminaryCompetitorTreeGen($championship, null);
+//        }
         $generation = new TreeGen($championship, null);
+
+        if (!$championship->hasPreliminary() && $championship->isDirectEliminationType() &&  $championship->category->isTeam()){
+            $generation = new DirectEliminationTeamTreeGen($championship, null);
+        }
+        if (!$championship->hasPreliminary() && $championship->isDirectEliminationType() && !$championship->category->isTeam()){
+            $generation = new DirectEliminationCompetitorTreeGen($championship, null);
+        }
+
         $fighterToUpdate = null;
         try {
             $generation->run();

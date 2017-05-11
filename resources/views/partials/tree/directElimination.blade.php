@@ -1,5 +1,5 @@
 <?php
-use Xoco70\KendoTournaments\TreeGen\DirectEliminationTreeGen;
+use Xoco70\KendoTournaments\TreeGen\CreateDirectEliminationTree;
 
 $directEliminationTree = $championship->fightersGroups->groupBy('round');
 
@@ -8,7 +8,7 @@ $directEliminationTree = $championship->fightersGroups->groupBy('round');
     <h1> {{$championship->buildName()}}</h1>
 @endif
 <?php
-$brackets = new DirectEliminationTreeGen($directEliminationTree, $championship);
+$brackets = new CreateDirectEliminationTree($directEliminationTree, $championship);
 
 $brackets->printBrackets();
 ?>
