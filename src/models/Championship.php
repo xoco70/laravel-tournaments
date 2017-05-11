@@ -44,16 +44,6 @@ class Championship extends Model
     }
 
     /**
-     * A championship has many Competitors.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function competitorsWithUser()
-    {
-        return $this->hasMany(Competitor::class)->with('user');
-    }
-
-    /**
      * A championship belongs to a Category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

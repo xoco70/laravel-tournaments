@@ -38,15 +38,13 @@ class Team extends Model
         return $this->belongsToMany(Competitor::class)->withTimestamps();
     }
 
-    public function competitorsWithUser()
-    {
-        return $this->belongsToMany(Competitor::class)->with('user');
-    }
-
+    /**
+     * Get Team Name
+     * @return mixed|string
+     */
     public function getName()
     {
-        if ($this == null) return "BYE";
-        return $this->name;
+        return $this == null ? "BYE" : $this->name;
     }
 
 }
