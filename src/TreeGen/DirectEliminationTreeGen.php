@@ -28,7 +28,7 @@ class DirectEliminationTreeGen extends TreeGen
      * Create empty groups for direct Elimination Tree
      * @param $numFighters
      */
-    public function pushEmptyGroupsToTree($numFighters) // KEEP
+    public function pushEmptyGroupsToTree($numFighters)
     {
         // We calculate how much rounds we will have
         $numFightersEliminatory = $numFighters;

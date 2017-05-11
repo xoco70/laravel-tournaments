@@ -2,6 +2,7 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
+use Illuminate\Support\Collection;
 use Xoco70\KendoTournaments\Models\Championship;
 
 class PlayOffTreeGen extends TreeGen

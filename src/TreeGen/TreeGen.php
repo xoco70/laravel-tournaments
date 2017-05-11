@@ -355,4 +355,20 @@ class TreeGen implements TreeGenerable
             }
         }
     }
+
+    /**
+     * Create Bye Groups to adjust tree
+     * @param $byeCount
+     * @return Collection
+     */
+    protected function createNullsGroup($byeCount): Collection
+    {
+        $byeFighter = $this->createByeFighter();
+        $byeGroup = new Collection();
+        for ($i = 0; $i < $byeCount; $i++) {
+            $byeGroup->push($byeFighter);
+        }
+        return $byeGroup;
+    }
+
 }
