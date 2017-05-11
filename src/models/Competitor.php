@@ -23,50 +23,11 @@ class Competitor extends Model
     /**
      * Get the Competitor's Championship.
      *
-     * @param $ctId
-     *
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function championship($ctId)
+    public function championship()
     {
-        //TODO Surely I could Refactor it to Eloquent - Should Debug that. $ctId <> $championshipId ???
-        $competitor = self::where('championship_id', $ctId)->first();
-        $championshipId = $competitor->championship_id;
-        $championship = Championship::find($championshipId);
-
-        return $championship;
-    }
-
-    /**
-     * Not sure I use it, I could use $competitor->championship->category.
-     *
-     * @param $ctuId
-     *
-     * @return mixed
-     */
-    public function category($ctuId)
-    {
-        $championship = $this->championship($ctuId);
-        $categoryId = $championship->category_id;
-        $cat = Category::find($categoryId);
-
-        return $cat;
-    }
-
-    /**
-     * Get the tournament where Competitors is competing.
-     *
-     * @param $ctuId
-     *
-     * @return mixed
-     */
-    public function tournament($ctuId)
-    {
-        $tc = $this->championship($ctuId);
-        $tourmanentId = $tc->tournament_id;
-        $tour = Tournament::findOrNew($tourmanentId);
-
-        return $tour;
+        return $this->belongsTo(Championship::class);
     }
 
     /**
@@ -79,23 +40,38 @@ class Competitor extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function fightersGroups()
     {
         return $this->belongsToMany(FightersGroup::class, 'fighters_group_competitor')->withTimestamps();
     }
 
+    /**
+     * @return null|string
+     */
     public function getName()
     {
-        if ($this == null) return "BYE";
-        if ($this->user == null) return "BYE";
-        return $this->user->name;
+        return $this->defaultName() ?? $this->user->name;
     }
 
+    /**
+     * @return null|string
+     */
     public function getFullName()
+    {
+        return $this->defaultName() ?? $this->user->firstname . " " . $this->user->lastname;
+    }
+
+    /**
+     * @return null|string
+     */
+    private function defaultName()
     {
         if ($this == null) return "BYE";
         if ($this->user == null) return "BYE";
-        return $this->user->firstname . " " . $this->user->lastname;
+        return null;
     }
 
 }
