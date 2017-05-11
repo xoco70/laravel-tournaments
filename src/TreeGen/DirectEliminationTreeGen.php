@@ -3,12 +3,7 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
-use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\FightersGroup;
-use Xoco70\KendoTournaments\Models\Team;
 
 class DirectEliminationTreeGen extends TreeGen
 {
@@ -18,7 +13,7 @@ class DirectEliminationTreeGen extends TreeGen
      * @param Championship $championship
      * @return Collection
      */
-    protected function getByeGroup(Championship $championship, $fighters) // KEEP
+    protected function getByeGroup(Championship $championship, $fighters)
     {
         $fighterCount = $fighters->count();
         $preliminaryGroupSize = 2;
