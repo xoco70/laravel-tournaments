@@ -202,13 +202,17 @@ class FightersGroup extends Model
             foreach ($fightsByRound as $numFight => $fight) {
                 $parentGroup = $fight->group->parent;
                 if ($parentGroup == null) break;
-                $parentFight = $parentGroup->fights->get(0);
+                $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
 
                 // IN this $fight, is c1 or c2 has the info?
                 if ($championship->isDirectEliminationType()) {
                     // determine wether c1 or c2 must be updated
                     $fighterToUpdate = $fight->getParentFighterToUpdate();
                     $valueToUpdate = $fight->getValueToUpdate();
+
+                    // we need to know if the child has empty fighters, is this BYE or undetermined
+
+
                     // First Fight
                     if ($valueToUpdate != null) {
                         $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
