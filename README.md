@@ -11,7 +11,7 @@ Kendo- Tournaments is A Laravel 5.3+ Package that allows you to generate Tournam
 First, you'll need to install the package via Composer:
 
 ```shell
-$ composer require "xoco70/kendo-tournaments":^0.9
+$ composer require "xoco70/kendo-tournaments":^0.10
 ```
 
 Then, update `config/app.php` by adding an entry for the service provider.
@@ -50,3 +50,17 @@ You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
 
 vendor/bin/phpunit tests
 
+##TODO
+
+This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
+
+- Improve match list. Some of the matches on the second round could be guessed.
+- Generate a modificable ( with Select combos ) result for Preliminary Trees
+- Improve Areas management. 
+- Generate Direct Elimination Tree after Preliminary 
+- Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
+ We can improve that making the first match with 3 competitors.
+- Develop an Hybrid app with Ionic 3 to score live. If no internet, app should sync with Bluetooth :)
+
+
+ 
