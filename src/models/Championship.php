@@ -23,11 +23,11 @@ class Championship extends Model
     {
         parent::boot();
 
-        static::deleting(function($championship) {
+        static::deleting(function ($championship) {
             $championship->competitors()->delete();
             $championship->settings()->delete();
         });
-        static::restoring(function($championship) {
+        static::restoring(function ($championship) {
             $championship->competitors()->restore();
             $championship->settings()->restore();
         });
@@ -214,5 +214,27 @@ class Championship extends Model
     public function fightsByRound($round)
     {
         return $this->hasManyThrough(Fight::class, FightersGroup::class)->where('round', $round);
+    }
+
+    public function isPlayoffCompetitor()
+    {
+        return !$this->category->isTeam() &&
+            ($this->isPlayOffType() || $this->hasPreliminary());
+    }
+
+    public function isPlayoffTeam()
+    {
+        return $this->category->isTeam() &&
+            ($this->isPlayOffType() || $this->hasPreliminary());
+    }
+
+    public function isDirectEliminationCompetitor()
+    {
+        return !$this->category->isTeam() && $this->isDirectEliminationType() && !$this->hasPreliminary();
+    }
+
+    public function isDirectEliminationTeam()
+    {
+        return $this->category->isTeam() && $this->isDirectEliminationType() && !$this->hasPreliminary();
     }
 }

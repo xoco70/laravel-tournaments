@@ -7,9 +7,7 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
-use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\FightersGroup;
-use Xoco70\KendoTournaments\Models\Team;
 
 class TreeGen implements TreeGenerable
 {
@@ -272,7 +270,7 @@ class TreeGen implements TreeGenerable
      * @param integer $numRounds
      * @param $numFightersEliminatory
      */
-    protected function pushGroups($numRounds, $numFightersEliminatory, $shuffle = true)
+    protected function pushGroups($numRounds, $numFightersEliminatory)
     {
         for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
             // From last match to first match
@@ -296,6 +294,7 @@ class TreeGen implements TreeGenerable
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
 
+
         if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException();
         }
@@ -305,31 +304,6 @@ class TreeGen implements TreeGenerable
 
         // Chunk user by areas
         return $fightersWithBye->chunk(count($fightersWithBye) / $areas);
-    }
-
-    /**
-     * Chunk Fighters into groups for fighting, and optionnaly shuffle
-     * @param $round
-     * @param $shuffle
-     * @param $fightersByEntity
-     * @return mixed
-     */
-    private function chunkAndShuffle($round, $shuffle, $fightersByEntity)
-    {
-        if ($this->championship->hasPreliminary()) {
-            $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-            if ($shuffle) {
-                $fightersGroup = $fightersGroup->shuffle();
-            }
-        } elseif ($this->championship->isDirectEliminationType() || $round > 1) {
-            $fightersGroup = $fightersByEntity->chunk(2);
-            if ($shuffle) {
-                $fightersGroup = $fightersGroup->shuffle();
-            }
-        } else { // Round Robin
-            $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
-        }
-        return $fightersGroup;
     }
 
     /**
@@ -370,5 +344,4 @@ class TreeGen implements TreeGenerable
         }
         return $byeGroup;
     }
-
 }

@@ -25,8 +25,7 @@ class DirectEliminationTeamTreeGen extends TreeGen
     public function syncGroup($group, $fighters)
     {
         // Add all competitors to Pivot Table
-        $group->syncTeams($fighters);
-        return $group;
+        return $group->syncTeams($fighters);
     }
 
     protected function createByeFighter()

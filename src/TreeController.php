@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
@@ -72,20 +73,7 @@ class TreeController extends Controller
         }
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
 
-        $generation = new TreeGen($championship, null);
-        //TODO Set groupBy argument to NULL for now
-        if ($championship->hasPreliminary() && $championship->category->isTeam()) {
-            $generation = new PlayOffTeamTreeGen($championship, null);
-        }
-        if ($championship->hasPreliminary() && !$championship->category->isTeam()) {
-            $generation = new PlayOffCompetitorTreeGen($championship, null);
-        }
-        if (!$championship->hasPreliminary() && $championship->isDirectEliminationType() && $championship->category->isTeam()) {
-            $generation = new DirectEliminationTeamTreeGen($championship, null);
-        }
-        if (!$championship->hasPreliminary() && $championship->isDirectEliminationType() && !$championship->category->isTeam()) {
-            $generation = new DirectEliminationCompetitorTreeGen($championship, null);
-        }
+        $generation = $this->chooseGenerationStrategy($championship);
 
         $fighterToUpdate = null;
         try {
@@ -103,5 +91,31 @@ class TreeController extends Controller
             ->with('numFighters', $numFighters)
             ->with('hasPreliminary', $championship->settings->hasPreliminary)
             ->with(['success', "Success"]);
+    }
+
+    /**
+     * @param Championship $championship
+     * @return TreeGenerable
+     */
+    private function chooseGenerationStrategy(Championship $championship)
+    {
+        $generation = new TreeGen($championship, null);
+        switch (true) {
+            case $championship->isDirectEliminationCompetitor():
+                $generation = new DirectEliminationCompetitorTreeGen($championship, null);
+                break;
+            case $championship->isDirectEliminationTeam():
+                $generation = new DirectEliminationTeamTreeGen($championship, null);
+                break;
+            case $championship->isPlayoffCompetitor():
+                $generation = new PlayOffCompetitorTreeGen($championship, null);
+                break;
+            case $championship->isPlayoffTeam():
+                $generation = new PlayOffTeamTreeGen($championship, null);
+                break;
+            default:
+                dd("bad choice");
+        }
+        return $generation;
     }
 }

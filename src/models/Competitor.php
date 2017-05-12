@@ -5,7 +5,6 @@ namespace Xoco70\KendoTournaments\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Collection;
 
 class Competitor extends Model
 {

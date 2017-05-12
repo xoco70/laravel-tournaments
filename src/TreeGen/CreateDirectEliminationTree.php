@@ -2,7 +2,6 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
-use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Team;
 
