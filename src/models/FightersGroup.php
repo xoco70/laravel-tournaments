@@ -194,17 +194,15 @@ class FightersGroup extends Model
      */
     public static function generateNextRoundsFights(Championship $championship)
     {
-        $maxRounds = 4;
+        $championship = $championship->withCount('teams', 'competitors')->first();
+        $fightersCount = $championship->competitors_count + $championship->teams_count;
+        $maxRounds = intval(ceil(log($fightersCount, 2)));
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
             $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent')->get();
-
             foreach ($fightsByRound as $numFight => $fight) {
-
                 $parentGroup = $fight->group->parent;
                 if ($parentGroup == null) break;
                 $parentFight = $parentGroup->fights->get(0);
-
-                // IN this $fight, if it is the first child or the second child --> c1 or c2 in parent
 
                 // IN this $fight, is c1 or c2 has the info?
                 if ($championship->isDirectEliminationType()) {
