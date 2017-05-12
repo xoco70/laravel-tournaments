@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
+use Xoco70\KendoTournaments\Contracts\TreeGenerable;
+use Xoco70\KendoTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
+use Xoco70\KendoTournaments\TreeGen\DirectEliminationTeamTreeGen;
+use Xoco70\KendoTournaments\TreeGen\PlayOffCompetitorTreeGen;
+use Xoco70\KendoTournaments\TreeGen\PlayOffTeamTreeGen;
+use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class Championship extends Model
 {
@@ -237,4 +243,30 @@ class Championship extends Model
     {
         return $this->category->isTeam() && $this->isDirectEliminationType() && !$this->hasPreliminary();
     }
+
+    /**
+     * @return TreeGenerable
+     */
+    public function chooseGenerationStrategy()
+    {
+        $generation = new TreeGen($this, null);
+        switch (true) {
+            case $this->isDirectEliminationCompetitor():
+                $generation = new DirectEliminationCompetitorTreeGen($this, null);
+                break;
+            case $this->isDirectEliminationTeam():
+                $generation = new DirectEliminationTeamTreeGen($this, null);
+                break;
+            case $this->isPlayoffCompetitor():
+                $generation = new PlayOffCompetitorTreeGen($this, null);
+                break;
+            case $this->isPlayoffTeam():
+                $generation = new PlayOffTeamTreeGen($this, null);
+                break;
+            default:
+                dd("bad choice");
+        }
+        return $generation;
+    }
+
 }

@@ -72,8 +72,7 @@ class TreeController extends Controller
             ]);
         }
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
-
-        $generation = $this->chooseGenerationStrategy($championship);
+        $generation = $championship->chooseGenerationStrategy();
 
         $fighterToUpdate = null;
         try {
@@ -93,29 +92,5 @@ class TreeController extends Controller
             ->with(['success', "Success"]);
     }
 
-    /**
-     * @param Championship $championship
-     * @return TreeGenerable
-     */
-    private function chooseGenerationStrategy(Championship $championship)
-    {
-        $generation = new TreeGen($championship, null);
-        switch (true) {
-            case $championship->isDirectEliminationCompetitor():
-                $generation = new DirectEliminationCompetitorTreeGen($championship, null);
-                break;
-            case $championship->isDirectEliminationTeam():
-                $generation = new DirectEliminationTeamTreeGen($championship, null);
-                break;
-            case $championship->isPlayoffCompetitor():
-                $generation = new PlayOffCompetitorTreeGen($championship, null);
-                break;
-            case $championship->isPlayoffTeam():
-                $generation = new PlayOffTeamTreeGen($championship, null);
-                break;
-            default:
-                dd("bad choice");
-        }
-        return $generation;
-    }
+
 }
