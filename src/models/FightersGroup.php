@@ -174,11 +174,6 @@ class FightersGroup extends Model
         } else {
             $fighters = $this->competitorsWithNull();
         }
-
-        if (sizeof($fighters) == 0) {
-            $treeGen = new TreeGen($this->championship, null, null);
-            $fighters = $treeGen->createByeGroup(2);
-        }
         return $fighters;
     }
 
