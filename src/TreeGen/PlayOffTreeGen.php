@@ -3,6 +3,7 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Xoco70\KendoTournaments\Models\Championship;
 
 class PlayOffTreeGen extends TreeGen
@@ -42,11 +43,11 @@ class PlayOffTreeGen extends TreeGen
      * @param $fightersByEntity
      * @return mixed
      */
-    protected function chunkAndShuffle($round, $shuffle, $fightersByEntity)
+    protected function chunkAndShuffle($round, $fightersByEntity)
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-            if ($shuffle) {
+            if (!App::runningUnitTests()){
                 $fightersGroup = $fightersGroup->shuffle();
             }
         } else { // Round Robin

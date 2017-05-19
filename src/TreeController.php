@@ -62,22 +62,24 @@ class TreeController extends Controller
         $users = factory(User::class, (int)$numFighters)->create();
 
         foreach ($users as $user) {
-            factory(Competitor::class)->create([
-                'championship_id' => $championship->id,
-                'user_id' => $user->id,
-                'confirmed' => 1,
-                'short_id' => $user->id
-            ]);
+            factory(Competitor::class)->create(
+                ['championship_id' => $championship->id,
+                    'user_id' => $user->id,
+                    'confirmed' => 1,
+                    'short_id' => $user->id
+                ]
+            );
         }
-        $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
+        $championship->settings =  ChampionshipSettings::createOrUpdate($request, $championship);
         $generation = $championship->chooseGenerationStrategy();
 
-        $fighterToUpdate = null;
         try {
             $generation->run();
             FightersGroup::generateFights($championship);
             // For Now, We don't generate fights when Preliminary
-            if ($championship->isDirectEliminationType() && !$championship->hasPreliminary()) {
+            if ($championship->isDirectEliminationType()
+                && !$championship->hasPreliminary()
+            ) {
                 FightersGroup::generateNextRoundsFights($championship);
             }
         } catch (TreeGenerationException $e) {

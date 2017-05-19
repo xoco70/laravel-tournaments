@@ -3,6 +3,7 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
@@ -169,14 +170,14 @@ class TreeGen implements TreeGenerable
     {
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
-            $fightersGroup = $this->chunkAndShuffle($round, $shuffle, $fightersByEntity);
+            $fightersGroup = $this->chunkAndShuffle($round, $fightersByEntity);
             $order = 1;
-            foreach ($fightersGroup as $value => $fighters) {
+            foreach ($fightersGroup as $fighters) {
                 $fighters = $fighters->pluck('id');
-                if ($shuffle) {
+                if (!App::runningUnitTests()){
                     $fighters = $fighters->shuffle();
                 }
-                $group = $this->saveGroup($area, $order, $round, $parent = null);
+                $group = $this->saveGroup($area, $order, $round, null);
                 $this->syncGroup($group, $fighters);
                 $order++;
             }

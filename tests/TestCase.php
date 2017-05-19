@@ -94,10 +94,13 @@ abstract class TestCase extends BaseTestCase
     public function makeCompetitors($championship, $users)
     {
         foreach ($users as $user) {
-            factory(Competitor::class)->create([
-                'user_id' => $user->id,
-                'championship_id' => $championship->id,
-                'confirmed' => 1,]);
+            factory(Competitor::class)->create(
+                [
+                    'user_id' => $user->id,
+                    'championship_id' => $championship->id,
+                    'confirmed' => 1,
+                ]
+            );
         }
     }
 
@@ -107,9 +110,11 @@ abstract class TestCase extends BaseTestCase
         $this->visit('/kendo-tournaments')
             ->select($hasPreliminary, 'hasPreliminary')
             ->select($numAreas, 'fightingAreas')
-            ->select($hasPlayOff
-                ? ChampionshipSettings::PLAY_OFF
-                : ChampionshipSettings::DIRECT_ELIMINATION, 'treeType')
+            ->select(
+                $hasPlayOff
+                    ? ChampionshipSettings::PLAY_OFF
+                    : ChampionshipSettings::DIRECT_ELIMINATION, 'treeType'
+            )
             ->select($preliminaryGroupSize, 'preliminaryGroupSize')
             ->select($numCompetitors, 'numFighters');
 
@@ -138,12 +143,14 @@ abstract class TestCase extends BaseTestCase
                 $expected = (int)($numGroupsExpected[$numCompetitors - 1] / $numArea);
 
                 if ($count != $expected) {
-                    dd(['Method' => $currentTest,
+                    dd(
+                        ['Method' => $currentTest,
                         'NumCompetitors' => $numCompetitors,
                         'NumArea' => $numArea,
                         'Real' => $count,
                         'Excepted' => $expected,
-                        'numGroupsExpected[' . ($numCompetitors - 1) . ']' => $numGroupsExpected[$numCompetitors - 1] . ' / ' . $numArea]);
+                        'numGroupsExpected[' . ($numCompetitors - 1) . ']' => $numGroupsExpected[$numCompetitors - 1] . ' / ' . $numArea]
+                    );
                 }
                 $this->assertTrue($count == $expected);
             }

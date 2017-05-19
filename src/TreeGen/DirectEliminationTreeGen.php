@@ -3,6 +3,7 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Xoco70\KendoTournaments\Models\Championship;
 
 class DirectEliminationTreeGen extends TreeGen
@@ -36,17 +37,15 @@ class DirectEliminationTreeGen extends TreeGen
 
     /**
      * Chunk Fighters into groups for fighting, and optionnaly shuffle
-     * @param $round
-     * @param $shuffle
      * @param $fightersByEntity
      * @return Collection|null
      */
-    protected function chunkAndShuffle($round, $shuffle, $fightersByEntity)
+    protected function chunkAndShuffle($round, $fightersByEntity)
     {
         $fightersGroup = null;
 
         $fightersGroup = $fightersByEntity->chunk(2);
-        if ($shuffle) {
+        if (!App::runningUnitTests()){
             $fightersGroup = $fightersGroup->shuffle();
         }
         return $fightersGroup;

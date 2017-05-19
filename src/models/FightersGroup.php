@@ -136,6 +136,7 @@ class FightersGroup extends Model
 
     /**
      * Get the many 2 many relationship with
+     *
      * @return Collection
      */
     public function competitorsWithNull(): Collection
@@ -190,6 +191,7 @@ class FightersGroup extends Model
 
     /**
      * Problem is I can't make the difference between Bye and Empty :(
+     *
      * @param Championship $championship
      */
     public static function generateNextRoundsFights(Championship $championship)
@@ -199,7 +201,7 @@ class FightersGroup extends Model
         $maxRounds = intval(ceil(log($fightersCount, 2)));
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
             $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent')->get();
-            foreach ($fightsByRound as $numFight => $fight) {
+            foreach ($fightsByRound as $fight) {
                 $parentGroup = $fight->group->parent;
                 if ($parentGroup == null) break;
                 $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
