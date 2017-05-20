@@ -69,43 +69,52 @@ class DirectEliminationTest extends TestCase
     /** @test */
     public function it_saves_fight_to_next_round_when_possible()
     {
-        $this->generateTreeWithUI(1, 5, 3, false, false);
+        $this->generateTreeWithUI(1, 5, 3, false, 0);
+
 
         // Get the case when n^2-1 to have a lot of BYES on first round
 
         // if each round, if C1 != Null && C2== null, match(n+1) should be updated
         // if each round, if C1 == Null && C2== null, match(n+1) should be updated
-        //        $maxRounds = $this->championshipWithComp->fightersGroups()->max('round');
+        $maxRounds = $this->championshipWithComp->fightersGroups()->max('round');
 
-        //        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-        //        $fightsByRound = $this->championshipWithComp->fightsByRound(1)->get();
-        //        foreach ($fightsByRound as $key => $fight) {
-        //            $parentFight = $fight->group->parent;
-        //
-        //            // Check that parent match has correct value
-        //            if ($fight->c1 == null && $fight->c2 != null) {
-        //                dump("1:" . $parentFight->c1, $fight->c2);
-        //                $this->assertEquals($parentFight->c1, $fight->c2);
-        //            }
-        //            if ($fight->c1 != null && $fight->c2 == null) {
-        //                // Check that match(n+1) has correct value
-        //                dump("2:" . $parentFight->c1, $fight->c2);
-        //                $this->assertEquals($parentFight->c1, $fight->c1);
-        //            }
-        //            if ($fight->c1 == null && $fight->c2 == null) {
-        //                // Check that match(n+1) has correct value
-        //                dump("3:" . $parentFight->c1, $fight->c2);
-        //                $this->assertEquals($parentFight->c1, null);
-        //            }
-        //            if ($fight->c1 != null && $fight->c2 != null) {
-        //                // Check that match(n+1) has correct value
-        //                dump("1:" . $parentFight->c1, $fight->c2);
-        //                $this->assertEquals($parentFight->c1, null);
-        //            }
-        //        }
-
+        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
+            $fightsByRound = $this->championshipWithComp->fightsByRound(1)->get();
+            foreach ($fightsByRound as $key => $fight) {
+                $this->checkParentHasBeenFilled($key, $fight);
+            }
+        }
     }
 
-        //    }
+    /**
+     * @param $key
+     * @param $fight
+     */
+    private function checkParentHasBeenFilled($key, $fight)
+    {
+        if ($key % 2 == 0) { // Even
+            $toUpdate = "c1";
+        } else { // Odd
+            $toUpdate = "c2";
+        }
+        $parentFight = $fight->group->parent->fights->get(0);
 
+        if ($fight->c1 == null) {
+            if ($fight->c2 == null) {
+                // C1 and C2 Is Bye
+                $this->assertEquals($parentFight->$toUpdate, null);
+            } else {
+                // C1 Is Bye
+                $this->assertEquals($parentFight->$toUpdate, $fight->c2);
+            }
+        } else {
+            if ($fight->c2 == null) {
+                // C2 Is Bye
+                $this->assertEquals($parentFight->$toUpdate, $fight->c1);
+            } else {
+                // C1 and C2 Are all set
+                $this->assertEquals($parentFight->$toUpdate, null);
+            }
+        }
+    }
 }
