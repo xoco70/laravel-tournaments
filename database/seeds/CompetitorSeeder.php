@@ -16,7 +16,6 @@ class CompetitorSeeder extends Seeder
     public function run()
     {
         $this->command->info('Competitors seeding!');
-        $faker = Faker::create();
 
         $championship = Championship::where('tournament_id', 1)->first();
 
@@ -26,7 +25,7 @@ class CompetitorSeeder extends Seeder
         $users[] = factory(User::class)->create(['name' => 't4']);
         $users[] = factory(User::class)->create(['name' => 't5']);
 
-        foreach ($users as $id => $user) {
+        foreach ($users as $user) {
             factory(Competitor::class)->create([
                 'championship_id' => $championship->id,
                 'user_id'         => $user->id,

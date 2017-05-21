@@ -12,6 +12,7 @@ class DirectEliminationTreeGen extends TreeGen
     /**
      * Calculate the Byes need to fill the Championship Tree.
      * @param Championship $championship
+     * @param $fighters
      * @return Collection
      */
     protected function getByeGroup(Championship $championship, $fighters)
@@ -40,12 +41,12 @@ class DirectEliminationTreeGen extends TreeGen
      * @param $fightersByEntity
      * @return Collection|null
      */
-    protected function chunkAndShuffle($round, $fightersByEntity)
+    protected function chunkAndShuffle($round = null, $fightersByEntity)
     {
         $fightersGroup = null;
 
         $fightersGroup = $fightersByEntity->chunk(2);
-        if (!App::runningUnitTests()){
+        if (!App::runningUnitTests()) {
             $fightersGroup = $fightersGroup->shuffle();
         }
         return $fightersGroup;

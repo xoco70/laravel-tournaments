@@ -39,7 +39,7 @@ class Fight extends Model
 
     /**
      * @param Championship $championship
-     *
+     * @param FightersGroup|null $group
      * @return Collection
      */
     private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
@@ -116,7 +116,7 @@ class Fight extends Model
      */
     public static function savePreliminaryFightGroup($groups, $numGroup = 1)
     {
-        $c1 = $c2 = null;
+        $competitor1 = $competitor2 = null;
         $order = 1;
 
         foreach ($groups as $group) {
@@ -133,22 +133,22 @@ class Fight extends Model
 
             switch ($numGroup) {
                 case 1:
-                    $c1 = $fighter1;
-                    $c2 = $fighter2;
+                    $competitor1 = $fighter1;
+                    $competitor2 = $fighter2;
                     break;
                 case 2:
-                    $c1 = $fighter2;
-                    $c2 = $fighter3;
+                    $competitor1 = $fighter2;
+                    $competitor2 = $fighter3;
                     break;
                 case 3:
-                    $c1 = $fighter3;
-                    $c2 = $fighter1;
+                    $competitor1 = $fighter3;
+                    $competitor2 = $fighter1;
                     break;
             }
             $fight = new self();
             $fight->fighters_group_id = $group->id;
-            $fight->c1 = $c1 != null ? $c1->id : null;
-            $fight->c2 = $c2 != null ? $c2->id : null;
+            $fight->c1 = $competitor1 != null ? $competitor1->id : null;
+            $fight->c2 = $competitor2 != null ? $competitor2->id : null;
             $fight->short_id = $order++;
             $fight->area = $group->area;
             $fight->save();

@@ -136,8 +136,6 @@ class Tournament extends Model
     /**
      * Get All competitors that belongs to a tournament.
      *
-     * @param null $championshipId
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function competitors()

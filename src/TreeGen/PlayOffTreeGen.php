@@ -11,6 +11,7 @@ class PlayOffTreeGen extends TreeGen
     /**
      * Calculate the Byes need to fill the Championship Tree.
      * @param Championship $championship
+     * @param $fighters
      * @return Collection
      */
     protected function getByeGroup(Championship $championship, $fighters)
@@ -30,16 +31,15 @@ class PlayOffTreeGen extends TreeGen
      */
     public function pushEmptyGroupsToTree($numFighters)
     {
-        $numFightersEliminatory = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
+        $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersEliminatory, 2));
-        $this->pushGroups($numRounds, $numFightersEliminatory);
+        $numRounds = intval(log($numFightersElim, 2));
+        $this->pushGroups($numRounds, $numFightersElim);
     }
 
     /**
      * Chunk Fighters into groups for fighting, and optionnaly shuffle
      * @param $round
-     * @param $shuffle
      * @param $fightersByEntity
      * @return mixed
      */

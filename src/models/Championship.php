@@ -198,7 +198,7 @@ class Championship extends Model
 
     public function getSettings()
     {
-        return $setting = $this->settings ?? new ChampionshipSettings(ChampionshipSettings::DEFAULT_SETTINGS);
+        return $this->settings ?? new ChampionshipSettings(ChampionshipSettings::DEFAULT_SETTINGS);
     }
 
     /**

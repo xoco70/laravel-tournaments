@@ -67,6 +67,7 @@ class TreeGen implements TreeGenerable
      * Get Competitor's list ordered by entities
      * Countries for Internation Tournament, State for a National Tournament, etc.
      *
+     * @param $fighters
      * @return Collection
      */
     private function getFightersByEntity($fighters): Collection
@@ -86,6 +87,7 @@ class TreeGen implements TreeGenerable
     /**
      * Get the size the first round will have
      * @param $fighterCount
+     * @param $groupSize
      * @return int
      */
     protected function getTreeSize($fighterCount, $groupSize)
@@ -309,6 +311,7 @@ class TreeGen implements TreeGenerable
 
     /**
      * Attach a parent to every child for nestedSet Navigation
+     * @param $numFightersElim
      */
     private function addParentToChildren($numFightersElim)
     {
@@ -322,7 +325,7 @@ class TreeGen implements TreeGenerable
         $groupsDescByRound = $groupsDesc->groupBy('round');
 
         foreach ($groupsDescByRound as $round => $groups) {
-            $previousRound = $this->getPreviousRound($round, $numRounds);
+            $previousRound = $this->getPreviousRound($round);
             foreach ($groups->reverse()->values() as $matchNumber => $group) {
                 $parent = $this->getParentGroup($matchNumber + 1, $previousRound);
                 $group->parent_id = $parent->id;
