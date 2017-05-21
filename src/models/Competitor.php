@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 
-class Competitor extends Model
+class Competitor extends Fighter
 {
     use SoftDeletes;
     protected $DATES = ['created_at', 'updated_at', 'deleted_at'];
@@ -18,16 +18,6 @@ class Competitor extends Model
         'user_id',
         'confirmed',
     ];
-
-    /**
-     * Get the Competitor's Championship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function championship()
-    {
-        return $this->belongsTo(Championship::class);
-    }
 
     /**
      * Get User from Competitor.
@@ -68,8 +58,7 @@ class Competitor extends Model
      */
     private function defaultName()
     {
-        if ($this == null) return "BYE";
-        if ($this->user == null) return "BYE";
+        if ($this == null || $this->user == null) return "BYE";
         return null;
     }
 
