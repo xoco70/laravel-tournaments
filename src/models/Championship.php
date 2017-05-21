@@ -268,5 +268,4 @@ class Championship extends Model
         }
         return $generation;
     }
-
 }

@@ -8,8 +8,8 @@
             <?php
 
             if ($championship->category->isTeam) {
-                $fighter1 = $fight->tea1 != null ? $fight->tea1->name : "BYE";
-                $fighter2 = $fight->tea2 != null ? $fight->team2->name : "BYE";
+                $fighter1 = $fight->team1 != null ? $fight->team1->name : "BYE";
+                $fighter2 = $fight->team2 != null ? $fight->team2->name : "BYE";
             } else {
                 $fighter1 = $fight->competitor1 != null ? $fight->competitor1->user->name : "BYE";
                 $fighter2 = $fight->competitor2 != null ? $fight->competitor2->user->name : "BYE";

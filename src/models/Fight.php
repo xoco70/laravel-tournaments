@@ -39,7 +39,7 @@ class Fight extends Model
 
     /**
      * @param Championship $championship
-     * @param FightersGroup|null $group
+     *
      * @return Collection
      */
     private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
@@ -190,29 +190,34 @@ class Fight extends Model
         }
     }
 
-    public function getFighterName($numFighter)
+    public function getFighterAttr($numFighter, $attr)
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
             $teamToUpdate = 'team' . $numFighter;
-            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->name;
+            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$attr;
         }
         $competitorToUpdate = 'competitor' . $numFighter;
-        return $this->$competitorToUpdate == null
-            ? 'BYE'
-            : $this->$competitorToUpdate->user->firstname . " " . $this->$competitorToUpdate->user->lastname;
+        if ($attr == 'name') {
+            return $this->$competitorToUpdate == null
+                ? 'BYE'
+                : $this->$competitorToUpdate->user->firstname . " " . $this->$competitorToUpdate->user->lastname;
+        } elseif ($attr == 'short_id') {
+            return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
+        }
+        return null;
     }
 
-    public function getFighterShortId($numFighter)
-    {
-        $isTeam = $this->group->championship->category->isTeam;
-        if ($isTeam) {
-            $teamToUpdate = 'team' . $numFighter;
-            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->short_id;
-        }
-        $competitorToUpdate = 'competitor' . $numFighter;
-        return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
-    }
+//    public function getFighterShortId($numFighter,$attr)
+//    {
+//        $isTeam = $this->group->championship->category->isTeam;
+//        if ($isTeam) {
+//            $teamToUpdate = 'team' . $numFighter;
+//            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$attr;
+//        }
+//        $competitorToUpdate = 'competitor' . $numFighter;
+//        return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
+//    }
 
     /**
      * Update parent Fight
