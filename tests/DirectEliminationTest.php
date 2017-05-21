@@ -40,16 +40,19 @@ class DirectEliminationTest extends TestCase
     {
         $competitorsInTree = [1, 2, 3, 4, 5, 6]; // ,  7,  8,  9, 10, 11, 12, 13, 14
         $numGroupsExpected = [0, 1, 2, 2, 4, 4]; // , 21, 28, 36, 45, 55, 66, 78, 91
+
         $numAreas = [1];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
                 $this->generateTreeWithUI($numArea, $numCompetitors, 3, false, 0);
                 parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
                 parent::checkGroupsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
+                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
 
             }
         }
     }
+
 
     /** @test */
     public function check_number_of_fights_when_direct_elimination_tree()

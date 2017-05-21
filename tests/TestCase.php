@@ -140,11 +140,11 @@ abstract class TestCase extends BaseTestCase
                 if ($count != $expected) {
                     dd(
                         ['Method' => $currentTest,
-                        'NumCompetitors' => $numCompetitors,
-                        'NumArea' => $numArea,
-                        'Real' => $count,
-                        'Excepted' => $expected,
-                        'numGroupsExpected[' . ($numCompetitors - 1) . ']' => $numGroupsExpected[$numCompetitors - 1] . ' / ' . $numArea]
+                            'NumCompetitors' => $numCompetitors,
+                            'NumArea' => $numArea,
+                            'Real' => $count,
+                            'Excepted' => $expected,
+                            'numGroupsExpected[' . ($numCompetitors - 1) . ']' => $numGroupsExpected[$numCompetitors - 1] . ' / ' . $numArea]
                     );
                 }
                 $this->assertTrue($count == $expected);
@@ -162,33 +162,41 @@ abstract class TestCase extends BaseTestCase
     protected function checkFightsNumber($championship, $numArea, $numCompetitors, $numFightsExpected, $currentTest)
     {
         for ($area = 1; $area <= $numArea; $area++) {
-            $groupsId = FightersGroup::where('championship_id', $championship->id)
-                ->where('area', $area)
-                ->where('round', 1)
-                ->select('id')
-                ->pluck('id')->toArray();
-
-            $count = Fight::whereIn('fighters_group_id', $groupsId)->count();
-
-
+            $count = $this->getFightsCount($championship, $area);
             if ((int)($numCompetitors / $numArea) <= 1) {
                 $this->assertTrue($count == 0);
-            } else {
-                $log = ceil(log($numFightsExpected[$numCompetitors - 1], 2));
-
+                return;
+            }
+            $log = ceil(log($numFightsExpected[$numCompetitors - 1], 2));
                 $expected = pow(2, $log) / $numArea;
 
-
-                if ($count != $expected) {
-                    dd(['Method' => $currentTest,
-                        'NumCompetitors' => $numCompetitors,
-                        'NumArea' => $numArea,
-                        'Real' => $count,
-                        'Excepted' => $expected,
-                        'numGroupsExpected[' . ($numCompetitors - 1) . ']' => "2 pow " . $log]);
-                }
-                $this->assertTrue($count == $expected);
+            if ($count != $expected) {
+                dd(['Method' => $currentTest,
+                    'NumCompetitors' => $numCompetitors,
+                    'NumArea' => $numArea,
+                    'Real' => $count,
+                    'Excepted' => $expected,
+                    'numGroupsExpected[' . ($numCompetitors - 1) . ']' => "2 pow " . $log]);
             }
+            $this->assertTrue($count == $expected);
+
         }
+    }
+
+    /**
+     * @param $championship
+     * @param $area
+     * @return mixed
+     */
+    protected function getFightsCount($championship, $area)
+    {
+        $groupsId = FightersGroup::where('championship_id', $championship->id)
+            ->where('area', $area)
+            ->where('round', 1)
+            ->select('id')
+            ->pluck('id')->toArray();
+
+        $count = Fight::whereIn('fighters_group_id', $groupsId)->count();
+        return $count;
     }
 }
