@@ -40,7 +40,7 @@ class TreeGen implements TreeGenerable
         $usersByArea = $this->getFightersByArea();
         $numFighters = sizeof($usersByArea->collapse());
 
-        $this->generateGroupsForRound($usersByArea, $area = 1, $round = 1, $shuffle = 1);
+        $this->generateGroupsForRound($usersByArea, 1, 1);
         $this->pushEmptyGroupsToTree($numFighters);
         $this->addParentToChildren($numFighters);
         // Now add parents to all
@@ -91,7 +91,7 @@ class TreeGen implements TreeGenerable
     protected function getTreeSize($fighterCount, $groupSize)
     {
         $square = collect([1, 2, 4, 8, 16, 32, 64]);
-        $squareMultiplied = $square->map(function ($item, $key) use ($groupSize) {
+        $squareMultiplied = $square->map(function ($item) use ($groupSize) {
             return $item * $groupSize;
         });
 
@@ -145,15 +145,15 @@ class TreeGen implements TreeGenerable
 
         // Create Copy of $competitors
         $newFighters = new Collection();
-        $i = 0;
+        $count = 0;
         $byeCount = 0;
         foreach ($fighters as $fighter) {
-            if ($frequency != -1 && $i % $frequency == 0 && $byeCount < $sizeGroupBy) {
+            if ($frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeGroupBy) {
                 $newFighters->push($bye);
                 $byeCount++;
             }
             $newFighters->push($fighter);
-            $i++;
+            $count++;
         }
 
         return $newFighters;
@@ -166,7 +166,7 @@ class TreeGen implements TreeGenerable
      * @param integer $shuffle
      *
      */
-    public function generateGroupsForRound($usersByArea, $area, $round, $shuffle)
+    public function generateGroupsForRound($usersByArea, $area, $round)
     {
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
@@ -269,15 +269,15 @@ class TreeGen implements TreeGenerable
     /**
      * Save Groups with their parent info
      * @param integer $numRounds
-     * @param $numFightersEliminatory
+     * @param $numFightersElim
      */
-    protected function pushGroups($numRounds, $numFightersEliminatory)
+    protected function pushGroups($numRounds, $numFightersElim)
     {
         for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
             // From last match to first match
-            for ($matchNumber = 1; $matchNumber <= ($numFightersEliminatory / pow(2, $roundNumber)); $matchNumber++) {
+            for ($matchNumber = 1; $matchNumber <= ($numFightersElim / pow(2, $roundNumber)); $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
-                $group = $this->saveGroup($area = 1, $order = $matchNumber, $roundNumber, $parent = null);
+                $group = $this->saveGroup(1, $matchNumber, $roundNumber, null);
                 $this->syncGroup($group, $fighters);
             }
         }
@@ -310,9 +310,9 @@ class TreeGen implements TreeGenerable
     /**
      * Attach a parent to every child for nestedSet Navigation
      */
-    private function addParentToChildren($numFightersEliminatory)
+    private function addParentToChildren($numFightersElim)
     {
-        $numRounds = intval(log($numFightersEliminatory, 2));
+        $numRounds = intval(log($numFightersElim, 2));
 
         $groupsDesc = $this->championship
             ->fightersGroups()

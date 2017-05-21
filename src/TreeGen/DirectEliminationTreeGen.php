@@ -17,7 +17,7 @@ class DirectEliminationTreeGen extends TreeGen
     protected function getByeGroup(Championship $championship, $fighters)
     {
         $fighterCount = $fighters->count();
-        $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize = 2);
+        $treeSize = $this->getTreeSize($fighterCount, 2);
         $byeCount = $treeSize - $fighterCount;
 
         return $this->createNullsGroup($byeCount);
@@ -26,13 +26,13 @@ class DirectEliminationTreeGen extends TreeGen
 
     /**
      * Create empty groups for direct Elimination Tree
-     * @param $numFightersEliminatory
+     * @param $numFightersElim
      */
-    public function pushEmptyGroupsToTree($numFightersEliminatory)
+    public function pushEmptyGroupsToTree($numFightersElim)
     {
         // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersEliminatory, 2));
-        $this->pushGroups($numRounds, $numFightersEliminatory);
+        $numRounds = intval(log($numFightersElim, 2));
+        $this->pushGroups($numRounds, $numFightersElim);
     }
 
     /**

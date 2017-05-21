@@ -85,8 +85,8 @@ class CreateDirectEliminationTree
 
         //Variables required for figuring outing the height of the vertical connectors
 
-        $matchSpacingMultiplier = 0.5;
-        $playerWrapperHeightMultiplier = 1;
+        $spaceFactor = 0.5;
+        $playerHeightFactor = 1;
 
         foreach ($this->brackets as $roundNumber => &$round) {
 
@@ -105,7 +105,7 @@ class CreateDirectEliminationTree
                 $match['matchWrapperTop'] = (((2 * $matchNumber) - 1) * (pow(2, ($roundNumber) - 1)) - 1) * (($this->matchSpacing / 2) + $this->playerWrapperHeight);
                 $match['matchWrapperLeft'] = ($roundNumber - 1) * ($this->matchWrapperWidth + $this->roundSpacing - 1);
                 $match['vConnectorLeft'] = floor($match['matchWrapperLeft'] + $this->matchWrapperWidth + ($this->roundSpacing / 2) - ($this->borderWidth / 2));
-                $match['vConnectorHeight'] = ($matchSpacingMultiplier * $this->matchSpacing) + ($playerWrapperHeightMultiplier * $this->playerWrapperHeight) + $this->borderWidth;
+                $match['vConnectorHeight'] = ($spaceFactor * $this->matchSpacing) + ($playerHeightFactor * $this->playerWrapperHeight) + $this->borderWidth;
                 $match['vConnectorTop'] = $match['hConnectorTop'] = $match['matchWrapperTop'] + $this->playerWrapperHeight;
                 $match['hConnectorLeft'] = ($match['vConnectorLeft'] - ($this->roundSpacing / 2)) + 2;
                 $match['hConnector2Left'] = $match['matchWrapperLeft'] + $this->matchWrapperWidth + ($this->roundSpacing / 2);
@@ -122,8 +122,8 @@ class CreateDirectEliminationTree
 
             //Update the spacing variables
 
-            $matchSpacingMultiplier *= 2;
-            $playerWrapperHeightMultiplier *= 2;
+            $spaceFactor *= 2;
+            $playerHeightFactor *= 2;
 
         }
 
@@ -138,7 +138,7 @@ class CreateDirectEliminationTree
 
         foreach ($this->brackets as $roundNumber => $round) {
 
-            foreach ($round as $matchNumber => $match) {
+            foreach ($round as $match) {
 
                 echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
                         <input type="text" class="score">'

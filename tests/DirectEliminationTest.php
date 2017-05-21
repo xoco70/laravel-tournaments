@@ -4,12 +4,11 @@ namespace Xoco70\KendoTournaments\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Tournament;
 
 class DirectEliminationTest extends TestCase
 {
-    //    use DatabaseTransactions;
+        use DatabaseTransactions;
 
     protected $root;
     protected $tournament, $championshipWithComp, $championshipWithTeam,
@@ -71,9 +70,7 @@ class DirectEliminationTest extends TestCase
     {
         $this->generateTreeWithUI(1, 5, 3, false, 0);
 
-
         // Get the case when n^2-1 to have a lot of BYES on first round
-
         // if each round, if C1 != Null && C2== null, match(n+1) should be updated
         // if each round, if C1 == Null && C2== null, match(n+1) should be updated
         $maxRounds = $this->championshipWithComp->fightersGroups()->max('round');
@@ -85,6 +82,17 @@ class DirectEliminationTest extends TestCase
             }
         }
     }
+
+    /** @test
+     * It should make the difference between BYE and Undefined to save Next Round
+     */
+
+    public function it_differenciate_bye_from_undefined_match()
+    {
+
+    }
+
+
 
     /**
      * @param $key

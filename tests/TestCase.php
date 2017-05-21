@@ -3,18 +3,13 @@
 namespace Xoco70\KendoTournaments\Tests;
 
 use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
-use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
-use Xoco70\KendoTournaments\Models\Tournament;
 use Xoco70\KendoTournaments\TournamentsServiceProvider;
-use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -37,7 +32,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function setUp()
     {
-        $this->root = new \Illuminate\Foundation\Auth\User();
+        $this->root = new User();
         $this->makeSureDatabaseExists();
         parent::setUp();
 

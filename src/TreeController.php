@@ -6,29 +6,21 @@ use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Tournament;
-use Xoco70\KendoTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
-use Xoco70\KendoTournaments\TreeGen\DirectEliminationTeamTreeGen;
-use Xoco70\KendoTournaments\TreeGen\PlayOffCompetitorTreeGen;
-use Xoco70\KendoTournaments\TreeGen\PlayOffTeamTreeGen;
-use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class TreeController extends Controller
 {
     /**
      * Display a listing of trees.
      *
-     * @param Request $request
-     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
         $tournament = Tournament::with(
             'competitors',

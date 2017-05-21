@@ -35,7 +35,7 @@ class PreliminaryTest extends TestCase
         $numAreas = [1, 2, 4];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $this->generateTreeWithUI($numArea, $numCompetitors, $preliminaryGroupSize = 3, $hasPlayOff = false, $hasPreliminary = 1);
+                $this->generateTreeWithUI($numArea, $numCompetitors, 3, false, 1);
                 parent::checkGroupsNumber($this->championship, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
             }
         }

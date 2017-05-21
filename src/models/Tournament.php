@@ -140,7 +140,7 @@ class Tournament extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    public function competitors($championshipId = null)
+    public function competitors()
     {
         return $this->hasManyThrough(Competitor::class, Championship::class);
     }
