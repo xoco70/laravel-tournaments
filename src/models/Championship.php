@@ -169,7 +169,7 @@ class Championship extends Model
 
     public function buildName()
     {
-        if ($this->settings != null && $this->settings->alias != null && $this->settings->alias != '')
+        if ($this->settings != null && $this->settings->alias != null)
             return $this->settings->alias;
 
         if ($this->hasNoCustomSettings()) {
