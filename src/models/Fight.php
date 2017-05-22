@@ -130,10 +130,7 @@ class Fight extends Model
         foreach ($groups as $group) {
 
             $fighters = $group->getFighters();
-
-            $fighter1 = $fighters->get(0);
-            $fighter2 = $fighters->get(1);
-            $fighter3 = $fighters->get(2);
+            [$fighter1, $fighter2, $fighter3 ] = $fighters;
 
             switch ($numGroup) {
                 case 1:
@@ -211,19 +208,23 @@ class Fight extends Model
 
     /**
      * Update parent Fight
+     * @param $fighterToUpdate
+     * @param $fight
      */
     public function updateParentFight($fighterToUpdate, $fight)
     {
+        if ($fight != null) {
+            if (($fight->c1 != null || $fight->c2 == null)) {
+                $this->$fighterToUpdate = $fight->c1;
+            }
+            if ($fight->c1 == null || $fight->c2 != null) {
+                $this->$fighterToUpdate = $fight->c2;
+            }
+            if ($fight->c1 == null || $fight->c2 == null) {
+                $this->$fighterToUpdate = null;
+            }
+        }
 
-        if ($fight != null && ($fight->c1 != null || $fight->c2 == null)) {
-            $this->$fighterToUpdate = $fight->c1;
-        }
-        if ($fight != null && $fight->c1 == null || $fight->c2 != null) {
-            $this->$fighterToUpdate = $fight->c2;
-        }
-        if ($fight->c1 == null || $fight->c2 == null) {
-            $this->$fighterToUpdate = null;
-        }
     }
 
     /**
