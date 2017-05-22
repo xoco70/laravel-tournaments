@@ -164,14 +164,7 @@ class Championship extends Model
 
     private function hasNoCustomSettings()
     {
-        return
-            $this->settings == null ||
-            ($this->settings->ageCategory == null || $this->settings->ageCategory == 0) &&
-            $this->settings->ageMin == null &&
-            $this->settings->ageMax == null &&
-            $this->settings->gradeMin == null &&
-            $this->settings->gradeMax == null &&
-            ($this->settings->gradeCategory == null || $this->settings->gradeCategory == 0);
+        return $this->settings == null;
     }
 
     public function buildName()
