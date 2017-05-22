@@ -190,7 +190,6 @@ class FightersGroup extends Model
     }
 
     /**
-     * Problem is I can't make the difference between Bye and Empty :(
      *
      * @param Championship $championship
      */
@@ -200,28 +199,28 @@ class FightersGroup extends Model
         $fightersCount = $championship->competitors_count + $championship->teams_count;
         $maxRounds = intval(ceil(log($fightersCount, 2)));
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent')->get();
+            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
             foreach ($fightsByRound as $fight) {
+
                 $parentGroup = $fight->group->parent;
                 if ($parentGroup == null) break;
                 $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
 
                 // IN this $fight, is c1 or c2 has the info?
                 if ($championship->isDirectEliminationType()) {
-                    // determine wether c1 or c2 must be updated
+
+                    // determine whether c1 or c2 must be updated
                     $fighterToUpdate = $fight->getParentFighterToUpdate();
                     $valueToUpdate = $fight->getValueToUpdate();
-
                     // we need to know if the child has empty fighters, is this BYE or undetermined
-
-
-                    // First Fight
-                    if ($valueToUpdate != null) {
+                    if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
                         $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
                         $parentFight->save();
                     }
+
                 }
             }
         }
+
     }
 }

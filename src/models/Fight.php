@@ -44,28 +44,28 @@ class Fight extends Model
      */
     private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
     {
-        if ($championship->category->isTeam) {
-            $fighters = $group->teams()->get();
-            if (sizeof($fighters) == 0) {
-                $fighters->push(new Team());
-                $fighters->push(new Team());
-            } else if (count($fighters) % 2 != 0) {
-                $fighters->push(new Team(['name' => 'BYE']));
+        if ($group != null) {
+            if ($championship->category->isTeam) {
+                $fighters = $group->teams()->get();
+                if (sizeof($fighters) == 0) {
+                    $fighters->push(new Team());
+                    $fighters->push(new Team());
+                } else if (count($fighters) % 2 != 0) {
+                    $fighters->push(new Team(['name' => 'BYE']));
+                }
+                return $fighters;
+            } else {
+                $fighters = $group->competitors()->get();
+                if (sizeof($fighters) == 0) { // If
+                    $fighters->push(new Competitor());
+                    $fighters->push(new Competitor());
+                } else if (count($fighters) % 2 != 0) { // If fighter is not pair, add a BYE
+                    $fighters->push(new Competitor());
+                }
             }
-
-        } else {
-            $fighters = $group->competitors()->get();
-            if (sizeof($fighters) == 0) { // If
-                $fighters->push(new Competitor());
-                $fighters->push(new Competitor());
-            } else if (count($fighters) % 2 != 0) { // If fighter is not pair, add a BYE
-                $fighters->push(new Competitor());
-            }
-
-
+            return $fighters;
         }
-
-        return $fighters;
+        return null;
     }
 
     /**
@@ -162,13 +162,16 @@ class Fight extends Model
     public static function saveGroupFights(Championship $championship)
     {
         $order = 1;
+        $round = [];
         foreach ($championship->fightersGroups()->get() as $group) {
             $fighters = self::getActorsToFights($championship, $group);
             $away = $fighters->splice(count($fighters) / 2); // 2
             $home = $fighters; // 1
 
-            for ($i = 0; $i < count($home) + count($away) - 1; $i++) { // 0 -> 2
-                for ($j = 0; $j < count($home); $j++) {  // 1 no mas
+            $countHome = count($home);
+            $countAway = count($away);
+            for ($i = 0; $i < $countHome + $countAway - 1; $i++) {
+                for ($j = 0; $j < $countHome; $j++) {
 
                     $round[$i][$j]['Home'] = $home[$j];
                     $round[$i][$j]['Away'] = $away[$j];
@@ -181,7 +184,7 @@ class Fight extends Model
                     $fight->save();
 
                 }
-                if (count($home) + count($away) - 1 > 2) {
+                if ($countHome + $countAway - 1 > 2) {
                     $away->prepend($home->splice(1, 1)->shift());
                     $home->push($away->pop());
                     $order++;
@@ -207,17 +210,6 @@ class Fight extends Model
         }
         return null;
     }
-
-//    public function getFighterShortId($numFighter,$attr)
-//    {
-//        $isTeam = $this->group->championship->category->isTeam;
-//        if ($isTeam) {
-//            $teamToUpdate = 'team' . $numFighter;
-//            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$attr;
-//        }
-//        $competitorToUpdate = 'competitor' . $numFighter;
-//        return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
-//    }
 
     /**
      * Update parent Fight
@@ -273,6 +265,23 @@ class Fight extends Model
             return "c2";
         }
         return null;
+    }
+
+    /**
+     * Check if we are able to fill the parent fight or not
+     * If one of the children has c1 x c2, then we must wait to fill parent
+     *
+     * @return bool
+     */
+    function hasDeterminedParent()
+    {
+
+        if ($this->c1 != null && $this->c2 != null) return true;
+        foreach ($this->group->children as $child) {
+            $fight = $child->fights->get(0);
+            if ($fight->c1 != null && $fight->c2 != null) return false;
+        }
+        return true;
     }
 
 }

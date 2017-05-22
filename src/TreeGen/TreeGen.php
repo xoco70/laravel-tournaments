@@ -128,7 +128,7 @@ class TreeGen implements TreeGenerable
     }
 
     /**
-     * Insert byes in an homogen way.
+     * Insert Empty Fighters in an homogeneous way.
      *
      * @param Collection $fighters
      * @param Collection $byeGroup
@@ -139,10 +139,10 @@ class TreeGen implements TreeGenerable
     {
         $bye = count($byeGroup) > 0 ? $byeGroup[0] : [];
         $sizeFighters = count($fighters);
-        $sizeGroupBy = count($byeGroup);
+        $sizeByeGroup = count($byeGroup);
 
-        $frequency = $sizeGroupBy != 0
-            ? (int)floor($sizeFighters / $sizeGroupBy)
+        $frequency = $sizeByeGroup != 0
+            ? (int)floor($sizeFighters / $sizeByeGroup)
             : -1;
 
         // Create Copy of $competitors
@@ -150,7 +150,7 @@ class TreeGen implements TreeGenerable
         $count = 0;
         $byeCount = 0;
         foreach ($fighters as $fighter) {
-            if ($frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeGroupBy) {
+            if ($frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeByeGroup) {
                 $newFighters->push($bye);
                 $byeCount++;
             }
@@ -165,7 +165,6 @@ class TreeGen implements TreeGenerable
      * @param Collection $usersByArea
      * @param integer $area
      * @param integer $round
-     * @param integer $shuffle
      *
      */
     public function generateGroupsForRound($usersByArea, $area, $round)

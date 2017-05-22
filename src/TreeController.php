@@ -62,6 +62,7 @@ class TreeController extends Controller
                 ]
             );
         }
+
         $championship->settings =  ChampionshipSettings::createOrUpdate($request, $championship);
         $generation = $championship->chooseGenerationStrategy();
 
@@ -69,9 +70,7 @@ class TreeController extends Controller
             $generation->run();
             FightersGroup::generateFights($championship);
             // For Now, We don't generate fights when Preliminary
-            if ($championship->isDirectEliminationType()
-                && !$championship->hasPreliminary()
-            ) {
+            if ($championship->isDirectEliminationType() && !$championship->hasPreliminary()) {
                 FightersGroup::generateNextRoundsFights($championship);
             }
         } catch (TreeGenerationException $e) {

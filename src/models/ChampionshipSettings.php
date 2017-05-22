@@ -66,10 +66,10 @@ class ChampionshipSettings extends Model
         $arrSettings = $request->except('_token', 'numFighters');
         $settings = static::where(['championship_id' => $championship->id])->first();
         if ($settings == null) {
-            $settings = new self($arrSettings);
-        } else {
-            $settings->fill($arrSettings);
+            $settings = new self();
         }
+        $settings->fill($arrSettings);
+
         $settings->save();
 
         return $settings;
