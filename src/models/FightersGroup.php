@@ -170,10 +170,9 @@ class FightersGroup extends Model
 
     public function getFighters(): Collection
     {
+        $fighters = $this->competitorsWithNull();
         if ($this->championship->category->isTeam()) {
             $fighters = $this->teamsWithNull();
-        } else {
-            $fighters = $this->competitorsWithNull();
         }
         return $fighters;
     }
@@ -201,7 +200,6 @@ class FightersGroup extends Model
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
             $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
             foreach ($fightsByRound as $fight) {
-
                 $parentGroup = $fight->group->parent;
                 if ($parentGroup == null) break;
                 $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
@@ -217,7 +215,6 @@ class FightersGroup extends Model
                         $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
                         $parentFight->save();
                     }
-
                 }
             }
         }

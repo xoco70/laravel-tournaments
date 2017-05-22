@@ -128,7 +128,7 @@ class TreeGen implements TreeGenerable
     }
 
     /**
-     * Insert Empty Fighters in an homogeneous way.
+     * Insert byes in an homogen way.
      *
      * @param Collection $fighters
      * @param Collection $byeGroup
@@ -139,32 +139,21 @@ class TreeGen implements TreeGenerable
     {
         $bye = count($byeGroup) > 0 ? $byeGroup[0] : [];
         $sizeFighters = count($fighters);
-        $sizeByeGroup = count($byeGroup);
+        $sizeGroupBy = count($byeGroup);
 
-        $frequency = $sizeByeGroup != 0
-            ? (int)floor($sizeFighters / $sizeByeGroup)
+        $frequency = $sizeGroupBy != 0
+            ? (int)floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
-        $newFighters = new Collection();
-        $count = 0;
-        $byeCount = 0;
-        foreach ($fighters as $fighter) {
-            if ($frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeByeGroup) {
-                $newFighters->push($bye);
-                $byeCount++;
-            }
-            $newFighters->push($fighter);
-            $count++;
-        }
-
-        return $newFighters;
+        return $this->getFullFighterList($fighters, $frequency, $sizeGroupBy, $bye);
     }
 
     /**
      * @param Collection $usersByArea
      * @param integer $area
      * @param integer $round
+     * @param integer $shuffle
      *
      */
     public function generateGroupsForRound($usersByArea, $area, $round)
@@ -346,5 +335,40 @@ class TreeGen implements TreeGenerable
             $byeGroup->push($byeFighter);
         }
         return $byeGroup;
+    }
+
+    /**
+     * @param Collection $fighters
+     * @param $frequency
+     * @param $sizeGroupBy
+     * @param $bye
+     * @return Collection
+     */
+    private function getFullFighterList(Collection $fighters, $frequency, $sizeGroupBy, $bye): Collection
+    {
+        $newFighters = new Collection();
+        $count = 0;
+        $byeCount = 0;
+        foreach ($fighters as $fighter) {
+            if ($this->shouldInsertBye($frequency, $sizeGroupBy, $count, $byeCount)) {
+                $newFighters->push($bye);
+                $byeCount++;
+            }
+            $newFighters->push($fighter);
+            $count++;
+        }
+        return $newFighters;
+    }
+
+    /**
+     * @param $frequency
+     * @param $sizeGroupBy
+     * @param $count
+     * @param $byeCount
+     * @return bool
+     */
+    private function shouldInsertBye($frequency, $sizeGroupBy, $count, $byeCount): bool
+    {
+        return $frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeGroupBy;
     }
 }

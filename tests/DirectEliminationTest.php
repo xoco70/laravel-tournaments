@@ -8,7 +8,7 @@ use Xoco70\KendoTournaments\Models\Tournament;
 
 class DirectEliminationTest extends TestCase
 {
-    use DatabaseTransactions;
+        use DatabaseTransactions;
 
     protected $root;
     protected $tournament, $championshipWithComp, $championshipWithTeam,
@@ -87,12 +87,14 @@ class DirectEliminationTest extends TestCase
     }
 
     /** @test
-     *
+     * It should make the difference between BYE and Undefined to save Next Round
      */
-    public function it_doesnt_fill_parent_if_children_is_undetermined()
+
+    public function it_differenciate_bye_from_undefined_match()
     {
 
     }
+
 
 
     /**
@@ -108,16 +110,20 @@ class DirectEliminationTest extends TestCase
         $parentFight = $fight->group->parent->fights->get(0);
 
         if ($fight->c1 == null) {
-            $this->assertEquals($parentFight->$toUpdate, $fight->c2);
             if ($fight->c2 == null) {
                 // C1 and C2 Is Bye
                 $this->assertEquals($parentFight->$toUpdate, null);
+            } else {
+                // C1 Is Bye
+                $this->assertEquals($parentFight->$toUpdate, $fight->c2);
             }
         } else {
-            $this->assertEquals($parentFight->$toUpdate, null);
             if ($fight->c2 == null) {
                 // C2 Is Bye
                 $this->assertEquals($parentFight->$toUpdate, $fight->c1);
+            } else {
+                // C1 and C2 Are all set
+                $this->assertEquals($parentFight->$toUpdate, null);
             }
         }
     }
