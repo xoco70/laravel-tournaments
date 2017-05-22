@@ -130,7 +130,10 @@ class Fight extends Model
         foreach ($groups as $group) {
 
             $fighters = $group->getFighters();
-            [$fighter1, $fighter2, $fighter3 ] = $fighters;
+
+            $fighter1 = $fighters->get(0);
+            $fighter2 = $fighters->get(1);
+            $fighter3 = $fighters->get(2);
 
             switch ($numGroup) {
                 case 1:
