@@ -63,28 +63,17 @@ class Fight extends Model
      */
     private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
     {
-        if ($group != null) {
-            if ($championship->category->isTeam) {
-                $fighters = $group->teams()->get();
-                if (sizeof($fighters) == 0) {
-                    $fighters->push(new Team());
-                    $fighters->push(new Team());
-                } else if (count($fighters) % 2 != 0) {
-                    $fighters->push(new Team(['name' => 'BYE']));
-                }
-                return $fighters;
-            } else {
-                $fighters = $group->competitors()->get();
-                if (sizeof($fighters) == 0) { // If
-                    $fighters->push(new Competitor());
-                    $fighters->push(new Competitor());
-                } else if (count($fighters) % 2 != 0) { // If fighter is not pair, add a BYE
-                    $fighters->push(new Competitor());
-                }
-            }
-            return $fighters;
+        if ($group == null) return null;
+        $fighters = $group->getFighters();
+        $fighterType = $group->getFighterType();
+        if (sizeof($fighters) == 0) {
+            $fighters->push(new $fighterType);
+            $fighters->push(new $fighterType);
+        } else if (count($fighters) % 2 != 0) {
+            $fighters->push(new $fighterType);
         }
-        return null;
+
+        return $fighters;
     }
 
     /**

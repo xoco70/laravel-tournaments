@@ -42,6 +42,40 @@ class FightersGroup extends Model
     }
 
     /**
+     * @param Championship $championship
+     * @param $fightsByRound
+     */
+    private static function updateParentFight(Championship $championship, $fightsByRound)
+    {
+        foreach ($fightsByRound as $fight) {
+            $parentGroup = $fight->group->parent;
+            if ($parentGroup == null) break;
+            $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
+
+            // IN this $fight, is c1 or c2 has the info?
+            if ($championship->isDirectEliminationType()) {
+                // determine whether c1 or c2 must be updated
+                self::chooseAndUpdateParentFight($fight, $parentFight);
+            }
+        }
+    }
+
+    /**
+     * @param $fight
+     * @param $parentFight
+     */
+    private static function chooseAndUpdateParentFight($fight, $parentFight)
+    {
+        $fighterToUpdate = $fight->getParentFighterToUpdate();
+        $valueToUpdate = $fight->getValueToUpdate();
+        // we need to know if the child has empty fighters, is this BYE or undetermined
+        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
+            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
+            $parentFight->save();
+        }
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function championship()
@@ -170,11 +204,11 @@ class FightersGroup extends Model
 
     public function getFighters(): Collection
     {
-        $fighters = $this->competitorsWithNull();
         if ($this->championship->category->isTeam()) {
-            $fighters = $this->teamsWithNull();
+            return $this->teamsWithNull();
         }
-        return $fighters;
+        return $this->competitorsWithNull();
+
     }
 
     public static function getBaseNumGroups($initialGroupId, $numGroups, $numRound): int
@@ -199,25 +233,19 @@ class FightersGroup extends Model
         $maxRounds = intval(ceil(log($fightersCount, 2)));
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
             $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-            foreach ($fightsByRound as $fight) {
-                $parentGroup = $fight->group->parent;
-                if ($parentGroup == null) break;
-                $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
-
-                // IN this $fight, is c1 or c2 has the info?
-                if ($championship->isDirectEliminationType()) {
-
-                    // determine whether c1 or c2 must be updated
-                    $fighterToUpdate = $fight->getParentFighterToUpdate();
-                    $valueToUpdate = $fight->getValueToUpdate();
-                    // we need to know if the child has empty fighters, is this BYE or undetermined
-                    if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
-                        $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
-                        $parentFight->save();
-                    }
-                }
-            }
+            self::updateParentFight($championship, $fightsByRound);
         }
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getFighterType()
+    {
+        if ($this->championship->category->isTeam()) {
+            return Team::class;
+        }
+        return Competitor::class;
     }
 }
