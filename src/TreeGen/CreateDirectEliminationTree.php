@@ -63,20 +63,7 @@ class CreateDirectEliminationTree
         }
 
         //Create the result of the empty rows for this tournament
-
-        for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
-            for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
-                if ($this->championship->category->isTeam()) {
-                    $fighter1 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team1;
-                    $fighter2 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team2;
-                } else {
-                    $fighter1 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor1;
-                    $fighter2 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor2;
-                }
-                $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
-            }
-        }
-
+        $this->assignFightersToBracket($roundNumber);
         $this->assignPositions();
     }
 
@@ -226,18 +213,7 @@ class CreateDirectEliminationTree
                 <option' . ($selected == '' ? ' selected' : '') . '></option>';
 
         foreach ($this->championship->competitors as $competitor) {
-
-            if ($competitor != null) {
-                $select = $selected != null && $selected->id == $competitor->id ? ' selected' : '';
-                $html .= '<option' . $select
-                    . ' value='
-                    . ($competitor->id ?? '')
-                    . '>'
-                    . $competitor->getName()
-                    . '</option>';
-
-            }
-
+            $html = $this->addOptionToSelect($selected, $competitor, $html);
         }
 
         $html .= '</select>';
@@ -252,5 +228,45 @@ class CreateDirectEliminationTree
             return new Team;
         }
         return new Competitor;
+    }
+
+    /**
+     * @param $roundNumber
+     */
+    private function assignFightersToBracket($roundNumber)
+    {
+        for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
+            for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
+                if ($this->championship->category->isTeam()) {
+                    $fighter1 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team1;
+                    $fighter2 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team2;
+                } else {
+                    $fighter1 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor1;
+                    $fighter2 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor2;
+                }
+                $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
+            }
+        }
+    }
+
+    /**
+     * @param $selected
+     * @param $competitor
+     * @param $html
+     * @return string
+     */
+    private function addOptionToSelect($selected, $competitor, $html): string
+    {
+        if ($competitor != null) {
+            $select = $selected != null && $selected->id == $competitor->id ? ' selected' : '';
+            $html .= '<option' . $select
+                . ' value='
+                . ($competitor->id ?? '')
+                . '>'
+                . $competitor->getName()
+                . '</option>';
+
+        }
+        return $html;
     }
 }
