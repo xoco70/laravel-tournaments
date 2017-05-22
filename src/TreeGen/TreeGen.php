@@ -153,7 +153,6 @@ class TreeGen implements TreeGenerable
      * @param Collection $usersByArea
      * @param integer $area
      * @param integer $round
-     * @param integer $shuffle
      *
      */
     public function generateGroupsForRound($usersByArea, $area, $round)

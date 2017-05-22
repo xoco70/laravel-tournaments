@@ -28,6 +28,25 @@ class Fight extends Model
     ];
 
     /**
+     * @param $group
+     * @param $competitor1
+     * @param $competitor2
+     * @param $order
+     * @return mixed
+     */
+    private static function createFight($group, $competitor1, $competitor2, $order)
+    {
+        $fight = new self();
+        $fight->fighters_group_id = $group->id;
+        $fight->c1 = $competitor1 != null ? $competitor1->id : null;
+        $fight->c2 = $competitor2 != null ? $competitor2->id : null;
+        $fight->short_id = $order++;
+        $fight->area = $group->area;
+        $fight->save();
+        return $order;
+    }
+
+    /**
      * Get First Fighter.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -121,11 +140,7 @@ class Fight extends Model
 
         foreach ($groups as $group) {
 
-            if ($group->championship->category->isTeam()) {
-                $fighters = $group->teams;
-            } else {
-                $fighters = $group->competitors;
-            }
+            $fighters = $group->getFighters();
 
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
@@ -145,13 +160,7 @@ class Fight extends Model
                     $competitor2 = $fighter1;
                     break;
             }
-            $fight = new self();
-            $fight->fighters_group_id = $group->id;
-            $fight->c1 = $competitor1 != null ? $competitor1->id : null;
-            $fight->c2 = $competitor2 != null ? $competitor2->id : null;
-            $fight->short_id = $order++;
-            $fight->area = $group->area;
-            $fight->save();
+            $order = self::createFight($group, $competitor1, $competitor2, $order);
         }
     }
 

@@ -11,7 +11,7 @@ class Fighter extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    function championship()
+    public function championship()
     {
         return $this->belongsTo(Championship::class);
     }
@@ -19,20 +19,8 @@ class Fighter extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-    function category()
+    public function category()
     {
         return $this->hasManyThrough(Category::class, Championship::class);
-    }
-
-    /**
-     * @return Competitor|Team
-     */
-    function fighter()
-    {
-        if ($this->championship->category->isTeam()) {
-            return new Team();
-        }
-        return new Competitor();
-
     }
 }
