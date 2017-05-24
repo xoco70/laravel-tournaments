@@ -44,7 +44,7 @@ class Fight extends Model
      * @internal param Championship $championship
      *
      */
-    protected static function getActorsToFights(FightersGroup $group)
+    protected static function getFightersWithNull(FightersGroup $group)
     {
         if ($group == null) return null;
         $fighters = $group->getFighters();
