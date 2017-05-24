@@ -29,7 +29,10 @@ class Team extends Fighter
      */
     public function getNameAttribute()
     {
-        return $this == null ? "" : $this->name;
+        return ($this->hasAttribute('name')) ? $this->attributes['name'] : "";
     }
-
+    public function hasAttribute($attr)
+    {
+        return array_key_exists($attr, $this->attributes);
+    }
 }

@@ -18,29 +18,7 @@ class FightersGroup extends Model
 
     use NodeTrait;
 
-    /**
-     * Check if Request contains tournamentSlug / Should Move to TreeRequest When Built.
-     *
-     * @param $request
-     *
-     * @return bool
-     */
-    public static function hasTournamentInRequest($request)
-    {
-        return $request->tournament != null;
-    }
 
-    /**
-     * Check if Request contains championshipId / Should Move to TreeRequest When Built.
-     *
-     * @param $request
-     *
-     * @return bool
-     */
-    public static function hasChampionshipInRequest($request)
-    {
-        return $request->championshipId != null; // has return false, don't know why
-    }
 
     /**
      * @param Championship $championship
