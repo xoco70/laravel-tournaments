@@ -223,7 +223,7 @@ class Fight extends Model
             if ($fight->c1 == null || $fight->c2 != null) {
                 $this->$fighterToUpdate = $fight->c2;
             }
-            if ($fight->c1 == null || $fight->c2 == null) {
+            if ($fight->dontHave2Fighters()) {
                 $this->$fighterToUpdate = null;
             }
         }
@@ -275,15 +275,52 @@ class Fight extends Model
      *
      * @return bool
      */
-    function hasDeterminedParent()
+    public function hasDeterminedParent()
     {
-
-        if ($this->c1 != null && $this->c2 != null) return true;
+        if ($this->has2Fighters()) return true;
         foreach ($this->group->children as $child) {
             $fight = $child->fights->get(0);
-            if ($fight->c1 != null && $fight->c2 != null) return false;
+            if ($fight->has2Fighters()) return false;
         }
         return true;
+    }
+
+    public function shouldBeInFightList()
+    {
+        if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) return false;
+        if ($this->has2Fighters()) return true;
+        // We aint in the first round, and there is 1 or 0 competitor
+        // We check children, and see :
+        // if there is 2  - 2 fighters -> undetermine, we cannot add it to fight list
+        // if there is 2  - 1 fighters -> undetermine, we cannot add it to fight list
+        // if there is 2  - 0 fighters -> undetermine, we cannot add it to fight list
+        // if there is 1  - 2 fighters -> undetermine, we cannot add it to fight list
+        // if there is 1  - 1 fighters -> fight should have 2 fighters, undetermines
+        // if there is 1  - 0 fighters -> determined, fight should not be in the list
+        // if there is 0  - 1 fighters -> determined, fight should not be in the list
+        // So anyway, we should return false
+        return false;
+    }
+
+    /**
+     * return true if fight has 2 fighters ( No BYE )
+     * @return bool
+     */
+    private function has2Fighters(): bool
+    {
+        return $this->c1 != null && $this->c2 != null;
+    }
+
+    private function belongsToFirstRound()
+    {
+        $firstRoundFights = $this->group->championship->firstRoundFights->pluck('id')->toArray();
+        if (in_array($this->id, $firstRoundFights)) return true;
+        return false;
+    }
+
+    private function dontHave2Fighters() // 1 or 0
+    {
+        return $this->c1 == null || $this->c2 == null;
     }
 
 }
