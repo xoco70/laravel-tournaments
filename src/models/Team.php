@@ -27,9 +27,9 @@ class Team extends Fighter
      * Get Team Name
      * @return mixed|string
      */
-    public function getName()
+    public function getNameAttribute()
     {
-        return $this == null ? "BYE" : $this->name;
+        return $this == null ? "" : $this->name;
     }
 
 }

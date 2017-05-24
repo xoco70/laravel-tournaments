@@ -40,7 +40,7 @@ class Competitor extends Fighter
     /**
      * @return null|string
      */
-    public function getName()
+    public function getNameAttribute()
     {
         return $this->defaultName() ?? $this->user->name;
     }
@@ -58,7 +58,9 @@ class Competitor extends Fighter
      */
     private function defaultName()
     {
-        if ($this == null || $this->user == null) return "BYE";
+        if ($this == null || $this->user == null) {
+            return "";
+        }
         return null;
     }
 

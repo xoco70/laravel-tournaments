@@ -263,7 +263,7 @@ class CreateDirectEliminationTree
                 . ' value='
                 . ($competitor->id ?? '')
                 . '>'
-                . $competitor->getName()
+                . $competitor->name
                 . '</option>';
 
         }

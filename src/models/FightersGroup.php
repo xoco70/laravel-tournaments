@@ -92,6 +92,14 @@ class FightersGroup extends Model
         return $this->hasMany(Fight::class);
     }
 
+    public function fighters()
+    {
+        if ($this->championship->category->isTeam()) {
+            return $this->teamsWithNull();
+        }
+        return $this->competitorsWithNull();
+    }
+
     public function teams()
     {
         return $this->belongsToMany(Team::class, 'fighters_group_team')->withTimestamps();

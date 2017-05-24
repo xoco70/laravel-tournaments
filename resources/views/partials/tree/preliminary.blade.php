@@ -1,5 +1,5 @@
 <?php
-  $settings = $championship->getSettings();
+$settings = $championship->getSettings();
 ?>
 <div align="center">
     @if (Request::is('championships/'.$championship->id.'/pdf'))
@@ -27,40 +27,18 @@
 
             @foreach($groupsByArea as $group)
                 <?php
-                if ($championship->category->isTeam) {
-                    $fighter1 = $group->teams->get(0) != null ? $group->teams->get(0)->name : '';
-                    $fighter2 = $group->teams->get(1) != null ? $group->teams->get(1)->name : '';
-                    $fighter3 = $group->teams->get(2) != null ? $group->teams->get(2)->name : '';
-                    $fighter4 = $group->teams->get(3) != null ? $group->teams->get(3)->name : '';
-                    $fighter5 = $group->teams->get(4) != null ? $group->teams->get(4)->name : '';
-                } else {
-                    $fighter1 = $group->competitors->get(0) != null ? $group->competitors->get(0)->user->name : '';
-                    $fighter2 = $group->competitors->get(1) != null ? $group->competitors->get(1)->user->name : '';
-                    $fighter3 = $group->competitors->get(2) != null ? $group->competitors->get(2)->user->name : '';
-                    $fighter4 = $group->competitors->get(3) != null ? $group->competitors->get(3)->user->name : '';
-                    $fighter5 = $group->competitors->get(4) != null ? $group->competitors->get(4)->user->name : '';
-
-                }
+                $names = $group->fighters()->map->name;
+                $letter = 'a';
                 ?>
                 <tr>
                     <td class="p-10">{{$group->area}}</td>
-                    <td class="p-10">a</td>
-                    <td class="p-10">{{ $fighter1 }}</td>
-                    <td class="p-10">b</td>
-                    <td class="p-10">{{ $fighter2 }}</td>
-                    <td class="p-10">c</td>
-                    <td class="p-10">{{ $fighter3 }}</td>
-
-                    @if ($settings!= null && $settings->preliminaryGroupSize > 3)
-                        <td class="p-10">d</td>
-                        <td class="p-10">{{ $fighter4 }}</td>
-                    @endif
-                    @if ($settings!= null && $settings->preliminaryGroupSize > 4)
-                        <td class="p-10">e</td>
-                        <td class="p-10">{{ $fighter5 }}</td>
-                    @endif
+                    @foreach ($names as $name)
+                        <td class="p-10">{{ $letter++ }}</td>
+                        <td class="p-10">{{ $name }}</td>
+                    @endforeach
                 </tr>
             @endforeach
         </table><br/>
     @endforeach
 </div>
+
