@@ -34,7 +34,7 @@ class Fight extends Model
      * @param $order
      * @return mixed
      */
-    private static function createFight($group, $competitor1, $competitor2, $order)
+    private static function createPreliminaryFight($group, $competitor1, $competitor2, $order)
     {
         $fight = new self();
         $fight->fighters_group_id = $group->id;
@@ -149,7 +149,7 @@ class Fight extends Model
                     $competitor2 = $fighter1;
                     break;
             }
-            $order = self::createFight($group, $competitor1, $competitor2, $order);
+            $order = self::createPreliminaryFight($group, $competitor1, $competitor2, $order);
         }
     }
 
@@ -159,7 +159,7 @@ class Fight extends Model
      */
     public static function saveGroupFights(Championship $championship)
     {
-        $order = 1;
+//        $order = 1;
         $round = [];
         foreach ($championship->fightersGroups()->get() as $group) {
             $fighters = self::getActorsToFights($championship, $group);
@@ -177,7 +177,6 @@ class Fight extends Model
                     $fight->fighters_group_id = $group->id;
                     $fight->c1 = $round[$i][$j]['Home']->id;
                     $fight->c2 = $round[$i][$j]['Away']->id;
-                    $fight->short_id = $order++;
                     $fight->area = $group->area;
                     $fight->save();
 
@@ -185,7 +184,7 @@ class Fight extends Model
                 if ($countHome + $countAway - 1 > 2) {
                     $away->prepend($home->splice(1, 1)->shift());
                     $home->push($away->pop());
-                    $order++;
+//                    $order++;
                 }
             }
         }
@@ -321,6 +320,29 @@ class Fight extends Model
     private function dontHave2Fighters() // 1 or 0
     {
         return $this->c1 == null || $this->c2 == null;
+    }
+
+
+    public static function generateFightsId($championship)
+    {
+        $order = 1;
+        foreach ($championship->fights as $fight) {
+            $order = $fight->updateShortId($order);
+        }
+    }
+
+    /**
+     * @param $order
+     * @return int
+     */
+    public function updateShortId($order)
+    {
+        if ($this->shouldBeInFightList()) {
+            $this->short_id = $order;
+            $this->save();
+            return ++$order;
+        }
+        return $order;
     }
 
 }

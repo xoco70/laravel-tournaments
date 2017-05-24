@@ -5,7 +5,7 @@
         <th class="p-10">Competitor 2</th>
 
 
-        @foreach($fightsByArea as $value => $fight)
+        @foreach($fightsByArea as $fight)
             @if ($fight->shouldBeInFightList())
                 <?php
                 if ($championship->category->isTeam) {
@@ -20,7 +20,7 @@
 
 
                 <tr>
-                    <td class="p-10">{{$value + 1}}</td>
+                    <td class="p-10">{{$fight->short_id}}</td>
                     <td class="p-10">{{ $fighter1 }}</td>
                     <td class="p-10">{{ $fighter2 }}</td>
                 </tr>

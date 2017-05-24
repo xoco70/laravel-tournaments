@@ -10,6 +10,7 @@ use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
+use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Tournament;
 
@@ -67,6 +68,7 @@ class TreeController extends Controller
             // For Now, We don't generate fights when Preliminary
             if ($championship->isDirectEliminationType() && !$championship->hasPreliminary()) {
                 FightersGroup::generateNextRoundsFights($championship);
+                Fight::generateFightsId($championship);
             }
         } catch (TreeGenerationException $e) {
             redirect()->back()
