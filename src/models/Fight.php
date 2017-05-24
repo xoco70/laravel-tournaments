@@ -27,24 +27,6 @@ class Fight extends Model
         'c2',
     ];
 
-    /**
-     * @param $group
-     * @param $competitor1
-     * @param $competitor2
-     * @param $order
-     * @return mixed
-     */
-    private static function createPreliminaryFight($group, $competitor1, $competitor2, $order)
-    {
-        $fight = new self();
-        $fight->fighters_group_id = $group->id;
-        $fight->c1 = $competitor1 != null ? $competitor1->id : null;
-        $fight->c2 = $competitor2 != null ? $competitor2->id : null;
-        $fight->short_id = $order++;
-        $fight->area = $group->area;
-        $fight->save();
-        return $order;
-    }
 
     /**
      * Get First Fighter.
@@ -57,11 +39,12 @@ class Fight extends Model
     }
 
     /**
-     * @param Championship $championship
-     *
+     * @param FightersGroup|null $group
      * @return Collection
+     * @internal param Championship $championship
+     *
      */
-    private static function getActorsToFights(Championship $championship, FightersGroup $group = null)
+    protected static function getActorsToFights(FightersGroup $group)
     {
         if ($group == null) return null;
         $fighters = $group->getFighters();
@@ -116,79 +99,6 @@ class Fight extends Model
         return $this->belongsTo(Team::class, 'c2', 'id');
     }
 
-    /**
-     * Save a Fight.
-     *
-     * @param Collection $groups
-     * @param int $numGroup
-     */
-    public static function savePreliminaryFightGroup($groups, $numGroup = 1)
-    {
-        $competitor1 = $competitor2 = null;
-        $order = 1;
-
-        foreach ($groups as $group) {
-
-            $fighters = $group->getFighters();
-
-            $fighter1 = $fighters->get(0);
-            $fighter2 = $fighters->get(1);
-            $fighter3 = $fighters->get(2);
-
-            switch ($numGroup) {
-                case 1:
-                    $competitor1 = $fighter1;
-                    $competitor2 = $fighter2;
-                    break;
-                case 2:
-                    $competitor1 = $fighter2;
-                    $competitor2 = $fighter3;
-                    break;
-                case 3:
-                    $competitor1 = $fighter3;
-                    $competitor2 = $fighter1;
-                    break;
-            }
-            $order = self::createPreliminaryFight($group, $competitor1, $competitor2, $order);
-        }
-    }
-
-
-    /**
-     * @param Championship $championship
-     */
-    public static function saveGroupFights(Championship $championship)
-    {
-//        $order = 1;
-        $round = [];
-        foreach ($championship->fightersGroups()->get() as $group) {
-            $fighters = self::getActorsToFights($championship, $group);
-            $away = $fighters->splice(count($fighters) / 2); // 2
-            $home = $fighters; // 1
-
-            $countHome = count($home);
-            $countAway = count($away);
-            for ($i = 0; $i < $countHome + $countAway - 1; $i++) {
-                for ($j = 0; $j < $countHome; $j++) {
-
-                    $round[$i][$j]['Home'] = $home[$j];
-                    $round[$i][$j]['Away'] = $away[$j];
-                    $fight = new self();
-                    $fight->fighters_group_id = $group->id;
-                    $fight->c1 = $round[$i][$j]['Home']->id;
-                    $fight->c2 = $round[$i][$j]['Away']->id;
-                    $fight->area = $group->area;
-                    $fight->save();
-
-                }
-                if ($countHome + $countAway - 1 > 2) {
-                    $away->prepend($home->splice(1, 1)->shift());
-                    $home->push($away->pop());
-//                    $order++;
-                }
-            }
-        }
-    }
 
     public function getFighterAttr($numFighter, $attr)
     {

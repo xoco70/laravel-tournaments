@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\NodeTrait;
+use Xoco70\KendoTournaments\TreeGen\DirectEliminationTreeGen;
 use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class FightersGroup extends Model
@@ -116,10 +117,10 @@ class FightersGroup extends Model
 
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-                Fight::savePreliminaryFightGroup($championship->fightersGroups()->get(), $numGroup);
+                PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
             }
         } else {
-            Fight::saveGroupFights($championship);
+            DirectEliminationFight::saveFights($championship);
         }
     }
 
