@@ -13,7 +13,6 @@ class DirectEliminationFight extends Fight
      */
     public static function saveFights(Championship $championship)
     {
-//        $order = 1;
         $round = [];
         foreach ($championship->fightersGroups()->get() as $group) {
             $fighters = parent::getActorsToFights($group);
