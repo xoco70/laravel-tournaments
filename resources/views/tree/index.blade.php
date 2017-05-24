@@ -54,7 +54,7 @@ $fights = $championship->fights;
                 @endif
             @endif
             <br/>
-            @if ($championship->isDirectEliminationType())
+            @if ($championship->isDirectEliminationType() && !$championship->hasPreliminary() )
                 <h1 style=" margin-top: {{ 65* sizeof($fights )*2 }}px; ">Fight List</h1>
             @else
                 <h1>Fight List</h1>
