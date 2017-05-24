@@ -19,7 +19,6 @@ class FightersGroup extends Model
     use NodeTrait;
 
 
-
     /**
      * @param Championship $championship
      * @param $fightsByRound
@@ -100,14 +99,14 @@ class FightersGroup extends Model
         $arrGroupsId = $championship->fightersGroups()->get()->pluck('id');
 
         Fight::destroy($arrGroupsId);
-
+        // Very specific case to common case : Preliminary with 3 fighters
         if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
                 PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
             }
-        } else {
-            DirectEliminationFight::saveFights($championship);
+            return;
         }
+        DirectEliminationFight::saveFights($championship);
     }
 
     /**
