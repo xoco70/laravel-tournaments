@@ -43,12 +43,7 @@ class TreeController extends Controller
      */
     public function store(Request $request, Championship $championship)
     {
-        DB::table('fight')->delete();
-        DB::table('fighters_groups')->delete();
-        DB::table('fighters_group_competitor')->delete();
-        DB::table('fighters_group_team')->delete();
-        DB::table('competitor')->delete();
-        DB::table('users')->where('id', '<>', 1)->delete();
+        $this->deleteEverything();
         $numFighters = $request->numFighters;
 
         $users = factory(User::class, (int)$numFighters)->create();
@@ -81,6 +76,16 @@ class TreeController extends Controller
             ->with('numFighters', $numFighters)
             ->with('hasPreliminary', $championship->settings->hasPreliminary)
             ->with(['success', "Success"]);
+    }
+
+    private function deleteEverything()
+    {
+        DB::table('fight')->delete();
+        DB::table('fighters_groups')->delete();
+        DB::table('fighters_group_competitor')->delete();
+        DB::table('fighters_group_team')->delete();
+        DB::table('competitor')->delete();
+        DB::table('users')->where('id', '<>', 1)->delete();
     }
 
 

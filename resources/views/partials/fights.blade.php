@@ -4,9 +4,9 @@
         <th class="p-10">Competitor 1</th>
         <th class="p-10">Competitor 2</th>
 
-        @foreach($fightsByArea->sortBy('id') as $id => $fight)
-            <?php
 
+        @foreach($fightsByArea as $value => $fight)
+            <?php
             if ($championship->category->isTeam) {
                 $fighter1 = $fight->team1 != null ? $fight->team1->name : "BYE";
                 $fighter2 = $fight->team2 != null ? $fight->team2->name : "BYE";
@@ -19,7 +19,7 @@
 
 
             <tr>
-                <td class="p-10">{{$id + 1}}</td>
+                <td class="p-10">{{$value + 1}}</td>
                 <td class="p-10">{{ $fighter1 }}</td>
                 <td class="p-10">{{ $fighter2 }}</td>
             </tr>
