@@ -163,10 +163,10 @@ class TreeGen implements TreeGenerable
             $order = 1;
             foreach ($fightersGroup as $fighters) {
                 $fighters = $fighters->pluck('id');
-                if (!App::runningUnitTests()) {
+                if (!App::runningUnitTests()){
                     $fighters = $fighters->shuffle();
                 }
-                $group = $this->saveGroup($area, $order, $round); // Should be extracted to Factory
+                $group = $this->saveGroup($area, $order, $round, null);
                 $this->syncGroup($group, $fighters);
                 $order++;
             }
@@ -178,15 +178,19 @@ class TreeGen implements TreeGenerable
      * @param $area
      * @param $order
      * @param $round
+     * @param $parent
      * @return FightersGroup
      */
-    protected function saveGroup($area, $order, $round): FightersGroup
+    protected function saveGroup($area, $order, $round, $parent): FightersGroup
     {
         $group = new FightersGroup();
         $group->area = $area;
         $group->order = $order;
         $group->round = $round;
         $group->championship_id = $this->championship->id;
+        if ($parent != null) {
+            $group->parent_id = $parent->id;
+        }
         $group->save();
         return $group;
     }
@@ -262,7 +266,7 @@ class TreeGen implements TreeGenerable
             // From last match to first match
             for ($matchNumber = 1; $matchNumber <= ($numFightersElim / pow(2, $roundNumber)); $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
-                $group = $this->saveGroup(1, $matchNumber, $roundNumber);
+                $group = $this->saveGroup(1, $matchNumber, $roundNumber, null);
                 $this->syncGroup($group, $fighters);
             }
         }
