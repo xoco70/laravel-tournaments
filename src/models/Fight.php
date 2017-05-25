@@ -118,26 +118,7 @@ class Fight extends Model
         return null;
     }
 
-    /**
-     * Update parent Fight
-     * @param $fighterToUpdate
-     * @param $fight
-     */
-    public function updateParentFight($fighterToUpdate, $fight)
-    {
-        if ($fight != null) {
-            if (($fight->c1 != null || $fight->c2 == null)) {
-                $this->$fighterToUpdate = $fight->c1;
-            }
-            if ($fight->c1 == null || $fight->c2 != null) {
-                $this->$fighterToUpdate = $fight->c2;
-            }
-            if ($fight->dontHave2Fighters()) {
-                $this->$fighterToUpdate = null;
-            }
-        }
 
-    }
 
     /**
      * Returns the parent field that need to be updated
