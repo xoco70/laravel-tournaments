@@ -5,9 +5,13 @@ namespace Xoco70\KendoTournaments\TreeGen;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\Fight;
+use Xoco70\KendoTournaments\Models\PreliminaryFight;
 
 class PlayOffTreeGen extends TreeGen
 {
+
+
     /**
      * Calculate the Byes need to fill the Championship Tree.
      * @param Championship $championship
@@ -47,7 +51,7 @@ class PlayOffTreeGen extends TreeGen
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-            if (!App::runningUnitTests()){
+            if (!App::runningUnitTests()) {
                 $fightersGroup = $fightersGroup->shuffle();
             }
         } else { // Round Robin
@@ -55,4 +59,33 @@ class PlayOffTreeGen extends TreeGen
         }
         return $fightersGroup;
     }
+
+    /**
+     * Generate First Round Fights
+     * @param Championship $championship
+     */
+    public static function generateFights(Championship $championship)
+    {
+        $settings = $championship->getSettings();
+        parent::destroyPreviousFights($championship);
+        // Very specific case to common case : Preliminary with 3 fighters
+        if ($settings->preliminaryGroupSize == 3) {
+            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
+                PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
+            }
+        }
+    }
+
+
+    public function generateNextRoundsFights()
+    {
+//        $championship = $this->championship->withCount('teams', 'competitors')->first();
+//        $fightersCount = $championship->competitors_count + $championship->teams_count;
+//        $maxRounds = intval(ceil(log($fightersCount, 2)));
+//        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
+//            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
+//            $this->updateParentFight($championship, $fightsByRound);
+//        }
+    }
+
 }

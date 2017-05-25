@@ -8,6 +8,7 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
+use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 
 class TreeGen implements TreeGenerable
@@ -43,7 +44,9 @@ class TreeGen implements TreeGenerable
         $this->generateGroupsForRound($usersByArea, 1, 1);
         $this->pushEmptyGroupsToTree($numFighters);
         $this->addParentToChildren($numFighters);
-        // Now add parents to all
+        $this->generateFights($this->championship);
+        $this->generateNextRoundsFights();
+        Fight::generateFightsId($this->championship);
     }
 
     /**
@@ -163,7 +166,7 @@ class TreeGen implements TreeGenerable
             $order = 1;
             foreach ($fightersGroup as $fighters) {
                 $fighters = $fighters->pluck('id');
-                if (!App::runningUnitTests()){
+                if (!App::runningUnitTests()) {
                     $fighters = $fighters->shuffle();
                 }
                 $group = $this->saveGroup($area, $order, $round, null);
@@ -369,5 +372,16 @@ class TreeGen implements TreeGenerable
     private function shouldInsertBye($frequency, $sizeGroupBy, $count, $byeCount): bool
     {
         return $frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeGroupBy;
+    }
+
+
+    /**
+     * @param Championship $championship
+     */
+    protected static function destroyPreviousFights(Championship $championship)
+    {
+        // Delete previous fight for this championship
+        $arrGroupsId = $championship->fightersGroups()->get()->pluck('id');
+        Fight::destroy($arrGroupsId);
     }
 }

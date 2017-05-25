@@ -36,7 +36,6 @@ class DirectEliminationFight extends Fight
                 if ($countHome + $countAway - 1 > 2) {
                     $away->prepend($home->splice(1, 1)->shift());
                     $home->push($away->pop());
-//                    $order++;
                 }
             }
         }

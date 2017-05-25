@@ -19,39 +19,39 @@ class FightersGroup extends Model
     use NodeTrait;
 
 
-    /**
-     * @param Championship $championship
-     * @param $fightsByRound
-     */
-    private static function updateParentFight(Championship $championship, $fightsByRound)
-    {
-        foreach ($fightsByRound as $fight) {
-            $parentGroup = $fight->group->parent;
-            if ($parentGroup == null) break;
-            $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
+//    /**
+//     * @param Championship $championship
+//     * @param $fightsByRound
+//     */
+//    private static function updateParentFight(Championship $championship, $fightsByRound)
+//    {
+//        foreach ($fightsByRound as $fight) {
+//            $parentGroup = $fight->group->parent;
+//            if ($parentGroup == null) break;
+//            $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
+//
+//            // IN this $fight, is c1 or c2 has the info?
+//            if ($championship->isDirectEliminationType()) {
+//                // determine whether c1 or c2 must be updated
+//                self::chooseAndUpdateParentFight($fight, $parentFight);
+//            }
+//        }
+//    }
 
-            // IN this $fight, is c1 or c2 has the info?
-            if ($championship->isDirectEliminationType()) {
-                // determine whether c1 or c2 must be updated
-                self::chooseAndUpdateParentFight($fight, $parentFight);
-            }
-        }
-    }
-
-    /**
-     * @param $fight
-     * @param $parentFight
-     */
-    private static function chooseAndUpdateParentFight($fight, $parentFight)
-    {
-        $fighterToUpdate = $fight->getParentFighterToUpdate();
-        $valueToUpdate = $fight->getValueToUpdate();
-        // we need to know if the child has empty fighters, is this BYE or undetermined
-        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
-            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
-            $parentFight->save();
-        }
-    }
+//    /**
+//     * @param $fight
+//     * @param $parentFight
+//     */
+//    private static function chooseAndUpdateParentFight($fight, $parentFight)
+//    {
+//        $fighterToUpdate = $fight->getParentFighterToUpdate();
+//        $valueToUpdate = $fight->getValueToUpdate();
+//        // we need to know if the child has empty fighters, is this BYE or undetermined
+//        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
+//            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
+//            $parentFight->save();
+//        }
+//    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -87,27 +87,27 @@ class FightersGroup extends Model
         return $this->belongsToMany(Competitor::class, 'fighters_group_competitor')->withTimestamps();
     }
 
-    /**
-     * Generate First Round Fights
-     * @param Championship $championship
-     */
-    public static function generateFights(Championship $championship)
-    {
-        $settings = $championship->getSettings();
-        // Delete previous fight for this championship
-
-        $arrGroupsId = $championship->fightersGroups()->get()->pluck('id');
-
-        Fight::destroy($arrGroupsId);
-        // Very specific case to common case : Preliminary with 3 fighters
-        if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
-            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-                PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
-            }
-            return;
-        }
-        DirectEliminationFight::saveFights($championship);
-    }
+//    /**
+//     * Generate First Round Fights
+//     * @param Championship $championship
+//     */
+//    public static function generateFights(Championship $championship)
+//    {
+//        $settings = $championship->getSettings();
+//        // Delete previous fight for this championship
+//
+//        $arrGroupsId = $championship->fightersGroups()->get()->pluck('id');
+//
+//        Fight::destroy($arrGroupsId);
+//        // Very specific case to common case : Preliminary with 3 fighters
+//        if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
+//            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
+//                PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
+//            }
+//            return;
+//        }
+//        DirectEliminationFight::saveFights($championship);
+//    }
 
     /**
      * Supercharge of sync Many2Many function.
@@ -208,21 +208,21 @@ class FightersGroup extends Model
         return $parentId;
     }
 
-    /**
-     *
-     * @param Championship $championship
-     */
-    public static function generateNextRoundsFights(Championship $championship)
-    {
-        $championship = $championship->withCount('teams', 'competitors')->first();
-        $fightersCount = $championship->competitors_count + $championship->teams_count;
-        $maxRounds = intval(ceil(log($fightersCount, 2)));
-        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-            self::updateParentFight($championship, $fightsByRound);
-        }
-
-    }
+//    /**
+//     *
+//     * @param Championship $championship
+//     */
+//    public static function generateNextRoundsFights(Championship $championship)
+//    {
+//        $championship = $championship->withCount('teams', 'competitors')->first();
+//        $fightersCount = $championship->competitors_count + $championship->teams_count;
+//        $maxRounds = intval(ceil(log($fightersCount, 2)));
+//        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
+//            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
+//            self::updateParentFight($championship, $fightsByRound);
+//        }
+//
+//    }
 
     /**
      * @return string
