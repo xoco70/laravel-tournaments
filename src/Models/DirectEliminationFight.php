@@ -15,7 +15,7 @@ class DirectEliminationFight extends Fight
     {
         $round = [];
         foreach ($championship->fightersGroups()->get() as $group) {
-            $fighters = parent::getFightersWithNull($group);
+            $fighters = parent::getFightersWithByes($group);
             $away = $fighters->splice(count($fighters) / 2); // 2
             $home = $fighters; // 1
 
