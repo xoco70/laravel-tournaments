@@ -40,11 +40,10 @@ class TreeController extends Controller
      * Build Tree.
      *
      * @param Request $request
-     * @param Championship $championship
      *
      * @return \Illuminate\Http\Response|string
      */
-    public function store(Request $request, Championship $championship)
+    public function store(Request $request, $championshipId)
     {
         $this->deleteEverything();
         $numFighters = $request->numFighters;
