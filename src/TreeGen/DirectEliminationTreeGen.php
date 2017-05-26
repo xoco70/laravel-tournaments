@@ -13,11 +13,10 @@ class DirectEliminationTreeGen extends TreeGen
 
     /**
      * Calculate the Byes need to fill the Championship Tree.
-     * @param Championship $championship
      * @param $fighters
      * @return Collection
      */
-    protected function getByeGroup(Championship $championship, $fighters)
+    protected function getByeGroup($fighters)
     {
         $fighterCount = $fighters->count();
         $treeSize = $this->getTreeSize($fighterCount, 2);

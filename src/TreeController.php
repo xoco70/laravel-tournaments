@@ -12,6 +12,7 @@ use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
+use Xoco70\KendoTournaments\Models\Team;
 use Xoco70\KendoTournaments\Models\Tournament;
 
 class TreeController extends Controller
@@ -31,6 +32,7 @@ class TreeController extends Controller
 
         return view('kendo-tournaments::tree.index')
             ->with('tournament', $tournament)
+            ->with('championship', $tournament->championships[0])
             ->with('settings', $tournament->championships[0]->setting);
     }
 
@@ -46,32 +48,43 @@ class TreeController extends Controller
     {
         $this->deleteEverything();
         $numFighters = $request->numFighters;
+        $isTeam = $request->isTeam ?? 0;
+        if ($isTeam) {
+            $championship = Championship::find(2);
+            factory(Team::class, (int)$numFighters)->create();
+        } else {
+            $championship = Championship::find(1);
+            $users = factory(User::class, (int)$numFighters)->create();
+            foreach ($users as $user) {
+                factory(Competitor::class)->create(
+                    ['championship_id' => $championship->id,
+                        'user_id' => $user->id,
+                        'confirmed' => 1,
+                        'short_id' => $user->id
+                    ]
+                );
+            }
 
-        $users = factory(User::class, (int)$numFighters)->create();
-
-        foreach ($users as $user) {
-            factory(Competitor::class)->create(
-                ['championship_id' => $championship->id,
-                    'user_id' => $user->id,
-                    'confirmed' => 1,
-                    'short_id' => $user->id
-                ]
-            );
         }
 
-        $championship->settings =  ChampionshipSettings::createOrUpdate($request, $championship);
+        $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
         $generation = $championship->chooseGenerationStrategy();
-
         try {
             $generation->run();
         } catch (TreeGenerationException $e) {
             redirect()->back()
                 ->withErrors([$numFighters . "-" . $e->getMessage()]);
         }
-        return redirect()->back()
-            ->with('numFighters', $numFighters)
-            ->with('hasPreliminary', $championship->settings->hasPreliminary)
-            ->with(['success', "Success"]);
+
+        $tournament = Tournament::with(
+            'competitors',
+            'championshipSettings',
+            'championships.settings',
+            'championships.category')->first();
+
+        return view('kendo-tournaments::tree.index',
+            compact('tournament', 'championship', 'numFighters', 'isTeam'));
+
     }
 
     private function deleteEverything()
@@ -81,6 +94,7 @@ class TreeController extends Controller
         DB::table('fighters_group_competitor')->delete();
         DB::table('fighters_group_team')->delete();
         DB::table('competitor')->delete();
+        DB::table('team')->delete();
         DB::table('users')->where('id', '<>', 1)->delete();
     }
 

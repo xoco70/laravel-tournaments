@@ -47,6 +47,7 @@ class TreeGen implements TreeGenerable
         $this->generateFights($this->championship);
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);
+
     }
 
     /**
@@ -221,7 +222,7 @@ class TreeGen implements TreeGenerable
     public function adjustFightersGroupWithByes($fighters, $fighterGroups): Collection
     {
         $tmpFighterGroups = clone $fighterGroups;
-        $byeGroup = $this->getByeGroup($this->championship, $fighters);
+        $byeGroup = $this->getByeGroup($fighters);
 
         // Get biggest competitor's group
         $max = $this->getMaxFightersByEntity($tmpFighterGroups);

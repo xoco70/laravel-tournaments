@@ -1,30 +1,18 @@
-<?php
-if (session()->has('numFighters')) {
-    $numFighters = session('numFighters');
-} else {
-    $numFighters = 5;
-}
-
-?>
 <form method="POST" action="{{ route('tree.store', ['championship' => $championship])}}" accept-charset="UTF-8"
       class="form-settings">
     {{ csrf_field() }}
 
     <div class="row">
         <div class="col-lg-2">
-            <div class="checkbox-switch">
+            <label for="hasPreliminary">Preliminary</label>
+            <br/>
+            <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
+            <select class="form-control" id="hasPreliminary" name="hasPreliminary">
 
-                <label for="hasPreliminary">Preliminary</label>
-                <br/>
-                <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
-                <select class="form-control" id="numFighters" name="hasPreliminary">
+                <option value="0" {{ $hasPreliminary == 0 ? 'selected' :'' }}>NO</option>
+                <option value="1" {{ $hasPreliminary == 1 ? 'selected' :'' }}>YES</option>
 
-                    <option value="0" {{ $hasPreliminary == 0 ? 'selected' :'' }}>NO</option>
-                    <option value="1" {{ $hasPreliminary == 1 ? 'selected' :'' }}>YES</option>
-
-                </select>
-
-            </div>
+            </select>
         </div>
 
         <div class="col-lg-3">
@@ -37,7 +25,7 @@ if (session()->has('numFighters')) {
                 </select>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <div class="input-group">
                 <label for="fighterQty">Fighter Qty</label>
                 <select class="form-control" id="numFighters" name="numFighters">
@@ -46,6 +34,16 @@ if (session()->has('numFighters')) {
                     @endfor
                 </select>
             </div>
+        </div>
+        <div class="col-lg-2">
+            <label for="isTeam">Team?</label>
+            <br/>
+            <input id="isTeam" name="isTeam" type="hidden" value="0">
+            <select class="form-control" id="numFighters" name="isTeam">
+                <option value="0" {{ $isTeam == 0 ? 'selected' :'' }}>NO</option>
+                <option value="1" {{ $isTeam == 1 ? 'selected' :'' }}>YES</option>
+
+            </select>
         </div>
 
 

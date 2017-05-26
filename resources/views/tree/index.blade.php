@@ -14,23 +14,11 @@
 </head>
 <body>
 <?php
-$championship = $tournament->championships[0];
-$setting = $championship->getSettings();
 
+$setting = $championship->getSettings();
 $treeType = $setting->treeType;
 $hasPreliminary = $setting->hasPreliminary;
-$hasEncho = $setting->hasEncho;
-$teamSize = $setting->teamSize;
-$enchoQty = $setting->enchoQty;
 $fightingAreas = $setting->fightingAreas;
-
-$fightDuration = $setting->fightDuration;
-$enchoDuration = $setting->enchoDuration;
-
-
-$categoryId = $championship->category->id;
-$disableEncho = $hasEncho ? "" : "disabled";
-$disablePreliminary = $hasPreliminary ? "" : "disabled";
 $fights = $championship->fights;
 ?>
 @include('kendo-tournaments::partials.errors')

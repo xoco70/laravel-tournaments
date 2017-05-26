@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Team;
 
-class DirectEliminationTeamTreeGen extends TreeGen
+class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
 {
     /**
      * Fighter is the name for competitor or team, depending on the case

@@ -24,7 +24,7 @@ class CreateDirectEliminationTree
         $this->championship = $championship;
         $this->names = $names;
 
-        $this->firstRoundName = $names->first()->map(function($item) use ($championship) {
+        $this->firstRoundName = $names->first()->map(function ($item) use ($championship) {
             $fighters = $item->getFighters();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
@@ -64,7 +64,9 @@ class CreateDirectEliminationTree
 
         //Create the result of the empty rows for this tournament
         $this->assignFightersToBracket($roundNumber);
+
         $this->assignPositions();
+
     }
 
     private function assignPositions()
@@ -235,18 +237,21 @@ class CreateDirectEliminationTree
      */
     private function assignFightersToBracket($roundNumber)
     {
-        for ($roundNumber += 1; $roundNumber <= $this->noRounds; $roundNumber++) {
+        for ($roundNumber = 1; $roundNumber <= $this->noRounds; $roundNumber++) {
+            $groupsByRound = $this->names->get($roundNumber);
             for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
+                $fight = $groupsByRound[$matchNumber-1]->fights[0];
                 if ($this->championship->category->isTeam()) {
-                    $fighter1 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team1;
-                    $fighter2 = $this->names->get($roundNumber)[0]->fights[$matchNumber - 1]->team2;
+                    $fighter1 = $fight->team1;
+                    $fighter2 = $fight->team2;
                 } else {
-                    $fighter1 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor1;
-                    $fighter2 = $this->names->get($roundNumber)[$matchNumber - 1]->fights[0]->competitor2;
+                    $fighter1 = $fight->competitor1;
+                    $fighter2 = $fight->competitor2;
                 }
                 $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
             }
         }
+
     }
 
     /**

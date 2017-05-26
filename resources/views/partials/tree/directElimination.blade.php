@@ -9,6 +9,5 @@ $directEliminationTree = $championship->fightersGroups->groupBy('round');
 @endif
 <?php
 $brackets = new CreateDirectEliminationTree($directEliminationTree, $championship);
-
 $brackets->printBrackets();
 ?>

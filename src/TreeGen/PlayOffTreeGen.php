@@ -18,10 +18,10 @@ class PlayOffTreeGen extends TreeGen
      * @param $fighters
      * @return Collection
      */
-    protected function getByeGroup(Championship $championship, $fighters)
+    protected function getByeGroup($fighters)
     {
         $fighterCount = $fighters->count();
-        $preliminaryGroupSize = $championship->getSettings()->preliminaryGroupSize;
+        $preliminaryGroupSize = $this->championship->getSettings()->preliminaryGroupSize;
         $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize);
         $byeCount = $treeSize - $fighterCount;
 
