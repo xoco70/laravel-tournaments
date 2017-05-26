@@ -214,8 +214,8 @@ class CreateDirectEliminationTree
         $html = '<select>
                 <option' . ($selected == '' ? ' selected' : '') . '></option>';
 
-        foreach ($this->championship->competitors as $competitor) {
-            $html = $this->addOptionToSelect($selected, $competitor, $html);
+        foreach ($this->championship->fighters as $fighter) {
+            $html = $this->addOptionToSelect($selected, $fighter, $html);
         }
 
         $html .= '</select>';
@@ -241,9 +241,11 @@ class CreateDirectEliminationTree
             $groupsByRound = $this->names->get($roundNumber);
             for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
                 $fight = $groupsByRound[$matchNumber-1]->fights[0];
+
                 if ($this->championship->category->isTeam()) {
                     $fighter1 = $fight->team1;
                     $fighter2 = $fight->team2;
+
                 } else {
                     $fighter1 = $fight->competitor1;
                     $fighter2 = $fight->competitor2;
@@ -251,24 +253,23 @@ class CreateDirectEliminationTree
                 $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
             }
         }
-
     }
 
     /**
      * @param $selected
-     * @param $competitor
+     * @param $fighter
      * @param $html
      * @return string
      */
-    private function addOptionToSelect($selected, $competitor, $html): string
+    private function addOptionToSelect($selected, $fighter, $html): string
     {
-        if ($competitor != null) {
-            $select = $selected != null && $selected->id == $competitor->id ? ' selected' : '';
+        if ($fighter != null) {
+            $select = $selected != null && $selected->id == $fighter->id ? ' selected' : '';
             $html .= '<option' . $select
                 . ' value='
-                . ($competitor->id ?? '')
+                . ($fighter->id ?? '')
                 . '>'
-                . $competitor->name
+                . $fighter->name
                 . '</option>';
 
         }

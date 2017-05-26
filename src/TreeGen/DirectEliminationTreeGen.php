@@ -68,7 +68,12 @@ class DirectEliminationTreeGen extends TreeGen
      */
     public function generateNextRoundsFights()
     {
-        $championship = $this->championship->withCount('teams', 'competitors')->first();
+        if ($this->championship->category->isTeam){
+            $championship = $this->championship->withCount('teams', 'competitors')->find(2);
+        }else{
+            $championship = $this->championship->withCount('teams', 'competitors')->first();
+        }
+
         $fightersCount = $championship->competitors_count + $championship->teams_count;
         $maxRounds = intval(ceil(log($fightersCount, 2)));
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {

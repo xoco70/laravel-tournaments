@@ -49,6 +49,14 @@ class Championship extends Model
         return $this->hasMany(Competitor::class);
     }
 
+    public function fighters()
+    {
+        if ($this->category->isTeam) {
+            return $this->hasMany(Team::class);
+        }
+        return $this->hasMany(Competitor::class);
+    }
+
     /**
      * A championship belongs to a Category.
      *

@@ -20,6 +20,8 @@ $treeType = $setting->treeType;
 $hasPreliminary = $setting->hasPreliminary;
 $fightingAreas = $setting->fightingAreas;
 $fights = $championship->fights;
+$numFighters = $numFighters ??  5;
+$isTeam = $isTeam ??  0;;
 ?>
 @include('kendo-tournaments::partials.errors')
 
