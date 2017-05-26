@@ -21,7 +21,7 @@ $hasPreliminary = $setting->hasPreliminary;
 $fightingAreas = $setting->fightingAreas;
 $fights = $championship->fights;
 $numFighters = $numFighters ??  5;
-$isTeam = $isTeam ??  0;;
+$isTeam = $isTeam ??  5;;
 ?>
 @include('kendo-tournaments::partials.errors')
 

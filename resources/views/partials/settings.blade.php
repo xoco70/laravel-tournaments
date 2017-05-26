@@ -38,8 +38,7 @@
         <div class="col-lg-2">
             <label for="isTeam">Team?</label>
             <br/>
-            <input id="isTeam" name="isTeam" type="hidden" value="0">
-            <select class="form-control" id="numFighters" name="isTeam">
+            <select class="form-control" id="isTeam" name="isTeam">
                 <option value="0" {{ $isTeam == 0 ? 'selected' :'' }}>NO</option>
                 <option value="1" {{ $isTeam == 1 ? 'selected' :'' }}>YES</option>
 
