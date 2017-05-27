@@ -50,7 +50,7 @@ class TreeController extends Controller
         $isTeam = $request->isTeam ?? 0;
         if ($isTeam) {
             $championship = Championship::find(2);
-            factory(Team::class, (int)$numFighters)->create();
+            factory(Team::class, (int)$numFighters)->create(['championship_id' => $championship->id]);
         } else {
             $championship = Championship::find(1);
             $users = factory(User::class, (int)$numFighters)->create();
@@ -65,7 +65,6 @@ class TreeController extends Controller
             }
 
         }
-
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
         $generation = $championship->chooseGenerationStrategy();
         try {

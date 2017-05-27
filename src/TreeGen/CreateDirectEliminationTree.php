@@ -28,15 +28,11 @@ class CreateDirectEliminationTree
             $fighters = $item->getFighters();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
-
             return [$fighter1, $fighter2];
         })->flatten()->all();
-
-        $this->run();
-
     }
 
-    public function run()
+    public function build()
     {
 
         $fighters = $this->firstRoundName;
@@ -64,7 +60,6 @@ class CreateDirectEliminationTree
 
         //Create the result of the empty rows for this tournament
         $this->assignFightersToBracket($roundNumber);
-
         $this->assignPositions();
 
     }
@@ -240,7 +235,7 @@ class CreateDirectEliminationTree
         for ($roundNumber = 1; $roundNumber <= $this->noRounds; $roundNumber++) {
             $groupsByRound = $this->names->get($roundNumber);
             for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
-                $fight = $groupsByRound[$matchNumber-1]->fights[0];
+                $fight = $groupsByRound[$matchNumber - 1]->fights[0];
 
                 if ($this->championship->category->isTeam()) {
                     $fighter1 = $fight->team1;

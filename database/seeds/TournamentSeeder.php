@@ -14,7 +14,6 @@ class TournamentSeeder extends Seeder
      */
     public function run()
     {
-        $this->command->info('Tournament seeding!');
         $venues = Venue::all()->pluck('id')->toArray();
 
         Tournament::truncate();
@@ -38,5 +37,6 @@ class TournamentSeeder extends Seeder
 
         Championship::truncate();
         factory(Championship::class)->create(['tournament_id' => 1, 'category_id' => 1]);
+        factory(Championship::class)->create(['tournament_id' => 1, 'category_id' => 2]);
     }
 }

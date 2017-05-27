@@ -23,4 +23,12 @@ class Fighter extends Model
     {
         return $this->hasManyThrough(Category::class, Championship::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        if ($this instanceof Competitor){
+            return $this->getFullName();
+        }
+        return $this->name;
+    }
 }
