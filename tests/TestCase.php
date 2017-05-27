@@ -5,6 +5,7 @@ namespace Xoco70\KendoTournaments\Tests;
 use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
+use stdClass;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Fight;
@@ -99,19 +100,20 @@ abstract class TestCase extends BaseTestCase
         }
     }
 
-    public function generateTreeWithUI($numAreas, $numCompetitors, $preliminaryGroupSize, $hasPlayOff, $hasPreliminary)
+    public function generateTreeWithUI($setting)
     {
 
         $this->visit('/kendo-tournaments')
-            ->select($hasPreliminary, 'hasPreliminary')
-            ->select($numAreas, 'fightingAreas')
+            ->select($setting->hasPreliminary, 'hasPreliminary')
+            ->select($setting->isTeam, 'isTeam')
+            ->select($setting->numArea, 'fightingAreas')
             ->select(
-                $hasPlayOff
+                $setting->hasPlayOff
                     ? ChampionshipSettings::PLAY_OFF
                     : ChampionshipSettings::DIRECT_ELIMINATION, 'treeType'
             )
-            ->select($preliminaryGroupSize, 'preliminaryGroupSize')
-            ->select($numCompetitors, 'numFighters');
+            ->select($setting->preliminaryGroupSize, 'preliminaryGroupSize')
+            ->select($setting->numCompetitors, 'numFighters');
 
 
         $this->press('save');
@@ -120,11 +122,11 @@ abstract class TestCase extends BaseTestCase
     /**
      * @param $championship
      * @param $numArea
-     * @param $numCompetitors
+     * @param $numFighters
      * @param $numGroupsExpected
      * @param $currentTest
      */
-    protected function checkGroupsNumber($championship, $numArea, $numCompetitors, $numGroupsExpected, $currentTest)
+    protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $currentTest)
     {
         for ($area = 1; $area <= $numArea; $area++) {
             $count = FightersGroup::where('championship_id', $championship->id)
@@ -132,19 +134,20 @@ abstract class TestCase extends BaseTestCase
                 ->where('round', 1)
                 ->count();
 
-            if ((int)($numCompetitors / $numArea) <= 1) {
+            if ((int)($numFighters / $numArea) <= 1) {
                 $this->assertTrue($count == 0);
             } else {
-                $expected = (int)($numGroupsExpected[$numCompetitors - 1] / $numArea);
+                $expected = (int)($numGroupsExpected[$numFighters - 1] / $numArea);
 
                 if ($count != $expected) {
                     dd(
                         ['Method' => $currentTest,
-                            'NumCompetitors' => $numCompetitors,
+                            'championship' => $championship->id,
+                            'NumCompetitors' => $numFighters,
                             'NumArea' => $numArea,
                             'Real' => $count,
                             'Excepted' => $expected,
-                            'numGroupsExpected[' . ($numCompetitors - 1) . ']' => $numGroupsExpected[$numCompetitors - 1] . ' / ' . $numArea]
+                            'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea]
                     );
                 }
                 $this->assertTrue($count == $expected);
@@ -198,5 +201,23 @@ abstract class TestCase extends BaseTestCase
 
         $count = Fight::whereIn('fighters_group_id', $groupsId)->count();
         return $count;
+    }
+
+    /**
+     * @param $numArea
+     * @param $numCompetitors
+     * @param $team
+     * @return stdClass
+     */
+    protected function createSetting($numArea, $numCompetitors, $team, $hasPreliminary): stdClass
+    {
+        $setting = new stdClass;
+        $setting->numArea = $numArea;
+        $setting->numCompetitors = $numCompetitors;
+        $setting->preliminaryGroupSize = 3;
+        $setting->hasPlayOff = false;
+        $setting->hasPreliminary = $hasPreliminary;
+        $setting->isTeam = $team;
+        return $setting;
     }
 }

@@ -3,12 +3,13 @@
 namespace Xoco70\KendoTournaments\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use stdClass;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\Tournament;
 
 class DirectEliminationTest extends TestCase
 {
-        use DatabaseTransactions;
+    use DatabaseTransactions;
 
     protected $root;
     protected $tournament, $championshipWithComp, $championshipWithTeam,
@@ -20,6 +21,7 @@ class DirectEliminationTest extends TestCase
         parent::setUp();
         $this->tournament = Tournament::with(
             'competitors',
+            'teams',
             'championshipSettings'
         )->first();
 
@@ -31,7 +33,7 @@ class DirectEliminationTest extends TestCase
         $this->championshipWithTeam = Championship::with(
             'teams', 'users', 'category', 'settings', 'fightersGroups.fights'
         )
-            ->find($this->tournament->championships[0]->id);
+            ->find($this->tournament->championships[1]->id);
     }
 
 
@@ -40,17 +42,21 @@ class DirectEliminationTest extends TestCase
     {
         $competitorsInTree = [1, 2, 3, 4, 5, 6]; // ,  7,  8,  9, 10, 11, 12, 13, 14
         $numGroupsExpected = [0, 1, 2, 2, 4, 4]; // , 21, 28, 36, 45, 55, 66, 78, 91
-
+//        $isTeam = [0, 1];
         $numAreas = [1];
-        foreach ($numAreas as $numArea) {
-            foreach ($competitorsInTree as $numCompetitors) {
-                $this->generateTreeWithUI($numArea, $numCompetitors, 3, false, 0);
-                parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
-                parent::checkGroupsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
-                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
-
-            }
+//        foreach ($isTeam as $team) {
+            foreach ($numAreas as $numArea) {
+                foreach ($competitorsInTree as $numCompetitors) {
+                    $setting = $this->createSetting($numArea, $numCompetitors, 0,0);
+                    $this->generateTreeWithUI($setting);
+//                    $isTeam
+//                        ? parent::checkGroupsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__)
+//                        :
+                    parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
+                }
+//            }
         }
+
     }
 
 
@@ -60,18 +66,23 @@ class DirectEliminationTest extends TestCase
         $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
         $numFightsExpected = [0, 1, 2, 2, 4, 4, 4, 4];
         $numAreas = [1, 2];
-        foreach ($numAreas as $numArea) {
-            foreach ($competitorsInTree as $numCompetitors) {
-                $this->generateTreeWithUI($numArea, $numCompetitors, 3, false, 0);
-                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+//        $isTeam = [0, 1];
+//        foreach ($isTeam as $team) {
+            foreach ($numAreas as $numArea) {
+                foreach ($competitorsInTree as $numCompetitors) {
+                    $setting = $this->createSetting($numArea, $numCompetitors, 0,0);// $team
+                    $this->generateTreeWithUI($setting);
+                    parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                }
             }
-        }
+//        }
     }
 
     /** @test */
     public function it_saves_fight_to_next_round_when_possible()
     {
-        $this->generateTreeWithUI(1, 5, 3, false, 0);
+        $setting = $this->createSetting(1, 5, 0,0);
+        $this->generateTreeWithUI($setting);
 
         // Get the case when n^2-1 to have a lot of BYES on first round
         // if each round, if C1 != Null && C2== null, match(n+1) should be updated
@@ -95,7 +106,6 @@ class DirectEliminationTest extends TestCase
     }
 
 
-
     /**
      * @param $key
      * @param $fight
@@ -117,4 +127,6 @@ class DirectEliminationTest extends TestCase
             $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
         }
     }
+
+
 }
