@@ -65,17 +65,23 @@ class DirectEliminationTest extends TestCase
     {
         $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
         $numFightsExpected = [0, 1, 2, 2, 4, 4, 4, 4];
-        $numAreas = [1, 2];
-//        $isTeam = [0, 1];
-//        foreach ($isTeam as $team) {
+        $numAreas = [1,2];
+        $isTeam = [false, true];
+        foreach ($isTeam as $team) {
             foreach ($numAreas as $numArea) {
                 foreach ($competitorsInTree as $numCompetitors) {
-                    $setting = $this->createSetting($numArea, $numCompetitors, 0,0);// $team
+                    $setting = $this->createSetting($numArea, $numCompetitors, $team,0);// $team
                     $this->generateTreeWithUI($setting);
-                    parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                    if ($team){
+                        parent::checkFightsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                    }else{
+                        parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                    }
+
+
                 }
             }
-//        }
+        }
     }
 
     /** @test */
