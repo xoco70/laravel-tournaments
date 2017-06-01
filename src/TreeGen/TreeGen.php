@@ -379,10 +379,10 @@ class TreeGen implements TreeGenerable
     /**
      * @param Championship $championship
      */
-    protected static function destroyPreviousFights(Championship $championship)
+    protected function destroyPreviousFights()
     {
         // Delete previous fight for this championship
-        $arrGroupsId = $championship->fightersGroups()->get()->pluck('id');
+        $arrGroupsId = $this->championship->fightersGroups()->get()->pluck('id');
         Fight::destroy($arrGroupsId);
     }
 }

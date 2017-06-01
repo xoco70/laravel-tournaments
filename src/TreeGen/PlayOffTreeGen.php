@@ -67,7 +67,7 @@ class PlayOffTreeGen extends TreeGen
     public function generateFights()
     {
         $settings = $this->championship->getSettings();
-        parent::destroyPreviousFights($this->championship);
+        parent::destroyPreviousFights();
         // Very specific case to common case : Preliminary with 3 fighters
         if ($settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {

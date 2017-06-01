@@ -60,7 +60,6 @@ class DirectEliminationTreeGen extends TreeGen
     public function generateFights()
     {
         parent::destroyPreviousFights($this->championship);
-        // Very specific case to common case : Preliminary with 3 fighters
         DirectEliminationFight::saveFights($this->championship);
     }
     /**
