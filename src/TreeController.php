@@ -48,24 +48,7 @@ class TreeController extends Controller
         $this->deleteEverything();
         $numFighters = $request->numFighters;
         $isTeam = $request->isTeam ?? 0;
-        if ($isTeam) {
-            $championship = Championship::find(2);
-            factory(Team::class, (int)$numFighters)->create(['championship_id' => $championship->id]);
-        } else {
-            $championship = Championship::find(1);
-            $users = factory(User::class, (int)$numFighters)->create();
-            foreach ($users as $user) {
-                factory(Competitor::class)->create(
-                    ['championship_id' => $championship->id,
-                        'user_id' => $user->id,
-                        'confirmed' => 1,
-                        'short_id' => $user->id
-                    ]
-                );
-            }
-
-        }
-        $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
+        $championship = $this->provisionObjects($request, $isTeam, $numFighters);
         $generation = $championship->chooseGenerationStrategy();
         try {
             $generation->run();
@@ -94,6 +77,34 @@ class TreeController extends Controller
         DB::table('competitor')->delete();
         DB::table('team')->delete();
         DB::table('users')->where('id', '<>', 1)->delete();
+    }
+
+    /**
+     * @param Request $request
+     * @param $isTeam
+     * @param $numFighters
+     * @return mixed
+     */
+    protected function provisionObjects(Request $request, $isTeam, $numFighters)
+    {
+        if ($isTeam) {
+            $championship = Championship::find(2);
+            factory(Team::class, (int)$numFighters)->create(['championship_id' => $championship->id]);
+        } else {
+            $championship = Championship::find(1);
+            $users = factory(User::class, (int)$numFighters)->create();
+            foreach ($users as $user) {
+                factory(Competitor::class)->create(
+                    ['championship_id' => $championship->id,
+                        'user_id' => $user->id,
+                        'confirmed' => 1,
+                        'short_id' => $user->id
+                    ]
+                );
+            }
+        }
+        $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
+        return $championship;
     }
 
 
