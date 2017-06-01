@@ -5,6 +5,7 @@ namespace Xoco70\KendoTournaments\TreeGen;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Xoco70\KendoTournaments\Models\Championship;
+use Xoco70\KendoTournaments\Models\DirectEliminationFight;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\PreliminaryFight;
 
@@ -28,7 +29,24 @@ class PlayOffTreeGen extends TreeGen
         return $this->createNullsGroup($byeCount);
     }
 
+    /**
+     * Save Groups with their parent info
+     * @param integer $numRounds
+     * @param $numFightersElim
+     */
+    protected function pushGroups($numRounds, $numFightersElim)
+    {
+        for ($roundNumber = 2; $roundNumber <= $numRounds +1; $roundNumber++) {
+            // From last match to first match
+            $maxMatches = ($numFightersElim / pow(2, $roundNumber-1));
 
+            for ($matchNumber = 1; $matchNumber <= $maxMatches; $matchNumber++) {
+                $fighters = $this->createByeGroup(2);
+                $group = $this->saveGroup(1, $matchNumber, $roundNumber, null);
+                $this->syncGroup($group, $fighters);
+            }
+        }
+    }
     /**
      * Create empty groups for direct Elimination Tree
      * @param $numFighters
@@ -37,7 +55,7 @@ class PlayOffTreeGen extends TreeGen
     {
         $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersElim, 2));
+        $numRounds = intval(log($numFightersElim, 2)) ; // 3 rounds, but begining from round 2 ( ie => 4)
         $this->pushGroups($numRounds, $numFightersElim);
     }
 
@@ -62,30 +80,30 @@ class PlayOffTreeGen extends TreeGen
 
     /**
      * Generate First Round Fights
-     * @param Championship $championship
      */
     public function generateFights()
     {
+        //  First Round Fights
         $settings = $this->championship->getSettings();
         parent::destroyPreviousFights();
+        $groups = $this->championship->groupsByRound(1)->get();
         // Very specific case to common case : Preliminary with 3 fighters
         if ($settings->preliminaryGroupSize == 3) {
-            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-                PreliminaryFight::saveFights($this->championship->fightersGroups()->get(), $numGroup);
+            for ($numFight = 1; $numFight <= $settings->preliminaryGroupSize; $numFight++) {
+                $fight = new PreliminaryFight;
+                $fight->saveFights($groups, $numFight);
             }
         }
     }
 
 
+    /**
+     * Generate Fights for next rounds
+     */
     public function generateNextRoundsFights()
     {
-//        $championship = $this->championship->withCount('teams', 'competitors')->first();
-//        $fightersCount = $championship->competitors_count + $championship->teams_count;
-//        $maxRounds = intval(ceil(log($fightersCount, 2)));
-//        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-//            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-//            $this->updateParentFight($championship, $fightsByRound);
-//        }
+        $fight = new DirectEliminationFight;
+        $fight->saveFights($this->championship,2);
     }
 
 }

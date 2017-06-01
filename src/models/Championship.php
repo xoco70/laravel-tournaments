@@ -212,6 +212,16 @@ class Championship extends Model
     }
 
     /**
+     * Return Groups that belongs to a round
+     * @param integer $round
+     * @return HasMany
+     */
+    public function groupsFromRound($round)
+    {
+        return $this->fightersGroups()->where('round','>=', $round);
+    }
+
+    /**
      * Return Fights that belongs to a round
      *
      * @param integer $round

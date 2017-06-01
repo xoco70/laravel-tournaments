@@ -165,4 +165,23 @@ class DirectEliminationTreeGen extends TreeGen
         }
         return true;
     }
+
+    /**
+     * Save Groups with their parent info
+     * @param integer $numRounds
+     * @param $numFightersElim
+     */
+    protected function pushGroups($numRounds, $numFightersElim)
+    {
+        for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
+            // From last match to first match
+            $maxMatches = ($numFightersElim / pow(2, $roundNumber));
+
+            for ($matchNumber = 1; $matchNumber <= $maxMatches; $matchNumber++) {
+                $fighters = $this->createByeGroup(2);
+                $group = $this->saveGroup(1, $matchNumber, $roundNumber, null);
+                $this->syncGroup($group, $fighters);
+            }
+        }
+    }
 }

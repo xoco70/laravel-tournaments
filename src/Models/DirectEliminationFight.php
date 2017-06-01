@@ -11,10 +11,12 @@ class DirectEliminationFight extends Fight
     /**
      * @param Championship $championship
      */
-    public static function saveFights(Championship $championship)
+    public static function saveFights(Championship $championship, $fromRound = 1)
     {
         $round = [];
-        foreach ($championship->fightersGroups()->get() as $group) {
+        $groupsFromRound = $championship->groupsFromRound($fromRound)->get();
+//        dd($groupsFromRound->map->id);
+        foreach ($groupsFromRound as $group) {
             $fighters = parent::getFightersWithByes($group);
             $away = $fighters->splice(count($fighters) / 2); // 2
             $home = $fighters; // 1

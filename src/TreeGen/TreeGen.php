@@ -47,7 +47,7 @@ class TreeGen implements TreeGenerable
         $this->generateFights();
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);
-
+//dd("ok");
     }
 
     /**
@@ -259,22 +259,7 @@ class TreeGen implements TreeGenerable
         return $parent;
     }
 
-    /**
-     * Save Groups with their parent info
-     * @param integer $numRounds
-     * @param $numFightersElim
-     */
-    protected function pushGroups($numRounds, $numFightersElim)
-    {
-        for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
-            // From last match to first match
-            for ($matchNumber = 1; $matchNumber <= ($numFightersElim / pow(2, $roundNumber)); $matchNumber++) {
-                $fighters = $this->createByeGroup(2);
-                $group = $this->saveGroup(1, $matchNumber, $roundNumber, null);
-                $this->syncGroup($group, $fighters);
-            }
-        }
-    }
+
 
     /**
      * Group Fighters by area
