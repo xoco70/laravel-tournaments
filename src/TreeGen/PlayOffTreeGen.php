@@ -64,14 +64,14 @@ class PlayOffTreeGen extends TreeGen
      * Generate First Round Fights
      * @param Championship $championship
      */
-    public static function generateFights(Championship $championship)
+    public function generateFights()
     {
-        $settings = $championship->getSettings();
-        parent::destroyPreviousFights($championship);
+        $settings = $this->championship->getSettings();
+        parent::destroyPreviousFights($this->championship);
         // Very specific case to common case : Preliminary with 3 fighters
         if ($settings->preliminaryGroupSize == 3) {
             for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-                PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
+                PreliminaryFight::saveFights($this->championship->fightersGroups()->get(), $numGroup);
             }
         }
     }

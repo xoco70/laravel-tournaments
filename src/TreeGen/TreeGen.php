@@ -44,7 +44,7 @@ class TreeGen implements TreeGenerable
         $this->generateGroupsForRound($usersByArea, 1, 1);
         $this->pushEmptyGroupsToTree($numFighters);
         $this->addParentToChildren($numFighters);
-        $this->generateFights($this->championship);
+        $this->generateFights();
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);
 
