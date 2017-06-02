@@ -2,11 +2,22 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class PreliminaryFight extends Fight
 {
+
+    public function __construct(Fight $fight = null)
+    {
+        if ($fight!=null){
+            $this->id= $fight->id;
+            $this->short_id= $fight->short_id;
+            $this->fighters_group_id= $fight->fighters_group_id;
+            $this->c1= $fight->c1;
+            $this->c2= $fight->c2;
+        }
+    }
+
     /**
      * Save a Fight.
      *
