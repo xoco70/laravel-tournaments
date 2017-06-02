@@ -112,61 +112,6 @@ class DirectEliminationTreeGen extends TreeGen
 
 
     /**
-     * Returns the parent field that need to be updated
-     * @return null|string
-     */
-    public function getParentFighterToUpdate()
-    {
-        $childrenGroup = $this->group->parent->children;
-        foreach ($childrenGroup as $key => $children) {
-            $childFight = $children->fights->get(0);
-            if ($childFight->id == $this->id) {
-                if ($key % 2 == 0) {
-                    return "c1";
-                }
-                if ($key % 2 == 1) {
-                    return "c2";
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * In the original fight ( child ) return the field that contains data to copy to parent
-     * @return null|string
-     */
-    public function getValueToUpdate()
-    {
-        if ($this->c1 != null && $this->c2 != null) {
-            return null;
-        }
-        if ($this->c1 != null) {
-            return "c1";
-        }
-        if ($this->c2 != null) {
-            return "c2";
-        }
-        return null;
-    }
-
-    /**
-     * Check if we are able to fill the parent fight or not
-     * If one of the children has c1 x c2, then we must wait to fill parent
-     *
-     * @return bool
-     */
-    public function hasDeterminedParent()
-    {
-        if ($this->group->has2Fighters()) return true;
-        foreach ($this->group->children as $child) {
-            $fight = $child->fights->get(0);
-            if ($fight->has2Fighters()) return false;
-        }
-        return true;
-    }
-
-    /**
      * Save Groups with their parent info
      * @param integer $numRounds
      * @param $numFightersElim
