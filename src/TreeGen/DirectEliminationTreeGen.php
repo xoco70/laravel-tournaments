@@ -64,42 +64,10 @@ class DirectEliminationTreeGen extends TreeGen
     }
 
     /**
-     *
-     */
-    public function generateNextRoundsFights()
-    {
-        $fightersCount = $this->championship->competitors->count() + $this->championship->teams->count();
-        $maxRounds = $this->getNumRounds($fightersCount);
-        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-            $fightsByRound = $this->championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-            $this->updateParentFight($fightsByRound);
-        }
-    }
-
-
-    /**
-     * @param $fightsByRound
-     */
-    private function updateParentFight($fightsByRound)
-    {
-        foreach ($fightsByRound as $fight) {
-            $parentGroup = $fight->group->parent;
-            if ($parentGroup == null) break;
-            $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
-
-            // IN this $fight, is c1 or c2 has the info?
-            if ($this->championship->isDirectEliminationType()) {
-                // determine whether c1 or c2 must be updated
-                $this->chooseAndUpdateParentFight($fight, $parentFight);
-            }
-        }
-    }
-
-    /**
      * @param $fight
      * @param $parentFight
      */
-    private function chooseAndUpdateParentFight($fight, $parentFight)
+    protected function chooseAndUpdateParentFight($fight, $parentFight)
     {
         $fighterToUpdate = $fight->getParentFighterToUpdate();
         $valueToUpdate = $fight->getValueToUpdate();

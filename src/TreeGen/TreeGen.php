@@ -260,7 +260,6 @@ class TreeGen implements TreeGenerable
     }
 
 
-
     /**
      * Group Fighters by area
      * @return Collection
@@ -291,7 +290,7 @@ class TreeGen implements TreeGenerable
      */
     private function addParentToChildren($numFightersElim)
     {
-        $numRounds  = $this->getNumRounds($numFightersElim);
+        $numRounds = $this->getNumRounds($numFightersElim);
         $groupsDesc = $this->championship
             ->fightersGroups()
             ->where('round', '<', $numRounds)
@@ -368,5 +367,34 @@ class TreeGen implements TreeGenerable
         // Delete previous fight for this championship
         $arrGroupsId = $this->championship->fightersGroups()->get()->pluck('id');
         Fight::destroy($arrGroupsId);
+    }
+
+
+    /**
+     * Generate Fights for next rounds
+     */
+    public function generateNextRoundsFights()
+    {
+        $fightersCount = $this->championship->competitors->count() + $this->championship->teams->count();
+        $maxRounds = $this->getNumRounds($fightersCount);
+        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
+            $fightsByRound = $this->championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
+            $this->updateParentFight($fightsByRound);
+        }
+    }
+
+    /**
+     * @param $fightsByRound
+     */
+    protected function updateParentFight($fightsByRound)
+    {
+        foreach ($fightsByRound as $fight) {
+            $parentGroup = $fight->group->parent;
+            if ($parentGroup == null) break;
+            $parentFight = $parentGroup->fights->get(0);
+
+            // determine whether c1 or c2 must be updated
+            $this->chooseAndUpdateParentFight($fight, $parentFight);
+        }
     }
 }

@@ -37,7 +37,7 @@ class PlayOffTreeGen extends TreeGen
     protected function pushGroups($numRounds, $numFightersElim)
     {
         // TODO Here is where you should change when enable several winners for preliminary
-        for ($roundNumber = 2; $roundNumber <= $numRounds +1; $roundNumber++) {
+        for ($roundNumber = 2; $roundNumber <= $numRounds + 1; $roundNumber++) {
             // From last match to first match
             $maxMatches = ($numFightersElim / pow(2, $roundNumber));
 
@@ -48,6 +48,7 @@ class PlayOffTreeGen extends TreeGen
             }
         }
     }
+
     /**
      * Create empty groups for direct Elimination Tree
      * @param $numFighters
@@ -56,7 +57,7 @@ class PlayOffTreeGen extends TreeGen
     {
         $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersElim, 2)) ; // 3 rounds, but begining from round 2 ( ie => 4)
+        $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
         $this->pushGroups($numRounds, $numFightersElim);
     }
 
@@ -97,38 +98,21 @@ class PlayOffTreeGen extends TreeGen
         }
         // Save Next rounds
         $fight = new DirectEliminationFight;
-        $fight->saveFights($this->championship,2);
-    }
-
-
-    /**
-     * Generate Fights for next rounds
-     */
-    public function generateNextRoundsFights()
-    {
-        $fightersCount = $this->championship->competitors->count() + $this->championship->teams->count();
-        $maxRounds = $this->getNumRounds($fightersCount);
-        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-            $fightsByRound = $this->championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-            $this->updateParentFight($fightsByRound);
-        }
+        $fight->saveFights($this->championship, 2);
     }
 
     /**
-     * @param $fightsByRound
+     * @param $fight
+     * @param $parentFight
      */
-    private function updateParentFight($fightsByRound)
+    protected function chooseAndUpdateParentFight($fight, $parentFight)
     {
-        foreach ($fightsByRound as $fight) {
-            $parentGroup = $fight->group->parent;
-            if ($parentGroup == null) break;
-            $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
-
-            // IN this $fight, is c1 or c2 has the info?
-            if ($this->championship->isDirectEliminationType()) {
-                // determine whether c1 or c2 must be updated
-                $this->chooseAndUpdateParentFight($fight, $parentFight);
-            }
+        $fighterToUpdate = $fight->getParentFighterToUpdate();
+        $valueToUpdate = $fight->getValueToUpdate();
+        // we need to know if the child has empty fighters, is this BYE or undetermined
+        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
+            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
+            $parentFight->save();
         }
     }
 
@@ -137,7 +121,8 @@ class PlayOffTreeGen extends TreeGen
      * @param $numFighters
      * @return int
      */
-    public function getNumRounds($numFighters){
+    public function getNumRounds($numFighters)
+    {
         return intval(log($numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2, 2));
     }
 }
