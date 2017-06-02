@@ -33,7 +33,7 @@ class DirectEliminationTreeGen extends TreeGen
     public function pushEmptyGroupsToTree($numFightersElim)
     {
         // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersElim, 2));
+        $numRounds = $this->getNumRounds($numFightersElim);
         $this->pushGroups($numRounds, $numFightersElim);
     }
 
@@ -62,25 +62,25 @@ class DirectEliminationTreeGen extends TreeGen
         parent::destroyPreviousFights($this->championship);
         DirectEliminationFight::saveFights($this->championship);
     }
+
     /**
      *
      */
     public function generateNextRoundsFights()
     {
         $fightersCount = $this->championship->competitors->count() + $this->championship->teams->count();
-        $maxRounds = intval(ceil(log($fightersCount, 2)));
+        $maxRounds = $this->getNumRounds($fightersCount);
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
             $fightsByRound = $this->championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-            $this->updateParentFight($this->championship, $fightsByRound);
+            $this->updateParentFight($fightsByRound);
         }
     }
 
 
     /**
-     * @param Championship $championship
      * @param $fightsByRound
      */
-    private function updateParentFight(Championship $championship, $fightsByRound)
+    private function updateParentFight($fightsByRound)
     {
         foreach ($fightsByRound as $fight) {
             $parentGroup = $fight->group->parent;
@@ -88,7 +88,7 @@ class DirectEliminationTreeGen extends TreeGen
             $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
 
             // IN this $fight, is c1 or c2 has the info?
-            if ($championship->isDirectEliminationType()) {
+            if ($this->championship->isDirectEliminationType()) {
                 // determine whether c1 or c2 must be updated
                 $this->chooseAndUpdateParentFight($fight, $parentFight);
             }
@@ -190,7 +190,8 @@ class DirectEliminationTreeGen extends TreeGen
      * @param $numFighters
      * @return int
      */
-    public function getNumRounds($numFighters){
+    public function getNumRounds($numFighters)
+    {
         return intval(log($numFighters, 2));
     }
 }
