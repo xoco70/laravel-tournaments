@@ -10,6 +10,7 @@ use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
+use Xoco70\KendoTournaments\Models\PreliminaryFight;
 
 class TreeGen implements TreeGenerable
 {
@@ -395,6 +396,25 @@ class TreeGen implements TreeGenerable
 
             // determine whether c1 or c2 must be updated
             $this->chooseAndUpdateParentFight($fight, $parentFight);
+        }
+    }
+
+    /**
+     * @param $fight
+     * @param $parentFight
+     */
+    protected function chooseAndUpdateParentFight($fight, $parentFight)
+    {
+        // Set Kind of Fight
+        if ($this->championship->hasPreliminary()){
+            $fight = new PreliminaryFight($fight);
+        }
+        $fighterToUpdate = $fight->getParentFighterToUpdate();
+        $valueToUpdate = $fight->getValueToUpdate();
+        // we need to know if the child has empty fighters, is this BYE or undetermined
+        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
+            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
+            $parentFight->save();
         }
     }
 }

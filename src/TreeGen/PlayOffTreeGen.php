@@ -101,20 +101,6 @@ class PlayOffTreeGen extends TreeGen
         $fight->saveFights($this->championship, 2);
     }
 
-    /**
-     * @param $fight
-     * @param $parentFight
-     */
-    protected function chooseAndUpdateParentFight($fight, $parentFight)
-    {
-        $fighterToUpdate = $fight->getParentFighterToUpdate();
-        $valueToUpdate = $fight->getValueToUpdate();
-        // we need to know if the child has empty fighters, is this BYE or undetermined
-        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
-            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
-            $parentFight->save();
-        }
-    }
 
     /**
      * Return number of rounds for the tree based on fighter count

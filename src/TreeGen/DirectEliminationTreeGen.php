@@ -63,21 +63,6 @@ class DirectEliminationTreeGen extends TreeGen
         DirectEliminationFight::saveFights($this->championship);
     }
 
-    /**
-     * @param $fight
-     * @param $parentFight
-     */
-    protected function chooseAndUpdateParentFight($fight, $parentFight)
-    {
-        $fighterToUpdate = $fight->getParentFighterToUpdate();
-        $valueToUpdate = $fight->getValueToUpdate();
-        // we need to know if the child has empty fighters, is this BYE or undetermined
-        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
-            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
-            $parentFight->save();
-        }
-    }
-
 
     /**
      * Save Groups with their parent info
