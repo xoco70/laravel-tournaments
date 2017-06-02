@@ -184,4 +184,13 @@ class DirectEliminationTreeGen extends TreeGen
             }
         }
     }
+
+    /**
+     * Return number of rounds for the tree based on fighter count
+     * @param $numFighters
+     * @return int
+     */
+    public function getNumRounds($numFighters){
+        return intval(log($numFighters, 2));
+    }
 }

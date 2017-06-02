@@ -46,7 +46,7 @@ class TreeGen implements TreeGenerable
         $this->addParentToChildren($numFighters);
         $this->generateFights();
         $this->generateNextRoundsFights();
-        Fight::generateFightsId($this->championship);
+//        Fight::generateFightsId($this->championship);
 //dd("ok");
     }
 
@@ -291,8 +291,7 @@ class TreeGen implements TreeGenerable
      */
     private function addParentToChildren($numFightersElim)
     {
-        $numRounds = intval(log($numFightersElim, 2));
-
+        $numRounds  = $this->getNumRounds($numFightersElim);
         $groupsDesc = $this->championship
             ->fightersGroups()
             ->where('round', '<', $numRounds)

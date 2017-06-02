@@ -36,9 +36,10 @@ class PlayOffTreeGen extends TreeGen
      */
     protected function pushGroups($numRounds, $numFightersElim)
     {
+        // TODO Here is where you should change when enable several winners for preliminary
         for ($roundNumber = 2; $roundNumber <= $numRounds +1; $roundNumber++) {
             // From last match to first match
-            $maxMatches = ($numFightersElim / pow(2, $roundNumber-1));
+            $maxMatches = ($numFightersElim / pow(2, $roundNumber));
 
             for ($matchNumber = 1; $matchNumber <= $maxMatches; $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
@@ -106,4 +107,12 @@ class PlayOffTreeGen extends TreeGen
         $fight->saveFights($this->championship,2);
     }
 
+    /**
+     * Return number of rounds for the tree based on fighter count
+     * @param $numFighters
+     * @return int
+     */
+    public function getNumRounds($numFighters){
+        return intval(log($numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2, 2));
+    }
 }
