@@ -18,41 +18,6 @@ class FightersGroup extends Model
 
     use NodeTrait;
 
-
-//    /**
-//     * @param Championship $championship
-//     * @param $fightsByRound
-//     */
-//    private static function updateParentFight(Championship $championship, $fightsByRound)
-//    {
-//        foreach ($fightsByRound as $fight) {
-//            $parentGroup = $fight->group->parent;
-//            if ($parentGroup == null) break;
-//            $parentFight = $parentGroup->fights->get(0); //TODO This Might change when extending to Preliminary
-//
-//            // IN this $fight, is c1 or c2 has the info?
-//            if ($championship->isDirectEliminationType()) {
-//                // determine whether c1 or c2 must be updated
-//                self::chooseAndUpdateParentFight($fight, $parentFight);
-//            }
-//        }
-//    }
-
-//    /**
-//     * @param $fight
-//     * @param $parentFight
-//     */
-//    private static function chooseAndUpdateParentFight($fight, $parentFight)
-//    {
-//        $fighterToUpdate = $fight->getParentFighterToUpdate();
-//        $valueToUpdate = $fight->getValueToUpdate();
-//        // we need to know if the child has empty fighters, is this BYE or undetermined
-//        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
-//            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
-//            $parentFight->save();
-//        }
-//    }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -69,12 +34,20 @@ class FightersGroup extends Model
         return $this->hasMany(Fight::class);
     }
 
+    public function fightersWithBye()
+    {
+        if ($this->championship->category->isTeam()) {
+            return $this->teamsWithBye();
+        }
+        return $this->competitorsWithBye();
+    }
+
     public function fighters()
     {
         if ($this->championship->category->isTeam()) {
-            return $this->teamsWithNull();
+            return $this->teams;
         }
-        return $this->competitorsWithNull();
+        return $this->competitors;
     }
 
     public function teams()
@@ -87,27 +60,6 @@ class FightersGroup extends Model
         return $this->belongsToMany(Competitor::class, 'fighters_group_competitor')->withTimestamps();
     }
 
-//    /**
-//     * Generate First Round Fights
-//     * @param Championship $championship
-//     */
-//    public static function generateFights(Championship $championship)
-//    {
-//        $settings = $championship->getSettings();
-//        // Delete previous fight for this championship
-//
-//        $arrGroupsId = $championship->fightersGroups()->get()->pluck('id');
-//
-//        Fight::destroy($arrGroupsId);
-//        // Very specific case to common case : Preliminary with 3 fighters
-//        if ($settings->hasPreliminary && $settings->preliminaryGroupSize == 3) {
-//            for ($numGroup = 1; $numGroup <= $settings->preliminaryGroupSize; $numGroup++) {
-//                PreliminaryFight::saveFights($championship->fightersGroups()->get(), $numGroup);
-//            }
-//            return;
-//        }
-//        DirectEliminationFight::saveFights($championship);
-//    }
 
     /**
      * Supercharge of sync Many2Many function.
@@ -159,7 +111,7 @@ class FightersGroup extends Model
      *
      * @return Collection
      */
-    public function competitorsWithNull(): Collection
+    public function competitorsWithBye(): Collection
     {
         $competitors = new Collection();
         $fgcs = FighterGroupCompetitor::where('fighters_group_id', $this->id)
@@ -174,7 +126,7 @@ class FightersGroup extends Model
     }
 
 
-    public function teamsWithNull(): Collection
+    public function teamsWithBye(): Collection
     {
         $teams = new Collection();
         $fgcs = FighterGroupTeam::where('fighters_group_id', $this->id)
@@ -191,9 +143,9 @@ class FightersGroup extends Model
     public function getFighters(): Collection
     {
         if ($this->championship->category->isTeam()) {
-            return $this->teamsWithNull();
+            return $this->teamsWithBye();
         }
-        return $this->competitorsWithNull();
+        return $this->competitorsWithBye();
 
     }
 
@@ -208,22 +160,6 @@ class FightersGroup extends Model
         return $parentId;
     }
 
-//    /**
-//     *
-//     * @param Championship $championship
-//     */
-//    public static function generateNextRoundsFights(Championship $championship)
-//    {
-//        $championship = $championship->withCount('teams', 'competitors')->first();
-//        $fightersCount = $championship->competitors_count + $championship->teams_count;
-//        $maxRounds = intval(ceil(log($fightersCount, 2)));
-//        for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-//            $fightsByRound = $championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-//            self::updateParentFight($championship, $fightsByRound);
-//        }
-//
-//    }
-
     /**
      * @return string
      */
@@ -233,5 +169,53 @@ class FightersGroup extends Model
             return Team::class;
         }
         return Competitor::class;
+    }
+
+    /**
+     * Check if we are able to fill the parent fight or not
+     * If one of the children has c1 x c2, then we must wait to fill parent
+     *
+     * @return bool
+     */
+    public function hasDeterminedParent()
+    {
+        // There is more than 1 fight, should be Preliminary
+        if (sizeof($this->fighters()) > 1){
+            return false;
+        }
+        foreach ($this->children as $child) {
+            if (sizeof($child->fighters()) > 1) return false;
+        }
+        return true;
+
+    }
+
+
+    /**
+     * In the original fight ( child ) return the field that contains data to copy to parent
+     * @return int
+     */
+    public function getValueToUpdate()
+    {
+        if ($this->championship->category->isTeam()) {
+            return $this->teams->map->id[0];
+        }
+        return $this->competitors->map->id[0];
+    }
+
+    /**
+     * Returns the parent field that need to be updated
+     * @return null|string
+     */
+    public function getParentFighterToUpdate($keyGroup)
+    {
+        if (intval($keyGroup % 2) == 0) {
+            return "c1";
+        }
+        if (intval($keyGroup % 2) == 1) {
+            return "c2";
+        }
+
+        return null;
     }
 }

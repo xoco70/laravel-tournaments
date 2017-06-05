@@ -8,6 +8,7 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
+use Xoco70\KendoTournaments\Models\DirectEliminationFight;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\PreliminaryFight;
@@ -379,42 +380,41 @@ class TreeGen implements TreeGenerable
         $fightersCount = $this->championship->competitors->count() + $this->championship->teams->count();
         $maxRounds = $this->getNumRounds($fightersCount);
         for ($numRound = 1; $numRound < $maxRounds; $numRound++) {
-            $fightsByRound = $this->championship->fightsByRound($numRound)->with('group.parent', 'group.children')->get();
-            $this->updateParentFight($fightsByRound);
+            $groupsByRound = $this->championship->fightersGroups()->where('round', $numRound)->with('parent', 'children')->get();
+            $this->updateParentFight($groupsByRound); // should be groupsByRound
         }
     }
 
     /**
-     * @param $fightsByRound
+     * @param $groupsByRound
      */
-    protected function updateParentFight($fightsByRound)
+    protected function updateParentFight($groupsByRound)
     {
-        foreach ($fightsByRound as $fight) {
-            $parentGroup = $fight->group->parent;
+        foreach ($groupsByRound as $keyGroup => $group) {
+            $parentGroup = $group->parent;
             if ($parentGroup == null) break;
             $parentFight = $parentGroup->fights->get(0);
 
             // determine whether c1 or c2 must be updated
-            $this->chooseAndUpdateParentFight($fight, $parentFight);
+            $this->chooseAndUpdateParentFight($keyGroup, $group, $parentFight);
         }
     }
 
     /**
-     * @param $fight
+     * @param $group
      * @param $parentFight
      */
-    protected function chooseAndUpdateParentFight($fight, $parentFight)
+    protected function chooseAndUpdateParentFight($keyGroup, FightersGroup $group, Fight $parentFight)
     {
-        // Set Kind of Fight
-        if ($this->championship->hasPreliminary()){
-            $fight = new PreliminaryFight($fight);
-        }
-        $fighterToUpdate = $fight->getParentFighterToUpdate();
-        $valueToUpdate = $fight->getValueToUpdate();
         // we need to know if the child has empty fighters, is this BYE or undetermined
-        if ($fight->hasDeterminedParent() && $valueToUpdate != null) {
-            $parentFight->$fighterToUpdate = $fight->$valueToUpdate;
-            $parentFight->save();
+        if ($group->hasDeterminedParent()) {
+            $valueToUpdate = $group->getValueToUpdate(); // This should be OK
+            if ($valueToUpdate != null) {
+                $fighterToUpdate = $group->getParentFighterToUpdate($keyGroup);
+                dump("key:".$keyGroup."-".$fighterToUpdate."=>".$valueToUpdate);
+                $parentFight->$fighterToUpdate = $valueToUpdate;
+                $parentFight->save();
+            }
         }
     }
 }

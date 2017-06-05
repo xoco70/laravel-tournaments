@@ -51,4 +51,6 @@ class DirectEliminationFight extends Fight
             }
         }
     }
+
+
 }

@@ -119,62 +119,6 @@ class Fight extends Model
     }
 
 
-
-    /**
-     * Returns the parent field that need to be updated
-     * @return null|string
-     */
-    public function getParentFighterToUpdate()
-    {
-        $childrenGroup = $this->group->parent->children;
-        foreach ($childrenGroup as $key => $children) {
-            $childFight = $children->fights->get(0);
-            if ($childFight->id == $this->id) {
-                if ($key % 2 == 0) {
-                    return "c1";
-                }
-                if ($key % 2 == 1) {
-                    return "c2";
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * In the original fight ( child ) return the field that contains data to copy to parent
-     * @return null|string
-     */
-    public function getValueToUpdate()
-    {
-        if ($this->c1 != null && $this->c2 != null) {
-            return null;
-        }
-        if ($this->c1 != null) {
-            return "c1";
-        }
-        if ($this->c2 != null) {
-            return "c2";
-        }
-        return null;
-    }
-
-    /**
-     * Check if we are able to fill the parent fight or not
-     * If one of the children has c1 x c2, then we must wait to fill parent
-     *
-     * @return bool
-     */
-    public function hasDeterminedParent()
-    {
-        if ($this->has2Fighters()) return true;
-        foreach ($this->group->children as $child) {
-            $fight = $child->fights->get(0);
-            if ($fight->has2Fighters()) return false;
-        }
-        return true;
-    }
-
     public function shouldBeInFightList()
     {
         if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) return false;
@@ -196,7 +140,7 @@ class Fight extends Model
      * return true if fight has 2 fighters ( No BYE )
      * @return bool
      */
-    private function has2Fighters(): bool
+    public function has2Fighters(): bool
     {
         return $this->c1 != null && $this->c2 != null;
     }
