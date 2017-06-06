@@ -22,7 +22,7 @@ class DirectEliminationCompetitorTreeGen extends DirectEliminationTreeGen
      * @param $fighters
      * @return FightersGroup
      */
-    public function syncGroup($group, $fighters)
+    public function syncGroup(FightersGroup $group, $fighters)
     {
         return $group->syncCompetitors($fighters);
     }

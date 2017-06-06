@@ -18,11 +18,11 @@ class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
     }
 
     /**
-     * @param $group
+     * @param FightersGroup $group
      * @param $fighters
      * @return FightersGroup
      */
-    public function syncGroup($group, $fighters)
+    public function syncGroup(FightersGroup $group, $fighters)
     {
         // Add all competitors to Pivot Table
         return $group->syncTeams($fighters);

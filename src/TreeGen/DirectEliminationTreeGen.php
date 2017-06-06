@@ -8,7 +8,7 @@ use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\DirectEliminationFight;
 use Xoco70\KendoTournaments\Models\Fight;
 
-class DirectEliminationTreeGen extends TreeGen
+abstract class DirectEliminationTreeGen extends TreeGen
 {
 
     /**
@@ -30,7 +30,7 @@ class DirectEliminationTreeGen extends TreeGen
      * Create empty groups for direct Elimination Tree
      * @param $numFightersElim
      */
-    public function pushEmptyGroupsToTree($numFightersElim)
+    protected function pushEmptyGroupsToTree($numFightersElim)
     {
         // We calculate how much rounds we will have
         $numRounds = $this->getNumRounds($numFightersElim);
@@ -42,7 +42,7 @@ class DirectEliminationTreeGen extends TreeGen
      * @param $fightersByEntity
      * @return Collection|null
      */
-    protected function chunkAndShuffle($round = null, $fightersByEntity)
+    protected function chunkAndShuffle($round = null, Collection $fightersByEntity)
     {
         $fightersGroup = null;
 
@@ -88,7 +88,7 @@ class DirectEliminationTreeGen extends TreeGen
      * @param $numFighters
      * @return int
      */
-    public function getNumRounds($numFighters)
+    protected function getNumRounds($numFighters)
     {
         return intval(log($numFighters, 2));
     }

@@ -218,7 +218,7 @@ class Championship extends Model
      */
     public function groupsFromRound($round)
     {
-        return $this->fightersGroups()->where('round','>=', $round);
+        return $this->fightersGroups()->where('round', '>=', $round);
     }
 
     /**
@@ -259,7 +259,6 @@ class Championship extends Model
      */
     public function chooseGenerationStrategy()
     {
-        $generation = new TreeGen($this, null);
         switch (true) {
             case $this->isDirectEliminationCompetitor():
                 $generation = new DirectEliminationCompetitorTreeGen($this, null);
@@ -274,7 +273,7 @@ class Championship extends Model
                 $generation = new PlayOffTeamTreeGen($this, null);
                 break;
             default:
-                dd("bad choice");
+                $generation = new PlayOffCompetitorTreeGen($this, null);
         }
         return $generation;
     }

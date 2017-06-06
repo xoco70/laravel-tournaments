@@ -9,7 +9,7 @@ use Xoco70\KendoTournaments\Models\DirectEliminationFight;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\PreliminaryFight;
 
-class PlayOffTreeGen extends TreeGen
+abstract class PlayOffTreeGen extends TreeGen
 {
 
 
@@ -53,7 +53,7 @@ class PlayOffTreeGen extends TreeGen
      * Create empty groups for direct Elimination Tree
      * @param $numFighters
      */
-    public function pushEmptyGroupsToTree($numFighters)
+    protected function pushEmptyGroupsToTree($numFighters)
     {
         $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         // We calculate how much rounds we will have
@@ -67,7 +67,7 @@ class PlayOffTreeGen extends TreeGen
      * @param $fightersByEntity
      * @return mixed
      */
-    protected function chunkAndShuffle($round, $fightersByEntity)
+    protected function chunkAndShuffle($round, Collection $fightersByEntity)
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
@@ -83,7 +83,7 @@ class PlayOffTreeGen extends TreeGen
     /**
      * Generate First Round Fights
      */
-    public function generateFights()
+    protected function generateFights()
     {
         //  First Round Fights
         $settings = $this->championship->getSettings();
@@ -107,7 +107,7 @@ class PlayOffTreeGen extends TreeGen
      * @param $numFighters
      * @return int
      */
-    public function getNumRounds($numFighters)
+    protected function getNumRounds($numFighters)
     {
         return intval(log($numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2, 2));
     }

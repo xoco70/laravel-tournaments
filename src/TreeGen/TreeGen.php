@@ -13,13 +13,22 @@ use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\PreliminaryFight;
 
-class TreeGen implements TreeGenerable
+abstract class TreeGen implements TreeGenerable
 {
     protected $groupBy;
     protected $tree;
     public $championship;
     public $settings;
     protected $numFighters;
+
+    abstract protected function pushEmptyGroupsToTree($numFighters);
+    abstract protected function generateFights();
+    abstract protected function createByeFighter();
+    abstract protected function chunkAndShuffle($round, Collection $fightersByEntity);
+    abstract protected function syncGroup(FightersGroup $group, $fighters);
+    abstract protected function getByeGroup($fighters);
+    abstract protected function getFighters();
+    abstract protected function getNumRounds($fightersCount);
 
     /**
      * @param Championship $championship
@@ -32,6 +41,7 @@ class TreeGen implements TreeGenerable
         $this->settings = $championship->getSettings();
         $this->tree = new Collection();
     }
+
 
     /**
      * Generate tree groups for a championship.
@@ -48,8 +58,8 @@ class TreeGen implements TreeGenerable
         $this->addParentToChildren($numFighters);
         $this->generateFights();
         $this->generateNextRoundsFights();
-//        Fight::generateFightsId($this->championship);
-//dd("ok");
+        Fight::generateFightsId($this->championship);
+
     }
 
     /**
@@ -362,7 +372,7 @@ class TreeGen implements TreeGenerable
 
 
     /**
-     * @param Championship $championship
+     * Destroy Previous Fights for demo
      */
     protected function destroyPreviousFights()
     {
@@ -411,7 +421,6 @@ class TreeGen implements TreeGenerable
             $valueToUpdate = $group->getValueToUpdate(); // This should be OK
             if ($valueToUpdate != null) {
                 $fighterToUpdate = $group->getParentFighterToUpdate($keyGroup);
-                dump("key:".$keyGroup."-".$fighterToUpdate."=>".$valueToUpdate);
                 $parentFight->$fighterToUpdate = $valueToUpdate;
                 $parentFight->save();
             }
