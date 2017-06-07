@@ -1,4 +1,4 @@
-@foreach($championship->fights->groupBy('area') as $fightsByArea)
+@foreach($championship->fights()->orderBy('id')->get()->groupBy('area') as $fightsByArea)
     <table class="table-bordered text-center">
         <th class="p-10">Id</th>
         <th class="p-10">Competitor 1</th>

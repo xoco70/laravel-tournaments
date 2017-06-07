@@ -24,7 +24,7 @@ class PreliminaryFight extends Fight
      * @param Collection $groups
      * @param int $numGroup
      */
-    public static function saveFights($groups, $numGroup = 1)
+    public static function saveFights(Collection $groups, $numGroup = 1)
     {
         $competitor1 = $competitor2 = null;
         $order = 1;

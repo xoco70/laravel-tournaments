@@ -100,6 +100,11 @@ class Fight extends Model
     }
 
 
+    /**
+     * @param $numFighter
+     * @param $attr
+     * @return null|string
+     */
     public function getFighterAttr($numFighter, $attr)
     {
         $isTeam = $this->group->championship->category->isTeam;
@@ -119,6 +124,9 @@ class Fight extends Model
     }
 
 
+    /**
+     * @return bool
+     */
     public function shouldBeInFightList()
     {
         if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) return false;
@@ -145,6 +153,9 @@ class Fight extends Model
         return $this->c1 != null && $this->c2 != null;
     }
 
+    /**
+     * @return bool
+     */
     private function belongsToFirstRound()
     {
         $firstRoundFights = $this->group->championship->firstRoundFights->pluck('id')->toArray();
@@ -152,13 +163,19 @@ class Fight extends Model
         return false;
     }
 
+    /**
+     * @return bool
+     */
     private function dontHave2Fighters() // 1 or 0
     {
         return $this->c1 == null || $this->c2 == null;
     }
 
 
-    public static function generateFightsId($championship)
+    /**
+     * @param Championship $championship
+     */
+    public static function generateFightsId(Championship $championship)
     {
         $order = 1;
         foreach ($championship->fights as $fight) {
