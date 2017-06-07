@@ -4,14 +4,14 @@
 
 # 
 
-Kendo- Tournaments is A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed   
+Kendo- Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed   
 
 ## Installation
 
 First, you'll need to install the package via Composer:
 
 ```shell
-$ composer require "xoco70/kendo-tournaments":^0.10
+$ composer require "xoco70/kendo-tournaments":^0.11
 ```
 
 Then, update `config/app.php` by adding an entry for the service provider.
