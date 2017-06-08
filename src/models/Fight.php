@@ -47,7 +47,7 @@ class Fight extends Model
     protected static function getFightersWithByes(FightersGroup $group)
     {
         if ($group == null) return null;
-        $fighters = $group->getFighters();
+        $fighters = $group->getFightersWithBye();
         $fighterType = $group->getFighterType();
         if (sizeof($fighters) == 0) {
             $fighters->push(new $fighterType);

@@ -107,7 +107,7 @@ class FightersGroup extends Model
 
 
     /**
-     * Get the many 2 many relationship with
+     * Get the many 2 many relationship with the Null Rows
      *
      * @return Collection
      */
@@ -117,10 +117,10 @@ class FightersGroup extends Model
         $fgcs = FighterGroupCompetitor::where('fighters_group_id', $this->id)
             ->with('competitor')
             ->get();
+
         foreach ($fgcs as $fgc) {
             $competitors->push($fgc->competitor ?? new Competitor());
         }
-
         return $competitors;
 
     }
@@ -140,7 +140,7 @@ class FightersGroup extends Model
 
     }
 
-    public function getFighters(): Collection
+    public function getFightersWithBye(): Collection
     {
         if ($this->championship->category->isTeam()) {
             return $this->teamsWithBye();

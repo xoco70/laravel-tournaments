@@ -31,7 +31,7 @@ class PreliminaryFight extends Fight
 
         foreach ($groups as $group) {
 
-            $fighters = $group->getFighters();
+            $fighters = $group->getFightersWithBye();
 
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
