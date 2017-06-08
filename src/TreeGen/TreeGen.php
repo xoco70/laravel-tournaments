@@ -8,6 +8,7 @@ use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
+use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\DirectEliminationFight;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
@@ -25,8 +26,10 @@ abstract class TreeGen implements TreeGenerable
     abstract protected function generateFights();
     abstract protected function createByeFighter();
     abstract protected function chunkAndShuffle($round, Collection $fightersByEntity);
+    abstract protected function addFighterToGroup(FightersGroup $group, $fighter);
     abstract protected function syncGroup(FightersGroup $group, $fighters);
     abstract protected function getByeGroup($fighters);
+    abstract protected function getFighter($fighterId);
     abstract protected function getFighters();
     abstract protected function getNumRounds($fightersCount);
 
@@ -175,9 +178,9 @@ abstract class TreeGen implements TreeGenerable
     {
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
-            $fightersGroup = $this->chunkAndShuffle($round, $fightersByEntity);
+            $chunkedFighters = $this->chunkAndShuffle($round, $fightersByEntity);
             $order = 1;
-            foreach ($fightersGroup as $fighters) {
+            foreach ($chunkedFighters as $fighters) {
                 $fighters = $fighters->pluck('id');
                 if (!App::runningUnitTests()) {
                     $fighters = $fighters->shuffle();
@@ -423,6 +426,11 @@ abstract class TreeGen implements TreeGenerable
                 $fighterToUpdate = $group->getParentFighterToUpdate($keyGroup);
                 $parentFight->$fighterToUpdate = $valueToUpdate;
                 $parentFight->save();
+                // Add fighter to pivot table
+                $parentGroup = $parentFight->group;
+
+                $fighter = $this->getFighter($valueToUpdate);
+                $this->addFighterToGroup($parentGroup, $fighter);
             }
         }
     }
