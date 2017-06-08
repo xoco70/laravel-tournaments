@@ -36,7 +36,7 @@ $isTeam = $isTeam ??  5;;
                 @include('kendo-tournaments::partials.tree.preliminary')
             @else
                 @if ($championship->isDirectEliminationType())
-                    @include('kendo-tournaments::partials.tree.directElimination')
+                    @include('kendo-tournaments::partials.tree.directElimination', ['fromRound' => 1])
                 @elseif ($championship->isPlayOffType())
                     @include('kendo-tournaments::partials.tree.playOff')
                 @else

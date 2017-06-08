@@ -1,11 +1,13 @@
 <?php
 use Xoco70\KendoTournaments\TreeGen\CreateDirectEliminationTree;
+
 // Used to regenerate _lft and _rgt
-foreach ($championship->fightersGroups as $group){
+foreach ($championship->fightersGroups as $group) {
     $group->fixTree();
 }
-$directEliminationTree = $championship->fightersGroups->groupBy('round');
-$treeGen = new CreateDirectEliminationTree($directEliminationTree, $championship);
+$directEliminationTree = $championship->fightersGroups->where('round', '>=', $fromRound)->groupBy('round');
+
+$treeGen = new CreateDirectEliminationTree($directEliminationTree, $championship, $fromRound);
 $treeGen->build();
 ?>
 @if (Request::is('championships/'.$championship->id.'/pdf'))

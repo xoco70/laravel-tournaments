@@ -2,16 +2,18 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
+use Illuminate\Support\Collection;
 use Xoco70\KendoTournaments\Models\Competitor;
+use Xoco70\KendoTournaments\Models\FighterGroupCompetitor;
 use Xoco70\KendoTournaments\Models\Team;
 
 class CreateDirectEliminationTree
 {
     public $firstRoundName;
-    public $names;
+    public $groupsByRound;
     public $brackets = [];
     public $championship;
-    public $noTeams;
+    public $numFighters;
     public $noRounds;
     public $playerWrapperHeight = 30;
     public $matchWrapperWidth = 150;
@@ -19,13 +21,13 @@ class CreateDirectEliminationTree
     public $matchSpacing = 42;
     public $borderWidth = 3;
 
-    public function __construct($names, $championship)
+    public function __construct($groupsByRound, $championship, $fromRound)
     {
         $this->championship = $championship;
-        $this->names = $names;
-
-        $this->firstRoundName = $names->first()->map(function ($item) use ($championship) {
-            $fighters = $item->getFighters();
+        $this->groupsByRound = $groupsByRound;
+        $this->roundNumber = $fromRound;
+        $this->firstRoundName = $groupsByRound->first()->map(function ($item) use ($championship) {
+            $fighters = $item->getFightersWithBye();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
             return [$fighter1, $fighter2];
@@ -36,13 +38,14 @@ class CreateDirectEliminationTree
     {
 
         $fighters = $this->firstRoundName;
-        $this->noTeams = count($fighters);
+        $this->numFighters = count($fighters);
 
 
         //Calculate the size of the first full round - for example if you have 5 fighters, then the first full round will consist of 4 fighters
-        $this->noRounds = log($this->noTeams, 2);
+        $this->noRounds = log($this->numFighters, 2);
 
-        $roundNumber = 1;
+        //There should be minimum 2 rounds ???
+        $roundNumber = $this->roundNumber;
 
         //Group 2 fighters into a match
         $matches = array_chunk($fighters, 2);
@@ -57,7 +60,7 @@ class CreateDirectEliminationTree
         for ($i = 0; $i < $countMatches; $i++) {
             $this->brackets[$roundNumber][$i + 1] = $matches[$i];
         }
-
+//        dd($this->brackets);
         //Create the result of the empty rows for this tournament
         $this->assignFightersToBracket($roundNumber);
         $this->assignPositions();
@@ -155,23 +158,23 @@ class CreateDirectEliminationTree
     public function printRoundTitles()
     {
 
-        if ($this->noTeams == 2) {
+        if ($this->numFighters == 2) {
 
             $roundTitles = array('Final');
 
-        } elseif ($this->noTeams <= 4) {
+        } elseif ($this->numFighters <= 4) {
 
             $roundTitles = array('Semi-Finals', 'Final');
 
-        } elseif ($this->noTeams <= 8) {
+        } elseif ($this->numFighters <= 8) {
 
             $roundTitles = array('Quarter-Finals', 'Semi-Finals', 'Final');
 
         } else {
 
             $roundTitles = array('Quarter-Finals', 'Semi-Finals', 'Final');
-            $noRounds = ceil(log($this->noTeams, 2));
-            $noTeamsInFirstRound = pow(2, ceil(log($this->noTeams) / log(2)));
+            $noRounds = ceil(log($this->numFighters, 2));
+            $noTeamsInFirstRound = pow(2, ceil(log($this->numFighters) / log(2)));
             $tempRounds = array();
 
             //The minus 3 is to ignore the final, semi final and quarter final rounds
@@ -232,9 +235,9 @@ class CreateDirectEliminationTree
      */
     private function assignFightersToBracket($roundNumber)
     {
-        for ($roundNumber = 1; $roundNumber <= $this->noRounds; $roundNumber++) {
-            $groupsByRound = $this->names->get($roundNumber);
-            for ($matchNumber = 1; $matchNumber <= ($this->noTeams / pow(2, $roundNumber)); $matchNumber++) {
+        for ($roundNumber; $roundNumber <= $this->noRounds; $roundNumber++) {
+            $groupsByRound = $this->groupsByRound->get($roundNumber);
+            for ($matchNumber = 1; $matchNumber <= ($this->numFighters / pow(2, $roundNumber)); $matchNumber++) {
                 $fight = $groupsByRound[$matchNumber - 1]->fights[0];
 
                 if ($this->championship->category->isTeam()) {
