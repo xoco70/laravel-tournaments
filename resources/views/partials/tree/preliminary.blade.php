@@ -2,10 +2,13 @@
 $settings = $championship->getSettings();
 ?>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-6">
         @if (Request::is('championships/'.$championship->id.'/pdf'))
             <h1> {{$championship->buildName()}}</h1>
         @endif
+        <br/>
+        <br/>
+        
         @foreach($championship->fightersGroups()->where('round',1)->get()->groupBy('area') as $groupsByArea)
             <table class="table-bordered" cellpadding="5" cellspacing="0">
                 <tr>
@@ -42,8 +45,8 @@ $settings = $championship->getSettings();
             </table><br/>
         @endforeach
     </div>
-    <div class="col-lg-12">
-        @include('kendo-tournaments::partials.tree.directElimination', ['fromRound' => 2])
+    <div class="col-lg-6">
+        @include('kendo-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1])
     </div>
 </div>
 

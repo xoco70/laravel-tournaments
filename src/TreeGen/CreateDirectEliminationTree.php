@@ -2,15 +2,14 @@
 
 namespace Xoco70\KendoTournaments\TreeGen;
 
-use Illuminate\Support\Collection;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\FighterGroupCompetitor;
 use Xoco70\KendoTournaments\Models\Team;
 
 class CreateDirectEliminationTree
 {
     public $firstRoundName;
     public $groupsByRound;
+    public $hasPrelimimary;
     public $brackets = [];
     public $championship;
     public $numFighters;
@@ -21,11 +20,12 @@ class CreateDirectEliminationTree
     public $matchSpacing = 42;
     public $borderWidth = 3;
 
-    public function __construct($groupsByRound, $championship, $fromRound)
+    public function __construct($groupsByRound, $championship, $hasPreliminary)
     {
         $this->championship = $championship;
         $this->groupsByRound = $groupsByRound;
-        $this->roundNumber = $fromRound;
+        $this->hasPreliminary = $hasPreliminary;
+
         $this->firstRoundName = $groupsByRound->first()->map(function ($item) use ($championship) {
             $fighters = $item->getFightersWithBye();
             $fighter1 = $fighters->get(0);
@@ -43,9 +43,7 @@ class CreateDirectEliminationTree
 
         //Calculate the size of the first full round - for example if you have 5 fighters, then the first full round will consist of 4 fighters
         $this->noRounds = log($this->numFighters, 2);
-
-        //There should be minimum 2 rounds ???
-        $roundNumber = $this->roundNumber;
+        $roundNumber = 1;
 
         //Group 2 fighters into a match
         $matches = array_chunk($fighters, 2);
@@ -54,15 +52,14 @@ class CreateDirectEliminationTree
         if (count($this->brackets)) {
             $roundNumber++;
         }
-
         $countMatches = count($matches);
         //Create the first full round of fighters, some may be blank if waiting on the results of a previous round
         for ($i = 0; $i < $countMatches; $i++) {
             $this->brackets[$roundNumber][$i + 1] = $matches[$i];
         }
-//        dd($this->brackets);
+
         //Create the result of the empty rows for this tournament
-        $this->assignFightersToBracket($roundNumber);
+        $this->assignFightersToBracket($roundNumber, $this->hasPreliminary);
         $this->assignPositions();
 
     }
@@ -114,42 +111,6 @@ class CreateDirectEliminationTree
 
         }
 
-    }
-
-    public function printBrackets()
-    {
-
-        $this->printRoundTitles();
-
-        echo '<div id="brackets-wrapper">';
-
-        foreach ($this->brackets as $roundNumber => $round) {
-
-            foreach ($round as $match) {
-
-                echo '<div class="match-wrapper" style="top: ' . $match['matchWrapperTop'] . 'px; left: ' . $match['matchWrapperLeft'] . 'px; width: ' . $this->matchWrapperWidth . 'px;">
-                        <input type="text" class="score">'
-                    . $this->getPlayerList($match['playerA']) .
-                    '<div class="match-divider">
-                        </div>
-                        <input type="text" class="score">'
-                    . $this->getPlayerList($match['playerB']) .
-                    '</div>';
-
-                if ($roundNumber != $this->noRounds) {
-
-                    echo '<div class="vertical-connector" style="top: ' . $match['vConnectorTop'] . 'px; left: ' . $match['vConnectorLeft'] . 'px; height: ' . $match['vConnectorHeight'] . 'px;"></div>
-                          <div class="horizontal-connector" style="top: ' . $match['hConnectorTop'] . 'px; left: ' . $match['hConnectorLeft'] . 'px;"></div>
-                          <div class="horizontal-connector" style="top: ' . $match['hConnector2Top'] . 'px; left: ' . $match['hConnector2Left'] . 'px;"></div>';
-
-                }
-
-            }
-
-        }
-
-
-        echo '</div>';
     }
 
     /**
@@ -231,12 +192,13 @@ class CreateDirectEliminationTree
     }
 
     /**
-     * @param $roundNumber
+     * @param $numRound
      */
-    private function assignFightersToBracket($roundNumber)
+    private function assignFightersToBracket($numRound, $hasPreliminary)
     {
-        for ($roundNumber; $roundNumber <= $this->noRounds; $roundNumber++) {
-            $groupsByRound = $this->groupsByRound->get($roundNumber);
+        //TODO When Preliminary, we get a problem : Round 2 to 2, or get rounNumber = 1, and fails
+        for ($roundNumber = $numRound; $roundNumber <= $this->noRounds; $roundNumber++) {
+            $groupsByRound = $this->groupsByRound->get($roundNumber + $hasPreliminary);
             for ($matchNumber = 1; $matchNumber <= ($this->numFighters / pow(2, $roundNumber)); $matchNumber++) {
                 $fight = $groupsByRound[$matchNumber - 1]->fights[0];
 

@@ -5,9 +5,9 @@ use Xoco70\KendoTournaments\TreeGen\CreateDirectEliminationTree;
 foreach ($championship->fightersGroups as $group) {
     $group->fixTree();
 }
-$directEliminationTree = $championship->fightersGroups->where('round', '>=', $fromRound)->groupBy('round');
+$directEliminationTree = $championship->fightersGroups->where('round', '>=', $hasPreliminary +1 )->groupBy('round');
 
-$treeGen = new CreateDirectEliminationTree($directEliminationTree, $championship, $fromRound);
+$treeGen = new CreateDirectEliminationTree($directEliminationTree, $championship, $hasPreliminary);
 $treeGen->build();
 ?>
 @if (Request::is('championships/'.$championship->id.'/pdf'))
@@ -20,7 +20,6 @@ $treeGen->build();
 
 <div id="brackets-wrapper"
      style="padding-bottom: {{ ($championship->groupsByRound(1)->count() * 205 / 2) +100 }}px">
-
     @foreach ($treeGen->brackets as $roundNumber => $round)
         @foreach ($round as $matchNumber => $match)
 

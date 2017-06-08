@@ -41,8 +41,6 @@ class Fight extends Model
     /**
      * @param FightersGroup|null $group
      * @return Collection
-     * @internal param Championship $championship
-     *
      */
     protected static function getFightersWithByes(FightersGroup $group)
     {
