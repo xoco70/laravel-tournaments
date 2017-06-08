@@ -8,6 +8,15 @@ use Xoco70\KendoTournaments\Models\Team;
 
 class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
 {
+
+    /**
+     * get Fighter by Id
+     * @return Team
+     */
+    protected function getFighter($teamId)
+    {
+        return Team::find($teamId);
+    }
     /**
      * Fighter is the name for competitor or team, depending on the case
      * @return Collection
@@ -31,5 +40,10 @@ class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
     protected function createByeFighter()
     {
         return new Team();
+    }
+
+    protected function addFighterToGroup(FightersGroup $group, $team)
+    {
+        $group->teams()->attach($team->id);
     }
 }

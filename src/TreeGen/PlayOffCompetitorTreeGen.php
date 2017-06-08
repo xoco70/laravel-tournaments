@@ -8,6 +8,16 @@ use Xoco70\KendoTournaments\Models\FightersGroup;
 
 class PlayOffCompetitorTreeGen extends PlayOffTreeGen
 {
+
+    /**
+     * get Fighter by Id
+     * @return Competitor
+     */
+    protected function getFighter($competitorId)
+    {
+        return Competitor::find($competitorId);
+    }
+
     /**
      * Fighter is the name for competitor or team, depending on the case
      * @return Collection
@@ -31,5 +41,10 @@ class PlayOffCompetitorTreeGen extends PlayOffTreeGen
     protected function createByeFighter()
     {
         return new Competitor();
+    }
+
+    protected function addFighterToGroup(FightersGroup $group, $competitor)
+    {
+        $group->competitors()->attach($competitor->id);
     }
 }
