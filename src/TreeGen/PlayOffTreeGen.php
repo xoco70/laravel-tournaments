@@ -26,7 +26,7 @@ abstract class PlayOffTreeGen extends TreeGen
         $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize);
         $byeCount = $treeSize - $fighterCount;
 
-        return $this->createNullsGroup($byeCount);
+        return $this->createByeGroup($byeCount);
     }
 
     /**

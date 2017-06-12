@@ -9,7 +9,7 @@ class CreateDirectEliminationTree
 {
     public $firstRoundName;
     public $groupsByRound;
-    public $hasPrelimimary;
+    public $hasPreliminary;
     public $brackets = [];
     public $championship;
     public $numFighters;

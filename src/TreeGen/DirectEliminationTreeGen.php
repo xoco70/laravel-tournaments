@@ -22,7 +22,7 @@ abstract class DirectEliminationTreeGen extends TreeGen
         $treeSize = $this->getTreeSize($fighterCount, 2);
         $byeCount = $treeSize - $fighterCount;
 
-        return $this->createNullsGroup($byeCount);
+        return $this->createByeGroup($byeCount);
     }
 
 
