@@ -29,7 +29,7 @@ Finally, from the command line again, publish the default configuration file:
 php artisan vendor:publish
 ```
 
-#Run the demo
+# Run the demo
 
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
 
@@ -50,11 +50,10 @@ You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
 
 vendor/bin/phpunit tests
 
-##TODO
+## TODO
 
 This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
 
-- Improve match list. Some of the matches on the second round could be guessed.
 - Generate a modificable ( with Select combos ) result for Preliminary Trees
 - Improve Areas management. 
 - Generate Direct Elimination Tree after Preliminary 
