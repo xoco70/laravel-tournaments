@@ -83,7 +83,7 @@ class TreeController extends Controller
      * @param Request $request
      * @param $isTeam
      * @param $numFighters
-     * @return mixed
+     * @return Championship
      */
     protected function provisionObjects(Request $request, $isTeam, $numFighters)
     {
@@ -105,6 +105,32 @@ class TreeController extends Controller
         }
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
         return $championship;
+    }
+
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $championshipId)
+    {
+        $numFight = 0;
+//        $championshipId = $request->championshipId;
+//        $championship = Championship::find($request->championshipId);
+        $groups = FightersGroup::with('fights')->where('championship_id', $championshipId)->get();
+        $fights = $request->fights;
+        foreach ($groups as $group) {
+            foreach ($group->fights as $fight) {
+                // Find the fight in array, and update order
+                $fight->c1 = $fights[$numFight++];
+                $fight->c2 = $fights[$numFight++];
+                $fight->save();
+            }
+        }
+
+
+        flash()->success("Update Successful");
+        return back();
     }
 
 
