@@ -53,3 +53,4 @@ if (sizeof($directEliminationTree) > 0) {
     </div>
 @endif
 {{--{!! Form::close() !!}--}}
+<div class="clearfix"></div>
