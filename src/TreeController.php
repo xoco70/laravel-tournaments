@@ -63,8 +63,7 @@ class TreeController extends Controller
             'championships.settings',
             'championships.category')->first();
 
-        return view('kendo-tournaments::tree.index',
-            compact('tournament', 'championship', 'numFighters', 'isTeam'));
+        return back();
 
     }
 
@@ -112,13 +111,17 @@ class TreeController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $championshipId)
+    public function update(Request $request, Championship $championship)
     {
+
         $numFight = 0;
-        $groups = FightersGroup::with('fights')
-            ->where('championship_id', $championshipId)
-            ->where('round','>',1)
-            ->get();
+        $query = FightersGroup::with('fights')
+            ->where('championship_id', $championship->id);
+
+        if ($championship->hasPreliminary()){
+            $query = $query->where('round','>',1);
+        }
+        $groups = $query->get();
         $fights = $request->fights;
 
         foreach ($groups as $group) {
@@ -129,6 +132,7 @@ class TreeController extends Controller
                 $fight->save();
             }
         }
+
         return back();
     }
 }
