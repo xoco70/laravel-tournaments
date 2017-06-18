@@ -16,14 +16,15 @@ if (sizeof($directEliminationTree) > 0) {
     @if (Request::is('championships/'.$championship->id.'/pdf'))
         <h1> {{$championship->buildName()}}</h1>
     @endif
-    <form method="POST" action="{{ route('tree.update', ['championship' => $championship->id])}}" accept-charset="UTF-8">
+    <form method="POST" action="{{ route('tree.update', ['championship' => $championship->id])}}"
+          accept-charset="UTF-8">
         {{ csrf_field() }}
         <input type="hidden" name="_method" value="PUT">
         <input type="hidden" id="activeTreeTab" name="activeTreeTab" value="{{$championship->id}}"/>
         {{  $treeGen->printRoundTitles() }}
 
         <div id="brackets-wrapper"
-             style="padding-bottom: {{ ($championship->groupsByRound(1)->count() * 205 / 2) +100 }}px">
+             style="padding-bottom: {{ ($championship->groupsByRound(1)->count() / 4 * 165) +100 }}px"> <!-- 165 px x 4 competitors-->
             @foreach ($treeGen->brackets as $roundNumber => $round)
                 @foreach ($round as $matchNumber => $match)
 
@@ -56,8 +57,11 @@ if (sizeof($directEliminationTree) > 0) {
 
 
         <div class="clearfix"></div>
-        <button type="submit" class="btn-success btn-lg">
-            Update tree
-        </button>
+        <div align="right">
+            <button type="submit" class="btn btn-success">
+                Update Tree
+            </button>
+        </div>
+
 
     </form>

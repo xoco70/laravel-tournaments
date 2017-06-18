@@ -115,8 +115,6 @@ class TreeController extends Controller
     public function update(Request $request, $championshipId)
     {
         $numFight = 0;
-//        $championshipId = $request->championshipId;
-//        $championship = Championship::find($request->championshipId);
         $groups = FightersGroup::with('fights')
             ->where('championship_id', $championshipId)
             ->where('round','>',1)
@@ -133,6 +131,4 @@ class TreeController extends Controller
         }
         return back();
     }
-
-
 }
