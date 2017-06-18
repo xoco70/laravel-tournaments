@@ -1,4 +1,4 @@
-<select name="fights[]">
+<select name="fights[]"> <!-- TODO Should be named fighters -->
     <option {{ $selected == '' ? ' selected' : '' }} ></option>
         @foreach ($treeGen->championship->fighters as $fighter)
 

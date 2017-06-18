@@ -100,15 +100,6 @@ class DirectEliminationTest extends TestCase
         }
     }
 
-    /** @test
-     * It should make the difference between BYE and Undefined to save Next Round
-     */
-    public function it_differenciate_bye_from_undefined_match()
-    {
-
-    }
-
-
     /**
      * @param $key
      * @param $fight
