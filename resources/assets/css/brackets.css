@@ -121,11 +121,24 @@ input:focus, textarea:focus{
     margin-left: 20px;
 }
 
-select{
+.directElimination_select{
     border: 0 none;
     border-right: 1px solid #cdc9c9;
     height: 30px;
     width: 80%;
+    background-color: #f5f5f5;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+    font-size: 16px;
+    font-family: arial, sans-serif;
+}
+
+.preliminary_select{
+    border: 0 none;
+    height: 30px;
+    width: 100%;
     background-color: #f5f5f5;
     -webkit-appearance: none;
     -moz-appearance: none;

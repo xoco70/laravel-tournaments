@@ -29,14 +29,14 @@ $settings = $championship->getSettings();
 
         @foreach($groupsByArea as $group)
             <?php
-            $names = $group->fightersWithBye()->map->fullName;
+            $fighters = $group->fightersWithBye();
             $letter = 'a';
             ?>
             <tr>
                 <td class="p-10">{{$group->area}}</td>
-                @foreach ($names as $name)
+                @foreach ($fighters as $fighter)
                     <td class="p-10">{{ $letter++ }}</td>
-                    <td class="p-10">{{ $name }}</td>
+                    <td class="p-10">@include('kendo-tournaments::partials.tree.brackets.playerList', ['selected' => $fighter,'numRound' => 1])</td>
                 @endforeach
             </tr>
         @endforeach

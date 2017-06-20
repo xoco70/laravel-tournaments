@@ -122,13 +122,13 @@ class TreeController extends Controller
             $query = $query->where('round','>',1);
         }
         $groups = $query->get();
-        $fights = $request->fights;
+        $fighters = $request->fighters;
 
         foreach ($groups as $group) {
             foreach ($group->fights as $fight) {
                 // Find the fight in array, and update order
-                $fight->c1 = $fights[$numFight++];
-                $fight->c2 = $fights[$numFight++];
+                $fight->c1 = $fighters[$numFight++];
+                $fight->c2 = $fighters[$numFight++];
                 $fight->save();
             }
         }
