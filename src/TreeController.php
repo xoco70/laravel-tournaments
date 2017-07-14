@@ -113,17 +113,17 @@ class TreeController extends Controller
      */
     public function update(Request $request, Championship $championship)
     {
-
         $numFight = 0;
         $query = FightersGroup::with('fights')
             ->where('championship_id', $championship->id);
 
-        if ($championship->hasPreliminary()){
-            $query = $query->where('round','>',1);
+        $fighters = $request->directElimination_fighters;
+        if ($championship->hasPreliminary()) {
+            $query = $query->where('round', '>', 1);
+            $fighters = $request->preliminary_fighters;
         }
         $groups = $query->get();
-        $fighters = $request->fighters;
-
+        
         foreach ($groups as $group) {
             foreach ($group->fights as $fight) {
                 // Find the fight in array, and update order
