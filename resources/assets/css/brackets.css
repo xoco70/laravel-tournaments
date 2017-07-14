@@ -4,15 +4,6 @@ label, form input[type=text], input[type=submit], textarea{
     clear: both;
 }
 
-/*form input[type=text], input[type=submit], textarea{*/
-/*padding: 5px;*/
-/*border: 1px solid lightgray;*/
-/*border-radius: 3px;*/
-/*margin: 5px 0 20px 0;*/
-/*width: 488px;*/
-/*font-size: 16px;*/
-/*outline: none;*/
-/*}*/
 
 textarea{
     height: 250px;
@@ -136,7 +127,7 @@ input:focus, textarea:focus{
 }
 
 .preliminary_select{
-    border: 0 none;
+    border: 1px solid #cdc9c9;
     height: 30px;
     width: 100%;
     background-color: #f5f5f5;

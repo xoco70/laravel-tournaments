@@ -1,11 +1,12 @@
 <?php
-$className = "directElimination_select";
+$prefix = "directElimination";
 if ($championship->hasPreliminary() && $numRound ==1){
-    $className = "preliminary_select";
+    $prefix = "preliminary";
 }
-
+$className = $prefix."_select";
+$selectName = $prefix."_fighters[]";
 ?>
-<select name="fighters[]" class={{$className}}>
+<select name="{{ $selectName }}" class={{$className}}>
     <option {{ $selected == '' ? ' selected' : '' }} ></option>
         @foreach ($championship->fighters as $fighter)
 
