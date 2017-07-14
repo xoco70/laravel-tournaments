@@ -29,6 +29,13 @@
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Xoco70\\KendoTournaments\\TournamentServiceProvider"
+      ]
+    }
+  }
   "require": {
     "php": ">=7.0.0",
     "symfony/var-dumper": "~3.2.3",
