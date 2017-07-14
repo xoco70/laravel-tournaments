@@ -10,7 +10,6 @@ use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Team;
 use Xoco70\KendoTournaments\Models\Tournament;
@@ -123,7 +122,7 @@ class TreeController extends Controller
             $fighters = $request->preliminary_fighters;
         }
         $groups = $query->get();
-        
+
         foreach ($groups as $group) {
             foreach ($group->fights as $fight) {
                 // Find the fight in array, and update order

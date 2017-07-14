@@ -20,7 +20,7 @@ if (sizeof($directEliminationTree) > 0) {
         {{  $treeGen->printRoundTitles() }}
 
         <div id="brackets-wrapper"
-             style="padding-bottom: {{ ($championship->groupsByRound(1)->count() / 4 * 165) +100 }}px"> <!-- 165 px x 4 competitors-->
+             style="padding-bottom: {{ ($championship->groupsByRound(1)->count() / 2 * 205) }}px"> <!-- 205 px x 2 groups of 2-->
             @foreach ($treeGen->brackets as $roundNumber => $round)
                 @foreach ($round as $matchNumber => $match)
 
