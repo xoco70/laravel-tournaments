@@ -128,6 +128,7 @@ class Fight extends Model
     public function shouldBeInFightList()
     {
         if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) return false;
+        if (!$this->belongsToFirstRound() && $this->dontHave0Fighters()) return true;
         if ($this->has2Fighters()) return true;
         // We aint in the first round, and there is 1 or 0 competitor
         // We check children, and see :
@@ -164,9 +165,17 @@ class Fight extends Model
     /**
      * @return bool
      */
-    private function dontHave2Fighters() // 1 or 0
+    private function dontHave2Fighters()
     {
         return $this->c1 == null || $this->c2 == null;
+    }
+
+    /**
+     * @return bool
+     */
+    private function dontHave0Fighters()
+    {
+        return $this->c1 != null || $this->c2 != null;
     }
 
 
