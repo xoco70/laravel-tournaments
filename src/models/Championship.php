@@ -277,4 +277,15 @@ class Championship extends Model
         }
         return $generation;
     }
+
+    /**
+     * @return int
+     */
+    public function getGroupSize()
+    {
+        if ($this->hasPreliminary()) {
+            return $this->getSettings()->preliminaryGroupSize;
+        }
+        return 2;
+    }
 }

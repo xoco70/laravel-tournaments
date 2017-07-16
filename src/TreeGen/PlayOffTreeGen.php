@@ -43,7 +43,7 @@ abstract class PlayOffTreeGen extends TreeGen
 
             for ($matchNumber = 1; $matchNumber <= $maxMatches; $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
-                $group = $this->saveGroup(1, $matchNumber, $roundNumber, null);
+                $group = $this->saveGroup($matchNumber, $roundNumber, null);
                 $this->syncGroup($group, $fighters);
             }
         }

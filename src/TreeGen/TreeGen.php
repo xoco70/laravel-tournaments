@@ -23,14 +23,23 @@ abstract class TreeGen implements TreeGenerable
     protected $numFighters;
 
     abstract protected function pushEmptyGroupsToTree($numFighters);
+
     abstract protected function generateFights();
+
     abstract protected function createByeFighter();
+
     abstract protected function chunkAndShuffle($round, Collection $fightersByEntity);
+
     abstract protected function addFighterToGroup(FightersGroup $group, $fighter);
+
     abstract protected function syncGroup(FightersGroup $group, $fighters);
+
     abstract protected function getByeGroup($fighters);
+
     abstract protected function getFighter($fighterId);
+
     abstract protected function getFighters();
+
     abstract protected function getNumRounds($fightersCount);
 
     /**
@@ -56,7 +65,7 @@ abstract class TreeGen implements TreeGenerable
         $usersByArea = $this->getFightersByArea();
         $numFighters = sizeof($usersByArea->collapse());
 
-        $this->generateGroupsForRound($usersByArea, 1, 1);
+        $this->generateGroupsForRound($usersByArea, 1);
         $this->pushEmptyGroupsToTree($numFighters);
         $this->addParentToChildren($numFighters);
         $this->generateFights();
@@ -170,40 +179,37 @@ abstract class TreeGen implements TreeGenerable
 
     /**
      * @param Collection $usersByArea
-     * @param integer $area
      * @param integer $round
      *
      */
-    public function generateGroupsForRound($usersByArea, $area, $round)
+    public function generateGroupsForRound($usersByArea, $round)
     {
+        $order = 1;
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
             $chunkedFighters = $this->chunkAndShuffle($round, $fightersByEntity);
-            $order = 1;
             foreach ($chunkedFighters as $fighters) {
                 $fighters = $fighters->pluck('id');
                 if (!App::runningUnitTests()) {
                     $fighters = $fighters->shuffle();
                 }
-                $group = $this->saveGroup($area, $order, $round, null);
+                $group = $this->saveGroup($order, $round, null);
                 $this->syncGroup($group, $fighters);
                 $order++;
             }
-            $area++;
         }
     }
 
     /**
-     * @param $area
      * @param $order
      * @param $round
      * @param $parent
      * @return FightersGroup
      */
-    protected function saveGroup($area, $order, $round, $parent): FightersGroup
+    protected function saveGroup($order, $round, $parent): FightersGroup
     {
         $group = new FightersGroup();
-        $group->area = $area;
+        $group->area = $this->getNumArea($round, $order);
         $group->order = $order;
         $group->round = $round;
         $group->championship_id = $this->championship->id;
@@ -418,5 +424,23 @@ abstract class TreeGen implements TreeGenerable
                 $this->addFighterToGroup($parentGroup, $fighter);
             }
         }
+    }
+
+
+    /**
+     * Calculate the area of the group ( group is still not created )
+     * @param $round
+     * @param $order
+     * @return int
+     */
+    protected function getNumArea($round, $order)
+    {
+        //TODO Could go into FightersGroup Class
+        $totalAreas = $this->settings->fightingAreas;
+        $numFighters = $this->championship->fighters->count();
+        $numGroups = $this->getTreeSize($numFighters, $this->championship->getGroupSize()) / 2; // 5 -> 8
+        $areaSize = $numGroups / $totalAreas; // 8 / 2 = 4
+        $numArea = intval(ceil($order / $areaSize * $round)); // 1era ronda ok, segunda ronda,
+        return $numArea;
     }
 }
