@@ -34,14 +34,6 @@ class FightersGroup extends Model
         return $this->hasMany(Fight::class);
     }
 
-    public function fightersWithBye()
-    {
-        if ($this->championship->category->isTeam()) {
-            return $this->teamsWithBye();
-        }
-        return $this->competitorsWithBye();
-    }
-
     public function fighters()
     {
         if ($this->championship->category->isTeam()) {
@@ -126,6 +118,9 @@ class FightersGroup extends Model
     }
 
 
+    /**
+     * @return Collection
+     */
     public function teamsWithBye(): Collection
     {
         $teams = new Collection();
@@ -140,6 +135,9 @@ class FightersGroup extends Model
 
     }
 
+    /**
+     * @return Collection
+     */
     public function getFightersWithBye(): Collection
     {
         if ($this->championship->category->isTeam()) {

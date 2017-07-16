@@ -29,7 +29,7 @@ $settings = $championship->getSettings();
 
         @foreach($groupsByArea as $group)
             <?php
-            $fighters = $group->fightersWithBye();
+            $fighters = $group->getFightersWithBye();
             $letter = 'a';
             ?>
             <tr>
