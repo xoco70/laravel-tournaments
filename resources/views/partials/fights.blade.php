@@ -1,8 +1,9 @@
-@foreach($championship->fights()->orderBy('id')->get()->groupBy('area') as $fightsByArea)
-    <table class="table-bordered text-center">
-        <th class="p-10">Id</th>
-        <th class="p-10">Competitor 1</th>
-        <th class="p-10">Competitor 2</th>
+@foreach($championship->fights()->get()->groupBy('area') as $fightsByArea)
+    <h4>Area {{ $fightsByArea->get(0)->area }}</h4>
+    <table class="table-bordered text-center" width="600">
+        <th class="p-10 text-center" width="100">Id</th>
+        <th class="p-10 text-center" width="250" >Competitor 1</th>
+        <th class="p-10 text-center" width="250" >Competitor 2</th>
 
 
         @foreach($fightsByArea as $fight)
@@ -27,4 +28,5 @@
             @endif
         @endforeach
     </table>
+    <br/><br/>
 @endforeach
