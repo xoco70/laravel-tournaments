@@ -74,7 +74,6 @@ abstract class DirectEliminationTreeGen extends TreeGen
         for ($roundNumber = 2; $roundNumber <= $numRounds; $roundNumber++) {
             // From last match to first match
             $maxMatches = ($numFightersElim / pow(2, $roundNumber));
-
             for ($matchNumber = 1; $matchNumber <= $maxMatches; $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
                 $group = $this->saveGroup($matchNumber, $roundNumber, null);

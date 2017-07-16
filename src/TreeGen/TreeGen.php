@@ -439,8 +439,8 @@ abstract class TreeGen implements TreeGenerable
         $totalAreas = $this->settings->fightingAreas;
         $numFighters = $this->championship->fighters->count();
         $numGroups = $this->getTreeSize($numFighters, $this->championship->getGroupSize()) / 2; // 5 -> 8
-        $areaSize = $numGroups / $totalAreas; // 8 / 2 = 4
-        $numArea = intval(ceil($order / $areaSize * $round)); // 1era ronda ok, segunda ronda,
+        $areaSize = $numGroups / ($totalAreas * pow(2,$round -1));
+        $numArea = intval(ceil($order / $areaSize )); // if round == 4, and second match 2/2 = 1 BAD
         return $numArea;
     }
 }
