@@ -5,7 +5,7 @@
         <th class="p-10 text-center" width="250" >Competitor 1</th>
         <th class="p-10 text-center" width="250" >Competitor 2</th>
 
-
+        <?php $fightId = 0; ?>
         @foreach($fightsByArea as $fight)
             @if ($fight->shouldBeInFightList())
                 <?php
@@ -16,12 +16,12 @@
                     $fighter1 = $fight->competitor1->fullName;
                     $fighter2 = $fight->competitor2->fullName;
                 }
-
+                $fightId++;
                 ?>
 
 
                 <tr>
-                    <td class="p-10">{{$fight->short_id}}</td>
+                    <td class="p-10">{{$fightId}}</td>
                     <td class="p-10">{{ $fighter1 }}</td>
                     <td class="p-10">{{ $fighter2 }}</td>
                 </tr>
