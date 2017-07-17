@@ -62,7 +62,9 @@ class TreeController extends Controller
             'championships.settings',
             'championships.category')->first();
 
-        return back();
+        return back()
+            ->with('numFighters',$numFighters)
+            ->with('isTeam',$isTeam);
 
     }
 
