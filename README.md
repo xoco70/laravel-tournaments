@@ -55,7 +55,7 @@ vendor/bin/phpunit tests
 This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
 
 - Generate a modificable ( with Select combos ) result for Preliminary Trees
-- Improve Areas management. 
+- ~~Improve Areas management.~~
 - Generate Direct Elimination Tree after Preliminary 
 - Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
  We can improve that making the first match with 3 competitors.
