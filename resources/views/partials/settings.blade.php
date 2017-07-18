@@ -53,10 +53,10 @@
 
             <label for="treeType">Tree Type</label>
             <select class="form-control" id="treeType" name="treeType">
-                <option value="0"
-                        @if ($setting->treeType == 0) selected @endif >{{ trans('kendo-tournaments::categories.roundRobin') }}</option>
-                {{--<option value="1"--}}
-                        {{--@if ($setting->treeType == 1) selected @endif>{{ trans('kendo-tournaments::categories.direct_elimination') }}</option>--}}
+                {{--<option value="0"--}}
+                        {{--@if ($setting->treeType == 0) selected @endif >{{ trans('kendo-tournaments::categories.roundRobin') }}</option>--}}
+                <option value="1"
+                        @if ($setting->treeType == 1) selected @endif>{{ trans('kendo-tournaments::categories.direct_elimination') }}</option>
             </select>
         </div>
 
