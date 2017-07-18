@@ -33,7 +33,7 @@ $settings = $championship->getSettings();
             $letter = 'a';
             ?>
             <tr>
-                <td class="p-10">{{$group->area}}</td>
+                <td class="p-10 text-center">{{$group->area}}</td>
                 @foreach ($fighters as $fighter)
                     <td class="p-10">{{ $letter++ }}</td>
                     <td class="p-10">@include('kendo-tournaments::partials.tree.brackets.playerList', ['selected' => $fighter,'numRound' => 1])</td>
