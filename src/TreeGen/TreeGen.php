@@ -120,17 +120,27 @@ abstract class TreeGen implements TreeGenerable
      */
     protected function getTreeSize($fighterCount, $groupSize)
     {
-        $square = collect([1, 2, 4, 8, 16, 32, 64]);
-        $squareMultiplied = $square->map(function ($item) use ($groupSize) {
-            return $item * $groupSize;
-        });
+        $squareMultiplied = collect([1, 2, 4, 8, 16, 32, 64])
+            ->map(function ($item) use ($groupSize) {
+                return $item * $groupSize;
+            }); // [4, 8, 16, 32, 64,...]
 
         foreach ($squareMultiplied as $limit) {
             if ($fighterCount <= $limit) {
-                return $limit;
+                $treeSize = $limit;
+                $numAreas = $this->championship->getSettings()->fightingAreas;
+                $fighterCountPerArea = $treeSize / $numAreas;
+                if ($fighterCountPerArea < $groupSize) {
+                    $treeSize = $treeSize * $numAreas;
+                }
+                return $treeSize;
             }
+
         }
+
+
         return 64 * $groupSize;
+
     }
 
     /**
@@ -435,13 +445,14 @@ abstract class TreeGen implements TreeGenerable
      */
     protected function getNumArea($round, $order)
     {
-        //TODO Could go into FightersGroup Class
         $totalAreas = $this->settings->fightingAreas;
-        $numFighters = $this->championship->fighters->count();
-        $numGroups = $this->getTreeSize($numFighters, $this->championship->getGroupSize()) / $this->championship->getGroupSize(); // 5 -> 8
-        $areaSize = $numGroups / ($totalAreas * pow(2,$round -1));
-        
-        $numArea = intval(ceil($order / $areaSize )); // if round == 4, and second match 2/2 = 1 BAD
+        $numFighters = $this->championship->fighters->count(); // 4
+        $numGroups = $this->getTreeSize($numFighters, $this->championship->getGroupSize()) / $this->championship->getGroupSize(); // 1 -> 1
+
+        $areaSize = $numGroups / ($totalAreas * pow(2, $round - 1));
+
+        $numArea = intval(ceil($order / $areaSize)); // if round == 4, and second match 2/2 = 1 BAD
+
         return $numArea;
     }
 }
