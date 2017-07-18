@@ -13,17 +13,12 @@ class DirectEliminationTest extends TestCase
     {
         $competitorsInTree = [1, 2, 3, 4, 5, 6]; // ,  7,  8,  9, 10, 11, 12, 13, 14
         $numGroupsExpected = [0, 1, 2, 2, 4, 4]; // , 21, 28, 36, 45, 55, 66, 78, 91
-        $isTeam = [false, true];
         $numAreas = [1];
-        foreach ($isTeam as $team) {
-            foreach ($numAreas as $numArea) {
-                foreach ($competitorsInTree as $numCompetitors) {
-                    $setting = $this->createSetting($numArea, $numCompetitors, $team, 0,3);
-                    $this->generateTreeWithUI($setting);
-                    $team
-                        ? parent::checkGroupsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__)
-                        : parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
-                }
+        foreach ($numAreas as $numArea) {
+            foreach ($competitorsInTree as $numCompetitors) {
+                $setting = $this->createSetting($numArea, $numCompetitors, 0, 0, 3);
+                $this->generateTreeWithUI($setting);
+                parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
             }
         }
 
@@ -38,7 +33,7 @@ class DirectEliminationTest extends TestCase
         $numAreas = [1, 2];
         foreach ($numAreas as $numArea) {
             foreach ($competitorsInTree as $numCompetitors) {
-                $setting = $this->createSetting($numArea, $numCompetitors, 0, 0,3);// $team
+                $setting = $this->createSetting($numArea, $numCompetitors, 0, 0, 3);// $team
                 $this->generateTreeWithUI($setting);
                 parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
 
@@ -49,7 +44,7 @@ class DirectEliminationTest extends TestCase
     /** @test */
     public function it_saves_fight_to_next_round_when_possible()
     {
-        $setting = $this->createSetting(1, 5, 0, 0,3);
+        $setting = $this->createSetting(1, 5, 0, 0, 3);
         $this->generateTreeWithUI($setting);
 
         // Get the case when n^2-1 to have a lot of BYES on first round

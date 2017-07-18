@@ -147,7 +147,7 @@ abstract class TestCase extends BaseTestCase
      * @param $numGroupsExpected
      * @param $currentTest
      */
-    protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $preliminaryGroupSize, $currentTest)
+    protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $currentTest)
     {
         for ($area = 1; $area <= $numArea; $area++) {
             $count = FightersGroup::where('championship_id', $championship->id)
@@ -167,7 +167,7 @@ abstract class TestCase extends BaseTestCase
                     ['Method' => $currentTest,
                         'championship' => $championship->id,
                         'NumCompetitors' => $numFighters,
-                        'preliminaryGroupSize' => $preliminaryGroupSize,
+                        'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
                         'NumArea' => $numArea,
                         'Real' => $count,
                         'Excepted' => $expected,
