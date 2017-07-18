@@ -3,39 +3,10 @@
 namespace Xoco70\KendoTournaments\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use stdClass;
-use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\Tournament;
 
 class DirectEliminationTest extends TestCase
 {
     use DatabaseTransactions;
-
-    protected $root;
-    protected $tournament, $championshipWithComp, $championshipWithTeam,
-        $settings, $users;
-
-
-    public function setUp()
-    {
-        parent::setUp();
-        $this->tournament = Tournament::with(
-            'competitors',
-            'teams',
-            'championshipSettings'
-        )->first();
-
-
-        $this->championshipWithComp = Championship::with(
-            'teams', 'users', 'category', 'settings', 'fightersGroups.fights'
-        )
-            ->find($this->tournament->championships[0]->id);
-        $this->championshipWithTeam = Championship::with(
-            'teams', 'users', 'category', 'settings', 'fightersGroups.fights'
-        )
-            ->find($this->tournament->championships[1]->id);
-    }
-
 
     /** @test */
     public function check_number_of_row_when_generating_direct_elimination_tree()
@@ -47,7 +18,7 @@ class DirectEliminationTest extends TestCase
         foreach ($isTeam as $team) {
             foreach ($numAreas as $numArea) {
                 foreach ($competitorsInTree as $numCompetitors) {
-                    $setting = $this->createSetting($numArea, $numCompetitors, $team, 0);
+                    $setting = $this->createSetting($numArea, $numCompetitors, $team, 0,3);
                     $this->generateTreeWithUI($setting);
                     $team
                         ? parent::checkGroupsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__)
@@ -65,18 +36,12 @@ class DirectEliminationTest extends TestCase
         $competitorsInTree = [1, 2, 3, 4, 5, 6, 7, 8];
         $numFightsExpected = [0, 1, 2, 2, 4, 4, 4, 4];
         $numAreas = [1, 2];
-        $isTeam = [false, true];
-        foreach ($isTeam as $team) {
-            foreach ($numAreas as $numArea) {
-                foreach ($competitorsInTree as $numCompetitors) {
-                    $setting = $this->createSetting($numArea, $numCompetitors, $team, 0);// $team
-                    $this->generateTreeWithUI($setting);
-                    $team
-                        ? parent::checkFightsNumber($this->championshipWithTeam, $numArea, $numCompetitors, $numFightsExpected, __METHOD__)
-                        : parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+        foreach ($numAreas as $numArea) {
+            foreach ($competitorsInTree as $numCompetitors) {
+                $setting = $this->createSetting($numArea, $numCompetitors, 0, 0,3);// $team
+                $this->generateTreeWithUI($setting);
+                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
 
-
-                }
             }
         }
     }
@@ -84,7 +49,7 @@ class DirectEliminationTest extends TestCase
     /** @test */
     public function it_saves_fight_to_next_round_when_possible()
     {
-        $setting = $this->createSetting(1, 5, 0, 0);
+        $setting = $this->createSetting(1, 5, 0, 0,3);
         $this->generateTreeWithUI($setting);
 
         // Get the case when n^2-1 to have a lot of BYES on first round

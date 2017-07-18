@@ -6,10 +6,12 @@ use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use stdClass;
+use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
+use Xoco70\KendoTournaments\Models\Tournament;
 use Xoco70\KendoTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
@@ -21,6 +23,9 @@ abstract class TestCase extends BaseTestCase
 
     protected $root;
     protected $baseUrl = "http://tournament-plugin.dev";
+
+    protected $settings, $users;
+    protected $championshipWithComp, $championshipWithTeam;
 
     protected function getPackageProviders($app)
     {
@@ -38,6 +43,22 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         $this->withFactories(__DIR__ . '/../database/factories');
+
+        $this->tournament = Tournament::with(
+            'competitors',
+            'teams',
+            'championshipSettings'
+        )->first();
+
+
+        $this->championshipWithComp = Championship::with(
+            'teams', 'users', 'category', 'settings', 'fightersGroups.fights'
+        )
+            ->find($this->tournament->championships[0]->id);
+        $this->championshipWithTeam = Championship::with(
+            'teams', 'users', 'category', 'settings', 'fightersGroups.fights'
+        )
+            ->find($this->tournament->championships[1]->id);
     }
 
     private function makeSureDatabaseExists()
@@ -126,7 +147,7 @@ abstract class TestCase extends BaseTestCase
      * @param $numGroupsExpected
      * @param $currentTest
      */
-    protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $currentTest)
+    protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $preliminaryGroupSize, $currentTest)
     {
         for ($area = 1; $area <= $numArea; $area++) {
             $count = FightersGroup::where('championship_id', $championship->id)
@@ -136,22 +157,24 @@ abstract class TestCase extends BaseTestCase
 
             if ((int)($numFighters / $numArea) <= 1) {
                 $this->assertTrue($count == 0);
-            } else {
-                $expected = (int)($numGroupsExpected[$numFighters - 1] / $numArea);
-
-                if ($count != $expected) {
-                    dd(
-                        ['Method' => $currentTest,
-                            'championship' => $championship->id,
-                            'NumCompetitors' => $numFighters,
-                            'NumArea' => $numArea,
-                            'Real' => $count,
-                            'Excepted' => $expected,
-                            'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea]
-                    );
-                }
-                $this->assertTrue($count == $expected);
+                return;
             }
+            $expected = (int)($numGroupsExpected[$numFighters - 1] / $numArea);
+            // Ex : PrelimGroup = 4, numFights = 4, Areas = 2 --> Groups should be 2
+//                if ($numGroupsExpected[$numFighters - 1]<$numArea) $expected = $numArea;
+            if ($count != $expected) {
+                dd(
+                    ['Method' => $currentTest,
+                        'championship' => $championship->id,
+                        'NumCompetitors' => $numFighters,
+                        'preliminaryGroupSize' => $preliminaryGroupSize,
+                        'NumArea' => $numArea,
+                        'Real' => $count,
+                        'Excepted' => $expected,
+                        'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea]
+                );
+            }
+            $this->assertTrue($count == $expected);
         }
     }
 
@@ -171,7 +194,7 @@ abstract class TestCase extends BaseTestCase
                 return;
             }
             $log = ceil(log($numFightsExpected[$numCompetitors - 1], 2));
-                $expected = pow(2, $log) / $numArea;
+            $expected = pow(2, $log) / $numArea;
 
             if ($count != $expected) {
                 dd(['Method' => $currentTest,
@@ -209,12 +232,12 @@ abstract class TestCase extends BaseTestCase
      * @param $team
      * @return stdClass
      */
-    protected function createSetting($numArea, $numCompetitors, $team, $hasPreliminary): stdClass
+    protected function createSetting($numArea, $numCompetitors, $team, $hasPreliminary, $preliminaryGroupSize): stdClass
     {
         $setting = new stdClass;
         $setting->numArea = $numArea;
         $setting->numCompetitors = $numCompetitors;
-        $setting->preliminaryGroupSize = 3;
+        $setting->preliminaryGroupSize = $preliminaryGroupSize;
         $setting->hasPlayOff = false;
         $setting->hasPreliminary = $hasPreliminary;
         $setting->isTeam = $team;
