@@ -13,8 +13,8 @@ class TreeGenerationException extends \Exception
      *
      * @param string
      */
-    public function __construct()
+    public function __construct($msg)
     {
-        $this->message = trans('msg.min_competitor_required', ['number' => Config::get('kendo-tournaments.MIN_COMPETITORS_X_AREA')]);
+        $this->message = $msg;
     }
 }

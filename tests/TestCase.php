@@ -149,33 +149,29 @@ abstract class TestCase extends BaseTestCase
      */
     protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $currentTest)
     {
-        for ($area = 1; $area <= $numArea; $area++) {
-            $count = FightersGroup::where('championship_id', $championship->id)
-                ->where('area', $area)
-                ->where('round', 1)
-                ->count();
+        $count = FightersGroup::where('championship_id', $championship->id)
+            ->where('round', 1)
+            ->count();
 
-            if ((int)($numFighters / $numArea) <= 1) {
-                $this->assertTrue($count == 0);
-                return;
-            }
-            $expected = (int)($numGroupsExpected[$numFighters - 1] / $numArea);
-            // Ex : PrelimGroup = 4, numFights = 4, Areas = 2 --> Groups should be 2
-//                if ($numGroupsExpected[$numFighters - 1]<$numArea) $expected = $numArea;
-            if ($count != $expected) {
-                dd(
-                    ['Method' => $currentTest,
-                        'championship' => $championship->id,
-                        'NumCompetitors' => $numFighters,
-                        'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
-                        'NumArea' => $numArea,
-                        'Real' => $count,
-                        'Excepted' => $expected,
-                        'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea]
-                );
-            }
-            $this->assertTrue($count == $expected);
+        if ((int)($numFighters / $numArea) <= 1) {
+            $this->assertTrue($count == 0);
+            return;
         }
+        $expected = $numGroupsExpected[$numFighters - 1];
+        if ($count != $expected) {
+            dd(
+                ['Method' => $currentTest,
+                    'championship' => $championship->id,
+                    'NumCompetitors' => $numFighters,
+                    'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
+                    'NumArea' => $numArea,
+                    'Real' => $count,
+                    'Excepted' => $expected,
+                    'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea,
+                ]
+            );
+        }
+        $this->assertTrue($count == $expected);
     }
 
     /**

@@ -4,6 +4,8 @@ namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
+use Mockery\Exception;
 use Xoco70\KendoTournaments\Contracts\TreeGenerable;
 use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
 use Xoco70\KendoTournaments\Models\Championship;
@@ -303,10 +305,15 @@ abstract class TreeGen implements TreeGenerable
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
 
-
+        // If there is less than 2 competitors average by area
         if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
-            throw new TreeGenerationException();
+            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
         }
+
+        if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1 ) {
+            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
+        }
+
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
         $fighterByEntity = $this->getFightersByEntity($fighters); // Chunk(1)
         $fightersWithBye = $this->adjustFightersGroupWithByes($fighters, $fighterByEntity);
@@ -452,7 +459,7 @@ abstract class TreeGen implements TreeGenerable
         $areaSize = $numGroups / ($totalAreas * pow(2, $round - 1));
 
         $numArea = intval(ceil($order / $areaSize)); // if round == 4, and second match 2/2 = 1 BAD
-
+//        dump($numArea);
         return $numArea;
     }
 }
