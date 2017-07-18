@@ -11,7 +11,6 @@ use Xoco70\KendoTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
 use Xoco70\KendoTournaments\TreeGen\DirectEliminationTeamTreeGen;
 use Xoco70\KendoTournaments\TreeGen\PlayOffCompetitorTreeGen;
 use Xoco70\KendoTournaments\TreeGen\PlayOffTeamTreeGen;
-use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class Championship extends Model
 {

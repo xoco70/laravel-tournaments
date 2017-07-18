@@ -4,9 +4,7 @@ namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\DirectEliminationFight;
-use Xoco70\KendoTournaments\Models\Fight;
 
 abstract class DirectEliminationTreeGen extends TreeGen
 {

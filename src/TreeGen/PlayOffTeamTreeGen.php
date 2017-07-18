@@ -11,6 +11,7 @@ class PlayOffTeamTreeGen extends PlayOffTreeGen
 
     /**
      * get Fighter by Id
+     * @param $teamId
      * @return Team
      */
     protected function getFighter($teamId)

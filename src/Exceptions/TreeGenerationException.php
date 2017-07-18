@@ -2,8 +2,6 @@
 
 namespace Xoco70\KendoTournaments\Exceptions;
 
-use Illuminate\Support\Facades\Config;
-
 class TreeGenerationException extends \Exception
 {
     public $message;

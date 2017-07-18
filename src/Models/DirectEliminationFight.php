@@ -2,9 +2,6 @@
 
 namespace Xoco70\KendoTournaments\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-
 class DirectEliminationFight extends Fight
 {
     public function __construct(Fight $fight = null)

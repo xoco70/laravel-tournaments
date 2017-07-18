@@ -1,6 +1,5 @@
 <?php
 
-use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Auth\User;
 use Xoco70\KendoTournaments\Models\Championship;

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\NodeTrait;
-use Xoco70\KendoTournaments\TreeGen\DirectEliminationTreeGen;
-use Xoco70\KendoTournaments\TreeGen\TreeGen;
 
 class FightersGroup extends Model
 {
