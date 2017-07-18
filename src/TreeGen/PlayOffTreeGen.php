@@ -85,6 +85,9 @@ abstract class PlayOffTreeGen extends TreeGen
         $groups = $this->championship->groupsByRound(1)->get();
         // Very specific case to common case : Preliminary with 3 fighters
         if ($settings->preliminaryGroupSize == 3) {
+            // First we make all first fights of all groups
+            // Then we make all second fights of all groups
+            // Then we make all third fights of all groups
             for ($numFight = 1; $numFight <= $settings->preliminaryGroupSize; $numFight++) {
                 $fight = new PreliminaryFight;
                 $fight->saveFights($groups, $numFight);
