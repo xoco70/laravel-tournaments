@@ -3,19 +3,14 @@
 namespace Xoco70\KendoTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
-use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\DirectEliminationFight;
-use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\PreliminaryFight;
 
 abstract class PlayOffTreeGen extends TreeGen
 {
 
-
     /**
      * Calculate the Byes need to fill the Championship Tree.
-     * @param Championship $championship
      * @param $fighters
      * @return Collection
      */
@@ -50,7 +45,7 @@ abstract class PlayOffTreeGen extends TreeGen
     }
 
     /**
-     * Create empty groups for direct Elimination Tree
+     * Create empty groups for Preliminary Round
      * @param $numFighters
      */
     protected function pushEmptyGroupsToTree($numFighters)
@@ -71,13 +66,12 @@ abstract class PlayOffTreeGen extends TreeGen
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-            if (!App::runningUnitTests()) {
+            if (!app()->runningUnitTests()) {
                 $fightersGroup = $fightersGroup->shuffle();
             }
-        } else { // Round Robin
-            $fightersGroup = $fightersByEntity->chunk($fightersByEntity->count());
+            return $fightersGroup;
         }
-        return $fightersGroup;
+        return $fightersByEntity->chunk($fightersByEntity->count());
     }
 
     /**
@@ -95,6 +89,10 @@ abstract class PlayOffTreeGen extends TreeGen
                 $fight = new PreliminaryFight;
                 $fight->saveFights($groups, $numFight);
             }
+        } else {
+            // Generate fights with PLayoff style
+            $fight = new PreliminaryFight;
+            $fight->saveRoundRobinFights($groups, $settings->preliminaryGroupSize);
         }
         // Save Next rounds
         $fight = new DirectEliminationFight;
