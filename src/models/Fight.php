@@ -14,6 +14,7 @@ class Fight extends Model
      */
     public function __construct($userId1 = null, $userId2 = null)
     {
+        parent::__construct();
         $this->c1 = $userId1;
         $this->c2 = $userId2;
     }

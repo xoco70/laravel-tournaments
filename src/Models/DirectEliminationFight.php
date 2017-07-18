@@ -6,6 +6,7 @@ class DirectEliminationFight extends Fight
 {
     public function __construct(Fight $fight = null)
     {
+        parent::__construct();
         if ($fight!=null){
             $this->id= $fight->id;
             $this->short_id= $fight->short_id;
