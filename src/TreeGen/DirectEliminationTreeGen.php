@@ -40,7 +40,7 @@ abstract class DirectEliminationTreeGen extends TreeGen
      * @param $fightersByEntity
      * @return Collection|null
      */
-    protected function chunkAndShuffle($round = null, Collection $fightersByEntity)
+    protected function chunkAndShuffle(Collection $fightersByEntity)
     {
         $fightersGroup = null;
 

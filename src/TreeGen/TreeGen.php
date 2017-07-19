@@ -25,7 +25,7 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function createByeFighter();
 
-    abstract protected function chunkAndShuffle($round, Collection $fightersByEntity);
+    abstract protected function chunkAndShuffle(Collection $fightersByEntity);
 
     abstract protected function addFighterToGroup(FightersGroup $group, $fighter);
 
@@ -186,15 +186,13 @@ abstract class TreeGen implements TreeGenerable
 
     /**
      * @param Collection $usersByArea
-     * @param integer $round
-     *
      */
     public function generateGroupsForRound($usersByArea, $round)
     {
         $order = 1;
         foreach ($usersByArea as $fightersByEntity) {
             // Chunking to make small round robin groups
-            $chunkedFighters = $this->chunkAndShuffle($round, $fightersByEntity);
+            $chunkedFighters = $this->chunkAndShuffle($fightersByEntity);
             foreach ($chunkedFighters as $fighters) {
                 $fighters = $fighters->pluck('id');
                 if (!App::runningUnitTests()) {

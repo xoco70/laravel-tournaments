@@ -58,11 +58,10 @@ abstract class PlayOffTreeGen extends TreeGen
 
     /**
      * Chunk Fighters into groups for fighting, and optionnaly shuffle
-     * @param $round
      * @param $fightersByEntity
      * @return mixed
      */
-    protected function chunkAndShuffle($round, Collection $fightersByEntity)
+    protected function chunkAndShuffle(Collection $fightersByEntity)
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
@@ -92,7 +91,7 @@ abstract class PlayOffTreeGen extends TreeGen
                 $fight = new PreliminaryFight;
                 $fight->saveFights($groups, $numFight);
             }
-        } 
+        }
         // Save Next rounds
         $fight = new DirectEliminationFight;
         $fight->saveFights($this->championship, 2);
