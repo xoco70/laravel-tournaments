@@ -92,11 +92,7 @@ abstract class PlayOffTreeGen extends TreeGen
                 $fight = new PreliminaryFight;
                 $fight->saveFights($groups, $numFight);
             }
-        } else {
-            // Generate fights with PLayoff style
-            $fight = new PreliminaryFight;
-            $fight->saveRoundRobinFights($groups, $settings->preliminaryGroupSize);
-        }
+        } 
         // Save Next rounds
         $fight = new DirectEliminationFight;
         $fight->saveFights($this->championship, 2);

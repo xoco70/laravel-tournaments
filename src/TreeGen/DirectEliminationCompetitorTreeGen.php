@@ -11,6 +11,7 @@ class DirectEliminationCompetitorTreeGen extends DirectEliminationTreeGen
 
     /**
      * get Fighter by Id
+     * @param $competitorId
      * @return Competitor
      */
     protected function getFighter($competitorId)
