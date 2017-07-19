@@ -233,24 +233,22 @@ class Championship extends Model
 
     public function isPlayoffCompetitor()
     {
-        return !$this->category->isTeam() &&
-            ($this->isPlayOffType() || $this->hasPreliminary());
+        return !$this->category->isTeam() && $this->isPlayOffType() || $this->hasPreliminary();
     }
 
     public function isPlayoffTeam()
     {
-        return $this->category->isTeam() &&
-            ($this->isPlayOffType() || $this->hasPreliminary());
+        return $this->category->isTeam() && $this->isPlayOffType();
     }
 
     public function isDirectEliminationCompetitor()
     {
-        return !$this->category->isTeam() && $this->isDirectEliminationType() && !$this->hasPreliminary();
+        return !$this->category->isTeam() && $this->isDirectEliminationType();
     }
 
     public function isDirectEliminationTeam()
     {
-        return $this->category->isTeam() && $this->isDirectEliminationType() && !$this->hasPreliminary();
+        return $this->category->isTeam() && $this->isDirectEliminationType();
     }
 
     /**
