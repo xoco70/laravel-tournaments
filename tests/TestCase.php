@@ -158,19 +158,19 @@ abstract class TestCase extends BaseTestCase
             return;
         }
         $expected = $numGroupsExpected[$numFighters - 1];
-        if ($count != $expected) {
-            dd(
-                ['Method' => $currentTest,
-                    'championship' => $championship->id,
-                    'NumCompetitors' => $numFighters,
-                    'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
-                    'NumArea' => $numArea,
-                    'Real' => $count,
-                    'Excepted' => $expected,
-                    'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea,
-                ]
-            );
-        }
+//        if ($count != $expected) {
+//            dd(
+//                ['Method' => $currentTest,
+//                    'championship' => $championship->id,
+//                    'NumCompetitors' => $numFighters,
+//                    'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
+//                    'NumArea' => $numArea,
+//                    'Real' => $count,
+//                    'Excepted' => $expected,
+//                    'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea,
+//                ]
+//            );
+//        }
         $this->assertTrue($count == $expected);
     }
 
