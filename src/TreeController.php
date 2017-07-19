@@ -55,16 +55,9 @@ class TreeController extends Controller
             redirect()->back()
                 ->withErrors([$numFighters . "-" . $e->getMessage()]);
         }
-
-        $tournament = Tournament::with(
-            'competitors',
-            'championshipSettings',
-            'championships.settings',
-            'championships.category')->first();
-
         return back()
-            ->with('numFighters',$numFighters)
-            ->with('isTeam',$isTeam);
+            ->with('numFighters', $numFighters)
+            ->with('isTeam', $isTeam);
 
     }
 
