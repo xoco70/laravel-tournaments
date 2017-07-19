@@ -31,7 +31,6 @@ class DirectEliminationCompetitorTreeGen extends DirectEliminationTreeGen
     /**
      * @param $group
      * @param $fighters
-     * @return FightersGroup
      */
     public function syncGroup(FightersGroup $group, $fighters)
     {
