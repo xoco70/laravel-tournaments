@@ -187,7 +187,7 @@ abstract class TreeGen implements TreeGenerable
     /**
      * @param Collection $usersByArea
      */
-    public function generateGroupsForRound($usersByArea, $round)
+    public function generateGroupsForRound(Collection $usersByArea, $round)
     {
         $order = 1;
         foreach ($usersByArea as $fightersByEntity) {
@@ -195,7 +195,7 @@ abstract class TreeGen implements TreeGenerable
             $chunkedFighters = $this->chunkAndShuffle($fightersByEntity);
             foreach ($chunkedFighters as $fighters) {
                 $fighters = $fighters->pluck('id');
-                if (!App::runningUnitTests()) {
+                if (!app()->runningUnitTests()) {
                     $fighters = $fighters->shuffle();
                 }
                 $group = $this->saveGroup($order, $round, null);

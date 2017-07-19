@@ -45,7 +45,7 @@ abstract class DirectEliminationTreeGen extends TreeGen
         $fightersGroup = null;
 
         $fightersGroup = $fightersByEntity->chunk(2);
-        if (!App::runningUnitTests()) {
+        if (!app()->runningUnitTests()) {
             $fightersGroup = $fightersGroup->shuffle();
         }
         return $fightersGroup;
