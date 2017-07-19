@@ -63,9 +63,9 @@ abstract class TreeGen implements TreeGenerable
         $numFighters = sizeof($usersByArea->collapse());
 
         $this->generateGroupsForRound($usersByArea, 1);
-        $this->pushEmptyGroupsToTree($numFighters);
+        $this->pushEmptyGroupsToTree($numFighters); // Abstract
         $this->addParentToChildren($numFighters);
-        $this->generateFights();
+        $this->generateFights(); // Abstract
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);
 
