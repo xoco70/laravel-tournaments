@@ -61,14 +61,13 @@ abstract class TreeGen implements TreeGenerable
     {
         $usersByArea = $this->getFightersByArea();
         $numFighters = sizeof($usersByArea->collapse());
-
         $this->generateGroupsForRound($usersByArea, 1);
         $this->pushEmptyGroupsToTree($numFighters); // Abstract
         $this->addParentToChildren($numFighters);
         $this->generateFights(); // Abstract
+        //TODO In direct elimination without Prelim, short_id are not generating well
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);
-
     }
 
     /**
@@ -215,6 +214,7 @@ abstract class TreeGen implements TreeGenerable
     {
         $group = new FightersGroup();
         $group->area = $this->getNumArea($round, $order);
+
         $group->order = $order;
         $group->round = $round;
         $group->championship_id = $this->championship->id;
@@ -250,6 +250,7 @@ abstract class TreeGen implements TreeGenerable
         $tmpFighterGroups = clone $fighterGroups;
         $byeGroup = $this->getByeGroup($fighters);
 
+
         // Get biggest competitor's group
         $max = $this->getMaxFightersByEntity($tmpFighterGroups);
 
@@ -257,7 +258,6 @@ abstract class TreeGen implements TreeGenerable
 
         $fighters = $this->repart($fighterGroups, $max);
         $fighters = $this->insertByes($fighters, $byeGroup);
-
         return $fighters;
     }
 
@@ -297,7 +297,6 @@ abstract class TreeGen implements TreeGenerable
         $this->championship->fightersGroups()->delete();
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
-
         // If there is less than 2 competitors average by area
         if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
@@ -310,7 +309,6 @@ abstract class TreeGen implements TreeGenerable
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
         $fighterByEntity = $this->getFightersByEntity($fighters); // Chunk(1)
         $fightersWithBye = $this->adjustFightersGroupWithByes($fighters, $fighterByEntity);
-
         // Chunk user by areas
         return $fightersWithBye->chunk(count($fightersWithBye) / $areas);
     }

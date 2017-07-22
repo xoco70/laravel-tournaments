@@ -24,30 +24,34 @@ abstract class PlayOffTreeGen extends TreeGen
 
 
     /**
-     * Create empty groups for direct Elimination Tree
-     * @param $numFightersElim
+     * Create empty groups for PlayOff Round
+     * @param $numFighters
      */
-    protected function pushEmptyGroupsToTree($numFightersElim)
+    protected function pushEmptyGroupsToTree($numFighters)
     {
+        //TODO CHANGE HERE TOO
+        $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
         // We calculate how much rounds we will have
-        $numRounds = $this->getNumRounds($numFightersElim);
+        $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
         $this->pushGroups($numRounds, $numFightersElim);
     }
 
     /**
      * Chunk Fighters into groups for fighting, and optionnaly shuffle
      * @param $fightersByEntity
-     * @return Collection|null
+     * @return mixed
      */
     protected function chunkAndShuffle(Collection $fightersByEntity)
     {
-        $fightersGroup = null;
+        if ($this->championship->hasPreliminary()) {
 
-        $fightersGroup = $fightersByEntity->chunk(2);
-        if (!app()->runningUnitTests()) {
-            $fightersGroup = $fightersGroup->shuffle();
+            $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
+            if (!app()->runningUnitTests()) {
+                $fightersGroup = $fightersGroup->shuffle();
+            }
+            return $fightersGroup;
         }
-        return $fightersGroup;
+        return $fightersByEntity->chunk($fightersByEntity->count());
     }
 
 

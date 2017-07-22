@@ -17,8 +17,8 @@ abstract class DirectEliminationTreeGen extends TreeGen
     protected function getByeGroup($fighters)
     {
         $fighterCount = $fighters->count();
-        $preliminaryGroupSize = $this->championship->getSettings()->preliminaryGroupSize;
-        $treeSize = $this->getTreeSize($fighterCount, $preliminaryGroupSize);
+        $firstRoundGroupSize = $this->firstRoundGroupSize();
+        $treeSize = $this->getTreeSize($fighterCount, $firstRoundGroupSize);
         $byeCount = $treeSize - $fighterCount;
 
         return $this->createByeGroup($byeCount);
@@ -27,14 +27,14 @@ abstract class DirectEliminationTreeGen extends TreeGen
     /**
      * Save Groups with their parent info
      * @param integer $numRounds
-     * @param $numFightersElim
+     * @param integer $numFighters
      */
-    protected function pushGroups($numRounds, $numFightersElim)
+    protected function pushGroups($numRounds, $numFighters)
     {
         // TODO Here is where you should change when enable several winners for preliminary
         for ($roundNumber = 2; $roundNumber <= $numRounds + 1; $roundNumber++) {
             // From last match to first match
-            $maxMatches = ($numFightersElim / pow(2, $roundNumber));
+            $maxMatches = ($numFighters / pow(2, $roundNumber));
 
             for ($matchNumber = 1; $matchNumber <= $maxMatches; $matchNumber++) {
                 $fighters = $this->createByeGroup(2);
@@ -45,33 +45,43 @@ abstract class DirectEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Create empty groups for Preliminary Round
+     * Create empty groups for direct Elimination Tree
      * @param $numFighters
      */
     protected function pushEmptyGroupsToTree($numFighters)
     {
-        $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
+        if ($this->championship->hasPreliminary()) {
+            $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
+            // We calculate how much rounds we will have
+            $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
+            return $this->pushGroups($numRounds, $numFightersElim);
+        }
         // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
-        $this->pushGroups($numRounds, $numFightersElim);
+        $numRounds = $this->getNumRounds($numFighters);
+        return $this->pushGroups($numRounds, $numFighters);
+
     }
 
     /**
      * Chunk Fighters into groups for fighting, and optionnaly shuffle
      * @param $fightersByEntity
-     * @return mixed
+     * @return Collection|null
      */
     protected function chunkAndShuffle(Collection $fightersByEntity)
     {
+        //TODO Should Pull down to know if team or competitor
         if ($this->championship->hasPreliminary()) {
-            $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-            if (!app()->runningUnitTests()) {
-                $fightersGroup = $fightersGroup->shuffle();
-            }
-            return $fightersGroup;
+            return (new PlayOffCompetitorTreeGen($this->championship, null))->chunkAndShuffle($fightersByEntity);
         }
-        return $fightersByEntity->chunk($fightersByEntity->count());
+        $fightersGroup = null;
+
+        $fightersGroup = $fightersByEntity->chunk(2);
+        if (!app()->runningUnitTests()) {
+            $fightersGroup = $fightersGroup->shuffle();
+        }
+        return $fightersGroup;
     }
+
 
     /**
      * Generate First Round Fights
@@ -82,8 +92,9 @@ abstract class DirectEliminationTreeGen extends TreeGen
         $settings = $this->championship->getSettings();
         parent::destroyPreviousFights();
         $groups = $this->championship->groupsByRound(1)->get();
+        $initialRound = 1;
         // Very specific case to common case : Preliminary with 3 fighters
-        if ($settings->preliminaryGroupSize == 3) {
+        if ($this->championship->hasPreliminary() && $settings->preliminaryGroupSize == 3) {
             // First we make all first fights of all groups
             // Then we make all second fights of all groups
             // Then we make all third fights of all groups
@@ -91,10 +102,11 @@ abstract class DirectEliminationTreeGen extends TreeGen
                 $fight = new PreliminaryFight;
                 $fight->saveFights($groups, $numFight);
             }
+            $initialRound++;
         }
         // Save Next rounds
         $fight = new DirectEliminationFight;
-        $fight->saveFights($this->championship, 2);
+        $fight->saveFights($this->championship, $initialRound);
     }
 
 
@@ -105,6 +117,13 @@ abstract class DirectEliminationTreeGen extends TreeGen
      */
     protected function getNumRounds($numFighters)
     {
-        return intval(log($numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2, 2));
+        return intval(log($numFighters / $this->firstRoundGroupSize() * 2, 2));
+    }
+
+    private function firstRoundGroupSize()
+    {
+        return $this->championship->hasPreliminary()
+            ? $this->championship->getSettings()->preliminaryGroupSize
+            : 2;
     }
 }
