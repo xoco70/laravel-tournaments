@@ -179,30 +179,29 @@ abstract class TestCase extends BaseTestCase
      * @param $numArea
      * @param $numCompetitors
      * @param $numFightsExpected
-     * @param $currentTest
+     * @param $methodName
      */
-    protected function checkFightsNumber($championship, $numArea, $numCompetitors, $numFightsExpected, $currentTest)
+    protected function checkFightsNumber($championship, $numArea, $numCompetitors, $numFightsExpected, $methodName)
     {
-        for ($area = 1; $area <= $numArea; $area++) {
-            $count = $this->getFightsCount($championship, $area);
-            if ((int)($numCompetitors / $numArea) <= 1) {
-                $this->assertTrue($count == 0);
-                return;
-            }
-            $log = ceil(log($numFightsExpected[$numCompetitors - 1], 2));
-            $expected = pow(2, $log) / $numArea;
+        $groupSize = $championship->hasPreliminary() ? $championship->settings->preliminaryGroupSize : 2;
+        $count = $this->getFightsCount($championship);
 
-            if ($count != $expected) {
-                dd(['Method' => $currentTest,
-                    'NumCompetitors' => $numCompetitors,
-                    'NumArea' => $numArea,
-                    'Real' => $count,
-                    'Excepted' => $expected,
-                    'numGroupsExpected[' . ($numCompetitors - 1) . ']' => "2 pow " . $log]);
-            }
-            $this->assertTrue($count == $expected);
+        if ((int)($numCompetitors / $numArea) <= 1
+            || $numCompetitors / ($groupSize * $numArea) < 1) {
 
+            $this->assertTrue($count == 0);
+            return;
         }
+
+        if ($count != $numFightsExpected) {
+            dd(['Method' => $methodName,
+                'NumCompetitors' => $numCompetitors,
+                'NumArea' => $numArea,
+                'Real' => $count,
+                'Excepted' => $numFightsExpected,
+            ]);
+        }
+        $this->assertTrue($count == $numFightsExpected);
     }
 
     /**
@@ -210,10 +209,10 @@ abstract class TestCase extends BaseTestCase
      * @param $area
      * @return mixed
      */
-    protected function getFightsCount($championship, $area)
+    protected function getFightsCount($championship)
     {
         $groupsId = FightersGroup::where('championship_id', $championship->id)
-            ->where('area', $area)
+//            ->where('area', $area)
             ->where('round', 1)
             ->select('id')
             ->pluck('id')->toArray();
