@@ -134,7 +134,7 @@ abstract class TestCase extends BaseTestCase
                     : ChampionshipSettings::DIRECT_ELIMINATION, 'treeType'
             )
             ->select($setting->preliminaryGroupSize, 'preliminaryGroupSize')
-            ->select($setting->numCompetitors, 'numFighters');
+            ->select($setting->numFighters, 'numFighters');
 
 
         $this->press('save');
@@ -142,32 +142,31 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param $championship
-     * @param $numArea
-     * @param $numFighters
-     * @param $numGroupsExpected
+     * @param $setting
      * @param $currentTest
      */
-    protected function checkGroupsNumber($championship, $numArea, $numFighters, $numGroupsExpected, $currentTest)
+    protected function checkGroupsNumber($championship, $setting, $numGroupsExpected, $currentTest)
     {
         $count = FightersGroup::where('championship_id', $championship->id)
             ->where('round', 1)
             ->count();
 
-        if ((int)($numFighters / $numArea) <= 1) {
+        if ((int)($setting->numFighters / $setting->numArea) <= 1) {
             $this->assertTrue($count == 0);
             return;
         }
-        $expected = $numGroupsExpected[$numFighters - 1];
+        $expected = $numGroupsExpected[$setting->numFighters - 1];
         if ($count != $expected) {
             dd(
                 ['Method' => $currentTest,
                     'championship' => $championship->id,
-                    'NumCompetitors' => $numFighters,
+                    'NumCompetitors' => $setting->numFighters,
                     'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
-                    'NumArea' => $numArea,
+                    'NumArea' => $setting->numArea,
+                    'isTeam' => $setting->isTeam,
                     'Real' => $count,
                     'Excepted' => $expected,
-                    'numGroupsExpected[' . ($numFighters - 1) . ']' => $numGroupsExpected[$numFighters - 1] . ' / ' . $numArea,
+                    'numGroupsExpected[' . ($setting->numFighters - 1) . ']' => $numGroupsExpected[$setting->numFighters - 1] . ' / ' . $setting->numArea,
                 ]
             );
         }
@@ -181,13 +180,13 @@ abstract class TestCase extends BaseTestCase
      * @param $numFightsExpected
      * @param $methodName
      */
-    protected function checkFightsNumber($championship, $numArea, $numCompetitors, $numFightsExpected, $methodName)
+    protected function checkFightsNumber($championship, $setting, $numFightsExpected, $methodName)
     {
         $groupSize = $championship->hasPreliminary() ? $championship->settings->preliminaryGroupSize : 2;
         $count = $this->getFightsCount($championship);
 
-        if ((int)($numCompetitors / $numArea) <= 1
-            || $numCompetitors / ($groupSize * $numArea) < 1) {
+        if ((int)($setting->numFighters / $setting->numArea) <= 1
+            || $setting->numFighters / ($groupSize * $setting->numArea) < 1) {
 
             $this->assertTrue($count == 0);
             return;
@@ -195,9 +194,10 @@ abstract class TestCase extends BaseTestCase
 
         if ($count != $numFightsExpected) {
             dd(['Method' => $methodName,
-                'NumCompetitors' => $numCompetitors,
-                'NumArea' => $numArea,
+                'NumCompetitors' => $setting->numFighters,
+                'NumArea' => $setting->numArea,
                 'Real' => $count,
+                'isTeam' => $setting->isTeam,
                 'Excepted' => $numFightsExpected,
             ]);
         }
@@ -223,15 +223,15 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param $numArea
-     * @param $numCompetitors
+     * @param $numFighters
      * @param $team
      * @return stdClass
      */
-    protected function createSetting($numArea, $numCompetitors, $team, $hasPreliminary, $preliminaryGroupSize): stdClass
+    protected function createSetting($numArea, $numFighters, $team, $hasPreliminary, $preliminaryGroupSize): stdClass
     {
         $setting = new stdClass;
         $setting->numArea = $numArea;
-        $setting->numCompetitors = $numCompetitors;
+        $setting->numFighters = $numFighters;
         $setting->preliminaryGroupSize = $preliminaryGroupSize;
         $setting->hasPlayOff = false;
         $setting->hasPreliminary = $hasPreliminary;

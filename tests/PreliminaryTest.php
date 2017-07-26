@@ -33,9 +33,10 @@ class PreliminaryTest extends TestCase
         foreach ($numPreliminaryGroups as $numArea => $prelimGroupsByArea) {
             foreach ($prelimGroupsByArea as $preliminaryGroupSize => $numPreliminaryGroup) {
                 foreach ($competitorsInTree as $numCompetitors) {
-                    $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, $preliminaryGroupSize);// $team
+                    $isTeam = rand(0,1);
+                    $setting = $this->createSetting($numArea, $numCompetitors, $isTeam, 1, $preliminaryGroupSize);// $team
                     $this->generateTreeWithUI($setting);
-                    parent::checkGroupsNumber($this->championshipWithComp->fresh(), $numArea, $numCompetitors, $numPreliminaryGroup, __METHOD__);
+                    parent::checkGroupsNumber($this->championshipWithComp->fresh(), $setting, $numPreliminaryGroup, __METHOD__);
                 }
             }
         }
@@ -79,9 +80,9 @@ class PreliminaryTest extends TestCase
         ];
         foreach ($numFights as $numArea => $numFightPerArea) {
             foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
-                $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, 3);// $team
+                $setting = $this->createSetting($numArea, $numCompetitors, rand(0,1), 1, 3);// $team
                 $this->generateTreeWithUI($setting);
-                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                parent::checkFightsNumber($this->championshipWithComp, $setting, $numFightsExpected, __METHOD__);
             }
         }
     }
