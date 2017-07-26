@@ -175,8 +175,7 @@ abstract class TestCase extends BaseTestCase
 
     /**
      * @param $championship
-     * @param $numArea
-     * @param $numCompetitors
+     * @param $setting
      * @param $numFightsExpected
      * @param $methodName
      */

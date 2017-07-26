@@ -18,7 +18,7 @@ class DirectEliminationTest extends TestCase
             foreach ($competitorsInTree as $numCompetitors) {
                 $setting = $this->createSetting($numArea, $numCompetitors, 0, 0, 3);
                 $this->generateTreeWithUI($setting);
-                parent::checkGroupsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numGroupsExpected, __METHOD__);
+                parent::checkGroupsNumber($this->championshipWithComp, $setting, $numGroupsExpected, __METHOD__);
             }
         }
 
@@ -63,7 +63,7 @@ class DirectEliminationTest extends TestCase
             foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
                 $setting = $this->createSetting($numArea, $numCompetitors, 0, 0, 3);// $team
                 $this->generateTreeWithUI($setting);
-                parent::checkFightsNumber($this->championshipWithComp, $numArea, $numCompetitors, $numFightsExpected, __METHOD__);
+                parent::checkFightsNumber($this->championshipWithComp, $setting, $numFightsExpected, __METHOD__);
             }
         }
     }
