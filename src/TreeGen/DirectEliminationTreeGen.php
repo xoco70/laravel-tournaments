@@ -90,7 +90,8 @@ abstract class DirectEliminationTreeGen extends TreeGen
     {
         //  First Round Fights
         $settings = $this->championship->getSettings();
-        parent::destroyPreviousFights();
+//        dd("ok");
+//        parent::destroyPreviousFights();
         $groups = $this->championship->groupsByRound(1)->get();
         $initialRound = 1;
         // Very specific case to common case : Preliminary with 3 fighters

@@ -2,16 +2,19 @@
 
 namespace Xoco70\KendoTournaments\Tests;
 
+use Faker\Factory;
 use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use stdClass;
+use Xoco70\KendoTournaments\Models\Category;
 use Xoco70\KendoTournaments\Models\Championship;
 use Xoco70\KendoTournaments\Models\ChampionshipSettings;
 use Xoco70\KendoTournaments\Models\Competitor;
 use Xoco70\KendoTournaments\Models\Fight;
 use Xoco70\KendoTournaments\Models\FightersGroup;
 use Xoco70\KendoTournaments\Models\Tournament;
+use Xoco70\KendoTournaments\Models\Venue;
 use Xoco70\KendoTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
@@ -41,9 +44,9 @@ abstract class TestCase extends BaseTestCase
         $this->root = new User();
         $this->makeSureDatabaseExists();
         parent::setUp();
-
+        $this->artisan('migrate', ['--database' => 'testbench']);
         $this->withFactories(__DIR__ . '/../database/factories');
-
+        $this->initialSeed();
         $this->tournament = Tournament::with(
             'competitors',
             'teams',
@@ -75,17 +78,11 @@ abstract class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        $app['config']->set('database.default', 'mysql');
-        $app['config']->set('database.connections.mysql', [
-            'driver' => 'mysql',
-            'host' => $_SERVER['DB_HOST'] ?? static::DB_HOST,
-            'database' => $_SERVER['DB_NAME'] ?? static::DB_NAME,
-            'username' => $_SERVER['DB_USERNAME'] ?? static::DB_USERNAME,
-            'password' => $_SERVER['DB_PASSWORD'] ?? static::DB_PASSWORD,
-            'prefix' => 'ken_',
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'strict' => false,
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+            'prefix' => '',
         ]);
     }
 
@@ -181,13 +178,13 @@ abstract class TestCase extends BaseTestCase
      */
     protected function checkFightsNumber($championship, $setting, $numFightsExpected, $methodName)
     {
-        $groupSize = $championship->hasPreliminary() ? $championship->settings->preliminaryGroupSize : 2;
+
+        $groupSize = $setting->hasPreliminary ? $setting->preliminaryGroupSize : 2;
         $count = $this->getFightsCount($championship);
 
         if ((int)($setting->numFighters / $setting->numArea) <= 1
             || $setting->numFighters / ($groupSize * $setting->numArea) < 1) {
-
-            $this->assertTrue($count == 0);
+            $this->assertTrue($count ==  0);
             return;
         }
 
@@ -236,5 +233,59 @@ abstract class TestCase extends BaseTestCase
         $setting->hasPreliminary = $hasPreliminary;
         $setting->isTeam = $team;
         return $setting;
+    }
+
+    public function initialSeed()
+    {
+        factory(Venue::class, 5)->create();
+
+        Category::create(['name' => 'categories.junior', 'gender' => 'X', 'isTeam' => 0, 'ageCategory' => 5, 'ageMin' => '13', 'ageMax' => '15', 'gradeCategory' => 0]);
+        Category::create(['name' => 'categories.junior_team', 'gender' => 'X', 'isTeam' => 1, 'ageCategory' => 5, 'ageMin' => '13', 'ageMax' => '15', 'gradeCategory' => 0]);
+        Category::create(['name' => 'categories.men_single', 'gender' => 'M', 'isTeam' => 0, 'ageCategory' => 5, 'ageMin' => '18']);
+        Category::create(['name' => 'categories.men_team', 'gender' => 'M', 'isTeam' => 1, 'ageCategory' => 5, 'ageMin' => '18']);
+        Category::create(['name' => 'categories.ladies_single', 'gender' => 'F', 'isTeam' => 0, 'ageCategory' => 5, 'ageMin' => '18']);
+        Category::create(['name' => 'categories.ladies_team', 'gender' => 'F', 'isTeam' => 1, 'ageCategory' => 5, 'ageMin' => '18']);
+        Category::create(['name' => 'categories.master', 'gender' => 'F', 'isTeam' => 0, 'ageCategory' => 5, 'ageMin' => '50', 'gradeMin' => '8']); // 8 = Shodan
+
+        $venues = Venue::all()->pluck('id')->toArray();
+
+        $faker = Factory::create();
+        $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
+        $user = factory(User::class)->create(['name' => 'user']);
+        Tournament::create([
+            'id' => 1,
+            'slug' => md5(uniqid(rand(), true)),
+            'user_id' => $user->id,
+            'name' => 'Test Tournament',
+            'dateIni' => $dateIni,
+            'dateFin' => $dateIni,
+            'registerDateLimit' => $dateIni,
+            'sport' => 1,
+            'type' => 0,
+            'level_id' => 7,
+            'venue_id' => $faker->randomElement($venues),
+
+        ]);
+
+        factory(Championship::class)->create(['tournament_id' => 1, 'category_id' => 1]);
+        factory(Championship::class)->create(['tournament_id' => 1, 'category_id' => 2]);
+
+        // COMPETITORS
+
+        $championship = Championship::where('tournament_id', 1)->first();
+
+        $users[] = factory(User::class)->create(['name' => 't1']);
+        $users[] = factory(User::class)->create(['name' => 't2']);
+        $users[] = factory(User::class)->create(['name' => 't3']);
+        $users[] = factory(User::class)->create(['name' => 't4']);
+        $users[] = factory(User::class)->create(['name' => 't5']);
+
+        foreach ($users as $user) {
+            factory(Competitor::class)->create([
+                'championship_id' => $championship->id,
+                'user_id' => $user->id,
+                'confirmed' => 1,
+            ]);
+        }
     }
 }
