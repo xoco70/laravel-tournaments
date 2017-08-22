@@ -41,7 +41,6 @@ class TournamentsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Replace HTML:: y FORM:: by native html
         $this->app->make(TreeController::class);
     }
 }

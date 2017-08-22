@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Seeding...');
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        setFKCheckOff();
 
         DB::table('competitor')->truncate();
         DB::table('tournament')->truncate();
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('All tables seeded!');
 
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        setFKCheckOn();
 
         Model::reguard();
     }
