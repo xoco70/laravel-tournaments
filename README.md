@@ -6,6 +6,26 @@
 # 
 
 Kendo- Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed   
+## What you can do
+
+- Generate Direct Elimination Trees
+- Generate Direct Elimination with Preliminary Round
+- Change Preliminary Round Size
+- Use 1 to 8 Areas
+- Modify Direct Elimination Tree generation on the fly
+- Use teams instead of competitors
+- Generate a list of fights
+
+## What you can't do
+
+This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
+
+- Modify Preliminary Round generation on the fly
+- Manage Winner and third place fight
+- Manage more than 1 fighter out of preliminary round
+- Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
+ We can improve that making the first match with 3 competitors.
+
 
 ## Installation
 
@@ -50,18 +70,3 @@ You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
 ## Run Functional Tests
 
 vendor/bin/phpunit tests
-
-## TODO
-
-This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
-
-- Generate a modificable ( with Select combos ) result for Preliminary Trees
-- Generate Direct Elimination Tree after Preliminary
-- Manage Winner and third place fight
-- Manage more than 1 fighter out of preliminary round
-- Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
- We can improve that making the first match with 3 competitors.
-- Develop an Hybrid app with Ionic 3 to score live. If no internet, app should sync with Bluetooth :)
-
-
- 
