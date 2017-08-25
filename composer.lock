@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "16745b8620bb069d25d703dd6e2c6a3e",
-    "content-hash": "2ce1c89d242abc17e37ed62ea82a89fc",
+    "hash": "2c6bb881ba44a2a701c41bc834f21a8d",
+    "content-hash": "033a2d0ba84fbd2e8e0d96354fe747c6",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -2831,20 +2831,20 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "3.4.x-dev",
+            "version": "v3.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "1e8e3584fb0c0fedda50bbd405295b8112e6bcae"
+                "reference": "b2623bccb969ad595c2090f9be498b74670d0663"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/1e8e3584fb0c0fedda50bbd405295b8112e6bcae",
-                "reference": "1e8e3584fb0c0fedda50bbd405295b8112e6bcae",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/b2623bccb969ad595c2090f9be498b74670d0663",
+                "reference": "b2623bccb969ad595c2090f9be498b74670d0663",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8",
+                "php": ">=5.5.9",
                 "symfony/polyfill-mbstring": "~1.0"
             },
             "conflict": {
@@ -2856,13 +2856,12 @@
             },
             "suggest": {
                 "ext-iconv": "To convert non-UTF-8 strings to UTF-8 (or symfony/polyfill-iconv in case ext-iconv cannot be used).",
-                "ext-intl": "To show region name in time zone dump",
                 "ext-symfony_debug": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.4-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -2896,7 +2895,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2017-08-17 13:38:59"
+            "time": "2017-07-28 06:06:09"
         },
         {
             "name": "symfony/yaml",
