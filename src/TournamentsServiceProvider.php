@@ -42,5 +42,6 @@ class TournamentsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->make(TreeController::class);
+        $this->app->make(DBHelpers::class);
     }
 }
