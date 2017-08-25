@@ -12,7 +12,15 @@ class LaravelTournamentSeeder extends Seeder
 
         $this->command->info('Seeding...');
 
-        setFKCheckOff();
+        switch (DB::getDriverName()) {
+            case 'mysql':
+                DB::statement('SET FOREIGN_KEY_CHECKS=0');
+                break;
+            case 'sqlite':
+                DB::statement('PRAGMA foreign_keys = OFF');
+                break;
+        }
+
 
         DB::table('competitor')->truncate();
         DB::table('tournament')->truncate();
@@ -27,7 +35,15 @@ class LaravelTournamentSeeder extends Seeder
 
         $this->command->info('All tables seeded!');
 
-        setFKCheckOn();
+        switch (DB::getDriverName()) {
+            case 'mysql':
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+                break;
+            case 'sqlite':
+                DB::statement('PRAGMA foreign_keys = ON');
+                break;
+        }
+
 
         Model::reguard();
     }
