@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
+class LaravelTournamentSeeder extends Seeder
 {
     public function run()
     {
@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
         DB::table('venue')->truncate();
 
         $this->call(VenueSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(TournamentSeeder::class);
         $this->call(CompetitorSeeder::class);
