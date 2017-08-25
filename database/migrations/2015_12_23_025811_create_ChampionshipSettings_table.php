@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Xoco70\KendoTournaments\DBHelpers;
 
 class CreateChampionshipSettingsTable extends Migration
 {
