@@ -44,8 +44,8 @@ class CreateTournamentTable extends Migration
 
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::dropIfExists('tournament');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Xoco70\KendoTournaments\DBHelpers;
 
 class LaravelTournamentSeeder extends Seeder
 {
@@ -12,15 +13,7 @@ class LaravelTournamentSeeder extends Seeder
 
         $this->command->info('Seeding...');
 
-        switch (DB::getDriverName()) {
-            case 'mysql':
-                DB::statement('SET FOREIGN_KEY_CHECKS=0');
-                break;
-            case 'sqlite':
-                DB::statement('PRAGMA foreign_keys = OFF');
-                break;
-        }
-
+        DBHelpers::setFKCheckOff();
 
         DB::table('competitor')->truncate();
         DB::table('tournament')->truncate();
@@ -34,17 +27,7 @@ class LaravelTournamentSeeder extends Seeder
         $this->call(CompetitorSeeder::class);
 
         $this->command->info('All tables seeded!');
-
-        switch (DB::getDriverName()) {
-            case 'mysql':
-                DB::statement('SET FOREIGN_KEY_CHECKS=1');
-                break;
-            case 'sqlite':
-                DB::statement('PRAGMA foreign_keys = ON');
-                break;
-        }
-
-
+        DBHelpers::setFKCheckOn();
         Model::reguard();
     }
 }

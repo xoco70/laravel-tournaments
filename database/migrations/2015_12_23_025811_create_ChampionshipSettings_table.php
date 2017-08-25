@@ -65,8 +65,8 @@ class CreateChampionshipSettingsTable extends Migration
      */
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::dropIfExists('championship_settings');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

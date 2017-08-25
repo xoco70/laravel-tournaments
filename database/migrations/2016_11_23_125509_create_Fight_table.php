@@ -53,8 +53,8 @@ class CreateFightTable extends Migration
      */
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::dropIfExists('fight');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

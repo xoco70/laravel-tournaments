@@ -85,10 +85,10 @@ class CreateCategoryTable extends Migration
      */
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::dropIfExists('competitor');
         Schema::dropIfExists('championship');
         Schema::dropIfExists('category');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

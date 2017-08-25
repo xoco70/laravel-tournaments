@@ -29,8 +29,8 @@ class CreateTeamTable extends Migration
 
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::drop('team');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

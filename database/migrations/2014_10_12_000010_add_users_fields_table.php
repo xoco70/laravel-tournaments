@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-
+use \Xoco70\KendoTournaments\DBHelpers;
 class AddUsersFieldsTable extends Migration
 {
     /**
@@ -26,11 +25,11 @@ class AddUsersFieldsTable extends Migration
      */
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::table('users', function($table) {
             $table->dropColumn('firstname');
             $table->dropColumn('lastname');
         });
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

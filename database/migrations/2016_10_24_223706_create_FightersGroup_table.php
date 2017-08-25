@@ -41,8 +41,8 @@ class CreateFightersGroupTable extends Migration
      */
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::dropIfExists('fighters_groups');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }

@@ -43,8 +43,8 @@ class CreateFightersGroupCompetitorTable extends Migration
      */
     public function down()
     {
-        setFKCheckOff();
+        DBHelpers::setFKCheckOff();
         Schema::dropIfExists('fighters_group_competitor');
-        setFKCheckOn();
+        DBHelpers::setFKCheckOn();
     }
 }
