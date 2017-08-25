@@ -27,7 +27,7 @@ Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournam
 - Generate Direct Elimination Trees
 - Generate Direct Elimination with Preliminary Round
 - Change Preliminary Round Size
-- Use 1 to 8 Areas
+- Use several areas ( 1,2,4,8 )
 - Modify Direct Elimination Tree generation on the fly
 - Use teams instead of competitors
 - Generate a list of fights
