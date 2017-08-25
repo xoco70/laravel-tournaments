@@ -19,7 +19,7 @@
     <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master"><img src="https://camo.githubusercontent.com/49b2a16d45e04d814850ed43ea432aea6d623121/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f636f7665726167652e706e673f623d6d6173746572" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/coverage.png?b=master" style="max-width:100%;"></a>
 </p>
 
-Kendo- Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed   
+Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree   
 ## What you can do
 
 - Generate Direct Elimination Trees
@@ -39,6 +39,11 @@ This is a work in progress, and tree creation might be very complex, so there is
 - Manage more than 1 fighter out of preliminary round
 - Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
  We can improve that making the first match with 3 competitors.
+- Use any number of area ( restricted to 1,2,4,8) 
+
+## Warning
+
+This is still a work in progress. Things could change, things could break. Use it at your own risks in production
 
 
 ## Installation
