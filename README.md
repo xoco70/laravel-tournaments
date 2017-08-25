@@ -1,6 +1,3 @@
-<p align="center">
-  <img src=""/>
-</p>
 <h1 align="center">
   <br>
   <img src="https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/logo.png" alt="Laravel Tournaments">
