@@ -19,6 +19,8 @@
     <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master"><img src="https://camo.githubusercontent.com/49b2a16d45e04d814850ed43ea432aea6d623121/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f636f7665726167652e706e673f623d6d6173746572" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/coverage.png?b=master" style="max-width:100%;"></a>
 </p>
 
+![screenshot](https://raw.githubusercontent.com/xoco70/kendo-tournaments/master/resources/assets/images/laravel-tournaments.gif)
+
 Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree   
 ## What you can do
 
@@ -89,3 +91,17 @@ You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
 ## Run Functional Tests
 
 vendor/bin/phpunit tests
+
+# Troubleshooting
+
+### Specified key was too long error
+For those running MariaDB or older versions of MySQL you may hit this error when trying to run migrations:
+As outlined in the <a href="https://laravel.com/docs/master/migrations#creating-indexes">Migrations guide</a> to fix this all you have to do is edit your AppServiceProvider.php file and inside the boot method set a default string length:
+```
+use Illuminate\Support\Facades\Schema;
+
+public function boot()
+{
+    Schema::defaultStringLength(191);
+}
+```
