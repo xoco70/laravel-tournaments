@@ -38,7 +38,7 @@
   },
   "require": {
     "php": ">=7.0.0",
-    "symfony/var-dumper": "~3.2.3",
+    "symfony/var-dumper": "~3.4",
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^1.0",
