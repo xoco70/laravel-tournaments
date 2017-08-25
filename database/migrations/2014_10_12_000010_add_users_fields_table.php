@@ -12,17 +12,10 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::table('users', function($table) {
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('email')->unique();
-            $table->string('password', 60);
 
-            $table->rememberToken();
-            $table->timestamps();
-            $table->engine = 'InnoDB';
         });
     }
 
@@ -34,7 +27,10 @@ class CreateUsersTable extends Migration
     public function down()
     {
         setFKCheckOff();
-        Schema::dropIfExists('users');
+        Schema::table('users', function($table) {
+            $table->dropColumn('firstname');
+            $table->dropColumn('lastname');
+        });
         setFKCheckOn();
     }
 }
