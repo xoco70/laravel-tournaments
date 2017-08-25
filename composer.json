@@ -1,8 +1,8 @@
 {
-  "name": "xoco70/kendo-tournaments",
-  "description": "A Laravel 5.3+ Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed",
+  "name": "xoco70/laravel-tournaments",
+  "description": "A Laravel 5.4+ Package that allows you to generate Tournaments tree",
   "type": "Project",
-  "homepage": "https://github.com/xoco70/kendo-tournaments",
+  "homepage": "https://github.com/xoco70/laravel-tournaments",
   "license": "Apache License 2.0",
   "authors": [
     {
@@ -38,7 +38,6 @@
   },
   "require": {
     "php": ">=7.0.0",
-    "symfony/var-dumper": "~3.4",
     "phpunit/phpunit": "^5.7",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^1.0",
@@ -49,6 +48,7 @@
   },
   "require-dev": {
     "orchestra/testbench-browser-kit": "~3.0",
-    "orchestra/database": "~3.1"
+    "orchestra/database": "~3.1",
+    "symfony/var-dumper": "~3.4"
   }
 }
