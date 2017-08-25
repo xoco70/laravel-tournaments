@@ -82,7 +82,8 @@ php artisan migrate
 
 Seed dummy data:
 ```shell
-php artisan db:seed
+php artisan db:seed --class=LaravelTournamentSeeder
+
 ```
 
 You will be able to access the demo at `http://yourdomain.com/kendo-tournaments`
