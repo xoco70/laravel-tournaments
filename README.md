@@ -51,7 +51,7 @@ This is still a work in progress. Things could change, things could break. Use i
 First, you'll need to install the package via Composer:
 
 ```shell
-$ composer require "xoco70/kendo-tournaments":^0.11
+$ composer require "xoco70/laravel-tournaments":^0.11
 ```
 
 Then, update `config/app.php` by adding an entry for the service provider.
