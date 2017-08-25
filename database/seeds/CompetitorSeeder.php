@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Foundation\Auth\User;
-use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\Competitor;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\Competitor;
 
 class CompetitorSeeder extends Seeder
 {

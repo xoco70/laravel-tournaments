@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Xoco70\KendoTournaments\DBHelpers;
+use Xoco70\LaravelTournaments\DBHelpers;
 
 class CreateTournamentTable extends Migration
 {
@@ -24,7 +24,7 @@ class CreateTournamentTable extends Migration
             $table->date('dateIni');
             $table->date('dateFin');
             $table->date('registerDateLimit');
-            $table->integer('sport')->unsigned()->default(1); // Default is Kendo for now
+            $table->integer('sport')->unsigned()->default(1);
             $table->string('promoter')->nullable();
             $table->string('host_organization')->nullable();
             $table->string('technical_assistance')->nullable();

@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\Tournament;
-use Xoco70\KendoTournaments\Models\Venue;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\Tournament;
+use Xoco70\LaravelTournaments\Models\Venue;
 
 class TournamentSeeder extends Seeder
 {

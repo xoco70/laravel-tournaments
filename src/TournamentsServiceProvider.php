@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments;
+namespace Xoco70\LaravelTournaments;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
@@ -17,20 +17,20 @@ class TournamentsServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $viewPath = __DIR__.'/../resources/views';
-        $this->loadViewsFrom($viewPath, 'kendo-tournaments');
+        $this->loadViewsFrom($viewPath, 'laravel-tournaments');
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadTranslationsFrom(__DIR__.'/../translations', 'kendo-tournaments');
+        $this->loadTranslationsFrom(__DIR__.'/../translations', 'laravel-tournaments');
 
         $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'migrations');
         $this->publishes([__DIR__.'/../database/seeds' => $this->app->databasePath().'/seeds'], 'seeds');
         $this->publishes([__DIR__.'/../database/factories' => $this->app->databasePath().'/factories'], 'seeds');
-        $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/kendo-tournaments')], 'assets');
+        $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-tournaments')], 'assets');
 
-        $router->group(['prefix' => 'kendo-tournaments', 'middleware' => ['web']], function ($router) {
-            $router->get('/', 'Xoco70\KendoTournaments\TreeController@index')->name('tree.index');
-            $router->post('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@store')->name('tree.store');
-            $router->put('/championships/{championship}/trees', 'Xoco70\KendoTournaments\TreeController@update')->name('tree.update');
+        $router->group(['prefix' => 'laravel-tournaments', 'middleware' => ['web']], function ($router) {
+            $router->get('/', 'Xoco70\LaravelTournaments\TreeController@index')->name('tree.index');
+            $router->post('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@store')->name('tree.store');
+            $router->put('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@update')->name('tree.update');
         });
     }
 

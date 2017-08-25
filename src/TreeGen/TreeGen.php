@@ -1,15 +1,15 @@
 <?php
 
-namespace Xoco70\KendoTournaments\TreeGen;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
-use Xoco70\KendoTournaments\Contracts\TreeGenerable;
-use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
-use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
-use Xoco70\KendoTournaments\Models\Fight;
-use Xoco70\KendoTournaments\Models\FightersGroup;
+use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
+use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
+use Xoco70\LaravelTournaments\Models\Fight;
+use Xoco70\LaravelTournaments\Models\FightersGroup;
 
 abstract class TreeGen implements TreeGenerable
 {
@@ -299,11 +299,11 @@ abstract class TreeGen implements TreeGenerable
         $fighters = $this->getFighters();
         // If there is less than 2 competitors average by area
         if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
-            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
+            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('laravel-tournaments.MIN_COMPETITORS_X_AREA')]));
         }
 
         if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1 ) {
-            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('kendo-tournaments.MIN_COMPETITORS_X_AREA')]));
+            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('laravel-tournaments.MIN_COMPETITORS_X_AREA')]));
         }
 
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)

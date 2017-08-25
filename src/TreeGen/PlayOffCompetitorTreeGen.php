@@ -1,10 +1,10 @@
 <?php
 
-namespace Xoco70\KendoTournaments\TreeGen;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\FightersGroup;
+use Xoco70\LaravelTournaments\Models\Competitor;
+use Xoco70\LaravelTournaments\Models\FightersGroup;
 
 class PlayOffCompetitorTreeGen extends PlayOffTreeGen
 {

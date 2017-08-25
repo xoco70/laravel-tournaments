@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Models;
+namespace Xoco70\LaravelTournaments\Models;
 
 class Team extends Fighter
 {

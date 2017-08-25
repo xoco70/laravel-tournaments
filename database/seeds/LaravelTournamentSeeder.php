@@ -3,7 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Xoco70\KendoTournaments\DBHelpers;
+use Xoco70\LaravelTournaments\DBHelpers;
 
 class LaravelTournamentSeeder extends Seeder
 {

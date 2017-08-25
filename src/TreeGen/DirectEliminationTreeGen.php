@@ -1,10 +1,10 @@
 <?php
 
-namespace Xoco70\KendoTournaments\TreeGen;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Xoco70\KendoTournaments\Models\DirectEliminationFight;
-use Xoco70\KendoTournaments\Models\PreliminaryFight;
+use Xoco70\LaravelTournaments\Models\DirectEliminationFight;
+use Xoco70\LaravelTournaments\Models\PreliminaryFight;
 
 abstract class DirectEliminationTreeGen extends TreeGen
 {

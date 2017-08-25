@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Xoco70\KendoTournaments\DBHelpers;
+use Xoco70\LaravelTournaments\DBHelpers;
 
 class CreateFightersGroupTeamTable extends Migration
 {

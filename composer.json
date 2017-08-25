@@ -12,7 +12,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Xoco70\\KendoTournaments\\": "src"
+      " Xoco70\\LaravelTournaments\\": "src"
     },
     "classmap": [
       "src/"
@@ -20,7 +20,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Xoco70\\KendoTournaments\\Tests\\": "tests"
+      " Xoco70\\LaravelTournaments\\Tests\\": "tests"
     },
     "classmap": [
       "tests",
@@ -32,7 +32,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Xoco70\\KendoTournaments\\TournamentServiceProvider"
+        " Xoco70\\LaravelTournaments\\TournamentServiceProvider"
       ]
     }
   },

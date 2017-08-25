@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Models;
+namespace Xoco70\LaravelTournaments\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;

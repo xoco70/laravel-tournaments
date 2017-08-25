@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use \Xoco70\KendoTournaments\DBHelpers;
+use \Xoco70\LaravelTournaments\DBHelpers;
 class AddUsersFieldsTable extends Migration
 {
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Tests;
+namespace Xoco70\LaravelTournaments\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

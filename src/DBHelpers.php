@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments;
+namespace Xoco70\LaravelTournaments;
 
 use Illuminate\Support\Facades\DB;
 

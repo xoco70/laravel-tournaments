@@ -1,16 +1,16 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Models;
+namespace Xoco70\LaravelTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
-use Xoco70\KendoTournaments\Contracts\TreeGenerable;
-use Xoco70\KendoTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
-use Xoco70\KendoTournaments\TreeGen\DirectEliminationTeamTreeGen;
-use Xoco70\KendoTournaments\TreeGen\PlayOffCompetitorTreeGen;
-use Xoco70\KendoTournaments\TreeGen\PlayOffTeamTreeGen;
+use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
+use Xoco70\LaravelTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\DirectEliminationTeamTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\PlayOffCompetitorTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\PlayOffTeamTreeGen;
 
 class Championship extends Model
 {

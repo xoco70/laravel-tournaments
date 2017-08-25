@@ -1,18 +1,18 @@
 <?php
 
-namespace Xoco70\KendoTournaments;
+namespace Xoco70\LaravelTournaments;
 
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Xoco70\KendoTournaments\Exceptions\TreeGenerationException;
-use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
-use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\FightersGroup;
-use Xoco70\KendoTournaments\Models\Team;
-use Xoco70\KendoTournaments\Models\Tournament;
+use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
+use Xoco70\LaravelTournaments\Models\Competitor;
+use Xoco70\LaravelTournaments\Models\FightersGroup;
+use Xoco70\LaravelTournaments\Models\Team;
+use Xoco70\LaravelTournaments\Models\Tournament;
 
 class TreeController extends Controller
 {
@@ -29,7 +29,7 @@ class TreeController extends Controller
             'championships.settings',
             'championships.category')->first();
 
-        return view('kendo-tournaments::tree.index')
+        return view('laravel-tournaments::tree.index')
             ->with('tournament', $tournament)
             ->with('championship', $tournament->championships[0])
             ->with('settings', $tournament->championships[0]->setting);

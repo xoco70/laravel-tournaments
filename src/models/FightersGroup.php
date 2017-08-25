@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Models;
+namespace Xoco70\LaravelTournaments\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

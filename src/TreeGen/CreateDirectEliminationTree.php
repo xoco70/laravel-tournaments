@@ -1,9 +1,9 @@
 <?php
 
-namespace Xoco70\KendoTournaments\TreeGen;
+namespace Xoco70\LaravelTournaments\TreeGen;
 
-use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Team;
+use Xoco70\LaravelTournaments\Models\Competitor;
+use Xoco70\LaravelTournaments\Models\Team;
 
 class CreateDirectEliminationTree
 {

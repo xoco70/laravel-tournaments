@@ -1,5 +1,5 @@
 <?php
-use Xoco70\KendoTournaments\TreeGen\CreateDirectEliminationTree;
+use Xoco70\LaravelTournaments\TreeGen\CreateDirectEliminationTree;
 
 $directEliminationTree = $championship->fightersGroups->where('round', '>=', $hasPreliminary + 1)->groupBy('round');
 if (sizeof($directEliminationTree) > 0) {
@@ -27,10 +27,10 @@ if (sizeof($directEliminationTree) > 0) {
                     <div class="match-wrapper"
                          style="top:  {{ $match['matchWrapperTop'] }}px; left:  {{ $match['matchWrapperLeft']  }}px; width: {{   $treeGen->matchWrapperWidth  }}px;">
                         <input type="text"
-                               class="score"> @include('kendo-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
+                               class="score"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
                         <div class="match-divider"></div>
                         <input type="text"
-                               class="score"> @include('kendo-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
+                               class="score"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
                     </div>
 
                     @if ($roundNumber != $treeGen->noRounds)

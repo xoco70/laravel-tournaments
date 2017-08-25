@@ -1,6 +1,6 @@
 <?php
 
-use Xoco70\KendoTournaments\Models\Team;
+use Xoco70\LaravelTournaments\Models\Team;
 $factory->define(Team::class, function (Faker\Generator $faker) {
 
     return [

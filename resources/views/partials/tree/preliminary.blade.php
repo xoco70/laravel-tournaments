@@ -36,12 +36,12 @@ $settings = $championship->getSettings();
                 <td class="p-10 text-center">{{$group->area}}</td>
                 @foreach ($fighters as $fighter)
                     <td class="p-10">{{ $letter++ }}</td>
-                    <td class="p-10">@include('kendo-tournaments::partials.tree.brackets.playerList', ['selected' => $fighter,'numRound' => 1])</td>
+                    <td class="p-10">@include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $fighter,'numRound' => 1])</td>
                 @endforeach
             </tr>
         @endforeach
     </table><br/>
 @endforeach
 
-@include('kendo-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1])
+@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1])
 

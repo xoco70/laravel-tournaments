@@ -1,21 +1,21 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Tests;
+namespace Xoco70\LaravelTournaments\Tests;
 
 use Faker\Factory;
 use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use stdClass;
-use Xoco70\KendoTournaments\Models\Category;
-use Xoco70\KendoTournaments\Models\Championship;
-use Xoco70\KendoTournaments\Models\ChampionshipSettings;
-use Xoco70\KendoTournaments\Models\Competitor;
-use Xoco70\KendoTournaments\Models\Fight;
-use Xoco70\KendoTournaments\Models\FightersGroup;
-use Xoco70\KendoTournaments\Models\Tournament;
-use Xoco70\KendoTournaments\Models\Venue;
-use Xoco70\KendoTournaments\TournamentsServiceProvider;
+use Xoco70\LaravelTournaments\Models\Category;
+use Xoco70\LaravelTournaments\Models\Championship;
+use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
+use Xoco70\LaravelTournaments\Models\Competitor;
+use Xoco70\LaravelTournaments\Models\Fight;
+use Xoco70\LaravelTournaments\Models\FightersGroup;
+use Xoco70\LaravelTournaments\Models\Tournament;
+use Xoco70\LaravelTournaments\Models\Venue;
+use Xoco70\LaravelTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -121,7 +121,7 @@ abstract class TestCase extends BaseTestCase
     public function generateTreeWithUI($setting)
     {
 
-        $this->visit('/kendo-tournaments')
+        $this->visit('/laravel-tournaments')
             ->select($setting->hasPreliminary, 'hasPreliminary')
             ->select($setting->isTeam, 'isTeam')
             ->select($setting->numArea, 'fightingAreas')

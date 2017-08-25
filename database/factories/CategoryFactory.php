@@ -1,7 +1,7 @@
 <?php
 
 
-use Xoco70\KendoTournaments\Models\Category as Cat;
+use Xoco70\LaravelTournaments\Models\Category as Cat;
 
 $factory->define(Cat::class, function (Faker\Generator $faker) {
     $name = ['categories.junior',

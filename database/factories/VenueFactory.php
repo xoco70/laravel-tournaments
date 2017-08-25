@@ -1,6 +1,6 @@
 <?php
 
-use Xoco70\KendoTournaments\Models\Venue;
+use Xoco70\LaravelTournaments\Models\Venue;
 
 $factory->define(Venue::class, function (Faker\Generator $faker) {
     return [

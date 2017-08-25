@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Foundation\Auth\User;
-use Xoco70\KendoTournaments\Models\Tournament;
-use Xoco70\KendoTournaments\Models\Venue;
+use Xoco70\LaravelTournaments\Models\Tournament;
+use Xoco70\LaravelTournaments\Models\Venue;
 
 $factory->define(Tournament::class, function (Faker\Generator $faker) {
     $users = User::all()->pluck('id')->toArray();

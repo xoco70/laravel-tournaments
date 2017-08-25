@@ -1,6 +1,6 @@
 <?php
 
-namespace Xoco70\KendoTournaments\Contracts;
+namespace Xoco70\LaravelTournaments\Contracts;
 
 interface TreeGenerable
 {

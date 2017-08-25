@@ -17,7 +17,7 @@
 
         <div class="col-lg-3">
             <div class="form-group">
-                <label for="preliminaryGroupSize">{{trans('kendo-tournaments::categories.preliminaryGroupSize')}}</label>
+                <label for="preliminaryGroupSize">{{trans('laravel-tournaments::categories.preliminaryGroupSize')}}</label>
                 <select class="form-control" id="preliminaryGroupSize" name="preliminaryGroupSize">
                     <option value="3" @if ($setting->preliminaryGroupSize == 3) selected @endif>3</option>
                     <option value="4" @if ($setting->preliminaryGroupSize == 4) selected @endif>4</option>
@@ -53,16 +53,14 @@
 
             <label for="treeType">Tree Type</label>
             <select class="form-control" id="treeType" name="treeType">
-                {{--<option value="0"--}}
-                        {{--@if ($setting->treeType == 0) selected @endif >{{ trans('kendo-tournaments::categories.roundRobin') }}</option>--}}
                 <option value="1"
-                        @if ($setting->treeType == 1) selected @endif>{{ trans('kendo-tournaments::categories.direct_elimination') }}</option>
+                        @if ($setting->treeType == 1) selected @endif>{{ trans('laravel-tournaments::categories.direct_elimination') }}</option>
             </select>
         </div>
 
         <div class="col-lg-2">
 
-            <label for="fightingAreas">{{ trans_choice('kendo-tournaments::categories.fightingArea',2) }}</label>
+            <label for="fightingAreas">{{ trans_choice('laravel-tournaments::categories.fightingArea',2) }}</label>
             <select class="form-control" id="fightingAreas" name="fightingAreas">
                 <option value="1" @if ($setting->fightingAreas == 1) selected @endif>1</option>
                 <option value="2" @if ($setting->fightingAreas == 2) selected @endif>2</option>

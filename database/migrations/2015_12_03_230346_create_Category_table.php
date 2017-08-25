@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Xoco70\KendoTournaments\DBHelpers;
+use Xoco70\LaravelTournaments\DBHelpers;
 
 class CreateCategoryTable extends Migration
 {
