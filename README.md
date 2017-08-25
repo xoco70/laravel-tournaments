@@ -1,9 +1,23 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master)
-[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Build Status](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/build.png?b=master)](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/build.png?b=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master)
+<p align="center">
+  <img src=""/>
+</p>
+<h1 align="center">
+  <br>
+  <img src="https://raw.githubusercontent.com/xoco70/kendo-tournaments/master/resources/assets/images/logo.png" alt="Laravel Tournaments">
+  <br>
+  Laravel Tournaments
+  <br>
+</h1>
 
-# 
+<h4 align="center">A Laravel plugin that generate tournaments out of the box</h4>
+
+
+<p align="center">
+    <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master"><img src="https://camo.githubusercontent.com/d3f5c9de8adbb7fc3c18e44640c205c9d105f0ec/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f7175616c6974792d73636f72652e706e673f623d6d6173746572" alt="Scrutinizer Code Quality" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/quality-score.png?b=master" style="max-width:100%;"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://camo.githubusercontent.com/28ddbec0801282129302d6a51a9dd09b4c09c438/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d627269676874677265656e2e7376673f7374796c653d666c61742d737175617265" alt="License: MIT" data-canonical-src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square" style="max-width:100%;"></a>
+    <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/build.png?b=master"><img src="https://camo.githubusercontent.com/e1471ee47a70cb9663eb9f8b71707718451e83cc/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f6275696c642e706e673f623d6d6173746572" alt="Build Status" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/build.png?b=master" style="max-width:100%;"></a>
+    <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master"><img src="https://camo.githubusercontent.com/49b2a16d45e04d814850ed43ea432aea6d623121/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f636f7665726167652e706e673f623d6d6173746572" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/coverage.png?b=master" style="max-width:100%;"></a>
+</p>
 
 Kendo- Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree, Direct Elimination, Round Robin, or Mixed   
 ## What you can do
