@@ -18,8 +18,11 @@
     <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/build.png?b=master"><img src="https://camo.githubusercontent.com/e1471ee47a70cb9663eb9f8b71707718451e83cc/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f6275696c642e706e673f623d6d6173746572" alt="Build Status" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/build.png?b=master" style="max-width:100%;"></a>
     <a href="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/?branch=master"><img src="https://camo.githubusercontent.com/49b2a16d45e04d814850ed43ea432aea6d623121/68747470733a2f2f7363727574696e697a65722d63692e636f6d2f672f786f636f37302f6b656e646f2d746f75726e616d656e74732f6261646765732f636f7665726167652e706e673f623d6d6173746572" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/kendo-tournaments/badges/coverage.png?b=master" style="max-width:100%;"></a>
 </p>
+<h1 align="center">
+  <br>
+  <img src="https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments.gif" alt="Laravel Tournaments Demo">
+</h1>
 
-![screenshot](https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments.gif)
 
 Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree   
 ## What you can do
