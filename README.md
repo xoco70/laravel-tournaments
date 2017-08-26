@@ -133,17 +133,9 @@ $tournament = factory(Tournament::class)->create(['user_id' => Auth::user()->id]
 ```
 
 ```php
-$user = $tournament->owner;
-```
-
-Get tournament venue 
-```php
-$user = $tournament->venue;
-```
-
-Get tournament championships
-```php
-$championships = $tournament->championships;
+$user = $tournament->owner; // get owner
+$user = $tournament->venue; // get venue
+$championships = $tournament->championships; // get championships 
 ```
 
 Check tournament type: 
