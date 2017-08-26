@@ -11,14 +11,27 @@
 
 <p align="center">
     <a href="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/?branch=master"><img src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/quality-score.png?b=master" style="max-width:100%;"></a>
-    <a href="https://opensource.org/licenses/MIT"><img src="https://camo.githubusercontent.com/28ddbec0801282129302d6a51a9dd09b4c09c438/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d627269676874677265656e2e7376673f7374796c653d666c61742d737175617265" alt="License: MIT" data-canonical-src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square" style="max-width:100%;"></a>
     <a href="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/build.png?b=master"><img src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/build.png?b=master" alt="Build Status" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/build.png?b=master" style="max-width:100%;"></a>
     <a href="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/?branch=master"><img src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/coverage.png?b=master" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/coverage.png?b=master" style="max-width:100%;"></a>
+    <a href="http://laravel.com"><img src="https://camo.githubusercontent.com/f0b5ac8a0947b27575c9f48844d9df6744d62d7b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6275696c74253230666f722d6c61726176656c2d626c75652e737667" alt="Built For Laravel" data-canonical-src="https://img.shields.io/badge/built%20for-laravel-blue.svg" style="max-width:100%;"></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://camo.githubusercontent.com/28ddbec0801282129302d6a51a9dd09b4c09c438/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4c6963656e73652d4d49542d627269676874677265656e2e7376673f7374796c653d666c61742d737175617265" alt="License: MIT" data-canonical-src="https://img.shields.io/badge/License-MIT-brightgreen.svg?style=flat-square" style="max-width:100%;"></a>
 </p>
 <h1 align="center">
   <br>
   <img src="https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments.gif" alt="Laravel Tournaments Demo">
 </h1>
+
+
+  * [What you can do](#what-you-can-do)
+  * [What you can't do](#what-you-cant-do)
+  * [Installation](#installation)
+  * [Updating your Eloquent Models](#updating-your-eloquent-models)
+  * [Usage](#usage)
+  * [The SlugService Class](#the-slugservice-class)
+  * [Events](#events)
+  * [Configuration](#configuration)
+      * [includeTrashed](#includetrashed)
+            
 
 
 Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree   
@@ -50,6 +63,14 @@ This is still a work in progress. Things could change, things could break. Use i
 
 ## Installation
 
+[comment]: <>(> **NOTE**: Depending on your version of Laravel, you should install a different)
+[comment]: <>(> version of the package:)
+[comment]: <>(> )
+[comment]: <>(> | Laravel Version | Laravel Tournament Version |)
+[comment]: <>(> |:---------------:|:--------------------------:|)
+[comment]: <>(> |       5.4       |            0.11          |)
+[comment]: <>(>)
+ 
 First, you'll need to install the package via Composer:
 
 ```shell
