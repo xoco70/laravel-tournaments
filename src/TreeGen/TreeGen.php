@@ -59,15 +59,8 @@ abstract class TreeGen implements TreeGenerable
      */
     public function run()
     {
-        $usersByArea = $this->getFightersByArea();
-        $numFighters = sizeof($usersByArea->collapse());
-        $this->generateGroupsForRound($usersByArea, 1);
-        $this->pushEmptyGroupsToTree($numFighters); // Abstract
-        $this->addParentToChildren($numFighters);
-        $this->generateFights(); // Abstract
-        //TODO In direct elimination without Prelim, short_id are not generating well
-        $this->generateNextRoundsFights();
-        Fight::generateFightsId($this->championship);
+        $this->generateAllTrees();
+        $this->generateAllFights();
     }
 
     /**
@@ -452,5 +445,28 @@ abstract class TreeGen implements TreeGenerable
         $numArea = intval(ceil($order / $areaSize)); // if round == 4, and second match 2/2 = 1 BAD
 //        dump($numArea);
         return $numArea;
+    }
+
+    /**
+     *
+     */
+    protected function generateAllTrees()
+    {
+        $usersByArea = $this->getFightersByArea();
+        $numFighters = sizeof($usersByArea->collapse());
+        $this->generateGroupsForRound($usersByArea, 1);
+        $this->pushEmptyGroupsToTree($numFighters); // Abstract
+        $this->addParentToChildren($numFighters);
+    }
+
+    /**
+     *
+     */
+    protected function generateAllFights()
+    {
+        $this->generateFights(); // Abstract
+        //TODO In direct elimination without Prelim, short_id are not generating well
+        $this->generateNextRoundsFights();
+        Fight::generateFightsId($this->championship);
     }
 }

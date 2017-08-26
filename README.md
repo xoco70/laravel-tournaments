@@ -22,39 +22,24 @@
 </h1>
 
 
-  * [What you can do](#what-you-can-do)
-  * [What you can't do](#what-you-cant-do)
+  * [Features](#features)
   * [Installation](#installation)
-  * [Updating your Eloquent Models](#updating-your-eloquent-models)
   * [Usage](#usage)
-  * [The SlugService Class](#the-slugservice-class)
-  * [Events](#events)
-  * [Configuration](#configuration)
-      * [includeTrashed](#includetrashed)
-            
-
+      * [Create a tournament] (#create-a-tournament)
+  * [Run the demo](#run-the-demo)
+  * [Limitations](#limitations)
+  * [Troubleshooting](#troubleshooting)
 
 Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree   
-## What you can do
+## Features
 
-- Generate Direct Elimination Trees
-- Generate Direct Elimination with Preliminary Round
-- Change Preliminary Round Size
-- Use several areas ( 1,2,4,8 )
+- Direct Elimination Trees Generation
+- Direct Elimination with Preliminary Round Generation
+- List of Fights Generation
+- Customize Preliminary Round Size
+- Customize area number( 1,2,4,8 )
 - Modify Direct Elimination Tree generation on the fly
 - Use teams instead of competitors
-- Generate a list of fights
-
-## What you can't do
-
-This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
-
-- Modify Preliminary Round generation on the fly
-- Manage Winner and third place fight
-- Manage more than 1 fighter out of preliminary round
-- Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
- We can improve that making the first match with 3 competitors.
-- Use any number of area ( restricted to 1,2,4,8) 
 
 ## Warning
 
@@ -91,10 +76,137 @@ Finally, from the command line again, publish the default configuration file:
 ```shell
 php artisan vendor:publish
 ```
+#Data model
+
 # Usage
+```shell
+// Create a tournament
+$tournament = factory(Tournament::class)->create(['user_id' => Auth::user()->id]);
 
-Coming soon
+$championsip = factory(Championship::class)->create(['$tournament_id' => $tournament->id]);
 
+// Optional, if not defined, it will take default in ChampionshipSettings
+$settings = factory(ChampionshipSettings::class)->create(['championship_id' => $championship->id]);
+
+// Add competitors to championship
+$competitor = factory(\App\Competitor::class)->create([
+    'championship_id' => $championship->id,
+     'user_id' => factory(User::class)->create()->id
+]);
+
+// Create a team
+$team = factory(Teams::class)->create();
+
+// Add competitor to team 
+$team->competitors()->attach($competitor->id);
+
+// Remove competitor from a team 
+$team->competitors()->detach($competitor->id);
+
+// Define strategy to generate
+$generation = $championship->chooseGenerationStrategy();
+
+// Generate everything
+$generation->run();
+
+// Just generate Tree
+
+$this->generateAllTrees();
+
+// Just generate Fight List
+$this->generateAllFights();
+ 
+```
+
+### Tournaments
+
+Create a tournament
+```shell
+factory(Tournament::class)->create(['user_id' => Auth::user()->id]);
+
+```
+
+Get tournament owner 
+```shell
+$user = $tournament->owner;
+```
+
+Get tournament venue 
+```shell
+$user = $tournament->venue;
+```
+
+Get tournament championships
+```shell
+$user = $tournament->championships;
+```
+
+## Tournaments
+Helpers
+
+Check tournament type: 
+```
+$tournament->isOpen()
+$tournament->needsInvitation()
+ ```
+
+Check tournament level: `$tournament->isInternational()`, `$tournament->isNational()`, `$tournament->isRegional()`, `$tournament->isEstate()`, `$tournament->isMunicipal()`, `$tournament->isDistrictal()`, `$tournament->isLocal()`, `$tournament->hasNoLevel()`
+
+## Championship
+ 
+ 
+ competitors
+ teams
+ fighters
+ category
+ tournament
+ users
+ settings
+ fightersGroups
+ groupsByRound
+ groupsFromRound
+ fights
+ firstRoundFights
+ fightsByRound
+ 
+ isPlayoffCompetitor
+ isPlayoffTeam
+ isDirectEliminationCompetitor
+ isDirectEliminationTeam
+ 
+ getGroupSize
+ 
+ 
+ hasPreliminary(),isPlayOffType(),isDirectEliminationType()
+ 
+ 
+ ## FightersGroup
+  
+  championship
+  fights
+  fighters
+  teams
+  competitors
+  getFighterType
+  
+  ## Competitor
+  user
+  fightersGroups
+  getFullName
+  defaultName
+  
+  #Fight 
+  group
+  competitor1
+  competitor2
+  team1
+  team2
+  shouldBeInFightList
+  generateFightsId
+  
+  Navigate in the tree
+  -> parents, children
+  
 # Run the demo
 
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
@@ -117,6 +229,16 @@ You will be able to access the demo at `http://yourdomain.com/laravel-tournament
 
 vendor/bin/phpunit tests
 
+## Limitations
+
+This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
+
+- Modify Preliminary Round generation on the fly
+- Manage Winner and third place fight
+- Manage more than 1 fighter out of preliminary round
+- Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
+ We can improve that making the first match with 3 competitors.
+- Use any number of area ( restricted to 1,2,4,8) 
 # Troubleshooting
 
 ### Specified key was too long error
