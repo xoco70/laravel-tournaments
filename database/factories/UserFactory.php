@@ -5,10 +5,10 @@ $factory->define(\Illuminate\Foundation\Auth\User::class, function (Faker\Genera
     $email = $faker->email;
 
     return [
-        'name'     => $faker->name,
-        'email'    => $email,
-        'password' => bcrypt(str_random(10)),
+        'name'      => $faker->name,
+        'email'     => $email,
+        'password'  => bcrypt(str_random(10)),
         'firstname' => $faker->firstName,
-        'lastname' => $faker->lastName,
+        'lastname'  => $faker->lastName,
     ];
 });

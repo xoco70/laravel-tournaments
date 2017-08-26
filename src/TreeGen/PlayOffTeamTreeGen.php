@@ -8,18 +8,21 @@ use Xoco70\LaravelTournaments\Models\Team;
 
 class PlayOffTeamTreeGen extends PlayOffTreeGen
 {
-
     /**
-     * get Fighter by Id
+     * get Fighter by Id.
+     *
      * @param $teamId
+     *
      * @return Team
      */
     protected function getFighter($teamId)
     {
         return Team::find($teamId);
     }
+
     /**
-     * Fighter is the name for competitor or team, depending on the case
+     * Fighter is the name for competitor or team, depending on the case.
+     *
      * @return Collection
      */
     protected function getFighters()
@@ -30,12 +33,14 @@ class PlayOffTeamTreeGen extends PlayOffTreeGen
     /**
      * @param FightersGroup $group
      * @param $fighters
+     *
      * @return FightersGroup
      */
     public function syncGroup(FightersGroup $group, $fighters)
     {
         // Add all competitors to Pivot Table
         $group->syncTeams($fighters);
+
         return $group;
     }
 
@@ -48,5 +53,4 @@ class PlayOffTeamTreeGen extends PlayOffTreeGen
     {
         $group->teams()->attach($team->id);
     }
-
 }

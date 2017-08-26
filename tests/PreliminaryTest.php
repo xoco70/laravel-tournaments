@@ -2,7 +2,6 @@
 
 namespace Xoco70\LaravelTournaments\Tests;
 
-
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PreliminaryTest extends TestCase
@@ -28,20 +27,19 @@ class PreliminaryTest extends TestCase
                 $preliminaryGroupSize = 3 => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 $preliminaryGroupSize = 4 => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 $preliminaryGroupSize = 5 => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            ]
+            ],
         ];
         foreach ($numPreliminaryGroups as $numArea => $prelimGroupsByArea) {
             foreach ($prelimGroupsByArea as $preliminaryGroupSize => $numPreliminaryGroup) {
                 foreach ($competitorsInTree as $numCompetitors) {
 //                    $isTeam = rand(0,1);
-                    $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, $preliminaryGroupSize);// $team
+                    $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, $preliminaryGroupSize); // $team
                     $this->generateTreeWithUI($setting);
                     parent::checkGroupsNumber($this->championshipWithComp->fresh(), $setting, $numPreliminaryGroup, __METHOD__);
                 }
             }
         }
     }
-
 
     /** @test */
     public function check_number_of_fights_when_preliminary_tree()
@@ -55,7 +53,7 @@ class PreliminaryTest extends TestCase
                 5 => 6,
                 6 => 6,
                 7 => 12,
-                8 => 12
+                8 => 12,
             ],
             2 => [
                 1 => 0,
@@ -65,7 +63,7 @@ class PreliminaryTest extends TestCase
                 5 => 0,
                 6 => 6,
                 7 => 12,
-                8 => 12
+                8 => 12,
             ],
             4 => [
                 1 => 0,
@@ -75,12 +73,12 @@ class PreliminaryTest extends TestCase
                 5 => 0,
                 6 => 0,
                 7 => 0,
-                8 => 0
-            ]
+                8 => 0,
+            ],
         ];
         foreach ($numFights as $numArea => $numFightPerArea) {
             foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
-                $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, 3);// $team
+                $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, 3); // $team
                 $this->generateTreeWithUI($setting);
                 parent::checkFightsNumber($this->championshipWithComp, $setting, $numFightsExpected, __METHOD__);
             }

@@ -26,9 +26,10 @@ class Fighter extends Model
 
     public function getFullNameAttribute()
     {
-        if ($this instanceof Competitor){
+        if ($this instanceof Competitor) {
             return $this->getFullName();
         }
+
         return $this->name;
     }
 }

@@ -49,16 +49,17 @@ class TreeController extends Controller
         $isTeam = $request->isTeam ?? 0;
         $championship = $this->provisionObjects($request, $isTeam, $numFighters);
         $generation = $championship->chooseGenerationStrategy();
+
         try {
             $generation->run();
         } catch (TreeGenerationException $e) {
             redirect()->back()
-                ->withErrors([$numFighters . "-" . $e->getMessage()]);
+                ->withErrors([$numFighters.'-'.$e->getMessage()]);
         }
+
         return back()
             ->with('numFighters', $numFighters)
             ->with('isTeam', $isTeam);
-
     }
 
     private function deleteEverything()
@@ -76,33 +77,35 @@ class TreeController extends Controller
      * @param Request $request
      * @param $isTeam
      * @param $numFighters
+     *
      * @return Championship
      */
     protected function provisionObjects(Request $request, $isTeam, $numFighters)
     {
         if ($isTeam) {
             $championship = Championship::find(2);
-            factory(Team::class, (int)$numFighters)->create(['championship_id' => $championship->id]);
+            factory(Team::class, (int) $numFighters)->create(['championship_id' => $championship->id]);
         } else {
             $championship = Championship::find(1);
-            $users = factory(User::class, (int)$numFighters)->create();
+            $users = factory(User::class, (int) $numFighters)->create();
             foreach ($users as $user) {
                 factory(Competitor::class)->create(
                     ['championship_id' => $championship->id,
-                        'user_id' => $user->id,
-                        'confirmed' => 1,
-                        'short_id' => $user->id
+                        'user_id'      => $user->id,
+                        'confirmed'    => 1,
+                        'short_id'     => $user->id,
                     ]
                 );
             }
         }
         $championship->settings = ChampionshipSettings::createOrUpdate($request, $championship);
+
         return $championship;
     }
 
-
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Championship $championship)

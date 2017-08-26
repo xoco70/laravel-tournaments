@@ -21,7 +21,6 @@ class DirectEliminationTest extends TestCase
                 parent::checkGroupsNumber($this->championshipWithComp, $setting, $numGroupsExpected, __METHOD__);
             }
         }
-
     }
 
     /** @test */
@@ -36,7 +35,7 @@ class DirectEliminationTest extends TestCase
                 5 => 4,
                 6 => 4,
                 7 => 4,
-                8 => 4 // numCompet => numExpected
+                8 => 4, // numCompet => numExpected
             ],
             2 => [
                 1 => 0,
@@ -46,7 +45,7 @@ class DirectEliminationTest extends TestCase
                 5 => 4,
                 6 => 4,
                 7 => 4,
-                8 => 4
+                8 => 4,
             ],
             4 => [
                 1 => 0,
@@ -56,18 +55,17 @@ class DirectEliminationTest extends TestCase
                 5 => 0,
                 6 => 0,
                 7 => 0,
-                8 => 4
-            ]
+                8 => 4,
+            ],
         ];
         foreach ($numFights as $numArea => $numFightPerArea) {
             foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
-                $setting = $this->createSetting($numArea, $numCompetitors, 0, 0, 3);// $team
+                $setting = $this->createSetting($numArea, $numCompetitors, 0, 0, 3); // $team
                 $this->generateTreeWithUI($setting);
                 parent::checkFightsNumber($this->championshipWithComp, $setting, $numFightsExpected, __METHOD__);
             }
         }
     }
-
 
     /** @test */
     public function it_saves_fight_to_next_round_when_possible()
@@ -94,12 +92,11 @@ class DirectEliminationTest extends TestCase
      */
     private function checkParentHasBeenFilled($key, $fight)
     {
-        $toUpdate = "c2";
+        $toUpdate = 'c2';
         if ($key % 2 == 0) { // Even
-            $toUpdate = "c1";
+            $toUpdate = 'c1';
         }
         $parentFight = $fight->group->parent->fights->get(0);
-
 
         if (!$fight->c1) {
             $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
@@ -109,6 +106,4 @@ class DirectEliminationTest extends TestCase
             $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
         }
     }
-
-
 }

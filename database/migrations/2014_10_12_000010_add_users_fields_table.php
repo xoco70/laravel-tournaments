@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use \Xoco70\LaravelTournaments\DBHelpers;
+use Xoco70\LaravelTournaments\DBHelpers;
+
 class AddUsersFieldsTable extends Migration
 {
     /**
@@ -12,10 +13,9 @@ class AddUsersFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function($table) {
+        Schema::table('users', function ($table) {
             $table->string('firstname')->default('firstname');
             $table->string('lastname')->default('lastname');
-
         });
     }
 
@@ -31,13 +31,11 @@ class AddUsersFieldsTable extends Migration
             Schema::table('users', function (Blueprint $table) {
                 $table->dropColumn('firstname');
             });
-
         }
         if (Schema::hasColumn('users', 'lastname')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropColumn('lastname');
             });
-
         }
         DBHelpers::setFKCheckOn();
     }

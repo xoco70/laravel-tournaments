@@ -5,12 +5,13 @@ namespace Xoco70\LaravelTournaments\TreeGen;
 use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Models\DirectEliminationFight;
 
-
 abstract class PlayOffTreeGen extends TreeGen
 {
     /**
      * Calculate the Byes need to fill the Championship Tree.
+     *
      * @param $fighters
+     *
      * @return Collection
      */
     protected function getByeGroup($fighters)
@@ -22,9 +23,9 @@ abstract class PlayOffTreeGen extends TreeGen
         return $this->createByeGroup($byeCount);
     }
 
-
     /**
-     * Create empty groups for PlayOff Round
+     * Create empty groups for PlayOff Round.
+     *
      * @param $numFighters
      */
     protected function pushEmptyGroupsToTree($numFighters)
@@ -37,26 +38,28 @@ abstract class PlayOffTreeGen extends TreeGen
     }
 
     /**
-     * Chunk Fighters into groups for fighting, and optionnaly shuffle
+     * Chunk Fighters into groups for fighting, and optionnaly shuffle.
+     *
      * @param $fightersByEntity
+     *
      * @return mixed
      */
     protected function chunkAndShuffle(Collection $fightersByEntity)
     {
         if ($this->championship->hasPreliminary()) {
-
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
             if (!app()->runningUnitTests()) {
                 $fightersGroup = $fightersGroup->shuffle();
             }
+
             return $fightersGroup;
         }
+
         return $fightersByEntity->chunk($fightersByEntity->count());
     }
 
-
     /**
-     * Generate First Round Fights
+     * Generate First Round Fights.
      */
     public function generateFights()
     {
@@ -64,10 +67,10 @@ abstract class PlayOffTreeGen extends TreeGen
         DirectEliminationFight::saveFights($this->championship);
     }
 
-
     /**
-     * Save Groups with their parent info
-     * @param integer $numRounds
+     * Save Groups with their parent info.
+     *
+     * @param int $numRounds
      * @param $numFightersElim
      */
     protected function pushGroups($numRounds, $numFightersElim)
@@ -84,13 +87,14 @@ abstract class PlayOffTreeGen extends TreeGen
     }
 
     /**
-     * Return number of rounds for the tree based on fighter count
+     * Return number of rounds for the tree based on fighter count.
+     *
      * @param $numFighters
+     *
      * @return int
      */
     protected function getNumRounds($numFighters)
     {
         return intval(log($numFighters, 2));
     }
-
 }

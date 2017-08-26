@@ -8,10 +8,11 @@ use Xoco70\LaravelTournaments\Models\PreliminaryFight;
 
 abstract class DirectEliminationTreeGen extends TreeGen
 {
-
     /**
      * Calculate the Byes need to fill the Championship Tree.
+     *
      * @param $fighters
+     *
      * @return Collection
      */
     protected function getByeGroup($fighters)
@@ -25,9 +26,10 @@ abstract class DirectEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Save Groups with their parent info
-     * @param integer $numRounds
-     * @param integer $numFighters
+     * Save Groups with their parent info.
+     *
+     * @param int $numRounds
+     * @param int $numFighters
      */
     protected function pushGroups($numRounds, $numFighters)
     {
@@ -45,7 +47,8 @@ abstract class DirectEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Create empty groups for direct Elimination Tree
+     * Create empty groups for direct Elimination Tree.
+     *
      * @param $numFighters
      */
     protected function pushEmptyGroupsToTree($numFighters)
@@ -58,13 +61,15 @@ abstract class DirectEliminationTreeGen extends TreeGen
         }
         // We calculate how much rounds we will have
         $numRounds = $this->getNumRounds($numFighters);
-        return $this->pushGroups($numRounds, $numFighters);
 
+        return $this->pushGroups($numRounds, $numFighters);
     }
 
     /**
-     * Chunk Fighters into groups for fighting, and optionnaly shuffle
+     * Chunk Fighters into groups for fighting, and optionnaly shuffle.
+     *
      * @param $fightersByEntity
+     *
      * @return Collection|null
      */
     protected function chunkAndShuffle(Collection $fightersByEntity)
@@ -79,12 +84,12 @@ abstract class DirectEliminationTreeGen extends TreeGen
         if (!app()->runningUnitTests()) {
             $fightersGroup = $fightersGroup->shuffle();
         }
+
         return $fightersGroup;
     }
 
-
     /**
-     * Generate First Round Fights
+     * Generate First Round Fights.
      */
     protected function generateFights()
     {
@@ -100,20 +105,21 @@ abstract class DirectEliminationTreeGen extends TreeGen
             // Then we make all second fights of all groups
             // Then we make all third fights of all groups
             for ($numFight = 1; $numFight <= $settings->preliminaryGroupSize; $numFight++) {
-                $fight = new PreliminaryFight;
+                $fight = new PreliminaryFight();
                 $fight->saveFights($groups, $numFight);
             }
             $initialRound++;
         }
         // Save Next rounds
-        $fight = new DirectEliminationFight;
+        $fight = new DirectEliminationFight();
         $fight->saveFights($this->championship, $initialRound);
     }
 
-
     /**
-     * Return number of rounds for the tree based on fighter count
+     * Return number of rounds for the tree based on fighter count.
+     *
      * @param $numFighters
+     *
      * @return int
      */
     protected function getNumRounds($numFighters)

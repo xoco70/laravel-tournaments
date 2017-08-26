@@ -6,16 +6,15 @@ use Illuminate\Support\Collection;
 
 class PreliminaryFight extends Fight
 {
-
     public function __construct(Fight $fight = null)
     {
         parent::__construct();
-        if ($fight!=null){
-            $this->id= $fight->id;
-            $this->short_id= $fight->short_id;
-            $this->fighters_group_id= $fight->fighters_group_id;
-            $this->c1= $fight->c1;
-            $this->c2= $fight->c2;
+        if ($fight != null) {
+            $this->id = $fight->id;
+            $this->short_id = $fight->short_id;
+            $this->fighters_group_id = $fight->fighters_group_id;
+            $this->c1 = $fight->c1;
+            $this->c2 = $fight->c2;
         }
     }
 
@@ -23,7 +22,7 @@ class PreliminaryFight extends Fight
      * Save a Fight.
      *
      * @param Collection $groups
-     * @param int $numGroup
+     * @param int        $numGroup
      */
     public static function saveFights(Collection $groups, $numGroup = 1)
     {
@@ -31,7 +30,6 @@ class PreliminaryFight extends Fight
         $order = 1;
 
         foreach ($groups as $group) {
-
             $fighters = $group->getFightersWithBye();
 
             $fighter1 = $fighters->get(0);
@@ -61,6 +59,7 @@ class PreliminaryFight extends Fight
      * @param $competitor1
      * @param $competitor2
      * @param $order
+     *
      * @return mixed
      */
     private static function saveFight($group, $competitor1, $competitor2, $order)
@@ -72,6 +71,7 @@ class PreliminaryFight extends Fight
         $fight->short_id = $order++;
         $fight->area = $group->area;
         $fight->save();
+
         return $order;
     }
 }

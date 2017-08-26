@@ -53,6 +53,7 @@ class Championship extends Model
         if ($this->category->isTeam) {
             return $this->hasMany(Team::class);
         }
+
         return $this->hasMany(Competitor::class);
     }
 
@@ -159,7 +160,8 @@ class Championship extends Model
     }
 
     /**
-     * Get the fights that happen to the first round
+     * Get the fights that happen to the first round.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function firstRoundFights()
@@ -175,8 +177,9 @@ class Championship extends Model
 
     public function buildName()
     {
-        if ($this->settings != null && $this->settings->alias != null)
+        if ($this->settings != null && $this->settings->alias != null) {
             return $this->settings->alias;
+        }
 
         if ($this->hasNoCustomSettings()) {
             return $this->category->name;
@@ -185,14 +188,14 @@ class Championship extends Model
         $genders = [
             'M' => trans('categories.male'),
             'F' => trans('categories.female'),
-            'X' => trans('categories.mixt')
+            'X' => trans('categories.mixt'),
         ];
 
         $teamText = $this->category->isTeam == 1 ? trans_choice('core.team', 1) : trans('categories.single');
         $ageCategoryText = $this->category->getAgeString();
         $gradeText = $this->category->getGradeString();
 
-        return $teamText . ' ' . $genders[$this->category->gender] . ' ' . $ageCategoryText . ' ' . $gradeText;
+        return $teamText.' '.$genders[$this->category->gender].' '.$ageCategoryText.' '.$gradeText;
     }
 
     public function getSettings()
@@ -201,8 +204,10 @@ class Championship extends Model
     }
 
     /**
-     * Return Groups that belongs to a round
-     * @param integer $round
+     * Return Groups that belongs to a round.
+     *
+     * @param int $round
+     *
      * @return HasMany
      */
     public function groupsByRound($round)
@@ -211,8 +216,10 @@ class Championship extends Model
     }
 
     /**
-     * Return Groups that belongs to a round
-     * @param integer $round
+     * Return Groups that belongs to a round.
+     *
+     * @param int $round
+     *
      * @return HasMany
      */
     public function groupsFromRound($round)
@@ -221,9 +228,10 @@ class Championship extends Model
     }
 
     /**
-     * Return Fights that belongs to a round
+     * Return Fights that belongs to a round.
      *
-     * @param integer $round
+     * @param int $round
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function fightsByRound($round)
@@ -272,6 +280,7 @@ class Championship extends Model
             default:
                 $generation = new PlayOffCompetitorTreeGen($this, null);
         }
+
         return $generation;
     }
 
@@ -283,6 +292,7 @@ class Championship extends Model
         if ($this->hasPreliminary()) {
             return $this->getSettings()->preliminaryGroupSize;
         }
+
         return 2;
     }
 }

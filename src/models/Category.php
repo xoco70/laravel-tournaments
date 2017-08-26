@@ -32,10 +32,8 @@ class Category extends Model
         'gradeMax',
     ];
 
-
     public function getNameAttribute($name)
     {
-
         return trans($name);
     }
 

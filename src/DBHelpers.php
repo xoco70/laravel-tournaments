@@ -6,9 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class DBHelpers
 {
-
-
-    static function setFKCheckOff()
+    public static function setFKCheckOff()
     {
         switch (DB::getDriverName()) {
             case 'mysql':
@@ -20,7 +18,7 @@ class DBHelpers
         }
     }
 
-    static function setFKCheckOn()
+    public static function setFKCheckOn()
     {
         switch (DB::getDriverName()) {
             case 'mysql':
