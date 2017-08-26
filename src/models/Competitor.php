@@ -29,14 +29,6 @@ class Competitor extends Fighter
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function fightersGroups()
-    {
-        return $this->belongsToMany(FightersGroup::class, 'fighters_group_competitor')->withTimestamps();
-    }
-
-    /**
      * @return null|string
      */
     public function getNameAttribute()
