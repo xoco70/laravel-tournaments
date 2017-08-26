@@ -51,7 +51,6 @@ abstract class TreeGen implements TreeGenerable
         $this->tree = new Collection();
     }
 
-
     /**
      * Generate tree groups for a championship.
      *
@@ -64,7 +63,8 @@ abstract class TreeGen implements TreeGenerable
     }
 
     /**
-     * Get the biggest entity group
+     * Get the biggest entity group.
+     *
      * @param $userGroups
      *
      * @return int
@@ -77,7 +77,6 @@ abstract class TreeGen implements TreeGenerable
             })
             ->first()
             ->count();
-
     }
 
     /**
@@ -85,6 +84,7 @@ abstract class TreeGen implements TreeGenerable
      * Countries for Internation Tournament, State for a National Tournament, etc.
      *
      * @param $fighters
+     *
      * @return Collection
      */
     private function getFightersByEntity($fighters): Collection
@@ -98,13 +98,16 @@ abstract class TreeGen implements TreeGenerable
         } else {
             $fighterGroups = $fighters->chunk(1); // Collection of Collection
         }
+
         return $fighterGroups;
     }
 
     /**
-     * Get the size the first round will have
+     * Get the size the first round will have.
+     *
      * @param $fighterCount
      * @param $groupSize
+     *
      * @return int
      */
     protected function getTreeSize($fighterCount, $groupSize)
@@ -122,18 +125,17 @@ abstract class TreeGen implements TreeGenerable
                 if ($fighterCountPerArea < $groupSize) {
                     $treeSize = $treeSize * $numAreas;
                 }
+
                 return $treeSize;
             }
-
         }
 
-
         return 64 * $groupSize;
-
     }
 
     /**
-     * Repart BYE in the tree,
+     * Repart BYE in the tree,.
+     *
      * @param $fighterGroups
      * @param int $max
      *
@@ -169,7 +171,7 @@ abstract class TreeGen implements TreeGenerable
         $sizeGroupBy = count($byeGroup);
 
         $frequency = $sizeGroupBy != 0
-            ? (int)floor($sizeFighters / $sizeGroupBy)
+            ? (int) floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
@@ -201,6 +203,7 @@ abstract class TreeGen implements TreeGenerable
      * @param $order
      * @param $round
      * @param $parent
+     *
      * @return FightersGroup
      */
     protected function saveGroup($order, $round, $parent): FightersGroup
@@ -215,12 +218,13 @@ abstract class TreeGen implements TreeGenerable
             $group->parent_id = $parent->id;
         }
         $group->save();
+
         return $group;
     }
 
-
     /**
-     * @param integer $groupSize
+     * @param int $groupSize
+     *
      * @return Collection
      */
     public function createByeGroup($groupSize): Collection
@@ -230,19 +234,20 @@ abstract class TreeGen implements TreeGenerable
         for ($i = 0; $i < $groupSize; $i++) {
             $group->push($byeFighter);
         }
+
         return $group;
     }
 
     /**
      * @param $fighters
      * @param Collection $fighterGroups
+     *
      * @return Collection
      */
     public function adjustFightersGroupWithByes($fighters, $fighterGroups): Collection
     {
         $tmpFighterGroups = clone $fighterGroups;
         $byeGroup = $this->getByeGroup($fighters);
-
 
         // Get biggest competitor's group
         $max = $this->getMaxFightersByEntity($tmpFighterGroups);
@@ -251,38 +256,46 @@ abstract class TreeGen implements TreeGenerable
 
         $fighters = $this->repart($fighterGroups, $max);
         $fighters = $this->insertByes($fighters, $byeGroup);
+
         return $fighters;
     }
 
     /**
-     * Get All Groups on previous round
+     * Get All Groups on previous round.
+     *
      * @param $currentRound
+     *
      * @return Collection
      */
     private function getPreviousRound($currentRound)
     {
         $previousRound = $this->championship->groupsByRound($currentRound + 1)->get();
+
         return $previousRound;
     }
 
     /**
-     * Get the next group on the right ( parent ), final round being the ancestor
+     * Get the next group on the right ( parent ), final round being the ancestor.
+     *
      * @param $matchNumber
      * @param Collection $previousRound
+     *
      * @return mixed
      */
     private function getParentGroup($matchNumber, $previousRound)
     {
         $parentIndex = intval(($matchNumber + 1) / 2);
         $parent = $previousRound->get($parentIndex - 1);
+
         return $parent;
     }
 
-
     /**
-     * Group Fighters by area
-     * @return Collection
+     * Group Fighters by area.
+     *
      * @throws TreeGenerationException
+     *
+     * @return Collection
      */
     private function getFightersByArea()
     {
@@ -295,7 +308,7 @@ abstract class TreeGen implements TreeGenerable
             throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('laravel-tournaments.MIN_COMPETITORS_X_AREA')]));
         }
 
-        if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1 ) {
+        if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1) {
             throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('laravel-tournaments.MIN_COMPETITORS_X_AREA')]));
         }
 
@@ -307,7 +320,8 @@ abstract class TreeGen implements TreeGenerable
     }
 
     /**
-     * Attach a parent to every child for nestedSet Navigation
+     * Attach a parent to every child for nestedSet Navigation.
+     *
      * @param $numFightersElim
      */
     private function addParentToChildren($numFightersElim)
@@ -335,6 +349,7 @@ abstract class TreeGen implements TreeGenerable
      * @param $frequency
      * @param $sizeGroupBy
      * @param $bye
+     *
      * @return Collection
      */
     private function getFullFighterList(Collection $fighters, $frequency, $sizeGroupBy, $bye): Collection
@@ -350,6 +365,7 @@ abstract class TreeGen implements TreeGenerable
             $newFighters->push($fighter);
             $count++;
         }
+
         return $newFighters;
     }
 
@@ -358,6 +374,7 @@ abstract class TreeGen implements TreeGenerable
      * @param $sizeGroupBy
      * @param $count
      * @param $byeCount
+     *
      * @return bool
      */
     private function shouldInsertBye($frequency, $sizeGroupBy, $count, $byeCount): bool
@@ -365,9 +382,8 @@ abstract class TreeGen implements TreeGenerable
         return $frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeGroupBy;
     }
 
-
     /**
-     * Destroy Previous Fights for demo
+     * Destroy Previous Fights for demo.
      */
     protected function destroyPreviousFights()
     {
@@ -376,9 +392,8 @@ abstract class TreeGen implements TreeGenerable
         Fight::destroy($arrGroupsId);
     }
 
-
     /**
-     * Generate Fights for next rounds
+     * Generate Fights for next rounds.
      */
     public function generateNextRoundsFights()
     {
@@ -397,7 +412,9 @@ abstract class TreeGen implements TreeGenerable
     {
         foreach ($groupsByRound as $keyGroup => $group) {
             $parentGroup = $group->parent;
-            if ($parentGroup == null) break;
+            if ($parentGroup == null) {
+                break;
+            }
             $parentFight = $parentGroup->fights->get(0);
 
             // determine whether c1 or c2 must be updated
@@ -427,11 +444,12 @@ abstract class TreeGen implements TreeGenerable
         }
     }
 
-
     /**
-     * Calculate the area of the group ( group is still not created )
+     * Calculate the area of the group ( group is still not created ).
+     *
      * @param $round
      * @param $order
+     *
      * @return int
      */
     protected function getNumArea($round, $order)
@@ -447,21 +465,15 @@ abstract class TreeGen implements TreeGenerable
         return $numArea;
     }
 
-    /**
-     *
-     */
     protected function generateAllTrees()
     {
         $usersByArea = $this->getFightersByArea();
-        $numFighters = sizeof($usersByArea->collapse());
+        $numFighters = count($usersByArea->collapse());
         $this->generateGroupsForRound($usersByArea, 1);
         $this->pushEmptyGroupsToTree($numFighters); // Abstract
         $this->addParentToChildren($numFighters);
     }
 
-    /**
-     *
-     */
     protected function generateAllFights()
     {
         $this->generateFights(); // Abstract

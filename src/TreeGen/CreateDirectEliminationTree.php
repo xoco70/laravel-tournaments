@@ -30,16 +30,15 @@ class CreateDirectEliminationTree
             $fighters = $item->getFightersWithBye();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
+
             return [$fighter1, $fighter2];
         })->flatten()->all();
     }
 
     public function build()
     {
-
         $fighters = $this->firstRoundName;
         $this->numFighters = count($fighters);
-
 
         //Calculate the size of the first full round - for example if you have 5 fighters, then the first full round will consist of 4 fighters
         $this->noRounds = log($this->numFighters, 2);
@@ -61,7 +60,6 @@ class CreateDirectEliminationTree
         //Create the result of the empty rows for this tournament
         $this->assignFightersToBracket($roundNumber, $this->hasPreliminary);
         $this->assignPositions();
-
     }
 
     private function assignPositions()
@@ -73,7 +71,6 @@ class CreateDirectEliminationTree
         $playerHeightFactor = 1;
 
         foreach ($this->brackets as $roundNumber => &$round) {
-
             foreach ($round as $matchNumber => &$match) {
 
                 //Give teams a nicer index
@@ -101,77 +98,62 @@ class CreateDirectEliminationTree
                 } else {
                     $match['hConnector2Top'] = $match['vConnectorTop'] + ($match['vConnectorHeight'] - $this->borderWidth);
                 }
-
             }
 
             //Update the spacing variables
 
             $spaceFactor *= 2;
             $playerHeightFactor *= 2;
-
         }
-
     }
 
     /**
-     * Print Round Titles
+     * Print Round Titles.
      */
     public function printRoundTitles()
     {
-
         if ($this->numFighters == 2) {
-
-            $roundTitles = array('Final');
-
+            $roundTitles = ['Final'];
         } elseif ($this->numFighters <= 4) {
-
-            $roundTitles = array('Semi-Finals', 'Final');
-
+            $roundTitles = ['Semi-Finals', 'Final'];
         } elseif ($this->numFighters <= 8) {
-
-            $roundTitles = array('Quarter-Finals', 'Semi-Finals', 'Final');
-
+            $roundTitles = ['Quarter-Finals', 'Semi-Finals', 'Final'];
         } else {
-
-            $roundTitles = array('Quarter-Finals', 'Semi-Finals', 'Final');
+            $roundTitles = ['Quarter-Finals', 'Semi-Finals', 'Final'];
             $noRounds = ceil(log($this->numFighters, 2));
             $noTeamsInFirstRound = pow(2, ceil(log($this->numFighters) / log(2)));
-            $tempRounds = array();
+            $tempRounds = [];
 
             //The minus 3 is to ignore the final, semi final and quarter final rounds
 
             for ($i = 0; $i < $noRounds - 3; $i++) {
-                $tempRounds[] = 'Last ' . $noTeamsInFirstRound;
+                $tempRounds[] = 'Last '.$noTeamsInFirstRound;
                 $noTeamsInFirstRound /= 2;
             }
 
             $roundTitles = array_merge($tempRounds, $roundTitles);
-
         }
 
         echo '<div id="round-titles-wrapper">';
 
         foreach ($roundTitles as $key => $roundTitle) {
-
             $left = $key * ($this->matchWrapperWidth + $this->roundSpacing - 1);
 
-            echo '<div class="round-title" style="left: ' . $left . 'px;">' . $roundTitle . '</div>';
-
+            echo '<div class="round-title" style="left: '.$left.'px;">'.$roundTitle.'</div>';
         }
 
         echo '</div>';
-
     }
 
     /**
      * @param $selected
+     *
      * @return string
      */
     public function getPlayerList($selected)
     {
-
         $html = '<select>
-                <option' . ($selected == '' ? ' selected' : '') . '></option>';
+                <option'.($selected == '' ? ' selected' : '').'></option>';
 
         foreach ($this->championship->fighters as $fighter) {
             $html = $this->addOptionToSelect($selected, $fighter, $html);
@@ -180,15 +162,15 @@ class CreateDirectEliminationTree
         $html .= '</select>';
 
         return $html;
-
     }
 
     public function getNewFighter()
     {
         if ($this->championship->category->isTeam()) {
-            return new Team;
+            return new Team();
         }
-        return new Competitor;
+
+        return new Competitor();
     }
 
     /**
@@ -205,7 +187,6 @@ class CreateDirectEliminationTree
                 if ($this->championship->category->isTeam()) {
                     $fighter1 = $fight->team1;
                     $fighter2 = $fight->team2;
-
                 } else {
                     $fighter1 = $fight->competitor1;
                     $fighter2 = $fight->competitor2;
@@ -219,20 +200,21 @@ class CreateDirectEliminationTree
      * @param $selected
      * @param $fighter
      * @param $html
+     *
      * @return string
      */
     private function addOptionToSelect($selected, $fighter, $html): string
     {
         if ($fighter != null) {
             $select = $selected != null && $selected->id == $fighter->id ? ' selected' : '';
-            $html .= '<option' . $select
-                . ' value='
-                . ($fighter->id ?? '')
-                . '>'
-                . $fighter->name
-                . '</option>';
-
+            $html .= '<option'.$select
+                .' value='
+                .($fighter->id ?? '')
+                .'>'
+                .$fighter->name
+                .'</option>';
         }
+
         return $html;
     }
 }

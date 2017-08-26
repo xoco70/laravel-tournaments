@@ -41,7 +41,7 @@ class Competitor extends Fighter
      */
     public function getFullName() //TODO Should remove get prefix
     {
-        return $this->defaultName() ?? $this->user->firstname . " " . $this->user->lastname;
+        return $this->defaultName() ?? $this->user->firstname.' '.$this->user->lastname;
     }
 
     /**
@@ -50,9 +50,7 @@ class Competitor extends Fighter
     private function defaultName()
     {
         if ($this == null || $this->user == null) {
-            return "";
+            return '';
         }
-        return null;
     }
-
 }

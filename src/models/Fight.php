@@ -9,6 +9,7 @@ class Fight extends Model
 {
     /**
      * Fight constructor.
+     *
      * @param int $userId1
      * @param int $userId2
      */
@@ -28,7 +29,6 @@ class Fight extends Model
         'c2',
     ];
 
-
     /**
      * Get First Fighter.
      *
@@ -41,18 +41,21 @@ class Fight extends Model
 
     /**
      * @param FightersGroup|null $group
+     *
      * @return Collection
      */
     protected static function getFightersWithByes(FightersGroup $group)
     {
-        if ($group == null) return null;
+        if ($group == null) {
+            return;
+        }
         $fighters = $group->getFightersWithBye();
         $fighterType = $group->getFighterType();
-        if (sizeof($fighters) == 0) {
-            $fighters->push(new $fighterType);
-            $fighters->push(new $fighterType);
-        } else if (count($fighters) % 2 != 0) {
-            $fighters->push(new $fighterType);
+        if (count($fighters) == 0) {
+            $fighters->push(new $fighterType());
+            $fighters->push(new $fighterType());
+        } elseif (count($fighters) % 2 != 0) {
+            $fighters->push(new $fighterType());
         }
 
         return $fighters;
@@ -98,39 +101,44 @@ class Fight extends Model
         return $this->belongsTo(Team::class, 'c2', 'id');
     }
 
-
     /**
      * @param $numFighter
      * @param $attr
+     *
      * @return null|string
      */
     public function getFighterAttr($numFighter, $attr)
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-            $teamToUpdate = 'team' . $numFighter;
+            $teamToUpdate = 'team'.$numFighter;
+
             return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$attr;
         }
-        $competitorToUpdate = 'competitor' . $numFighter;
+        $competitorToUpdate = 'competitor'.$numFighter;
         if ($attr == 'name') {
             return $this->$competitorToUpdate == null
                 ? 'BYE'
-                : $this->$competitorToUpdate->user->firstname . " " . $this->$competitorToUpdate->user->lastname;
+                : $this->$competitorToUpdate->user->firstname.' '.$this->$competitorToUpdate->user->lastname;
         } elseif ($attr == 'short_id') {
             return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
         }
-        return null;
     }
-
 
     /**
      * @return bool
      */
     public function shouldBeInFightList()
     {
-        if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) return false;
-        if (!$this->belongsToFirstRound() && $this->dontHave0Fighters()) return true;
-        if ($this->has2Fighters()) return true;
+        if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) {
+            return false;
+        }
+        if (!$this->belongsToFirstRound() && $this->dontHave0Fighters()) {
+            return true;
+        }
+        if ($this->has2Fighters()) {
+            return true;
+        }
         // We aint in the first round, and there is 1 or 0 competitor
         // We check children, and see :
         // if there is 2  - 2 fighters -> undetermine, we cannot add it to fight list
@@ -145,7 +153,8 @@ class Fight extends Model
     }
 
     /**
-     * return true if fight has 2 fighters ( No BYE )
+     * return true if fight has 2 fighters ( No BYE ).
+     *
      * @return bool
      */
     public function has2Fighters(): bool
@@ -159,7 +168,10 @@ class Fight extends Model
     private function belongsToFirstRound()
     {
         $firstRoundFights = $this->group->championship->firstRoundFights->pluck('id')->toArray();
-        if (in_array($this->id, $firstRoundFights)) return true;
+        if (in_array($this->id, $firstRoundFights)) {
+            return true;
+        }
+
         return false;
     }
 
@@ -179,7 +191,6 @@ class Fight extends Model
         return $this->c1 != null || $this->c2 != null;
     }
 
-
     /**
      * @param Championship $championship
      */
@@ -193,6 +204,7 @@ class Fight extends Model
 
     /**
      * @param $order
+     *
      * @return int
      */
     public function updateShortId($order)
@@ -200,9 +212,10 @@ class Fight extends Model
         if ($this->shouldBeInFightList()) {
             $this->short_id = $order;
             $this->save();
+
             return ++$order;
         }
+
         return $order;
     }
-
 }

@@ -8,17 +8,19 @@ use Xoco70\LaravelTournaments\Models\Team;
 
 class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
 {
-
     /**
-     * get Fighter by Id
+     * get Fighter by Id.
+     *
      * @return Team
      */
     protected function getFighter($teamId)
     {
         return Team::find($teamId);
     }
+
     /**
-     * Fighter is the name for competitor or team, depending on the case
+     * Fighter is the name for competitor or team, depending on the case.
+     *
      * @return Collection
      */
     protected function getFighters()
@@ -29,6 +31,7 @@ class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
     /**
      * @param FightersGroup $group
      * @param $fighters
+     *
      * @return FightersGroup
      */
     public function syncGroup(FightersGroup $group, $fighters)

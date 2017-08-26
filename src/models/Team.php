@@ -8,22 +8,21 @@ class Team extends Fighter
     public $timestamps = true;
     protected $fillable = ['short_id', 'name', 'championship_id'];
 
-
-
-
     public function competitors()
     {
         return $this->belongsToMany(Competitor::class)->withTimestamps();
     }
 
     /**
-     * Get Team Name
+     * Get Team Name.
+     *
      * @return mixed|string
      */
     public function getNameAttribute()
     {
-        return ($this->hasAttribute('name')) ? $this->attributes['name'] : "";
+        return ($this->hasAttribute('name')) ? $this->attributes['name'] : '';
     }
+
     public function hasAttribute($attr)
     {
         return array_key_exists($attr, $this->attributes);

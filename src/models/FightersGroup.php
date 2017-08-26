@@ -37,6 +37,7 @@ class FightersGroup extends Model
         if ($this->championship->category->isTeam()) {
             return $this->teams;
         }
+
         return $this->competitors;
     }
 
@@ -49,7 +50,6 @@ class FightersGroup extends Model
     {
         return $this->belongsToMany(Competitor::class, 'fighters_group_competitor')->withTimestamps();
     }
-
 
     /**
      * Supercharge of sync Many2Many function.
@@ -87,17 +87,16 @@ class FightersGroup extends Model
             } else {
                 DB::table('fighters_group_competitor')->insertGetId(
                     ['competitor_id' => null, 'fighters_group_id' => $this->id,
-                        "created_at" => Carbon::now(),
-                        "updated_at" => Carbon::now(),
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
                     ]
                 );
             }
         }
     }
 
-
     /**
-     * Get the many 2 many relationship with the Null Rows
+     * Get the many 2 many relationship with the Null Rows.
      *
      * @return Collection
      */
@@ -111,10 +110,9 @@ class FightersGroup extends Model
         foreach ($fgcs as $fgc) {
             $competitors->push($fgc->competitor ?? new Competitor());
         }
+
         return $competitors;
-
     }
-
 
     /**
      * @return Collection
@@ -130,7 +128,6 @@ class FightersGroup extends Model
         }
 
         return $teams;
-
     }
 
     /**
@@ -141,8 +138,8 @@ class FightersGroup extends Model
         if ($this->championship->category->isTeam()) {
             return $this->teamsWithBye();
         }
-        return $this->competitorsWithBye();
 
+        return $this->competitorsWithBye();
     }
 
     public static function getBaseNumGroups($initialGroupId, $numGroups, $numRound): int
@@ -164,31 +161,34 @@ class FightersGroup extends Model
         if ($this->championship->category->isTeam()) {
             return Team::class;
         }
+
         return Competitor::class;
     }
 
     /**
      * Check if we are able to fill the parent fight or not
-     * If one of the children has c1 x c2, then we must wait to fill parent
+     * If one of the children has c1 x c2, then we must wait to fill parent.
      *
      * @return bool
      */
     public function hasDeterminedParent()
     {
         // There is more than 1 fight, should be Preliminary
-        if (sizeof($this->fighters()) > 1){
+        if (count($this->fighters()) > 1) {
             return false;
         }
         foreach ($this->children as $child) {
-            if (sizeof($child->fighters()) > 1) return false;
+            if (count($child->fighters()) > 1) {
+                return false;
+            }
         }
-        return true;
 
+        return true;
     }
 
-
     /**
-     * In the original fight ( child ) return the field that contains data to copy to parent
+     * In the original fight ( child ) return the field that contains data to copy to parent.
+     *
      * @return int
      */
     public function getValueToUpdate()
@@ -196,22 +196,22 @@ class FightersGroup extends Model
         if ($this->championship->category->isTeam()) {
             return $this->teams->map->id[0];
         }
+
         return $this->competitors->map->id[0];
     }
 
     /**
-     * Returns the parent field that need to be updated
+     * Returns the parent field that need to be updated.
+     *
      * @return null|string
      */
     public function getParentFighterToUpdate($keyGroup)
     {
         if (intval($keyGroup % 2) == 0) {
-            return "c1";
+            return 'c1';
         }
         if (intval($keyGroup % 2) == 1) {
-            return "c2";
+            return 'c2';
         }
-
-        return null;
     }
 }

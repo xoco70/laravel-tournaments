@@ -7,14 +7,15 @@ class DirectEliminationFight extends Fight
     public function __construct(Fight $fight = null)
     {
         parent::__construct();
-        if ($fight!=null){
-            $this->id= $fight->id;
-            $this->short_id= $fight->short_id;
-            $this->fighters_group_id= $fight->fighters_group_id;
-            $this->c1= $fight->c1;
-            $this->c2= $fight->c2;
+        if ($fight != null) {
+            $this->id = $fight->id;
+            $this->short_id = $fight->short_id;
+            $this->fighters_group_id = $fight->fighters_group_id;
+            $this->c1 = $fight->c1;
+            $this->c2 = $fight->c2;
         }
     }
+
     /**
      * @param Championship $championship
      */
@@ -40,7 +41,6 @@ class DirectEliminationFight extends Fight
                     $fight->c2 = $round[$i][$j]['Away']->id;
                     $fight->area = $group->area;
                     $fight->save();
-
                 }
                 if ($countHome + $countAway - 1 > 2) {
                     $away->prepend($home->splice(1, 1)->shift());
@@ -49,6 +49,4 @@ class DirectEliminationFight extends Fight
             }
         }
     }
-
-
 }
