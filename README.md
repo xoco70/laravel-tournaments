@@ -20,9 +20,6 @@ Laravel Tournaments
 <br>
 <img src="https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments.gif" alt="Laravel Tournaments Demo">
 </h1>
-![alt text]
-
-![Database Model](https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments-database-model.png)
 
 * [Features](#features)
 * [Installation](#installation)
@@ -81,7 +78,7 @@ Finally, from the command line again, publish the default configuration file:
 php artisan vendor:publish
 ```
 #Data model
-
+![Database Model](https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments-database-model.png)
 # Usage
 ```php
 // Create a tournament
