@@ -25,14 +25,14 @@ Laravel Tournaments
 * [Installation](#installation)
 * [Data Model](#data-model)
 * [Usage](#usage)
-  * [Models](#models)
+* [Models](#models)
     * [Tournament](#tournament)
     * [Championship](#championship)
     * [FightersGroup](#fightersGroup)
     * [Competitor](#competitor)
     * [Team](#team)
     * [Fight](#fight)
-  * [Helpers](#helpers)
+* [Include views](#include-views)
 * [Run the demo](#run-the-demo)
 * [Limitations](#limitations)
 * [Troubleshooting](#troubleshooting)
@@ -257,6 +257,8 @@ $team1 = $fight->team1; // Get team1
 $team2 = $fight->team2; // Get team2
 ```
 
+## Include views
+Comming soon
 ## Run the demo
 
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
