@@ -124,7 +124,7 @@ class Tournament extends Model
     }
 
     /**
-     * çGet All teams that belongs to a tournament.
+     * Get All teams that belongs to a tournament.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
