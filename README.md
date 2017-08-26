@@ -79,7 +79,7 @@ php artisan vendor:publish
 #Data model
 
 # Usage
-```shell
+```php
 // Create a tournament
 $tournament = factory(Tournament::class)->create(['user_id' => Auth::user()->id]);
 
@@ -121,23 +121,23 @@ $this->generateAllFights();
 ### Tournaments
 
 Create a tournament
-```shell
+```php
 factory(Tournament::class)->create(['user_id' => Auth::user()->id]);
 
 ```
 
 Get tournament owner 
-```shell
+```php
 $user = $tournament->owner;
 ```
 
 Get tournament venue 
-```shell
+```php
 $user = $tournament->venue;
 ```
 
 Get tournament championships
-```shell
+```php
 $user = $tournament->championships;
 ```
 
