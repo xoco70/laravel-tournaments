@@ -43,5 +43,5 @@ $settings = $championship->getSettings();
     </table><br/>
 @endforeach
 
-@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1])
+
 

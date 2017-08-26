@@ -20,8 +20,8 @@ $treeType = $setting->treeType;
 $hasPreliminary = $setting->hasPreliminary;
 $fightingAreas = $setting->fightingAreas;
 $fights = $championship->fights;
-$numFighters = session()->has('numFighters')  ?  session('numFighters'):   5;
-$isTeam = session()->has('isTeam')  ?  session('isTeam'):   0;
+$numFighters = session()->has('numFighters') ? session('numFighters') : 5;
+$isTeam = session()->has('isTeam') ? session('isTeam') : 0;
 ?>
 @include('laravel-tournaments::partials.errors')
 
@@ -34,6 +34,7 @@ $isTeam = session()->has('isTeam')  ?  session('isTeam'):   0;
             <hr/>
             @if ($championship->hasPreliminary())
                 @include('laravel-tournaments::partials.tree.preliminary')
+                @include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1])
             @else
                 @if ($championship->isDirectEliminationType())
                     @include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 0])
@@ -44,14 +45,7 @@ $isTeam = session()->has('isTeam')  ?  session('isTeam'):   0;
                 @endif
             @endif
             <br/>
-            @if ($championship->isDirectEliminationType() && !$championship->hasPreliminary() )
-
-                <h1 >Fight List</h1>
-            @else
-                <h1>Fight List</h1>
-            @endif
-
-            <hr/>
+            <h1>Fight List</h1> <hr/>
             <div align="center">
                 @include('laravel-tournaments::partials.fights')
             </div>

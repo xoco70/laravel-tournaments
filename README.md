@@ -257,8 +257,23 @@ $team1 = $fight->team1; // Get team1
 $team2 = $fight->team2; // Get team2
 ```
 
-## Include views
-Comming soon
+## Views
+Preliminary tree
+```php
+@include('laravel-tournaments::partials.tree.preliminary') // Preliminary table
+@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1]) // Brackets adding below
+```
+
+Direct Elimination tree
+```php
+@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 0]) // Brackets adding below
+```
+
+Fight List
+```php
+@include('laravel-tournaments::partials.fights')
+```
+
 ## Run the demo
 
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
