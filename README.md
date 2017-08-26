@@ -23,8 +23,15 @@ Laravel Tournaments
 
 * [Features](#features)
 * [Installation](#installation)
+* [Data Model](#data-model)
 * [Usage](#usage)
   * [Models](#models)
+    * [Tournament](#tournament)
+    * [Championship](#championship)
+    * [FightersGroup](#fightersGroup)
+    * [Competitor](#competitor)
+    * [Team](#team)
+    * [Fight](#fight)
   * [Helpers](#helpers)
 * [Run the demo](#run-the-demo)
 * [Limitations](#limitations)
@@ -67,8 +74,8 @@ Then, update `config/app.php` by adding an entry for the service provider.
 
 ```php
 'providers' => [
-// ...
-Xoco70\LaravelTournaments\TournamentsServiceProvider::class,
+    // ...
+    Xoco70\LaravelTournaments\TournamentsServiceProvider::class,
 ];
 ```
 
@@ -77,9 +84,7 @@ Finally, from the command line again, publish the default configuration file:
 ```php
 php artisan vendor:publish
 ```
-#Data model
-![Database Model](https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments-database-model.png)
-# Usage
+## Usage
 ```php
 // Create a tournament
 
@@ -94,8 +99,8 @@ $settings = factory(ChampionshipSettings::class)->create(['championship_id' => $
 // Add competitors to championship
 
 $competitor = factory(\App\Competitor::class)->create([
-'championship_id' => $championship->id,
- 'user_id' => factory(User::class)->create()->id
+    'championship_id' => $championship->id,
+     'user_id' => factory(User::class)->create()->id
 ]);
 
 // Define strategy to generate
@@ -115,19 +120,19 @@ $this->generateAllTrees();
 $this->generateAllFights();
 
 ```
-# Database Model
+## Data model
+![Database Model](https://raw.githubusercontent.com/xoco70/laravel-tournaments/master/resources/assets/images/laravel-tournaments-database-model.png)
 
-## Tournaments
+## Models
+### Tournament
 
 ```php
 // Create a tournament
 
 $tournament = factory(Tournament::class)->create(['user_id' => Auth::user()->id]);
-
 ```
 
 ```php
-
 $user = $tournament->owner;
 ```
 
@@ -203,7 +208,7 @@ $championship->isDirectEliminationType()
 ```
 
 
-## FightersGroup
+### FightersGroup
 ```php
 $groups = $championship->fightersGroups; // Get groups
 ```
@@ -222,7 +227,7 @@ To get the instance name:
 ```php
 $type = $group->getFighterType() // Should return Team::class or Competitor::class
 ```
-## Competitor
+### Competitor
 ```php
 $competitors = $championship->competitors; // Get competitors
 ```
@@ -231,17 +236,7 @@ $competitors = $championship->competitors; // Get competitors
 $user = $competitor->user; // Get user
 ```
 
-## Fight 
-
-```php
-$group = $fight->group; // Get group
-$competitor1 = $fight->competitor1; // Get competitor1
-$competitor2 = $fight->competitor2; // Get competitor2
-$team1 = $fight->team1; // Get team1
-$team2 = $fight->team2; // Get team2
-```
-
-## Team
+### Team
 ```php
 // Create a team
 
@@ -260,7 +255,17 @@ $team->competitors()->detach($competitor->id);
 
 ```
 
-# Run the demo
+### Fight 
+
+```php
+$group = $fight->group; // Get group
+$competitor1 = $fight->competitor1; // Get competitor1
+$competitor2 = $fight->competitor2; // Get competitor2
+$team1 = $fight->team1; // Get team1
+$team2 = $fight->team2; // Get team2
+```
+
+## Run the demo
 
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
 
@@ -292,12 +297,12 @@ This is a work in progress, and tree creation might be very complex, so there is
 - Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
 We can improve that making the first match with 3 competitors.
 - Use any number of area ( restricted to 1,2,4,8) 
-# Troubleshooting
+## Troubleshooting
 
 ### Specified key was too long error
 For those running MariaDB or older versions of MySQL you may hit this error when trying to run migrations:
 As outlined in the <a href="https://laravel.com/docs/master/migrations#creating-indexes">Migrations guide</a> to fix this all you have to do is edit your AppServiceProvider.php file and inside the boot method set a default string length:
-```
+```php
 use Illuminate\Support\Facades\Schema;
 
 public function boot()
@@ -305,6 +310,6 @@ public function boot()
 Schema::defaultStringLength(191);
 }
 ```
-#ChangeLog:
+##ChangeLog:
 
 v0.11: Initial Version
