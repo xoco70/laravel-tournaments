@@ -4,7 +4,7 @@ namespace Xoco70\LaravelTournaments\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class PreliminaryTest extends TestCase
+class DirectEliminationWPrelimTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -78,7 +78,7 @@ class PreliminaryTest extends TestCase
         ];
         foreach ($numFights as $numArea => $numFightPerArea) {
             foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
-                $setting = $this->createSetting($numArea, $numCompetitors, 0, 1, 3); // $team
+                $setting = $this->createSetting($numArea, $numCompetitors, 1, 1, 3); // $team
                 $this->generateTreeWithUI($setting);
                 parent::checkFightsNumber($this->championshipWithComp, $setting, $numFightsExpected, __METHOD__);
             }
