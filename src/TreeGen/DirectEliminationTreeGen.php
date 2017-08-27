@@ -21,7 +21,6 @@ abstract class DirectEliminationTreeGen extends TreeGen
         $firstRoundGroupSize = $this->firstRoundGroupSize();
         $treeSize = $this->getTreeSize($fighterCount, $firstRoundGroupSize);
         $byeCount = $treeSize - $fighterCount;
-
         return $this->createByeGroup($byeCount);
     }
 
@@ -95,15 +94,14 @@ abstract class DirectEliminationTreeGen extends TreeGen
     {
         //  First Round Fights
         $settings = $this->championship->getSettings();
-//        dd("ok");
-//        parent::destroyPreviousFights();
-        $groups = $this->championship->groupsByRound(1)->get();
         $initialRound = 1;
+
         // Very specific case to common case : Preliminary with 3 fighters
         if ($this->championship->hasPreliminary() && $settings->preliminaryGroupSize == 3) {
             // First we make all first fights of all groups
             // Then we make all second fights of all groups
             // Then we make all third fights of all groups
+            $groups = $this->championship->groupsByRound(1)->get();
             for ($numFight = 1; $numFight <= $settings->preliminaryGroupSize; $numFight++) {
                 $fight = new PreliminaryFight();
                 $fight->saveFights($groups, $numFight);
