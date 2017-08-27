@@ -127,12 +127,6 @@ $this->generateAllFights();
 ### Tournament
 
 ```php
-// Create a tournament
-
-$tournament = factory(Tournament::class)->create(['user_id' => Auth::user()->id]);
-```
-
-```php
 $user = $tournament->owner; // get owner
 $user = $tournament->venue; // get venue
 $championships = $tournament->championships; // get championships 
@@ -156,10 +150,6 @@ $tournament->isLocal()
 $tournament->hasNoLevel()
 ```
 ## Championship
-Create championship
-```php
-$championship = factory(Championship::class)->create(['tournament_id' => $tournament->id]);
-```
 
 ```php
 $competitors = $championship->competitors; // Get competitors
@@ -201,9 +191,6 @@ $championship->isDirectEliminationType()
 
 
 ### FightersGroup
-```php
-$groups = $championship->fightersGroups; // Get groups
-```
 
 ```php
 $championship = $group->championship; // Get championship
@@ -220,9 +207,6 @@ To get the instance name:
 $type = $group->getFighterType() // Should return Team::class or Competitor::class
 ```
 ### Competitor
-```php
-$competitors = $championship->competitors; // Get competitors
-```
 
 ```php
 $user = $competitor->user; // Get user
