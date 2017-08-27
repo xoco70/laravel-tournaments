@@ -179,6 +179,7 @@ abstract class TestCase extends BaseTestCase
         $groupSize = $setting->hasPreliminary ? $setting->preliminaryGroupSize : 2;
         $count = $this->getFightsCount($championship);
 
+
         if ((int) ($setting->numFighters / $setting->numArea) <= 1
             || $setting->numFighters / ($groupSize * $setting->numArea) < 1) {
             $this->assertTrue($count == 0);
@@ -188,8 +189,9 @@ abstract class TestCase extends BaseTestCase
 
         if ($count != $numFightsExpected) {
             dd(['Method'         => $methodName,
-                'NumCompetitors' => $setting->numFighters,
+                'numFighters'    => $setting->numFighters,
                 'NumArea'        => $setting->numArea,
+                'groupSize'      => $groupSize,
                 'Real'           => $count,
                 'isTeam'         => $setting->isTeam,
                 'Excepted'       => $numFightsExpected,
@@ -211,7 +213,6 @@ abstract class TestCase extends BaseTestCase
             ->where('round', 1)
             ->select('id')
             ->pluck('id')->toArray();
-
         $count = Fight::whereIn('fighters_group_id', $groupsId)->count();
 
         return $count;

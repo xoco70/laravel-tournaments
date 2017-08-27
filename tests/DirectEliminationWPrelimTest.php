@@ -44,6 +44,7 @@ class DirectEliminationWPrelimTest extends TestCase
     /** @test */
     public function check_number_of_fights_when_preliminary_tree()
     {
+        $isTeams = [0, 1];
         $numFights = [
             1 => [ // numArea
                 1 => 0,
@@ -76,11 +77,16 @@ class DirectEliminationWPrelimTest extends TestCase
                 8 => 0,
             ],
         ];
-        foreach ($numFights as $numArea => $numFightPerArea) {
-            foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
-                $setting = $this->createSetting($numArea, $numCompetitors, 1, 1, 3); // $team
-                $this->generateTreeWithUI($setting);
-                parent::checkFightsNumber($this->championshipWithComp, $setting, $numFightsExpected, __METHOD__);
+        foreach ($isTeams as $isTeam) {
+            $isTeam
+                ? $championship = $this->championshipWithTeam
+                : $championship = $this->championshipWithComp;
+            foreach ($numFights as $numArea => $numFightPerArea) {
+                foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
+                    $setting = $this->createSetting($numArea, $numCompetitors, $isTeam, 1, 3); // $team
+                    $this->generateTreeWithUI($setting);
+                    parent::checkFightsNumber($championship, $setting, $numFightsExpected, __METHOD__);
+                }
             }
         }
     }
