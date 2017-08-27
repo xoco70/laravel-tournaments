@@ -32,7 +32,6 @@ Laravel Tournaments
 * [Troubleshooting](#troubleshooting)
 * [Changelog](#changelog)
 
-Laravel Tournaments is A Laravel 5.4 Package that allows you to generate Tournaments tree   
 ## Features
 
 - Direct Elimination Trees Generation
