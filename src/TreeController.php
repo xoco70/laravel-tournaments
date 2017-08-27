@@ -25,14 +25,11 @@ class TreeController extends Controller
     {
         $tournament = Tournament::with(
             'competitors',
-            'championshipSettings',
             'championships.settings',
             'championships.category')->first();
 
         return view('laravel-tournaments::tree.index')
-            ->with('tournament', $tournament)
-            ->with('championship', $tournament->championships[0])
-            ->with('settings', $tournament->championships[0]->setting);
+            ->with('tournament', $tournament);
     }
 
     /**

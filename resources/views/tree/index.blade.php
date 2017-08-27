@@ -14,8 +14,10 @@
 </head>
 <body>
 <?php
-
+$championship = $tournament->championships[0];
 $setting = $championship->getSettings();
+
+
 $treeType = $setting->treeType;
 $hasPreliminary = $setting->hasPreliminary;
 $fightingAreas = $setting->fightingAreas;
