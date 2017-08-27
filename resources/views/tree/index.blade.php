@@ -14,7 +14,8 @@
 </head>
 <body>
 <?php
-$championship = $tournament->championships[0];
+$isTeam = session()->has('isTeam') ? session('isTeam') : 0;
+$championship = $tournament->championships[$isTeam];
 $setting = $championship->getSettings();
 
 
@@ -23,7 +24,7 @@ $hasPreliminary = $setting->hasPreliminary;
 $fightingAreas = $setting->fightingAreas;
 $fights = $championship->fights;
 $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
-$isTeam = session()->has('isTeam') ? session('isTeam') : 0;
+
 ?>
 @include('laravel-tournaments::partials.errors')
 
@@ -47,7 +48,8 @@ $isTeam = session()->has('isTeam') ? session('isTeam') : 0;
                 @endif
             @endif
             <br/>
-            <h1>Fight List</h1> <hr/>
+            <h1>Fight List</h1>
+            <hr/>
             <div align="center">
                 @include('laravel-tournaments::partials.fights')
             </div>

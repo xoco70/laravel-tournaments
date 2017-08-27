@@ -15,7 +15,7 @@
             </select>
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <div class="form-group">
                 <label for="preliminaryGroupSize">{{trans('laravel-tournaments::categories.preliminaryGroupSize')}}</label>
                 <select class="form-control" id="preliminaryGroupSize" name="preliminaryGroupSize">
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="input-group">
+            <div class="form-group">
                 <label for="fighterQty">Fighter Qty</label>
                 <select class="form-control" id="numFighters" name="numFighters">
                     @for($i=1;$i<19;$i++)
@@ -35,6 +35,12 @@
                 </select>
             </div>
         </div>
+
+
+
+    </div>
+
+    <div class="row">
         <div class="col-lg-2">
             <label for="isTeam">Team?</label>
             <br/>
@@ -44,12 +50,7 @@
 
             </select>
         </div>
-
-
-    </div>
-    <hr/>
-    <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-2">
 
             <label for="treeType">Tree Type</label>
             <select class="form-control" id="treeType" name="treeType">
