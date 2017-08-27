@@ -120,9 +120,9 @@ $this->generateAllFights();
 ### Tournament
 
 ```php
-$user = $tournament->owner; // get owner
-$user = $tournament->venue; // get venue
-$championships = $tournament->championships; // get championships 
+$tournament->owner; // get owner
+$tournament->venue; // get venue
+$tournament->championships; // get championships 
 ```
 
 Check tournament type: 
@@ -145,19 +145,19 @@ $tournament->hasNoLevel()
 ## Championship
 
 ```php
-$competitors = $championship->competitors; // Get competitors
-$teams = $championship->teams; // Get teams
-$fighters = $championship->fighters; // Get fighters
-$category = $championship->category; // Get category
-$tournament = $championship->tournament; // Get tournament
-$users = $championship->users; // Get users
-$settings = $championship->settings; // Get settings
-$fightersGroups = $championship->fightersGroups; // Get groups 
-$groupsByRound = $championship->groupsByRound($numRound = 1); // Get groups for a specific round
-$groupsFromRound = $championship->groupsFromRound($numRound = 1); // Get groups from a specific round
-$fights = $championship->fights; // Get fights
-$firstRoundFights = $championship->firstRoundFights; // Get fights for the first round only ( Useful when has preliminary )
-$fightsByRound = $championship->fights($numRound = 1); // Get fights for a specific round
+$championship->competitors; // Get competitors
+$championship->teams; // Get teams
+$championship->fighters; // Get fighters
+$championship->category; // Get category
+$championship->tournament; // Get tournament
+$championship->users; // Get users
+$championship->settings; // Get settings
+$championship->fightersGroups; // Get groups 
+$championship->groupsByRound($numRound = 1); // Get groups for a specific round
+$championship->groupsFromRound($numRound = 1); // Get groups from a specific round
+$championship->fights; // Get fights
+$championship->firstRoundFights; // Get fights for the first round only ( Useful when has preliminary )
+$championship->fights($numRound = 1); // Get fights for a specific round
 ```
 > **NOTE**: $fighter can be an instance of `Team` or `Competitor`
 
@@ -186,23 +186,23 @@ $championship->isDirectEliminationType()
 ### FightersGroup
 
 ```php
-$championship = $group->championship; // Get championship
-$fights = $group->fights; // Get fights
-$fighters = $group->fighters; // Get fighters
-$teams = $group->teams; // Get teams
-$competitors = $group->competitors; // Get competitors
-$users = $group->users; // Get users
+$group->championship; // Get championship
+$group->fights; // Get fights
+$group->fighters; // Get fighters
+$group->teams; // Get teams
+$group->competitors; // Get competitors
+$group->users; // Get users
 ```
 > **NOTE**: $fighter can be an instance of `Team` or `Competitor`
 
 To get the instance name:
 ```php
-$type = $group->getFighterType() // Should return Team::class or Competitor::class
+$group->getFighterType() // Should return Team::class or Competitor::class
 ```
 ### Competitor
 
 ```php
-$user = $competitor->user; // Get user
+$competitor->user; // Get user
 ```
 
 ### Team
@@ -227,11 +227,11 @@ $team->competitors()->detach($competitor->id);
 ### Fight 
 
 ```php
-$group = $fight->group; // Get group
-$competitor1 = $fight->competitor1; // Get competitor1
-$competitor2 = $fight->competitor2; // Get competitor2
-$team1 = $fight->team1; // Get team1
-$team2 = $fight->team2; // Get team2
+$fight->group; // Get group
+$fight->competitor1; // Get competitor1
+$fight->competitor2; // Get competitor2
+$fight->team1; // Get team1
+$fight->team2; // Get team2
 ```
 
 ## Views
