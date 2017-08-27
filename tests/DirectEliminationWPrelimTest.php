@@ -45,47 +45,38 @@ class DirectEliminationWPrelimTest extends TestCase
     public function check_number_of_fights_when_preliminary_tree()
     {
         $isTeams = [0, 1];
+
         $numFights = [
-            1 => [ // numArea
-                1 => 0,
-                2 => 0,
-                3 => 3,
-                4 => 6,
-                5 => 6,
-                6 => 6,
-                7 => 12,
-                8 => 12,
+            $groupsSize = 3 => [
+                $numArea = 1 => [1 => 0, 2 => 0, 3 => 3, 4 => 6, 5 => 6, 6 => 6, 7 => 12, 8 => 12,],
+                $numArea = 2 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 6, 7 => 12, 8 => 12,],
+//                $numArea = 4 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0,],
             ],
-            2 => [
-                1 => 0,
-                2 => 0,
-                3 => 0,
-                4 => 0,
-                5 => 0,
-                6 => 6,
-                7 => 12,
-                8 => 12,
+            $groupsSize = 4 => [
+                $numArea = 1 => [1 => 0, 2 => 0, 3 => 0, 4 => 6, 5 => 12, 6 => 12, 7 => 12, 8 => 12,],
+                $numArea = 2 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 12,],
+//                $numArea = 4 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0,],
             ],
-            4 => [
-                1 => 0,
-                2 => 0,
-                3 => 0,
-                4 => 0,
-                5 => 0,
-                6 => 0,
-                7 => 0,
-                8 => 0,
-            ],
+            $groupsSize = 5 => [
+                $numArea = 1 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 15, 6 => 30, 7 => 30, 8 => 30,], // Some fights are removed from the list
+//                $numArea = 2 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0,],
+//                $numArea = 4 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0,],
+            ]
         ];
+
+
         foreach ($isTeams as $isTeam) {
             $isTeam
                 ? $championship = $this->championshipWithTeam
                 : $championship = $this->championshipWithComp;
-            foreach ($numFights as $numArea => $numFightPerArea) {
-                foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
-                    $setting = $this->createSetting($numArea, $numCompetitors, $isTeam, 1, 3); // $team
-                    $this->generateTreeWithUI($setting);
-                    parent::checkFightsNumber($championship, $setting, $numFightsExpected, __METHOD__);
+
+            foreach ($numFights as $numGroup => $numFightGroupSize) {
+                foreach ($numFightGroupSize as $numArea => $numFightPerArea) {
+                    foreach ($numFightPerArea as $numCompetitors => $numFightsExpected) {
+                        $setting = $this->createSetting($numArea, $numCompetitors, $isTeam, 1, $numGroup);
+                        $this->generateTreeWithUI($setting);
+                        parent::checkFightsNumber($championship, $setting, $numFightsExpected, __METHOD__);
+                    }
                 }
             }
         }
