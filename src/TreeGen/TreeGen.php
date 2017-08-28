@@ -173,7 +173,7 @@ abstract class TreeGen implements TreeGenerable
         $sizeGroupBy = count($byeGroup);
 
         $frequency = $sizeGroupBy != 0
-            ? (int) floor($sizeFighters / $sizeGroupBy)
+            ? (int)floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
@@ -289,13 +289,25 @@ abstract class TreeGen implements TreeGenerable
         $this->championship->fightersGroups()->delete();
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
+        $fighterType = $this->settings->isTeam
+            ? trans_choice('.team',2)
+            : trans_choice('laravel-tournaments::core.competitor',2);
         // If there is less than 2 competitors average by area
-        if ($fighters->count() / $areas < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
-            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('laravel-tournaments.MIN_COMPETITORS_X_AREA')]));
-        }
+        $minFighterCount = $fighters->count() / $areas;
+
 
         if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1) {
-            throw new TreeGenerationException(trans('msg.min_competitor_required', ['number' => config('laravel-tournaments.MIN_COMPETITORS_X_AREA')]));
+            throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
+                'number' => $this->settings->preliminaryGroupSize * $areas,
+                'fighter_type' => $fighterType
+            ]));
+        }
+
+        if ($minFighterCount < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
+            throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
+                'number' => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
+                'fighter_type' => $fighterType
+            ]));
         }
 
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
