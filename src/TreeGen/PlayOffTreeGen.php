@@ -97,4 +97,14 @@ abstract class PlayOffTreeGen extends TreeGen
     {
         return intval(log($numFighters, 2));
     }
+
+    protected function generateAllTrees()
+    {
+        // TODO This is limiting Playoff only have 1 area
+        $fighters = $this->championship->fighters;
+        for ($order = 1; $order <= $fighters->count(); $order++) {
+            $this->generateGroupsForRound($fighters, $order);
+        }
+        dd("ok");
+    }
 }

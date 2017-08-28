@@ -8,7 +8,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-'junior'                 => 'Junior',
+    'junior'             => 'Junior',
     'junior_team'        => 'Junior Team',
     'man_first_force'    => 'Men 1+ Dan',
     'man_second_force'   => 'Men Kyus',
@@ -59,7 +59,7 @@ return [
     // CategorySetting
     'categorySettings'     => 'Category Settings',
     'treeType'             => 'Tree Type',
-    'roundRobin'           => 'Round Robin',
+    'playoff'              => 'Play Off',
     'direct_elimination'   => 'Direct Elimination',
     'teamSize'             => 'Team size',
     'teamSizeReserve'      => 'Team Reserve',

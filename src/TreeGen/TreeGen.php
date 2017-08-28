@@ -39,6 +39,8 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function getNumRounds($fightersCount);
 
+    abstract protected function generateGroupsForRound(Collection $usersByArea, $round);
+
     /**
      * @param Championship $championship
      * @param $groupBy
@@ -178,26 +180,7 @@ abstract class TreeGen implements TreeGenerable
         return $this->getFullFighterList($fighters, $frequency, $sizeGroupBy, $bye);
     }
 
-    /**
-     * @param Collection $usersByArea
-     */
-    public function generateGroupsForRound(Collection $usersByArea, $round)
-    {
-        $order = 1;
-        foreach ($usersByArea as $fightersByEntity) {
-            // Chunking to make small round robin groups
-            $chunkedFighters = $this->chunkAndShuffle($fightersByEntity);
-            foreach ($chunkedFighters as $fighters) {
-                $fighters = $fighters->pluck('id');
-                if (!app()->runningUnitTests()) {
-                    $fighters = $fighters->shuffle();
-                }
-                $group = $this->saveGroup($order, $round, null);
-                $this->syncGroup($group, $fighters);
-                $order++;
-            }
-        }
-    }
+
 
     /**
      * @param $order
@@ -209,7 +192,10 @@ abstract class TreeGen implements TreeGenerable
     protected function saveGroup($order, $round, $parent): FightersGroup
     {
         $group = new FightersGroup();
-        $group->area = $this->getNumArea($round, $order);
+        $this->championship->isDirectEliminationType()
+            ? $group->area = $this->getNumArea($round, $order)
+            : $group->area = 1; // Area limited to 1 in playoff
+
 
         $group->order = $order;
         $group->round = $round;
@@ -297,7 +283,7 @@ abstract class TreeGen implements TreeGenerable
      *
      * @return Collection
      */
-    private function getFightersByArea()
+    protected function getFightersByArea()
     {
         // If previous trees already exists, delete all
         $this->championship->fightersGroups()->delete();
@@ -324,7 +310,7 @@ abstract class TreeGen implements TreeGenerable
      *
      * @param $numFightersElim
      */
-    private function addParentToChildren($numFightersElim)
+    protected function addParentToChildren($numFightersElim)
     {
         $numRounds = $this->getNumRounds($numFightersElim);
         $groupsDesc = $this->championship
@@ -465,14 +451,7 @@ abstract class TreeGen implements TreeGenerable
         return $numArea;
     }
 
-    protected function generateAllTrees()
-    {
-        $usersByArea = $this->getFightersByArea();
-        $numFighters = count($usersByArea->collapse());
-        $this->generateGroupsForRound($usersByArea, 1);
-        $this->pushEmptyGroupsToTree($numFighters); // Abstract
-        $this->addParentToChildren($numFighters);
-    }
+
 
     protected function generateAllFights()
     {

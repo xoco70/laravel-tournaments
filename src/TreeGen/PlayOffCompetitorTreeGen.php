@@ -51,4 +51,11 @@ class PlayOffCompetitorTreeGen extends PlayOffTreeGen
     {
         $group->competitors()->attach($competitor->id);
     }
+
+    protected function generateGroupsForRound(Collection $usersByArea, $round)
+    {
+        $fightersId = $usersByArea->pluck('id');
+        $group = $this->saveGroup($round, $round, null);
+        $this->syncGroup($group, $fightersId);
+    }
 }

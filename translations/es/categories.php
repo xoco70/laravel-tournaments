@@ -60,7 +60,7 @@ return [
     // CategorySetting
     'categorySettings'     => 'Configuración de categorías',
     'treeType'             => 'Tipo de arbol',
-    'roundRobin'           => 'Round Robin',
+    'playoff'           => 'Round Robin',
     'direct_elimination'   => 'Eliminación directa',
     'teamSize'             => 'Tamaño del equipo',
     'teamSizeReserve'      => 'Reservas',
