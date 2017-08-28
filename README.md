@@ -36,6 +36,7 @@ Laravel Tournaments
 
 - Direct Elimination Trees Generation
 - Direct Elimination with Preliminary Round Generation
+- Playoff Generation
 - List of Fights Generation
 - Customize Preliminary Round Size
 - Customize area number (1,2,4,8)
