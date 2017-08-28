@@ -21,6 +21,7 @@ class DirectEliminationFight extends Fight
      */
     public static function saveFights(Championship $championship, $fromRound = 1)
     {
+//        dd("generating fights");
         $round = [];
         $groupsFromRound = $championship->groupsFromRound($fromRound)->get();
         foreach ($groupsFromRound as $group) {

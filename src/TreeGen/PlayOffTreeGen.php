@@ -102,9 +102,9 @@ abstract class PlayOffTreeGen extends TreeGen
     {
         // TODO This is limiting Playoff only have 1 area
         $fighters = $this->championship->fighters;
-        for ($order = 1; $order <= $fighters->count(); $order++) {
-            $this->generateGroupsForRound($fighters, $order);
-        }
-        dd("ok");
+        // This means that when playoff, we only generate 1 group
+        // Could be better, for now it is ok
+        $this->generateGroupsForRound($fighters, 1);
+
     }
 }

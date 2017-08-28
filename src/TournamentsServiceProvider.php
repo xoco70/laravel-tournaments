@@ -22,10 +22,10 @@ class TournamentsServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadTranslationsFrom(__DIR__.'/../translations', 'laravel-tournaments');
 
-        $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'migrations');
-        $this->publishes([__DIR__.'/../database/seeds' => $this->app->databasePath().'/seeds'], 'seeds');
-        $this->publishes([__DIR__.'/../database/factories' => $this->app->databasePath().'/factories'], 'seeds');
-        $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-tournaments')], 'assets');
+        $this->publishes([__DIR__.'/../database/migrations' => $this->app->databasePath().'/migrations'], 'laravel-tournaments');
+        $this->publishes([__DIR__.'/../database/seeds' => $this->app->databasePath().'/seeds'], 'laravel-tournaments');
+        $this->publishes([__DIR__.'/../database/factories' => $this->app->databasePath().'/factories'], 'laravel-tournaments');
+        $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-tournaments')], 'laravel-tournaments');
 
         $router->group(['prefix' => 'laravel-tournaments', 'middleware' => ['web']], function ($router) {
             $router->get('/', 'Xoco70\LaravelTournaments\TreeController@index')->name('tree.index');

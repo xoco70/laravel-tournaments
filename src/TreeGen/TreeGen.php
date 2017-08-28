@@ -41,6 +41,8 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function generateGroupsForRound(Collection $usersByArea, $round);
 
+    abstract protected function generateAllTrees();
+
     /**
      * @param Championship $championship
      * @param $groupBy
@@ -96,12 +98,9 @@ abstract class TreeGen implements TreeGenerable
 
         // $this->groupBy contains federation_id, association_id, club_id, etc.
         if (($this->groupBy) != null) {
-            $fighterGroups = $fighters->groupBy($this->groupBy); // Collection of Collection
-        } else {
-            $fighterGroups = $fighters->chunk(1); // Collection of Collection
+            return $fighters->groupBy($this->groupBy); // Collection of Collection
         }
-
-        return $fighterGroups;
+        return $fighters->chunk(1); // Collection of Collection
     }
 
     /**
@@ -179,7 +178,6 @@ abstract class TreeGen implements TreeGenerable
         // Create Copy of $competitors
         return $this->getFullFighterList($fighters, $frequency, $sizeGroupBy, $bye);
     }
-
 
 
     /**
@@ -290,8 +288,8 @@ abstract class TreeGen implements TreeGenerable
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
         $fighterType = $this->settings->isTeam
-            ? trans_choice('.team',2)
-            : trans_choice('laravel-tournaments::core.competitor',2);
+            ? trans_choice('.team', 2)
+            : trans_choice('laravel-tournaments::core.competitor', 2);
         // If there is less than 2 competitors average by area
         $minFighterCount = $fighters->count() / $areas;
 
@@ -464,10 +462,10 @@ abstract class TreeGen implements TreeGenerable
     }
 
 
-
     protected function generateAllFights()
     {
         $this->generateFights(); // Abstract
+
         //TODO In direct elimination without Prelim, short_id are not generating well
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);

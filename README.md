@@ -23,11 +23,11 @@ Laravel Tournaments
 
 * [Features](#features)
 * [Installation](#installation)
+* [Run the demo](#run-the-demo)
 * [Data Model](#data-model)
 * [Usage](#usage)
 * [Models](#models)
 * [Include views](#include-views)
-* [Run the demo](#run-the-demo)
 * [Limitations](#limitations)
 * [Troubleshooting](#troubleshooting)
 * [Changelog](#changelog)
@@ -75,8 +75,24 @@ Then, update `config/app.php` by adding an entry for the service provider.
 Finally, from the command line again, publish the default configuration file:
 
 ```php
-php artisan vendor:publish
+php artisan vendor:publish --tag=laravel-tournaments
 ```
+
+## Run the demo
+
+To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
+
+Run Migrations:
+```php
+php artisan migrate
+```
+
+Seed dummy data:
+```php
+php artisan db:seed --class=LaravelTournamentSeeder
+
+```
+
 ## Usage
 ```php
 // Create a tournament
@@ -91,7 +107,7 @@ $settings = factory(ChampionshipSettings::class)->create(['championship_id' => $
 
 // Add competitors to championship
 
-$competitor = factory(\App\Competitor::class)->create([
+$competitors = factory(\App\Competitor::class,10)->create([
     'championship_id' => $championship->id,
      'user_id' => factory(User::class)->create()->id
 ]);
@@ -251,21 +267,6 @@ Fight List
 @include('laravel-tournaments::partials.fights')
 ```
 
-## Run the demo
-
-To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
-
-Run Migrations:
-```php
-php artisan migrate
-```
-
-Seed dummy data:
-```php
-php artisan db:seed --class=LaravelTournamentSeeder
-
-```
-
 You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
 
 
@@ -296,6 +297,10 @@ public function boot()
 Schema::defaultStringLength(191);
 }
 ```
+### With this configuration, you must have at least...
+This error means you don't have enough competitors / teams to create given tree
+Try to increase competitor number, decrease areas or preliminary group size, if preliminary round is active 
+
 ##ChangeLog:
 
 v0.11: Initial Version
