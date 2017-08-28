@@ -23,11 +23,11 @@ Laravel Tournaments
 
 * [Features](#features)
 * [Installation](#installation)
+* [Run the demo](#run-the-demo)
 * [Data Model](#data-model)
 * [Usage](#usage)
 * [Models](#models)
 * [Include views](#include-views)
-* [Run the demo](#run-the-demo)
 * [Limitations](#limitations)
 * [Troubleshooting](#troubleshooting)
 * [Changelog](#changelog)
@@ -46,6 +46,9 @@ Laravel Tournaments
 
 This is still a work in progress. Things could change, things could break. Use it at your own risks in production
 
+
+
+You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
 
 ## Installation
 
@@ -77,6 +80,22 @@ Finally, from the command line again, publish the default configuration file:
 ```php
 php artisan vendor:publish
 ```
+
+## Run the demo
+
+To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
+
+Run Migrations:
+```php
+php artisan migrate
+```
+
+Seed dummy data:
+```php
+php artisan db:seed --class=LaravelTournamentSeeder
+
+```
+
 ## Usage
 ```php
 // Create a tournament
@@ -250,24 +269,6 @@ Fight List
 ```php
 @include('laravel-tournaments::partials.fights')
 ```
-
-## Run the demo
-
-To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
-
-Run Migrations:
-```php
-php artisan migrate
-```
-
-Seed dummy data:
-```php
-php artisan db:seed --class=LaravelTournamentSeeder
-
-```
-
-You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
-
 
 ## Run Functional Tests
 
