@@ -1,7 +1,6 @@
 {
   "name": "xoco70/laravel-tournaments",
   "description": "A Laravel 5.4+ Package that allows you to generate Tournaments tree",
-  "type": "Project",
   "homepage": "https://github.com/xoco70/laravel-tournaments",
   "license": "Apache License 2.0",
   "authors": [
