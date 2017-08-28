@@ -5,8 +5,6 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="/vendor/laravel-tournaments/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" href="/vendor/laravel-tournaments/css/jquery.timepicker.css">
     <link rel="stylesheet" href="/vendor/laravel-tournaments/css/custom.css">
     <link rel="stylesheet" href="/vendor/laravel-tournaments/css/brackets.css">
 
@@ -62,8 +60,5 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
 
 <script src="/vendor/laravel-tournaments/js/jquery.js"></script>
 <script src="/vendor/laravel-tournaments/js/bootstrap.js"></script>
-<script src="/vendor/laravel-tournaments/js/bootstrap-switch.min.js"></script>
-<script src="/vendor/laravel-tournaments/js/jquery.timepicker.js"></script>
-<script src="/vendor/laravel-tournaments/js/jquery.bracket.min.js"></script>
 
 </html>

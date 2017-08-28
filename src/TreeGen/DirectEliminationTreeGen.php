@@ -131,4 +131,35 @@ abstract class DirectEliminationTreeGen extends TreeGen
             ? $this->championship->getSettings()->preliminaryGroupSize
             : 2;
     }
+
+    protected function generateAllTrees()
+    {
+        $usersByArea = $this->getFightersByArea();
+        $numFighters = count($usersByArea->collapse());
+        $this->generateGroupsForRound($usersByArea, 1);
+        $this->pushEmptyGroupsToTree($numFighters); // Abstract
+        $this->addParentToChildren($numFighters);
+
+    }
+    /**
+     * @param Collection $usersByArea
+     * @param $round
+     */
+    public function generateGroupsForRound(Collection $usersByArea, $round)
+    {
+        $order = 1;
+        foreach ($usersByArea as $fightersByEntity) {
+            // Chunking to make small round robin groups
+            $chunkedFighters = $this->chunkAndShuffle($fightersByEntity);
+            foreach ($chunkedFighters as $fighters) {
+                $fighters = $fighters->pluck('id');
+                if (!app()->runningUnitTests()) {
+                    $fighters = $fighters->shuffle();
+                }
+                $group = $this->saveGroup($order, $round, null);
+                $this->syncGroup($group, $fighters);
+                $order++;
+            }
+        }
+    }
 }

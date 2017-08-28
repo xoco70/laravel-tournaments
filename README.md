@@ -27,7 +27,7 @@ Laravel Tournaments
 * [Data Model](#data-model)
 * [Usage](#usage)
 * [Models](#models)
-* [Include views](#include-views)
+* [Include views](#include-views)   
 * [Limitations](#limitations)
 * [Troubleshooting](#troubleshooting)
 * [Changelog](#changelog)
@@ -45,10 +45,6 @@ Laravel Tournaments
 ## Warning
 
 This is still a work in progress. Things could change, things could break. Use it at your own risks in production
-
-
-
-You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
 
 ## Installation
 
@@ -78,7 +74,7 @@ Then, update `config/app.php` by adding an entry for the service provider.
 Finally, from the command line again, publish the default configuration file:
 
 ```php
-php artisan vendor:publish
+php artisan vendor:publish --tag=laravel-tournaments
 ```
 
 ## Run the demo
@@ -88,6 +84,7 @@ To run the demo, you need to generate Tournaments, Championships, Users, Competi
 Run Migrations:
 ```php
 php artisan migrate
+composer dump-autoload
 ```
 
 Seed dummy data:
@@ -95,6 +92,8 @@ Seed dummy data:
 php artisan db:seed --class=LaravelTournamentSeeder
 
 ```
+
+You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
 
 ## Usage
 ```php
@@ -110,7 +109,7 @@ $settings = factory(ChampionshipSettings::class)->create(['championship_id' => $
 
 // Add competitors to championship
 
-$competitor = factory(\App\Competitor::class)->create([
+$competitors = factory(\App\Competitor::class,10)->create([
     'championship_id' => $championship->id,
      'user_id' => factory(User::class)->create()->id
 ]);
@@ -297,6 +296,10 @@ public function boot()
 Schema::defaultStringLength(191);
 }
 ```
+### With this configuration, you must have at least...
+This error means you don't have enough competitors / teams to create given tree
+Try to increase competitor number, decrease areas or preliminary group size, if preliminary round is active 
+
 ##ChangeLog:
 
 v0.11: Initial Version

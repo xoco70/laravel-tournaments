@@ -51,7 +51,7 @@ class TreeController extends Controller
             $generation->run();
         } catch (TreeGenerationException $e) {
             redirect()->back()
-                ->withErrors([$numFighters.'-'.$e->getMessage()]);
+                ->withErrors($e->getMessage());
         }
 
         return back()
