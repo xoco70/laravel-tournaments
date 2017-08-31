@@ -107,4 +107,11 @@ abstract class PlayOffTreeGen extends TreeGen
         $this->generateGroupsForRound($fighters, 1);
 
     }
+
+    protected function generateGroupsForRound(Collection $fightersByArea, $round)
+    {
+        $fightersId = $fightersByArea->pluck('id');
+        $group = $this->saveGroup($round, $round, null);
+        $this->syncGroup($group, $fightersId);
+    }
 }

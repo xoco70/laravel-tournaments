@@ -6,7 +6,6 @@ use Faker\Factory;
 use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
-use stdClass;
 use Xoco70\LaravelTournaments\Models\Category;
 use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;

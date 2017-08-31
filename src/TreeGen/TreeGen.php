@@ -3,11 +3,9 @@
 namespace Xoco70\LaravelTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\App;
 use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
 use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
 use Xoco70\LaravelTournaments\Models\Championship;
-use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 use Xoco70\LaravelTournaments\Models\Fight;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
 
@@ -39,7 +37,7 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function getNumRounds($fightersCount);
 
-    abstract protected function generateGroupsForRound(Collection $usersByArea, $round);
+    abstract protected function generateGroupsForRound(Collection $fightersByArea, $round);
 
     abstract protected function generateAllTrees();
 
@@ -62,6 +60,7 @@ abstract class TreeGen implements TreeGenerable
      */
     public function run()
     {
+        $this->championship->fightersGroups()->delete();
         $this->generateAllTrees();
         $this->generateAllFights();
     }
@@ -284,29 +283,8 @@ abstract class TreeGen implements TreeGenerable
     protected function getFightersByArea()
     {
         // If previous trees already exists, delete all
-        $this->championship->fightersGroups()->delete();
         $areas = $this->settings->fightingAreas;
         $fighters = $this->getFighters();
-        $fighterType = $this->settings->isTeam
-            ? trans_choice('.team', 2)
-            : trans_choice('laravel-tournaments::core.competitor', 2);
-        // If there is less than 2 competitors average by area
-        $minFighterCount = $fighters->count() / $areas;
-
-
-        if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1) {
-            throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => $this->settings->preliminaryGroupSize * $areas,
-                'fighter_type' => $fighterType
-            ]));
-        }
-
-        if ($minFighterCount < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
-            throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
-                'fighter_type' => $fighterType
-            ]));
-        }
 
         // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
         $fighterByEntity = $this->getFightersByEntity($fighters); // Chunk(1)
