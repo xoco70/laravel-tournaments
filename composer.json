@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      " Xoco70\\LaravelTournaments\\": "src"
+      "Xoco70\\LaravelTournaments\\": "src"
     },
     "classmap": [
       "src/"
@@ -19,7 +19,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      " Xoco70\\LaravelTournaments\\Tests\\": "tests"
+      "Xoco70\\LaravelTournaments\\Tests\\": "tests"
     },
     "classmap": [
       "tests",
@@ -31,10 +31,11 @@
   "extra": {
     "laravel": {
       "providers": [
-        " Xoco70\\LaravelTournaments\\TournamentServiceProvider"
+        "Xoco70\\LaravelTournaments\\TournamentsServiceProvider"
       ]
     }
   },
+
   "require": {
     "php": ">=7.0.0",
     "phpunit/phpunit": "^5.7",
