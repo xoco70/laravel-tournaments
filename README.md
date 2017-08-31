@@ -24,8 +24,8 @@ Laravel Tournaments
 * [Features](#features)
 * [Installation](#installation)
 * [Run the demo](#run-the-demo)
-* [Data Model](#data-model)
 * [Usage](#usage)
+* [Data Model](#data-model)
 * [Models](#models)
 * [Include views](#include-views)   
 * [Limitations](#limitations)
@@ -218,6 +218,10 @@ To get the instance name:
 ```php
 $group->getFighterType() // Should return Team::class or Competitor::class
 ```
+
+> **NOTE**: This plugin use <a href="https://github.com/lazychaser/laravel-nestedset">laravel-nestedset</a>. 
+This means you can navigate with `$group->children()` or `$group->parent()` or use any methods available in this great plugin.  
+
 ### Competitor
 
 ```php
