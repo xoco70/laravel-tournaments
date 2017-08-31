@@ -261,12 +261,11 @@ $fight->team2; // Get team2
 Preliminary tree
 ```php
 @include('laravel-tournaments::partials.tree.preliminary') // Preliminary table
-@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 1]) // Brackets adding below
 ```
 
 Direct Elimination tree
 ```php
-@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 0]) // Brackets adding below
+@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 0]) 
 ```
 
 Fight List
@@ -287,7 +286,9 @@ This is a work in progress, and tree creation might be very complex, so there is
 - Manage more than 1 fighter out of preliminary round
 - Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
 We can improve that making the first match with 3 competitors.
-- Use any number of area ( restricted to 1,2,4,8) 
+- Use any number of area ( restricted to 1,2,4,8)
+- Seed fighters
+ 
 ## Troubleshooting
 
 ### Specified key was too long error
