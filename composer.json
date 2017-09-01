@@ -40,7 +40,7 @@
     "php": ">=7.0.0",
     "phpunit/phpunit": "^6.0",
     "fzaninotto/faker": "1.*",
-    "laravel/browser-kit-testing": "^1.0",
+    "laravel/browser-kit-testing": "^2.0",
     "kalnoy/nestedset": "^4.2"
   },
   "scripts": {
