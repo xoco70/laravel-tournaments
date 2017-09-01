@@ -307,4 +307,6 @@ Try to increase competitor number, decrease areas or preliminary group size, if 
 
 ## ChangeLog:
 
+v0.12: Laravel 5.5 version
 v0.11: Initial Version
+
