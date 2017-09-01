@@ -47,14 +47,21 @@ Laravel Tournaments
 This is still a work in progress. Things could change, things could break. Use it at your own risks in production
 
 ## Installation
+> **NOTE**: Depending on your version of Laravel, you should install a different
+> version of the package:
+> 
+> | Laravel Version | Laravel Tournament Version |
+> |:---------------:|:--------------------------:|
+> |       5.5       |            0.12            |
+> |       5.4       |            0.11            |
 
 First, you'll need to install the package via Composer:
 
 ```php
-$ composer require "xoco70/laravel-tournaments":^0.11
+$ composer require "xoco70/laravel-tournaments":^0.12
 ```
 
-Then, update `config/app.php` by adding an entry for the service provider.
+If you use Laravel 5.4, update `config/app.php` by adding an entry for the service provider.
 
 ```php
 'providers' => [
@@ -62,6 +69,7 @@ Then, update `config/app.php` by adding an entry for the service provider.
     Xoco70\LaravelTournaments\TournamentsServiceProvider::class,
 ];
 ```
+
 
 Finally, from the command line again, publish the default configuration file:
 
