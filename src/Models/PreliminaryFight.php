@@ -66,8 +66,8 @@ class PreliminaryFight extends Fight
     {
         $fight = new Fight();
         $fight->fighters_group_id = $group->id;
-        $fight->c1 = $competitor1 != null ? $competitor1->id : null;
-        $fight->c2 = $competitor2 != null ? $competitor2->id : null;
+        $fight->c1 = optional($competitor1)->id;
+        $fight->c2 = optional($competitor2)->id;
         $fight->short_id = $order++;
         $fight->area = $group->area;
         $fight->save();

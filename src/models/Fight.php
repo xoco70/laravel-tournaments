@@ -113,7 +113,7 @@ class Fight extends Model
         if ($isTeam) {
             $teamToUpdate = 'team'.$numFighter;
 
-            return $this->$teamToUpdate == null ? '' : $this->$teamToUpdate->$attr;
+            return optional($this->$teamToUpdate)->$attr;
         }
         $competitorToUpdate = 'competitor'.$numFighter;
         if ($attr == 'name') {
@@ -121,7 +121,7 @@ class Fight extends Model
                 ? 'BYE'
                 : $this->$competitorToUpdate->user->firstname.' '.$this->$competitorToUpdate->user->lastname;
         } elseif ($attr == 'short_id') {
-            return $this->$competitorToUpdate == null ? '' : $this->$competitorToUpdate->short_id;
+            return optional($this->$competitorToUpdate)->short_id;
         }
     }
 
