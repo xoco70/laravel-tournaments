@@ -41,7 +41,7 @@
     "phpunit/phpunit": "^6.0",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^2.0",
-    "kalnoy/nestedset": "^4.2"
+    "kalnoy/nestedset": "^4.3"
   },
   "scripts": {
     "test": "phpunit"
