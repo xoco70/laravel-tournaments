@@ -48,14 +48,6 @@ This is still a work in progress. Things could change, things could break. Use i
 
 ## Installation
 
-[comment]: <>(> **NOTE**: Depending on your version of Laravel, you should install a different)
-[comment]: <>(> version of the package:)
-[comment]: <>(> )
-[comment]: <>(> | Laravel Version | Laravel Tournament Version |)
-[comment]: <>(> |:---------------:|:--------------------------:|)
-[comment]: <>(> |       5.4       |            0.11          |)
-[comment]: <>(>)
-
 First, you'll need to install the package via Composer:
 
 ```php
