@@ -297,6 +297,6 @@ Schema::defaultStringLength(191);
 This error means you don't have enough competitors / teams to create given tree
 Try to increase competitor number, decrease areas or preliminary group size, if preliminary round is active 
 
-##ChangeLog:
+## ChangeLog:
 
 v0.11: Initial Version
