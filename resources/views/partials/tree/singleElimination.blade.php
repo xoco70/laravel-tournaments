@@ -26,11 +26,9 @@ if (sizeof($singleEliminationTree) > 0) {
 
                     <div class="match-wrapper"
                          style="top:  {{ $match['matchWrapperTop'] }}px; left:  {{ $match['matchWrapperLeft']  }}px; width: {{   $treeGen->matchWrapperWidth  }}px;">
-                        <input type="text"
-                               class="score"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
+                        <input type="text" class="score" name="score[]"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
                         <div class="match-divider"></div>
-                        <input type="text"
-                               class="score"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
+                        <input type="text" class="score" name="score[]"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
                     </div>
 
                     @if ($roundNumber != $treeGen->noRounds)
