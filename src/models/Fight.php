@@ -25,6 +25,7 @@ class Fight extends Model
 
     protected $fillable = [
         'group_id',
+        'fight_id',
         'c1',
         'c2',
     ];
