@@ -81,16 +81,16 @@ class TreeController extends Controller
     {
         if ($isTeam) {
             $championship = Championship::find(2);
-            factory(Team::class, (int) $numFighters)->create(['championship_id' => $championship->id]);
+            factory(Team::class, (int)$numFighters)->create(['championship_id' => $championship->id]);
         } else {
             $championship = Championship::find(1);
-            $users = factory(User::class, (int) $numFighters)->create();
+            $users = factory(User::class, (int)$numFighters)->create();
             foreach ($users as $user) {
                 factory(Competitor::class)->create(
                     ['championship_id' => $championship->id,
-                        'user_id'      => $user->id,
-                        'confirmed'    => 1,
-                        'short_id'     => $user->id,
+                        'user_id' => $user->id,
+                        'confirmed' => 1,
+                        'short_id' => $user->id,
                     ]
                 );
             }
@@ -112,6 +112,7 @@ class TreeController extends Controller
             ->where('championship_id', $championship->id);
 
         $fighters = $request->singleElimination_fighters;
+        $scores = $request->score;
         if ($championship->hasPreliminary()) {
             $query = $query->where('round', '>', 1);
             $fighters = $request->preliminary_fighters;
@@ -121,8 +122,18 @@ class TreeController extends Controller
         foreach ($groups as $group) {
             foreach ($group->fights as $fight) {
                 // Find the fight in array, and update order
-                $fight->c1 = $fighters[$numFight++];
-                $fight->c2 = $fighters[$numFight++];
+                $fight->c1 = $fighters[$numFight];
+                if ($scores[$numFight] != null) {
+                    $fight->winner_id = $fighters[$numFight];
+                };
+                $numFight++;
+
+                $fight->c2 = $fighters[$numFight];
+                if ($scores[$numFight] != null) {
+                    $fight->winner_id = $fighters[$numFight];
+                };
+                $numFight++;
+
                 $fight->save();
             }
         }
