@@ -7,7 +7,7 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/vendor/laravel-tournaments/css/custom.css">
     <link rel="stylesheet" href="/vendor/laravel-tournaments/css/brackets.css">
-
+    <script src="https://unpkg.com/vue@2.4.2/dist/vue.js"></script>
 
 </head>
 <body>
@@ -26,7 +26,7 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
 ?>
 @include('laravel-tournaments::partials.errors')
 
-<div class="container">
+<div class="container" id="app">
     <div class="content">
         <h1 align="center">{{ $tournament->name }}</h1>
         @include('laravel-tournaments::partials.settings')
@@ -56,8 +56,40 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
 </div>
 </body>
 
+<script>
+    new Vue({
 
-<script src="/vendor/laravel-tournaments/js/jquery.js"></script>
-<script src="/vendor/laravel-tournaments/js/bootstrap.js"></script>
+        el: '#app',
+        data: {
+            isPrelimDisabled: false,
+            isGroupSizeDisabled: false,
+            isAreasDisabled: false,
+            hasPrelim:0,
+            tree:1,
+        },
+        methods: {
+            prelim: function(){
+                if (this.hasPrelim == 0){
+                    this.isGroupSizeDisabled = true;
+                }else{
+                    this.isGroupSizeDisabled = false;
+                }
+            },
+            treeType: function(){
+                if (this.tree == 0){
+                    this.isPrelimDisabled = true;
+                    this.isAreaDisabled = true;
+                }else{
+                    this.isPrelimDisabled = false;
+                    this.isAreaDisabled = false;
+                }
+            }
 
+        },
+        created() {
+            this.prelim();
+            this.treeType();
+        }
+    })
+</script>
 </html>
