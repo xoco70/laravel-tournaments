@@ -129,14 +129,17 @@ class TreeController extends Controller
                 $numFighter++;
 
                 $fight->c2 = $fighters[$numFighter];
-                $scores[$numFighter] != null
-                    ?  $fight->winner_id = $fighters[$numFighter]
-                    : $fight->winner_id = null;
+                if ($fight->winner_id == null){
+                    $scores[$numFighter] != null
+                        ?  $fight->winner_id = $fighters[$numFighter]
+                        : $fight->winner_id = null;
+                }
+
+
                 $numFighter++;
                 $fight->save();
             }
         }
-
         return back();
     }
 }
