@@ -187,7 +187,6 @@ abstract class TestCase extends BaseTestCase
         if ((int)($setting->numFighters / $setting->fightingAreas) <= 1
             || $setting->numFighters / ($groupSize * $setting->fightingAreas) < 1) {
             $this->assertTrue($count == 0);
-
             return;
         }
 

@@ -92,10 +92,9 @@ abstract class PlayOffTreeGen extends TreeGen
         $fighters = $this->championship->fighters;
         // This means that when playoff, we only generate 1 group
         // Could be better, for now it is ok
-        if (sizeof($fighters) > 0) {
+        if (sizeof($fighters) > 1) {
             $this->generateGroupsForRound($fighters, 1);
         }
-
     }
 
     protected function generateGroupsForRound(Collection $fightersByArea, $round)
