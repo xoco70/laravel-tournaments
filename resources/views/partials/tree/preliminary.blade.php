@@ -34,9 +34,16 @@ $settings = $championship->getSettings();
             ?>
             <tr>
                 <td class="p-10 text-center">{{$group->area}}</td>
-                @foreach ($fighters as $fighter)
+                @foreach ($fighters as $numFighter => $fighter)
                     <td class="p-10">{{ $letter++ }}</td>
-                    <td class="p-10">@include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $fighter,'numRound' => 1])</td>
+                    <td class="p-10">@include('laravel-tournaments::partials.tree.brackets.playerList',
+                    [
+                        'selected' => $fighter,
+                        'roundNumber' => 1,
+                        'matchNumber' => 0,
+                        'numFighter' => $numFighter
+                     ])
+                    </td>
                 @endforeach
             </tr>
         @endforeach

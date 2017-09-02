@@ -28,7 +28,7 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
 
 <div class="container" id="app">
     <div class="content">
-        <h1 align="center">{{ $tournament->name }}</h1>
+        <br/>
         @include('laravel-tournaments::partials.settings')
         @if ($championship->fightersGroups->count()>0)
             <h1>Tree</h1>
@@ -67,22 +67,22 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
             isPrelimDisabled: false,
             isGroupSizeDisabled: false,
             isAreasDisabled: false,
-            hasPrelim:0,
-            tree:1,
+            hasPrelim: 0,
+            tree: 1,
         },
         methods: {
-            prelim: function(){
-                if (this.hasPrelim == 0){
+            prelim: function () {
+                if (this.hasPrelim === 0) {
                     this.isGroupSizeDisabled = true;
-                }else{
+                } else {
                     this.isGroupSizeDisabled = false;
                 }
             },
-            treeType: function(){
-                if (this.tree == 0){
+            treeType: function () {
+                if (this.tree === 0) {
                     this.isPrelimDisabled = true;
                     this.isAreaDisabled = true;
-                }else{
+                } else {
                     this.isPrelimDisabled = false;
                     this.isAreaDisabled = false;
                 }

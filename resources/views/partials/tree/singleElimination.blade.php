@@ -25,21 +25,31 @@ if (sizeof($singleEliminationTree) > 0) {
             @foreach ($treeGen->brackets as $roundNumber => $round)
                 @foreach ($round as $matchNumber => $match)
                     <?php
-                    $isAWinner = (optional($match['playerA'])->id == $match['winner_id'] && $match['winner_id']!=null) ? 'X' : null;
-                    $isBWinner = (optional($match['playerB'])->id == $match['winner_id'] && $match['winner_id']!=null) ? 'X' : null;
+                    $isAWinner = (optional($match['playerA'])->id == $match['winner_id'] && $match['winner_id'] != null) ? 'X' : null;
+                    $isBWinner = (optional($match['playerB'])->id == $match['winner_id'] && $match['winner_id'] != null) ? 'X' : null;
                     ?>
                     <div class="match-wrapper"
                          style="top:  {{ $match['matchWrapperTop'] }}px; left:  {{ $match['matchWrapperLeft']  }}px; width: {{   $treeGen->matchWrapperWidth  }}px;">
                         <input type="text" class="score" name="score[]" value="{{ $isAWinner }}">
-                        @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
+                        @include('laravel-tournaments::partials.tree.brackets.playerList',
+                            ['selected' => $match['playerA'],
+                            'roundNumber'=>$roundNumber,
+                            'numRound' => $round,
+                            'matchNumber' => $matchNumber,
+                            'numFighter' => 1
+                            ])
                         <div class="match-divider"></div>
                         <input type="text" class="score" name="score[]" value="{{ $isBWinner }}">
-                        @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
+                        @include('laravel-tournaments::partials.tree.brackets.playerList',
+                            ['selected' => $match['playerB'],
+                             'roundNumber'=>$roundNumber,
+                             'numRound' => $round,
+                             'matchNumber' => $matchNumber,
+                             'numFighter' => 2
+                              ])
                     </div>
 
                     @if ($roundNumber != $treeGen->noRounds)
-
-
                         <div class="vertical-connector"
                              style="top: {{  $match['vConnectorTop']  }}px; left: {{  $match['vConnectorLeft']  }}px; height: {{  $match['vConnectorHeight']  }}px;"></div>
                         <div class="horizontal-connector"
@@ -58,7 +68,7 @@ if (sizeof($singleEliminationTree) > 0) {
 
         <div class="clearfix"></div>
         <div align="right">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-success" id="update">
                 Update Tree
             </button>
         </div>

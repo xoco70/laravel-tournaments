@@ -3,6 +3,7 @@
 namespace Xoco70\LaravelTournaments\Tests;
 
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
+use Xoco70\LaravelTournaments\Models\Fight;
 
 class SingleEliminationTest extends TestCase
 {
@@ -104,14 +105,60 @@ class SingleEliminationTest extends TestCase
             $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
         }
     }
+
     /** @test */
-    public function you_can_update_manually_single_elimination_tree()
+    public function you_can_update_manually_single_elimination_tree_fighters()
     {
+        $setting = factory(ChampionshipSettings::class)->make([
+            'championship_id' => $this->getChampionship(0)->id,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 0,
+            'isTeam' => 0,
+            'numFighters' => 5
+        ]);
+        $this->generateTreeWithUI($setting);
+        $competitors = $this->championshipWithComp->competitors; // 5 comp
+
+        $this->select([
+            $competitors->get(0)->id,
+            $competitors->get(1)->id,
+            $competitors->get(2)->id,
+            $competitors->get(3)->id,
+            $competitors->get(4)->id,
+        ], 'singleElimination_fighters[]')
+            ->press('update');
+
+        $fights = $this->championshipWithComp->fights;
+        $this->assertEquals($competitors->get(0)->id, $fights->get(0)->c1);
+        $this->assertEquals($competitors->get(1)->id, $fights->get(0)->c2);
+        $this->assertEquals($competitors->get(2)->id, $fights->get(1)->c1);
+        $this->assertEquals($competitors->get(3)->id, $fights->get(1)->c2);
+        $this->assertEquals($competitors->get(4)->id, $fights->get(2)->c1);
+
     }
 
     /** @test */
     public function you_can_update_manually_single_elimination_tree_winner_id()
     {
+        $setting = factory(ChampionshipSettings::class)->make([
+            'championship_id' => $this->getChampionship(0)->id,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 0,
+            'isTeam' => 0,
+            'numFighters' => 5
+        ]);
+        $this->generateTreeWithUI($setting);
+        $fight = $this->championshipWithComp->fights->get(0);
+        $this->assertNull($fight->winner_id);
 
+        $this->select(['X', 'X'], 'score[]')
+            ->press('update');
+        if ($fight->c1 != null && $fight->c2 != null) {
+            $this->assertNotNull($fight->winner_id);
+        }else{
+            $this->assertNull($fight->winner_id);
+        }
     }
 }
