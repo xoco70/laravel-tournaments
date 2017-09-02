@@ -8,7 +8,8 @@
             <label for="hasPreliminary">Preliminary</label>
             <br/>
             <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
-            <select class="form-control" id="hasPreliminary" name="hasPreliminary">
+            <select class="form-control" id="hasPreliminary" name="hasPreliminary"
+                    :disabled="isPrelimDisabled" v-model="hasPrelim" v-on:change="prelim()">
 
                 <option value="0" {{ $hasPreliminary == 0 ? 'selected' :'' }}>NO</option>
                 <option value="1" {{ $hasPreliminary == 1 ? 'selected' :'' }}>YES</option>
@@ -19,7 +20,7 @@
         <div class="col-lg-2">
             <div class="form-group">
                 <label for="preliminaryGroupSize">{{trans('laravel-tournaments::core.preliminaryGroupSize')}}</label>
-                <select class="form-control" id="preliminaryGroupSize" name="preliminaryGroupSize">
+                <select class="form-control" id="preliminaryGroupSize" name="preliminaryGroupSize" :disabled="isGroupSizeDisabled">
                     <option value="3" @if ($setting->preliminaryGroupSize == 3) selected @endif>3</option>
                     <option value="4" @if ($setting->preliminaryGroupSize == 4) selected @endif>4</option>
                     <option value="5" @if ($setting->preliminaryGroupSize == 5) selected @endif>5</option>
@@ -54,7 +55,8 @@
         <div class="col-lg-2">
 
             <label for="treeType">Tree Type</label>
-            <select class="form-control" id="treeType" name="treeType">
+            <select class="form-control" id="treeType" name="treeType"
+                    v-model="tree" v-on:change="treeType()" >
                 <option value="0"
                         @if ($setting->treeType == 0) selected @endif>{{ trans('laravel-tournaments::core.playoff') }}
                 </option>
@@ -67,7 +69,7 @@
         <div class="col-lg-2">
 
             <label for="fightingAreas">{{ trans_choice('laravel-tournaments::core.fightingArea',2) }}</label>
-            <select class="form-control" id="fightingAreas" name="fightingAreas">
+            <select class="form-control" id="fightingAreas" name="fightingAreas" :disabled="isAreaDisabled">
                 <option value="1" @if ($setting->fightingAreas == 1) selected @endif>1</option>
                 <option value="2" @if ($setting->fightingAreas == 2) selected @endif>2</option>
                 <option value="4" @if ($setting->fightingAreas == 4) selected @endif>4</option>
