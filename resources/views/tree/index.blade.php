@@ -56,7 +56,10 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
 </div>
 </body>
 
+
 <script>
+    var treeValue = {{$setting->treeType}};
+    var preliminaryValue = {{$hasPreliminary}};
     new Vue({
 
         el: '#app',
@@ -87,6 +90,8 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
 
         },
         created() {
+            this.tree = treeValue;
+            this.hasPrelim = preliminaryValue;
             this.prelim();
             this.treeType();
         }
