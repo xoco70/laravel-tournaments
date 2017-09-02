@@ -17,8 +17,6 @@ abstract class TreeGen implements TreeGenerable
     public $settings;
     protected $numFighters;
 
-    abstract protected function pushEmptyGroupsToTree($numFighters);
-
     abstract protected function generateFights();
 
     abstract protected function createByeFighter();

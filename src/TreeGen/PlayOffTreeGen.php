@@ -23,19 +23,7 @@ abstract class PlayOffTreeGen extends TreeGen
         return $this->createByeGroup($byeCount);
     }
 
-    /**
-     * Create empty groups for PlayOff Round.
-     *
-     * @param $numFighters
-     */
-    protected function pushEmptyGroupsToTree($numFighters)
-    {
-        //TODO CHANGE HERE TOO
-        $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
-        // We calculate how much rounds we will have
-        $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
-        $this->pushGroups($numRounds, $numFightersElim);
-    }
+
 
     /**
      * Chunk Fighters into groups for fighting, and optionnaly shuffle.
@@ -104,7 +92,9 @@ abstract class PlayOffTreeGen extends TreeGen
         $fighters = $this->championship->fighters;
         // This means that when playoff, we only generate 1 group
         // Could be better, for now it is ok
-        $this->generateGroupsForRound($fighters, 1);
+        if (sizeof($fighters) > 0) {
+            $this->generateGroupsForRound($fighters, 1);
+        }
 
     }
 
