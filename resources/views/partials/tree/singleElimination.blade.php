@@ -1,13 +1,13 @@
 <?php
-use Xoco70\LaravelTournaments\TreeGen\CreateDirectEliminationTree;
+use Xoco70\LaravelTournaments\TreeGen\CreateSingleEliminationTree;
 
-$directEliminationTree = $championship->fightersGroups->where('round', '>=', $hasPreliminary + 1)->groupBy('round');
-if (sizeof($directEliminationTree) > 0) {
-    $treeGen = new CreateDirectEliminationTree($directEliminationTree, $championship, $hasPreliminary);
+$singleEliminationTree = $championship->fightersGroups->where('round', '>=', $hasPreliminary + 1)->groupBy('round');
+if (sizeof($singleEliminationTree) > 0) {
+    $treeGen = new CreateSingleEliminationTree($singleEliminationTree, $championship, $hasPreliminary);
     $treeGen->build();
 }
 ?>
-@if (sizeof($directEliminationTree)>0)
+@if (sizeof($singleEliminationTree)>0)
 
     @if (Request::is('championships/'.$championship->id.'/pdf'))
         <h1> {{$championship->buildName()}}</h1>

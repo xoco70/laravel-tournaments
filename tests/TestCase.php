@@ -131,7 +131,7 @@ abstract class TestCase extends BaseTestCase
             ->select($setting->fightingAreas, 'fightingAreas')
             ->select(
                 $setting->treeType
-                    ? ChampionshipSettings::DIRECT_ELIMINATION
+                    ? ChampionshipSettings::SINGLE_ELIMINATION
                     : ChampionshipSettings::PLAY_OFF, 'treeType'
             )
             ->select($setting->preliminaryGroupSize, 'preliminaryGroupSize')

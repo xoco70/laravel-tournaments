@@ -5,7 +5,7 @@ return [
     // CategorySetting
     'treeType'             => 'Tree Type',
     'playoff'              => 'Playoff',
-    'direct_elimination'   => 'Direct Elimination',
+    'single_elimination'   => 'Single Elimination',
     'teamSize'             => 'Team size',
     'teamSizeReserve'      => 'Team Reserve',
     'fightingArea'         => 'Area|Areas',

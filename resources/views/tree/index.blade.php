@@ -36,8 +36,8 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
             @if ($championship->hasPreliminary())
                 @include('laravel-tournaments::partials.tree.preliminary')
             @else
-                @if ($championship->isDirectEliminationType())
-                    @include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 0])
+                @if ($championship->isSingleEliminationType())
+                    @include('laravel-tournaments::partials.tree.singleElimination', ['hasPreliminary' => 0])
                 @elseif ($championship->isPlayOffType())
                     @include('laravel-tournaments::partials.tree.playOff')
                 @else

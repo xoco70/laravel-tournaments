@@ -5,7 +5,7 @@ namespace Xoco70\LaravelTournaments\Tests;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 
-class DirectEliminationWPrelimTest extends TestCase
+class SingleEliminationWPrelimTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -38,7 +38,7 @@ class DirectEliminationWPrelimTest extends TestCase
                         'fightingAreas' => $numArea,
                         'numFighters' => $numFighters,
                         'isTeam' => 0,
-                        'treeType' => ChampionshipSettings::DIRECT_ELIMINATION,
+                        'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
                         'hasPreliminary' => 1,
                         'preliminaryGroupSize' => $preliminaryGroupSize
                     ]);
@@ -85,7 +85,7 @@ class DirectEliminationWPrelimTest extends TestCase
                             'fightingAreas' => $numArea,
                             'numFighters' => $numFighters,
                             'isTeam' => $isTeam,
-                            'treeType' => ChampionshipSettings::DIRECT_ELIMINATION,
+                            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
                             'hasPreliminary' => 1,
                             'preliminaryGroupSize' => $numGroup
                         ]);

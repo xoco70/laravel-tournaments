@@ -18,7 +18,7 @@ class ChampionshipSettings extends Model
 
     const MIN_COMPETITORS_BY_AREA = 2;
     const PLAY_OFF = 0;
-    const DIRECT_ELIMINATION = 1;
+    const SINGLE_ELIMINATION = 1;
     const PRELIMINARY_GROUP_SIZE = [3 => 3, 4 => 4, 5 => 5];
     const PRELIMINARY_WINNERS = [1 => 1];
     const // , 2 => 2, 3 => 3

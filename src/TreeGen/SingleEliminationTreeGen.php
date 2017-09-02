@@ -5,10 +5,10 @@ namespace Xoco70\LaravelTournaments\TreeGen;
 use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
-use Xoco70\LaravelTournaments\Models\DirectEliminationFight;
+use Xoco70\LaravelTournaments\Models\SingleEliminationFight;
 use Xoco70\LaravelTournaments\Models\PreliminaryFight;
 
-abstract class DirectEliminationTreeGen extends TreeGen
+abstract class SingleEliminationTreeGen extends TreeGen
 {
     /**
      * Calculate the Byes need to fill the Championship Tree.
@@ -111,7 +111,7 @@ abstract class DirectEliminationTreeGen extends TreeGen
             $initialRound++;
         }
         // Save Next rounds
-        $fight = new DirectEliminationFight();
+        $fight = new SingleEliminationFight();
         $fight->saveFights($this->championship, $initialRound);
     }
 

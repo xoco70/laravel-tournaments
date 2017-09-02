@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Xoco70\LaravelTournaments\DBHelpers;
+use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 
 class CreateChampionshipSettingsTable extends Migration
 {
@@ -24,7 +25,7 @@ class CreateChampionshipSettingsTable extends Migration
                 ->onDelete('cascade');
 
             // Category Section
-            $table->tinyInteger('treeType')->default(1); // 0 - RoundRobin; 1 - Direct Elimination;
+            $table->tinyInteger('treeType')->default(ChampionshipSettings::SINGLE_ELIMINATION);
             $table->tinyInteger('fightingAreas')->unsigned()->nullable()->default(1);
             $table->integer('limitByEntity')->unsigned()->nullable();
 

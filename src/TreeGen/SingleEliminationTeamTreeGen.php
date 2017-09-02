@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
 use Xoco70\LaravelTournaments\Models\Team;
 
-class DirectEliminationTeamTreeGen extends DirectEliminationTreeGen
+class SingleEliminationTeamTreeGen extends SingleEliminationTreeGen
 {
     /**
      * get Fighter by Id.

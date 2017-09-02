@@ -3,7 +3,7 @@
 namespace Xoco70\LaravelTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
-use Xoco70\LaravelTournaments\Models\DirectEliminationFight;
+use Xoco70\LaravelTournaments\Models\SingleEliminationFight;
 
 abstract class PlayOffTreeGen extends TreeGen
 {
@@ -64,7 +64,7 @@ abstract class PlayOffTreeGen extends TreeGen
     public function generateFights()
     {
         parent::destroyPreviousFights($this->championship);
-        DirectEliminationFight::saveFights($this->championship);
+        SingleEliminationFight::saveFights($this->championship);
     }
 
     /**

@@ -111,7 +111,7 @@ class TreeController extends Controller
         $query = FightersGroup::with('fights')
             ->where('championship_id', $championship->id);
 
-        $fighters = $request->directElimination_fighters;
+        $fighters = $request->singleElimination_fighters;
         if ($championship->hasPreliminary()) {
             $query = $query->where('round', '>', 1);
             $fighters = $request->preliminary_fighters;

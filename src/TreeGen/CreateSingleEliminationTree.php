@@ -5,7 +5,7 @@ namespace Xoco70\LaravelTournaments\TreeGen;
 use Xoco70\LaravelTournaments\Models\Competitor;
 use Xoco70\LaravelTournaments\Models\Team;
 
-class CreateDirectEliminationTree
+class CreateSingleEliminationTree
 {
     public $firstRoundName;
     public $groupsByRound;

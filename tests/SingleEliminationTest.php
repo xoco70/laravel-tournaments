@@ -4,10 +4,10 @@ namespace Xoco70\LaravelTournaments\Tests;
 
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 
-class DirectEliminationTest extends TestCase
+class SingleEliminationTest extends TestCase
 {
     /** @test */
-    public function check_number_of_row_when_generating_direct_elimination_tree()
+    public function check_number_of_row_when_generating_single_elimination_tree()
     {
         $fightersInTree = [1, 2, 3, 4, 5, 6]; // ,  7,  8,  9, 10, 11, 12, 13, 14
         $numGroupsExpected = [0, 1, 2, 2, 4, 4]; // , 21, 28, 36, 45, 55, 66, 78, 91
@@ -17,7 +17,7 @@ class DirectEliminationTest extends TestCase
                 $setting = factory(ChampionshipSettings::class)->make([
                     'championship_id' => $this->getChampionship(0)->id,
                     'fightingAreas' => $numArea,
-                    'treeType' => ChampionshipSettings::DIRECT_ELIMINATION,
+                    'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
                     'hasPreliminary' => 0,
                     'isTeam' => 0,
                     'numFighters' => $numFighters
@@ -29,7 +29,7 @@ class DirectEliminationTest extends TestCase
     }
 
     /** @test */
-    public function check_number_of_fights_when_direct_elimination_tree()
+    public function check_number_of_fights_when_single_elimination_tree()
     {
         $isTeams = [0, 1];
         $numFights = [
@@ -44,7 +44,7 @@ class DirectEliminationTest extends TestCase
                     $setting = factory(ChampionshipSettings::class)->make([
                         'championship_id' => $this->getChampionship($isTeam)->id,
                         'fightingAreas' => $numArea,
-                        'treeType' => ChampionshipSettings::DIRECT_ELIMINATION,
+                        'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
                         'hasPreliminary' => 0,
                         'isTeam' => $isTeam,
                         'numFighters' => $numFighters
@@ -64,7 +64,7 @@ class DirectEliminationTest extends TestCase
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship($isTeam)->id,
             'fightingAreas' => 1,
-            'treeType' => ChampionshipSettings::DIRECT_ELIMINATION,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
             'hasPreliminary' => 0,
             'isTeam' => $isTeam,
             'numFighters' => 5

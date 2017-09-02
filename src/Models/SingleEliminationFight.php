@@ -2,7 +2,7 @@
 
 namespace Xoco70\LaravelTournaments\Models;
 
-class DirectEliminationFight extends Fight
+class SingleEliminationFight extends Fight
 {
     public function __construct(Fight $fight = null)
     {

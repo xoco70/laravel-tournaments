@@ -55,10 +55,10 @@
             <label for="treeType">Tree Type</label>
             <select class="form-control" id="treeType" name="treeType">
                 <option value="0"
-                        @if ($setting->treeType == 0) selected @endif>{{ trans('laravel-tournaments::core.playoff') }}
+                        @if ($setting->treeType == ChampionshipSettings::PLAYOFF) selected @endif>{{ trans('laravel-tournaments::core.playoff') }}
                 </option>
                 <option value="1"
-                        @if ($setting->treeType == 1) selected @endif>{{ trans('laravel-tournaments::core.direct_elimination') }}
+                        @if ($setting->treeType == ChampionshipSettings::SINGLE_ELIMINATION) selected @endif>{{ trans('laravel-tournaments::core.single_elimination') }}
                 </option>
             </select>
         </div>

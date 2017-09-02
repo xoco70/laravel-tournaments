@@ -33,13 +33,13 @@ Laravel Tournaments
 
 ## Features
 
-- Direct Elimination Trees Generation
-- Direct Elimination with Preliminary Round Generation
+- Single Elimination Trees Generation
+- Single Elimination with Preliminary Round Generation
 - Playoff Generation
 - List of Fights Generation
 - Customize Preliminary Round Size
 - Customize area number (1,2,4,8)
-- Modify Direct Elimination Tree generation on the fly
+- Modify Single Elimination Tree generation on the fly
 - Use teams instead of competitors
 
 ## Warning
@@ -184,8 +184,8 @@ Determine strategy:
 ```php
 $championship->isPlayoffCompetitor()
 $championship->isPlayoffTeam()
-$championship->isDirectEliminationCompetitor()
-$championship->isDirectEliminationTeam()
+$championship->isSingleEliminationCompetitor()
+$championship->isSingleEliminationTeam()
 ```
 
 Determine group size:
@@ -197,7 +197,7 @@ Determine championship type:
 ```php
 $championship->hasPreliminary()
 $championship->isPlayOffType()
-$championship->isDirectEliminationType()
+$championship->isSingleEliminationType()
 ```
 
 
@@ -262,9 +262,9 @@ Preliminary tree
 @include('laravel-tournaments::partials.tree.preliminary') // Preliminary table
 ```
 
-Direct Elimination tree
+Single Elimination tree
 ```php
-@include('laravel-tournaments::partials.tree.directElimination', ['hasPreliminary' => 0]) 
+@include('laravel-tournaments::partials.tree.singleElimination', ['hasPreliminary' => 0]) 
 ```
 
 Fight List
@@ -286,7 +286,8 @@ This is a work in progress, and tree creation might be very complex, so there is
 - Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
 We can improve that making the first match with 3 competitors.
 - Use any number of area ( restricted to 1,2,4,8)
-- Seed fighters
+- Seed fighter
+- Double elimination
  
 ## Troubleshooting
 

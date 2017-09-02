@@ -112,7 +112,7 @@ input:focus, textarea:focus{
     margin-left: 20px;
 }
 
-.directElimination_select{
+.singleElimination_select{
     border: 0 none;
     border-right: 1px solid #cdc9c9;
     height: 30px;

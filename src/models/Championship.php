@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
-use Xoco70\LaravelTournaments\TreeGen\DirectEliminationCompetitorTreeGen;
-use Xoco70\LaravelTournaments\TreeGen\DirectEliminationTeamTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\SingleEliminationCompetitorTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\SingleEliminationTeamTreeGen;
 use Xoco70\LaravelTournaments\TreeGen\PlayOffCompetitorTreeGen;
 use Xoco70\LaravelTournaments\TreeGen\PlayOffTeamTreeGen;
 
@@ -130,13 +130,13 @@ class Championship extends Model
     }
 
     /**
-     * Check if 2nd Round of Championship is Direct Elimination.
+     * Check if 2nd Round of Championship is Single Elimination.
      *
      * @return bool
      */
-    public function isDirectEliminationType()
+    public function isSingleEliminationType()
     {
-        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::DIRECT_ELIMINATION;
+        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::SINGLE_ELIMINATION;
     }
 
     /**
@@ -249,14 +249,14 @@ class Championship extends Model
         return $this->category->isTeam() && $this->isPlayOffType();
     }
 
-    public function isDirectEliminationCompetitor()
+    public function isSingleEliminationCompetitor()
     {
-        return !$this->category->isTeam() && $this->isDirectEliminationType();
+        return !$this->category->isTeam() && $this->isSingleEliminationType();
     }
 
-    public function isDirectEliminationTeam()
+    public function isSingleEliminationTeam()
     {
-        return $this->category->isTeam() && $this->isDirectEliminationType();
+        return $this->category->isTeam() && $this->isSingleEliminationType();
     }
 
     /**
@@ -265,11 +265,11 @@ class Championship extends Model
     public function chooseGenerationStrategy()
     {
         switch (true) {
-            case $this->isDirectEliminationCompetitor():
-                $generation = new DirectEliminationCompetitorTreeGen($this, null);
+            case $this->isSingleEliminationCompetitor():
+                $generation = new SingleEliminationCompetitorTreeGen($this, null);
                 break;
-            case $this->isDirectEliminationTeam():
-                $generation = new DirectEliminationTeamTreeGen($this, null);
+            case $this->isSingleEliminationTeam():
+                $generation = new SingleEliminationTeamTreeGen($this, null);
                 break;
             case $this->isPlayoffCompetitor():
                 $generation = new PlayOffCompetitorTreeGen($this, null);

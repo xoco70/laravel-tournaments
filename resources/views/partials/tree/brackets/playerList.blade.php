@@ -1,5 +1,5 @@
 <?php
-$prefix = "directElimination";
+$prefix = "singleElimination";
 if ($championship->hasPreliminary() && $numRound ==1){
     $prefix = "preliminary";
 }

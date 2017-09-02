@@ -189,7 +189,7 @@ abstract class TreeGen implements TreeGenerable
     protected function saveGroup($order, $round, $parent): FightersGroup
     {
         $group = new FightersGroup();
-        $this->championship->isDirectEliminationType()
+        $this->championship->isSingleEliminationType()
             ? $group->area = $this->getNumArea($round, $order)
             : $group->area = 1; // Area limited to 1 in playoff
 
