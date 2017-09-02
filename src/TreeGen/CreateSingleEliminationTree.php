@@ -69,7 +69,6 @@ class CreateSingleEliminationTree
 
         $spaceFactor = 0.5;
         $playerHeightFactor = 1;
-
         foreach ($this->brackets as $roundNumber => &$round) {
             foreach ($round as $matchNumber => &$match) {
 
@@ -77,9 +76,11 @@ class CreateSingleEliminationTree
 
                 $match['playerA'] = $match[0];
                 $match['playerB'] = $match[1];
+                $match['winner_id'] = $match[2];
 
                 unset($match[0]);
                 unset($match[1]);
+                unset($match[2]);
 
                 //Figure out the bracket positions
 
@@ -127,7 +128,7 @@ class CreateSingleEliminationTree
             //The minus 3 is to ignore the final, semi final and quarter final rounds
 
             for ($i = 0; $i < $noRounds - 3; $i++) {
-                $tempRounds[] = 'Last '.$noTeamsInFirstRound;
+                $tempRounds[] = 'Last ' . $noTeamsInFirstRound;
                 $noTeamsInFirstRound /= 2;
             }
 
@@ -139,9 +140,8 @@ class CreateSingleEliminationTree
         foreach ($roundTitles as $key => $roundTitle) {
             $left = $key * ($this->matchWrapperWidth + $this->roundSpacing - 1);
 
-            echo '<div class="round-title" style="left: '.$left.'px;">'.$roundTitle.'</div>';
+            echo '<div class="round-title" style="left: ' . $left . 'px;">' . $roundTitle . '</div>';
         }
-
         echo '</div>';
     }
 
@@ -153,7 +153,7 @@ class CreateSingleEliminationTree
     public function getPlayerList($selected)
     {
         $html = '<select>
-                <option'.($selected == '' ? ' selected' : '').'></option>';
+                <option' . ($selected == '' ? ' selected' : '') . '></option>';
 
         foreach ($this->championship->fighters as $fighter) {
             $html = $this->addOptionToSelect($selected, $fighter, $html);
@@ -178,20 +178,19 @@ class CreateSingleEliminationTree
      */
     private function assignFightersToBracket($numRound, $hasPreliminary)
     {
-        //TODO When Preliminary, we get a problem : Round 2 to 2, or get rounNumber = 1, and fails
         for ($roundNumber = $numRound; $roundNumber <= $this->noRounds; $roundNumber++) {
             $groupsByRound = $this->groupsByRound->get($roundNumber + $hasPreliminary);
             for ($matchNumber = 1; $matchNumber <= ($this->numFighters / pow(2, $roundNumber)); $matchNumber++) {
                 $fight = $groupsByRound[$matchNumber - 1]->fights[0];
 
+                $fighter1 = $fight->competitor1;
+                $fighter2 = $fight->competitor2;
                 if ($this->championship->category->isTeam()) {
                     $fighter1 = $fight->team1;
                     $fighter2 = $fight->team2;
-                } else {
-                    $fighter1 = $fight->competitor1;
-                    $fighter2 = $fight->competitor2;
                 }
-                $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2];
+                $winnerId = $fight->winner_id;
+                $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2, $winnerId];
             }
         }
     }
@@ -207,12 +206,12 @@ class CreateSingleEliminationTree
     {
         if ($fighter != null) {
             $select = $selected != null && $selected->id == $fighter->id ? ' selected' : '';
-            $html .= '<option'.$select
-                .' value='
-                .($fighter->id ?? '')
-                .'>'
-                .$fighter->name
-                .'</option>';
+            $html .= '<option' . $select
+                . ' value='
+                . ($fighter->id ?? '')
+                . '>'
+                . $fighter->name
+                . '</option>';
         }
 
         return $html;

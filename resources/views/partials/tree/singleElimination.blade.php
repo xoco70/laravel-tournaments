@@ -20,15 +20,21 @@ if (sizeof($singleEliminationTree) > 0) {
         {{  $treeGen->printRoundTitles() }}
 
         <div id="brackets-wrapper"
-             style="padding-bottom: {{ ($championship->groupsByRound(1)->count() / 2 * 205) }}px"> <!-- 205 px x 2 groups of 2-->
+             style="padding-bottom: {{ ($championship->groupsByRound(1)->count() / 2 * 205) }}px">
+            <!-- 205 px x 2 groups of 2-->
             @foreach ($treeGen->brackets as $roundNumber => $round)
                 @foreach ($round as $matchNumber => $match)
-
+                    <?php
+                    $isAWinner = (optional($match['playerA'])->id == $match['winner_id'] && $match['winner_id']!=null) ? 'X' : null;
+                    $isBWinner = (optional($match['playerB'])->id == $match['winner_id'] && $match['winner_id']!=null) ? 'X' : null;
+                    ?>
                     <div class="match-wrapper"
                          style="top:  {{ $match['matchWrapperTop'] }}px; left:  {{ $match['matchWrapperLeft']  }}px; width: {{   $treeGen->matchWrapperWidth  }}px;">
-                        <input type="text" class="score" name="score[]"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
+                        <input type="text" class="score" name="score[]" value="{{ $isAWinner }}">
+                        @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerA'], 'numRound' => $round])
                         <div class="match-divider"></div>
-                        <input type="text" class="score" name="score[]"> @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
+                        <input type="text" class="score" name="score[]" value="{{ $isBWinner }}">
+                        @include('laravel-tournaments::partials.tree.brackets.playerList', ['selected' => $match['playerB'], 'numRound' => $round])
                     </div>
 
                     @if ($roundNumber != $treeGen->noRounds)
