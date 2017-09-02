@@ -109,17 +109,24 @@ class CreateSingleEliminationTree
     }
 
     /**
-     * Print Round Titles.
+     * returns titles depending of number of rounds
+     * @return array
      */
-    public function printRoundTitles()
+    public function getRoundTitles()
     {
-        if ($this->numFighters == 2) {
-            $roundTitles = ['Final'];
-        } elseif ($this->numFighters <= 4) {
-            $roundTitles = ['Semi-Finals', 'Final'];
-        } elseif ($this->numFighters <= 8) {
-            $roundTitles = ['Quarter-Finals', 'Semi-Finals', 'Final'];
-        } else {
+        $semiFinalTitles = ['Semi-Finals', 'Final'];
+        $quarterFinalTitles = ['Quarter-Finals', 'Semi-Finals', 'Final'];
+        $roundTitle = [
+            2 => ['Final'],
+            3 => $semiFinalTitles,
+            4 => $semiFinalTitles,
+            5 => $semiFinalTitles,
+            6 => $quarterFinalTitles,
+            7 => $quarterFinalTitles,
+            8 => $quarterFinalTitles,
+
+        ];
+        if ($this->numFighters > 8) {
             $roundTitles = ['Quarter-Finals', 'Semi-Finals', 'Final'];
             $noRounds = ceil(log($this->numFighters, 2));
             $noTeamsInFirstRound = pow(2, ceil(log($this->numFighters) / log(2)));
@@ -131,9 +138,17 @@ class CreateSingleEliminationTree
                 $tempRounds[] = 'Last ' . $noTeamsInFirstRound;
                 $noTeamsInFirstRound /= 2;
             }
-
-            $roundTitles = array_merge($tempRounds, $roundTitles);
+            return array_merge($tempRounds, $roundTitles);
         }
+        return $roundTitle[$this->numFighters];
+    }
+
+    /**
+     * Print Round Titles.
+     */
+    public function printRoundTitles()
+    {
+        $roundTitles = $this->getRoundTitles();
 
         echo '<div id="round-titles-wrapper">';
 
