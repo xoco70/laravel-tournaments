@@ -141,13 +141,12 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param $championship
      * @param $setting
      * @param $currentTest
      */
-    protected function checkGroupsNumber($championship, $setting, $numGroupsExpected, $currentTest)
+    protected function checkGroupsNumber($setting, $numGroupsExpected, $currentTest)
     {
-        $count = FightersGroup::where('championship_id', $championship->id)
+        $count = FightersGroup::where('championship_id', $setting->championship->id)
             ->where('round', 1)
             ->count();
 
@@ -160,9 +159,9 @@ abstract class TestCase extends BaseTestCase
         if ($count != $expected) {
             dd(
                 ['Method' => $currentTest,
-                    'championship' => $championship->id,
+                    'championship' => $setting->championship->id,
                     'NumCompetitors' => $setting->numFighters,
-                    'preliminaryGroupSize' => $championship->getSettings()->preliminaryGroupSize,
+                    'preliminaryGroupSize' => $setting->preliminaryGroupSize,
                     'NumArea' => $setting->fightingAreas,
                     'isTeam' => $setting->isTeam,
                     'Real' => $count,
@@ -175,15 +174,14 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param $championship
      * @param $setting
      * @param $numFightsExpected
      * @param $methodName
      */
-    protected function checkFightsNumber($championship, $setting, $numFightsExpected, $methodName)
+    protected function checkFightsNumber($setting, $numFightsExpected, $methodName)
     {
         $groupSize = $setting->hasPreliminary ? $setting->preliminaryGroupSize : 2;
-        $count = $this->getFightsCount($championship);
+        $count = $this->getFightsCount($setting->championship_id);
 
 
         if ((int)($setting->numFighters / $setting->fightingAreas) <= 1
@@ -207,15 +205,12 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param $championship
-     * @param $area
-     *
-     * @return mixed
+     * @param $championshipId
+     * @return int
      */
-    protected function getFightsCount($championship)
+    protected function getFightsCount($championshipId)
     {
-        $groupsId = FightersGroup::where('championship_id', $championship->id)
-//            ->where('area', $area)
+        $groupsId = FightersGroup::where('championship_id', $championshipId)
             ->where('round', 1)
             ->select('id')
             ->pluck('id')->toArray();

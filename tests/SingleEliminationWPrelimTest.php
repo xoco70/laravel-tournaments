@@ -33,8 +33,8 @@ class SingleEliminationWPrelimTest extends TestCase
         foreach ($numPreliminaryGroups as $numArea => $prelimGroupsByArea) {
             foreach ($prelimGroupsByArea as $preliminaryGroupSize => $numPreliminaryGroup) {
                 foreach ($fightersInTree as $numFighters) {
-//                    $isTeam = rand(0,1);
                     $setting = factory(ChampionshipSettings::class)->make([
+                        'championship_id' => $this->championshipWithComp->fresh()->id,
                         'fightingAreas' => $numArea,
                         'numFighters' => $numFighters,
                         'isTeam' => 0,
@@ -43,7 +43,7 @@ class SingleEliminationWPrelimTest extends TestCase
                         'preliminaryGroupSize' => $preliminaryGroupSize
                     ]);
                     $this->generateTreeWithUI($setting);
-                    parent::checkGroupsNumber($this->championshipWithComp->fresh(), $setting, $numPreliminaryGroup, __METHOD__);
+                    parent::checkGroupsNumber($setting, $numPreliminaryGroup, __METHOD__);
                 }
             }
         }
@@ -82,6 +82,7 @@ class SingleEliminationWPrelimTest extends TestCase
                 foreach ($numFightGroupSize as $numArea => $numFightPerArea) {
                     foreach ($numFightPerArea as $numFighters => $numFightsExpected) {
                         $setting = factory(ChampionshipSettings::class)->make([
+                            'championship_id' => $championship->id,
                             'fightingAreas' => $numArea,
                             'numFighters' => $numFighters,
                             'isTeam' => $isTeam,
@@ -91,7 +92,7 @@ class SingleEliminationWPrelimTest extends TestCase
                         ]);
 
                         $this->generateTreeWithUI($setting);
-                        parent::checkFightsNumber($championship, $setting, $numFightsExpected, __METHOD__);
+                        parent::checkFightsNumber($setting, $numFightsExpected, __METHOD__);
                     }
                 }
             }

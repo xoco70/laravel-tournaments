@@ -23,7 +23,7 @@ class SingleEliminationTest extends TestCase
                     'numFighters' => $numFighters
                 ]);
                 $this->generateTreeWithUI($setting);
-                parent::checkGroupsNumber($this->championshipWithComp, $setting, $numGroupsExpected, __METHOD__);
+                parent::checkGroupsNumber($setting, $numGroupsExpected, __METHOD__);
             }
         }
     }
@@ -50,7 +50,7 @@ class SingleEliminationTest extends TestCase
                         'numFighters' => $numFighters
                     ]);
                     $this->generateTreeWithUI($setting);
-                    parent::checkFightsNumber($championship, $setting, $numFightsExpected, __METHOD__);
+                    parent::checkFightsNumber($setting, $numFightsExpected, __METHOD__);
                 }
             }
 
@@ -103,5 +103,15 @@ class SingleEliminationTest extends TestCase
         if (!$fight->c2) {
             $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
         }
+    }
+    /** @test */
+    public function you_can_update_manually_single_elimination_tree()
+    {
+    }
+
+    /** @test */
+    public function you_can_update_manually_single_elimination_tree_winner_id()
+    {
+
     }
 }
