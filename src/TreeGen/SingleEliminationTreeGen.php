@@ -55,7 +55,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
     protected function pushEmptyGroupsToTree($numFighters)
     {
         if ($this->championship->hasPreliminary()) {
-            $numFightersElim = $numFighters / $this->championship->getSettings()->preliminaryGroupSize * 2;
+            $numFightersElim = $numFighters / $this->settings->preliminaryGroupSize * 2;
             // We calculate how much rounds we will have
             $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
             return $this->pushGroups($numRounds, $numFightersElim);
@@ -95,7 +95,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
     protected function generateFights()
     {
         //  First Round Fights
-        $settings = $this->championship->getSettings();
+        $settings = $this->settings;
         $initialRound = 1;
 
         // Very specific case to common case : Preliminary with 3 fighters
@@ -130,7 +130,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
     private function firstRoundGroupSize()
     {
         return $this->championship->hasPreliminary()
-            ? $this->championship->getSettings()->preliminaryGroupSize
+            ? $this->settings->preliminaryGroupSize
             : 2;
     }
 

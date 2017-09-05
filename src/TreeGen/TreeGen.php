@@ -17,6 +17,8 @@ abstract class TreeGen implements TreeGenerable
     public $settings;
     protected $numFighters;
 
+    abstract protected function generateAllTrees();
+
     abstract protected function generateFights();
 
     abstract protected function createByeFighter();
@@ -37,7 +39,7 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function generateGroupsForRound(Collection $fightersByArea, $round);
 
-    abstract protected function generateAllTrees();
+
 
     /**
      * @param Championship $championship
@@ -118,7 +120,7 @@ abstract class TreeGen implements TreeGenerable
         foreach ($squareMultiplied as $limit) {
             if ($fighterCount <= $limit) {
                 $treeSize = $limit;
-                $numAreas = $this->championship->getSettings()->fightingAreas;
+                $numAreas = $this->settings->fightingAreas;
                 $fighterCountPerArea = $treeSize / $numAreas;
                 if ($fighterCountPerArea < $groupSize) {
                     $treeSize = $treeSize * $numAreas;
@@ -433,7 +435,6 @@ abstract class TreeGen implements TreeGenerable
         $areaSize = $numGroups / ($totalAreas * pow(2, $round - 1));
 
         $numArea = intval(ceil($order / $areaSize)); // if round == 4, and second match 2/2 = 1 BAD
-//        dump($numArea);
         return $numArea;
     }
 
