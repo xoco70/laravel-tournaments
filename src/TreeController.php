@@ -121,25 +121,24 @@ class TreeController extends Controller
 
         foreach ($groups as $group) {
             foreach ($group->fights as $fight) {
-                // Find the fight in array, and update order
                 $fight->c1 = $fighters[$numFighter];
-                $scores[$numFighter] != null
-                    ?  $fight->winner_id = $fighters[$numFighter]
-                    : $fight->winner_id = null;
+                $fight->winner_id = $this->getWinnerId($fighters, $scores, $numFighter);
                 $numFighter++;
 
                 $fight->c2 = $fighters[$numFighter];
-                if ($fight->winner_id == null){
-                    $scores[$numFighter] != null
-                        ?  $fight->winner_id = $fighters[$numFighter]
-                        : $fight->winner_id = null;
+                if ($fight->winner_id == null) {
+                    $fight->winner_id = $this->getWinnerId($fighters, $scores, $numFighter);
                 }
-
-
                 $numFighter++;
                 $fight->save();
             }
         }
         return back();
+    }
+
+
+    function getWinnerId($fighters, $scores, $numFighter)
+    {
+        return $scores[$numFighter] != null ? $fighters[$numFighter] : null;
     }
 }
