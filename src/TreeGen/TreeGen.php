@@ -23,23 +23,23 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function createByeFighter();
 
-    abstract protected function chunkAndShuffle(Collection $fightersByEntity);
-
-    abstract protected function addFighterToGroup(FightersGroup $group, $fighter);
-
-    abstract protected function syncGroup(FightersGroup $group, $fighters);
+    abstract protected function addFighterToGroup(FightersGroup $group, $fighter,$fighterToUpdate);
 
     abstract protected function getByeGroup($fighters);
-
-    abstract protected function getFighter($fighterId);
 
     abstract protected function getFighters();
 
     abstract protected function getNumRounds($fightersCount);
 
+
+
+    abstract protected function chunkAndShuffle(Collection $fightersByEntity);
+
+    abstract protected function syncGroup(FightersGroup $group, $fighters);
+
+    abstract protected function getFighter($fighterId);
+
     abstract protected function generateGroupsForRound(Collection $fightersByArea, $round);
-
-
 
     /**
      * @param Championship $championship
@@ -413,7 +413,7 @@ abstract class TreeGen implements TreeGenerable
                 $parentGroup = $parentFight->group;
 
                 $fighter = $this->getFighter($valueToUpdate);
-                $this->addFighterToGroup($parentGroup, $fighter);
+                $this->addFighterToGroup($parentGroup, $fighter, $fighterToUpdate);
             }
         }
     }
@@ -442,8 +442,6 @@ abstract class TreeGen implements TreeGenerable
     protected function generateAllFights()
     {
         $this->generateFights(); // Abstract
-
-        //TODO In direct elimination without Prelim, short_id are not generating well
         $this->generateNextRoundsFights();
         Fight::generateFightsId($this->championship);
     }
