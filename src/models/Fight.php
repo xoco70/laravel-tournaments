@@ -129,7 +129,7 @@ class Fight extends Model
     /**
      * @return bool
      */
-    public function shouldBeInFightList()
+    public function shouldBeInFightList($default)
     {
         if ($this->belongsToFirstRound() && $this->dontHave2Fighters()) {
             return false;
@@ -149,8 +149,7 @@ class Fight extends Model
         // if there is 1  - 1 fighters -> fight should have 2 fighters, undetermines
         // if there is 1  - 0 fighters -> determined, fight should not be in the list
         // if there is 0  - 1 fighters -> determined, fight should not be in the list
-        // So anyway, we should return false
-        return false;
+        return $default;
     }
 
     /**
@@ -210,7 +209,7 @@ class Fight extends Model
      */
     public function updateShortId($order)
     {
-        if ($this->shouldBeInFightList()) {
+        if ($this->shouldBeInFightList(false)) {
             $this->short_id = $order;
             $this->save();
 

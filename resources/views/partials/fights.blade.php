@@ -7,7 +7,7 @@
 
         <?php $fightId = 0; ?>
         @foreach($fightsByArea as $fight)
-            @if ($fight->shouldBeInFightList())
+            @if ($fight->shouldBeInFightList(false))
                 <?php
                 if ($championship->category->isTeam) {
                     $fighter1 = optional($fight->team1)->name ?? "BYE";
