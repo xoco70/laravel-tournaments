@@ -149,8 +149,8 @@ class Fight extends Model
         // if there is 1  - 1 fighters -> fight should have 2 fighters, undetermines
         // if there is 1  - 0 fighters -> determined, fight should not be in the list
         // if there is 0  - 1 fighters -> determined, fight should not be in the list
-        // So anyway, we should return true
-        return true;
+        // So anyway, we should return false
+        return false;
     }
 
     /**
