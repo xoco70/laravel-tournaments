@@ -13,8 +13,8 @@
                     $fighter1 = optional($fight->team1)->name ?? "BYE";
                     $fighter2 = optional($fight->team2)->name ?? "BYE";
                 } else {
-                    $fighter1 = optional($fight->competitor1)->fullName ?? "";
-                    $fighter2 = optional($fight->competitor2)->fullName ?? "";
+                    $fighter1 = optional($fight->competitor1)->fullName ?? "BYE";
+                    $fighter2 = optional($fight->competitor2)->fullName ?? "BYE";
                 }
                 $fightId++;
                 ?>
