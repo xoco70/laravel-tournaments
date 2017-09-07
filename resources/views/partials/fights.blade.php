@@ -10,11 +10,11 @@
             @if ($fight->shouldBeInFightList())
                 <?php
                 if ($championship->category->isTeam) {
-                    $fighter1 = $fight->team1 != null ? $fight->team1->name : "BYE";
-                    $fighter2 = $fight->team2 != null ? $fight->team2->name : "BYE";
+                    $fighter1 = optional($fight->team1)->name ?? "BYE";
+                    $fighter2 = optional($fight->team2)->name ?? "BYE";
                 } else {
-                    $fighter1 = $fight->competitor1 != null ? $fight->competitor1->fullName : "";
-                    $fighter2 = $fight->competitor2 != null ? $fight->competitor2->fullName : "";
+                    $fighter1 = optional($fight->competitor1)->fullName ?? "";
+                    $fighter2 = optional($fight->competitor2)->fullName ?? "";
                 }
                 $fightId++;
                 ?>
