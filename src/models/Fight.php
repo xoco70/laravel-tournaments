@@ -112,18 +112,19 @@ class Fight extends Model
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-            $teamToUpdate = 'team'.$numFighter;
+            $teamToUpdate = 'team' . $numFighter;
 
             return optional($this->$teamToUpdate)->$attr;
         }
-        $competitorToUpdate = 'competitor'.$numFighter;
+        $competitorToUpdate = 'competitor' . $numFighter;
         if ($attr == 'name') {
             return $this->$competitorToUpdate == null
                 ? ''
-                : $this->$competitorToUpdate->user->firstname.' '.$this->$competitorToUpdate->user->lastname;
+                : $this->$competitorToUpdate->user->firstname . ' ' . $this->$competitorToUpdate->user->lastname;
         } elseif ($attr == 'short_id') {
             return optional($this->$competitorToUpdate)->short_id;
         }
+        return null;
     }
 
     /**

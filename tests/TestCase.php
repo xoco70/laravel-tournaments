@@ -138,6 +138,7 @@ abstract class TestCase extends BaseTestCase
             ->select($setting->numFighters, 'numFighters');
 
         $this->press('save');
+        return $this;
     }
 
     /**

@@ -3,7 +3,9 @@
 namespace Xoco70\LaravelTournaments\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
+use Xoco70\LaravelTournaments\Models\FightersGroup;
 
 class SingleEliminationWPrelimTest extends TestCase
 {
@@ -97,5 +99,38 @@ class SingleEliminationWPrelimTest extends TestCase
                 }
             }
         }
+    }
+
+    /** @test */
+    public function it_can_generate_prelim_tree_with_12_fighters()
+    {
+        $setting = factory(ChampionshipSettings::class)->make([
+            'championship_id' => $this->getChampionship(0)->id,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 1,
+            'isTeam' => 0,
+            'numFighters' => 12,
+            'preliminaryGroupSize' => 3
+        ]);
+        $this->generateTreeWithUI($setting);
+
+        // Check fights orders
+        $championship = Championship::find(1);
+
+
+        foreach ($championship->fightersGroups as $group) {
+            $competitorsGroup = $group->competitors;
+            $fights = $group->fights;
+            $this->assertEquals(optional($fights->get(0))->c1, optional($competitorsGroup->get(0))->id);
+            $this->assertEquals(optional($fights->get(0))->c2, optional($competitorsGroup->get(1))->id);
+
+            $this->assertEquals(optional($fights->get(1))->c1, optional($competitorsGroup->get(1))->id);
+            $this->assertEquals(optional($fights->get(1))->c2, optional($competitorsGroup->get(2))->id);
+
+            $this->assertEquals(optional($fights->get(2))->c1, optional($competitorsGroup->get(2))->id);
+            $this->assertEquals(optional($fights->get(2))->c2, optional($competitorsGroup->get(0))->id);
+        }
+
     }
 }
