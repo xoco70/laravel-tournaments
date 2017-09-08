@@ -119,7 +119,7 @@ class Fight extends Model
         $competitorToUpdate = 'competitor'.$numFighter;
         if ($attr == 'name') {
             return $this->$competitorToUpdate == null
-                ? 'BYE'
+                ? ''
                 : $this->$competitorToUpdate->user->firstname.' '.$this->$competitorToUpdate->user->lastname;
         } elseif ($attr == 'short_id') {
             return optional($this->$competitorToUpdate)->short_id;
