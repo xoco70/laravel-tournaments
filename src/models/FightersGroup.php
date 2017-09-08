@@ -3,10 +3,12 @@
 namespace Xoco70\LaravelTournaments\Models;
 
 use Carbon\Carbon;
+use ErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\NodeTrait;
+
 
 class FightersGroup extends Model
 {
@@ -193,11 +195,17 @@ class FightersGroup extends Model
      */
     public function getValueToUpdate()
     {
-        if ($this->championship->category->isTeam()) {
-            return $this->teams->map->id[0];
+        try{
+            if ($this->championship->category->isTeam()) {
+                return $this->teams->map->id[0];
+            }
+
+            return $this->competitors->map->id[0];
+
+        }catch (ErrorException $e){
+            return null;
         }
 
-        return $this->competitors->map->id[0];
     }
 
     /**

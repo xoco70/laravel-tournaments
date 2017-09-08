@@ -161,4 +161,20 @@ class SingleEliminationTest extends TestCase
             $this->assertNull($fight->winner_id);
         }
     }
+
+    /** @test */
+    public function it_can_generate_single_elim_tree_with_16_fighters()
+    {
+        // This test is a regression test, used to fail
+        $setting = factory(ChampionshipSettings::class)->make([
+            'championship_id' => $this->getChampionship(0)->id,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 1,
+            'isTeam' => 0,
+            'numFighters' => 16,
+        ]);
+        $this->generateTreeWithUI($setting)
+            ->assertResponseOk();
+    }
 }
