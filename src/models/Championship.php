@@ -156,7 +156,7 @@ class Championship extends Model
      */
     public function fights()
     {
-        return $this->hasManyThrough(Fight::class, FightersGroup::class);
+        return $this->hasManyThrough(Fight::class, FightersGroup::class)->orderBy('id','asc');
     }
 
     /**
