@@ -60,11 +60,10 @@ class CreateSingleEliminationTree
         //Create the result of the empty rows for this tournament
         $this->assignFightersToBracket($roundNumber, $this->hasPreliminary);
         $this->assignPositions();
-        $this->brackets[$this->noRounds][2] = $this->brackets[$this->noRounds][1];
-        $this->brackets[$this->noRounds][2]['playerA'] = null;
-        $this->brackets[$this->noRounds][2]['playerB'] = null;
-        $this->brackets[$this->noRounds][2]['winner_id'] = null;
-        $this->brackets[$this->noRounds][2]['matchWrapperTop'] += 100;
+
+        if ($this->numFighters >= $this->championship->getGroupSize() * 2) {
+            $this->brackets[$this->noRounds][2]['matchWrapperTop'] = $this->brackets[$this->noRounds][1]['matchWrapperTop'] + 100;
+        }
     }
 
     private function assignPositions()
@@ -202,16 +201,24 @@ class CreateSingleEliminationTree
             $groupsByRound = $this->groupsByRound->get($roundNumber + $hasPreliminary);
             for ($matchNumber = 1; $matchNumber <= ($this->numFighters / pow(2, $roundNumber)); $matchNumber++) {
                 $fight = $groupsByRound[$matchNumber - 1]->fights[0];
-
-                $fighter1 = $fight->competitor1;
-                $fighter2 = $fight->competitor2;
-                if ($this->championship->category->isTeam()) {
-                    $fighter1 = $fight->team1;
-                    $fighter2 = $fight->team2;
-                }
+                $fighter1 = $fight->fighter1;
+                $fighter2 = $fight->fighter2;
                 $winnerId = $fight->winner_id;
                 $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2, $winnerId];
             }
+        }
+        
+        if ($this->numFighters >= $this->championship->getGroupSize() * 2) {
+            $lastRound = $this->noRounds;
+            $lastMatch = $this->numFighters / pow(2, $roundNumber) + 1;
+            $groupsByRound = $this->groupsByRound->get(intval($this->noRounds));
+            $group = $groupsByRound[$lastMatch];
+            $fight = $group->fights[0];
+            $fighter1 = $fight->fighter1;
+            $fighter2 = $fight->fighter2;
+            $winnerId = $fight->winner_id;
+            $this->brackets[$lastRound][$lastMatch + 1] = [$fighter1, $fighter2, $winnerId];
+
         }
     }
 

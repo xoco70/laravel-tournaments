@@ -92,6 +92,7 @@ class Fight extends Model
         return $this->belongsTo(Team::class, 'c1', 'id');
     }
 
+
     /**
      * Get Second Fighter.
      *
@@ -100,6 +101,30 @@ class Fight extends Model
     public function team2()
     {
         return $this->belongsTo(Team::class, 'c2', 'id');
+    }
+
+    /**
+     * Get First Fighter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function fighter1()
+    {
+        return $this->group->championship->category->isTeam
+            ? $this->team1()
+            : $this->competitor1();
+    }
+
+    /**
+     * Get First Fighter.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function fighter2()
+    {
+        return $this->group->championship->category->isTeam
+            ? $this->team2()
+            : $this->competitor2();
     }
 
     /**

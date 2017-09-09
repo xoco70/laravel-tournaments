@@ -46,9 +46,11 @@ abstract class SingleEliminationTreeGen extends TreeGen
             }
         }
         // Third place Group
-        $fighters = $this->createByeGroup(2);
-        $group = $this->saveGroup($maxMatches+1, $numRounds, null);
-        $this->syncGroup($group, $fighters);
+        if ($numFighters >= $this->championship->getGroupSize() * 2) {
+            $fighters = $this->createByeGroup(2);
+            $group = $this->saveGroup($maxMatches + 1, $numRounds, null);
+            $this->syncGroup($group, $fighters);
+        }
     }
 
     /**

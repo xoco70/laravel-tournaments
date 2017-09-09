@@ -130,7 +130,6 @@ class TreeController extends Controller
                     $fight->winner_id = $this->getWinnerId($fighters, $scores, $numFighter);
                 }
                 $numFighter++;
-
                 $fight->save();
             }
         }
