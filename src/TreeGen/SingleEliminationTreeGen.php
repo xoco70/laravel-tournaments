@@ -48,13 +48,15 @@ abstract class SingleEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Create empty groups for direct Elimination Tree.
+     * Create empty groups after round 1
      *
      * @param $numFighters
      */
     protected function pushEmptyGroupsToTree($numFighters)
     {
         if ($this->championship->hasPreliminary()) {
+            /* Should add * prelimWinner but it add complexity about parent / children in tree
+            */
             $numFightersElim = $numFighters / $this->settings->preliminaryGroupSize * 2;
             // We calculate how much rounds we will have
             $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
