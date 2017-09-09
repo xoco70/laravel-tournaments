@@ -8,7 +8,7 @@ $selectName = $prefix."_fighters[]";
 
 ?>
 <!-- r = round, m = match, f = fighter -->
-<select name="{{ $selectName }}" class={{$className}} id="r{{ $roundNumber }}_m{{ $matchNumber }}_f{{ $numFighter }}">
+<select name="{{ $selectName }}" class={{$className}} {{ $isSuccess ? "id=success" : '' }}>
     <option {{ $selected == '' ? ' selected' : '' }} ></option>
         @foreach ($championship->fighters as $fighter)
 

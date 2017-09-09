@@ -39,9 +39,6 @@ $settings = $championship->getSettings();
                     <td class="p-10">@include('laravel-tournaments::partials.tree.brackets.playerList',
                     [
                         'selected' => $fighter,
-                        'roundNumber' => 1,
-                        'matchNumber' => 0,
-                        'numFighter' => $numFighter
                      ])
                     </td>
                 @endforeach
