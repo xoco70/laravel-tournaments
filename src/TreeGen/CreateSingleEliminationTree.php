@@ -60,6 +60,11 @@ class CreateSingleEliminationTree
         //Create the result of the empty rows for this tournament
         $this->assignFightersToBracket($roundNumber, $this->hasPreliminary);
         $this->assignPositions();
+        $this->brackets[$this->noRounds][2] = $this->brackets[$this->noRounds][1];
+        $this->brackets[$this->noRounds][2]['playerA'] = null;
+        $this->brackets[$this->noRounds][2]['playerB'] = null;
+        $this->brackets[$this->noRounds][2]['winner_id'] = null;
+        $this->brackets[$this->noRounds][2]['matchWrapperTop'] += 100;
     }
 
     private function assignPositions()

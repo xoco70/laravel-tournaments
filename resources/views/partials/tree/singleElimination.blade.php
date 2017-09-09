@@ -5,6 +5,8 @@ $singleEliminationTree = $championship->fightersGroups->where('round', '>=', $ha
 if (sizeof($singleEliminationTree) > 0) {
     $treeGen = new CreateSingleEliminationTree($singleEliminationTree, $championship, $hasPreliminary);
     $treeGen->build();
+    $match = [];
+//    dd($treeGen->brackets);
 }
 ?>
 @if (sizeof($singleEliminationTree)>0)
@@ -24,30 +26,7 @@ if (sizeof($singleEliminationTree) > 0) {
             <!-- 205 px x 2 groups of 2-->
             @foreach ($treeGen->brackets as $roundNumber => $round)
                 @foreach ($round as $matchNumber => $match)
-                    <?php
-                    $isAWinner = (optional($match['playerA'])->id == $match['winner_id'] && $match['winner_id'] != null) ? 'X' : null;
-                    $isBWinner = (optional($match['playerB'])->id == $match['winner_id'] && $match['winner_id'] != null) ? 'X' : null;
-                    ?>
-                    <div class="match-wrapper"
-                         style="top:  {{ $match['matchWrapperTop'] }}px; left:  {{ $match['matchWrapperLeft']  }}px; width: {{   $treeGen->matchWrapperWidth  }}px;">
-                        <div {{ $isAWinner ? "id=success" : '' }}>
-                            <input type="text" class="score" name="score[]" value="{{ $isAWinner }}" {{ $isAWinner ? "id=success" : '' }}>
-                            @include('laravel-tournaments::partials.tree.brackets.playerList',
-                                ['selected' => $match['playerA'],
-                                'roundNumber'=>$roundNumber,
-                                'isSuccess' => $isAWinner
-                                ])
-                        </div>
-                        <div class="match-divider"></div>
-                        <div {{ $isBWinner ? "id=success" : '' }}>
-                            <input type="text" class="score" name="score[]" value="{{ $isBWinner }}" {{ $isBWinner ? "bg-success-300" : "" }}>
-                            @include('laravel-tournaments::partials.tree.brackets.playerList',
-                                ['selected' => $match['playerB'],
-                                 'roundNumber'=>$roundNumber,
-                                 'isSuccess' => $isBWinner
-                                  ])
-                        </div>
-                    </div>
+                    @include('laravel-tournaments::partials.tree.brackets.fight')
 
                     @if ($roundNumber != $treeGen->noRounds)
                         <div class="vertical-connector"
@@ -57,11 +36,9 @@ if (sizeof($singleEliminationTree) > 0) {
                         <div class="horizontal-connector"
                              style="top: {{  $match['hConnector2Top']  }}px; left: {{  $match['hConnector2Left']  }}px;"></div>
                     @endif
-
                 @endforeach
-
             @endforeach
-
+{{--            @include('laravel-tournaments::partials.tree.brackets.thirdPlaceFight')--}}
         </div>
         @endif
 

@@ -45,6 +45,10 @@ abstract class SingleEliminationTreeGen extends TreeGen
                 $this->syncGroup($group, $fighters);
             }
         }
+        // Third place Group
+        $fighters = $this->createByeGroup(2);
+        $group = $this->saveGroup($maxMatches+1, $numRounds, null);
+        $this->syncGroup($group, $fighters);
     }
 
     /**
