@@ -7,7 +7,7 @@
         <div class="col-lg-2">
             <label for="hasPreliminary">Preliminary</label>
             <br/>
-            <input id="hasPreliminary" name="hasPreliminary" type="hidden" value="0">
+            <input name="hasPreliminary" type="hidden" value="0">
             <select class="form-control" id="hasPreliminary" name="hasPreliminary"
                     :disabled="isPrelimDisabled" v-model="hasPrelim" v-on:change="prelim()">
 
@@ -29,7 +29,7 @@
         </div>
         <div class="col-lg-2">
             <div class="form-group">
-                <label for="fighterQty">Fighter Qty</label>
+                <label for="numFighters">Fighter Qty</label>
                 <select class="form-control" id="numFighters" name="numFighters">
                     @for($i=1;$i<23;$i++)
                         <option value="{{$i}}" @if ($numFighters== $i) selected @endif >{{  $i }}</option>

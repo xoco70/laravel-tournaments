@@ -72,14 +72,14 @@ $numFighters = session()->has('numFighters') ? session('numFighters') : 5;
         },
         methods: {
             prelim: function () {
-                if (this.hasPrelim === 0) {
+                if (this.hasPrelim == 0) {
                     this.isGroupSizeDisabled = true;
                 } else {
                     this.isGroupSizeDisabled = false;
                 }
             },
             treeType: function () {
-                if (this.tree === 0) {
+                if (this.tree == 0) {
                     this.isPrelimDisabled = true;
                     this.isAreaDisabled = true;
                 } else {
