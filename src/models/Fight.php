@@ -48,7 +48,7 @@ class Fight extends Model
     protected static function getFightersWithByes(FightersGroup $group)
     {
         if ($group == null) {
-            return;
+            return null;
         }
         $fighters = $group->getFightersWithBye();
         $fighterType = $group->getFighterType();
@@ -191,7 +191,7 @@ class Fight extends Model
     /**
      * @return bool
      */
-    private function belongsToFirstRound()
+    private function belongsToFirstRound(): bool
     {
         $firstRoundFights = $this->group->championship->firstRoundFights->pluck('id')->toArray();
         if (in_array($this->id, $firstRoundFights)) {
