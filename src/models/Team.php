@@ -22,6 +22,14 @@ class Team extends Fighter
     {
         return ($this->hasAttribute('name')) ? $this->attributes['name'] : '';
     }
+    /**
+     * @return null|string
+     */
+    public function getFullName()
+    {
+        return $this->name;
+    }
+
 
     public function hasAttribute($attr)
     {
