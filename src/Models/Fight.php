@@ -181,7 +181,7 @@ class Fight extends Model
      *
      * @return bool
      */
-    public function has2Fighters(): bool
+    private function has2Fighters(): bool
     {
         return $this->c1 != null && $this->c2 != null;
     }
@@ -231,7 +231,7 @@ class Fight extends Model
      *
      * @return int
      */
-    public function updateShortId($order)
+    private function updateShortId($order)
     {
         if ($this->shouldBeInFightList(false)) {
             $this->short_id = $order;
