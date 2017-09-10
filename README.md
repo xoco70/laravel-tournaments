@@ -36,11 +36,13 @@ Laravel Tournaments
 - Single Elimination Trees Generation
 - Single Elimination with Preliminary Round Generation
 - Playoff Generation
+- Third place fight
 - List of Fights Generation
 - Customize Preliminary Round Size
 - Customize area number (1,2,4,8)
 - Modify Single Elimination Tree generation on the fly
 - Use teams instead of competitors
+
 
 ## Warning
 
@@ -52,13 +54,13 @@ This is still a work in progress. Things could change, things could break. Use i
 > 
 > | Laravel Version | Laravel Tournament Version |
 > |:---------------:|:--------------------------:|
-> |       5.5       |            0.12            |
+> |       5.5       |            0.13            |
 > |       5.4       |            0.11            |
 
 First, you'll need to install the package via Composer:
 
 ```php
-$ composer require "xoco70/laravel-tournaments":^0.12
+$ composer require "xoco70/laravel-tournaments":^0.13
 ```
 
 If you use Laravel 5.4, update `config/app.php` by adding an entry for the service provider.
@@ -280,13 +282,12 @@ vendor/bin/phpunit tests
 
 This is a work in progress, and tree creation might be very complex, so there is a bunch of things to achieve.  
 
-- Modify Preliminary Round generation on the fly
-- Manage Winner and third place fight
+- Seed fighter
 - Manage more than 1 fighter out of preliminary round
+- Modify Preliminary Round generation on the fly
+- Use any number of area ( restricted to 1,2,4,8)
 - Manage n+1 case : When for instance, there is 17 competitors in a direct elimination tree, there will have 15 BYES.
 We can improve that making the first match with 3 competitors.
-- Use any number of area ( restricted to 1,2,4,8)
-- Seed fighter
 - Double elimination
  
 ## Troubleshooting
@@ -308,6 +309,7 @@ Try to increase competitor number, decrease areas or preliminary group size, if 
 
 ## ChangeLog:
 
+- v0.13: Manage third place fight
 - v0.12: Laravel 5.5 version
 - v0.11: Initial Version
 
