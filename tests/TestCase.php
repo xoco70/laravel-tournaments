@@ -182,7 +182,8 @@ abstract class TestCase extends BaseTestCase
     protected function checkFightsNumber($setting, $numFightsExpected, $methodName)
     {
         $groupSize = $setting->hasPreliminary ? $setting->preliminaryGroupSize : 2;
-        $count = $this->getFightsCount($setting->championship_id);
+        $count = $this->getFightsCount($setting->championship_id); // For round 1
+
 
 
         if ((int)($setting->numFighters / $setting->fightingAreas) <= 1
