@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
-use Xoco70\LaravelTournaments\TreeGen\SingleEliminationCompetitorTreeGen;
-use Xoco70\LaravelTournaments\TreeGen\SingleEliminationTeamTreeGen;
 use Xoco70\LaravelTournaments\TreeGen\PlayOffCompetitorTreeGen;
 use Xoco70\LaravelTournaments\TreeGen\PlayOffTeamTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\SingleEliminationCompetitorTreeGen;
+use Xoco70\LaravelTournaments\TreeGen\SingleEliminationTeamTreeGen;
 
 class Championship extends Model
 {
@@ -156,7 +156,7 @@ class Championship extends Model
      */
     public function fights()
     {
-        return $this->hasManyThrough(Fight::class, FightersGroup::class)->orderBy('id','asc');
+        return $this->hasManyThrough(Fight::class, FightersGroup::class)->orderBy('id', 'asc');
     }
 
     /**

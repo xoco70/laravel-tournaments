@@ -5,8 +5,8 @@ namespace Xoco70\LaravelTournaments\TreeGen;
 use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
-use Xoco70\LaravelTournaments\Models\SingleEliminationFight;
 use Xoco70\LaravelTournaments\Models\PreliminaryFight;
+use Xoco70\LaravelTournaments\Models\SingleEliminationFight;
 
 abstract class SingleEliminationTreeGen extends TreeGen
 {
@@ -23,6 +23,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
         $firstRoundGroupSize = $this->firstRoundGroupSize();
         $treeSize = $this->getTreeSize($fighterCount, $firstRoundGroupSize);
         $byeCount = $treeSize - $fighterCount;
+
         return $this->createByeGroup($byeCount);
     }
 
@@ -54,7 +55,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Create empty groups after round 1
+     * Create empty groups after round 1.
      *
      * @param $numFighters
      */
@@ -150,7 +151,6 @@ abstract class SingleEliminationTreeGen extends TreeGen
         $this->generateGroupsForRound($usersByArea, 1);
         $this->pushEmptyGroupsToTree($numFighters); // Abstract
         $this->addParentToChildren($numFighters);
-
     }
 
     /**
@@ -176,7 +176,8 @@ abstract class SingleEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Check if there is enough fighters, throw exception otherwise
+     * Check if there is enough fighters, throw exception otherwise.
+     *
      * @throws TreeGenerationException
      */
     private function minFightersCheck()
@@ -189,18 +190,17 @@ abstract class SingleEliminationTreeGen extends TreeGen
 
         $minFighterCount = $fighters->count() / $areas;
 
-
         if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => $this->settings->preliminaryGroupSize * $areas,
-                'fighter_type' => $fighterType
+                'number'       => $this->settings->preliminaryGroupSize * $areas,
+                'fighter_type' => $fighterType,
             ]));
         }
 
         if ($minFighterCount < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
-                'fighter_type' => $fighterType
+                'number'       => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
+                'fighter_type' => $fighterType,
             ]));
         }
     }

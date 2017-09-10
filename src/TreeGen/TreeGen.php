@@ -23,15 +23,13 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function createByeFighter();
 
-    abstract protected function addFighterToGroup(FightersGroup $group, $fighter,$fighterToUpdate);
+    abstract protected function addFighterToGroup(FightersGroup $group, $fighter, $fighterToUpdate);
 
     abstract protected function getByeGroup($fighters);
 
     abstract protected function getFighters();
 
     abstract protected function getNumRounds($fightersCount);
-
-
 
     abstract protected function chunkAndShuffle(Collection $fightersByEntity);
 
@@ -99,6 +97,7 @@ abstract class TreeGen implements TreeGenerable
         if (($this->groupBy) != null) {
             return $fighters->groupBy($this->groupBy); // Collection of Collection
         }
+
         return $fighters->chunk(1); // Collection of Collection
     }
 
@@ -171,13 +170,12 @@ abstract class TreeGen implements TreeGenerable
         $sizeGroupBy = count($byeGroup);
 
         $frequency = $sizeGroupBy != 0
-            ? (int)floor($sizeFighters / $sizeGroupBy)
+            ? (int) floor($sizeFighters / $sizeGroupBy)
             : -1;
 
         // Create Copy of $competitors
         return $this->getFullFighterList($fighters, $frequency, $sizeGroupBy, $bye);
     }
-
 
     /**
      * @param $order
@@ -192,7 +190,6 @@ abstract class TreeGen implements TreeGenerable
         $this->championship->isSingleEliminationType()
             ? $group->area = $this->getNumArea($round, $order)
             : $group->area = 1; // Area limited to 1 in playoff
-
 
         $group->order = $order;
         $group->round = $round;
@@ -437,7 +434,6 @@ abstract class TreeGen implements TreeGenerable
         $numArea = intval(ceil($order / $areaSize)); // if round == 4, and second match 2/2 = 1 BAD
         return $numArea;
     }
-
 
     protected function generateAllFights()
     {

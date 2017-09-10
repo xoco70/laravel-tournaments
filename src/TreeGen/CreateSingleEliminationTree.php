@@ -113,7 +113,8 @@ class CreateSingleEliminationTree
     }
 
     /**
-     * returns titles depending of number of rounds
+     * returns titles depending of number of rounds.
+     *
      * @return array
      */
     public function getRoundTitles()
@@ -139,11 +140,13 @@ class CreateSingleEliminationTree
             //The minus 3 is to ignore the final, semi final and quarter final rounds
 
             for ($i = 0; $i < $noRounds - 3; $i++) {
-                $tempRounds[] = 'Last ' . $noTeamsInFirstRound;
+                $tempRounds[] = 'Last '.$noTeamsInFirstRound;
                 $noTeamsInFirstRound /= 2;
             }
+
             return array_merge($tempRounds, $roundTitles);
         }
+
         return $roundTitle[$this->numFighters];
     }
 
@@ -159,7 +162,7 @@ class CreateSingleEliminationTree
         foreach ($roundTitles as $key => $roundTitle) {
             $left = $key * ($this->matchWrapperWidth + $this->roundSpacing - 1);
 
-            echo '<div class="round-title" style="left: ' . $left . 'px;">' . $roundTitle . '</div>';
+            echo '<div class="round-title" style="left: '.$left.'px;">'.$roundTitle.'</div>';
         }
         echo '</div>';
     }
@@ -172,7 +175,7 @@ class CreateSingleEliminationTree
     public function getPlayerList($selected)
     {
         $html = '<select>
-                <option' . ($selected == '' ? ' selected' : '') . '></option>';
+                <option'.($selected == '' ? ' selected' : '').'></option>';
 
         foreach ($this->championship->fighters as $fighter) {
             $html = $this->addOptionToSelect($selected, $fighter, $html);
@@ -207,7 +210,7 @@ class CreateSingleEliminationTree
                 $this->brackets[$roundNumber][$matchNumber] = [$fighter1, $fighter2, $winnerId];
             }
         }
-        
+
         if ($this->numFighters >= $this->championship->getGroupSize() * 2) {
             $lastRound = $this->noRounds;
             $lastMatch = $this->numFighters / pow(2, $roundNumber) + 1;
@@ -218,7 +221,6 @@ class CreateSingleEliminationTree
             $fighter2 = $fight->fighter2;
             $winnerId = $fight->winner_id;
             $this->brackets[$lastRound][$lastMatch + 1] = [$fighter1, $fighter2, $winnerId];
-
         }
     }
 
@@ -233,12 +235,12 @@ class CreateSingleEliminationTree
     {
         if ($fighter != null) {
             $select = $selected != null && $selected->id == $fighter->id ? ' selected' : '';
-            $html .= '<option' . $select
-                . ' value='
-                . ($fighter->id ?? '')
-                . '>'
-                . $fighter->name
-                . '</option>';
+            $html .= '<option'.$select
+                .' value='
+                .($fighter->id ?? '')
+                .'>'
+                .$fighter->name
+                .'</option>';
         }
 
         return $html;

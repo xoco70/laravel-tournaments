@@ -48,7 +48,7 @@ class Fight extends Model
     protected static function getFightersWithByes(FightersGroup $group)
     {
         if ($group == null) {
-            return null;
+            return;
         }
         $fighters = $group->getFightersWithBye();
         $fighterType = $group->getFighterType();
@@ -91,7 +91,6 @@ class Fight extends Model
     {
         return $this->belongsTo(Team::class, 'c1', 'id');
     }
-
 
     /**
      * Get Second Fighter.
@@ -137,19 +136,18 @@ class Fight extends Model
     {
         $isTeam = $this->group->championship->category->isTeam;
         if ($isTeam) {
-            $teamToUpdate = 'team' . $numFighter;
+            $teamToUpdate = 'team'.$numFighter;
 
             return optional($this->$teamToUpdate)->$attr;
         }
-        $competitorToUpdate = 'competitor' . $numFighter;
+        $competitorToUpdate = 'competitor'.$numFighter;
         if ($attr == 'name') {
             return $this->$competitorToUpdate == null
                 ? ''
-                : $this->$competitorToUpdate->user->firstname . ' ' . $this->$competitorToUpdate->user->lastname;
+                : $this->$competitorToUpdate->user->firstname.' '.$this->$competitorToUpdate->user->lastname;
         } elseif ($attr == 'short_id') {
             return optional($this->$competitorToUpdate)->short_id;
         }
-        return null;
     }
 
     /**

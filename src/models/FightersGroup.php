@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Kalnoy\Nestedset\NodeTrait;
 
-
 class FightersGroup extends Model
 {
     protected $table = 'fighters_groups';
@@ -195,17 +194,15 @@ class FightersGroup extends Model
      */
     public function getValueToUpdate()
     {
-        try{
+        try {
             if ($this->championship->category->isTeam()) {
                 return $this->teams->map->id[0];
             }
 
             return $this->competitors->map->id[0];
-
-        }catch (ErrorException $e){
-            return null;
+        } catch (ErrorException $e) {
+            return;
         }
-
     }
 
     /**
