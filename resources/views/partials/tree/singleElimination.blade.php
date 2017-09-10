@@ -38,7 +38,6 @@ if (sizeof($singleEliminationTree) > 0) {
                     @endif
                 @endforeach
             @endforeach
-{{--            @include('laravel-tournaments::partials.tree.brackets.thirdPlaceFight')--}}
         </div>
         @endif
 
