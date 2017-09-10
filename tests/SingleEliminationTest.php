@@ -3,7 +3,6 @@
 namespace Xoco70\LaravelTournaments\Tests;
 
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
-use Xoco70\LaravelTournaments\Models\Fight;
 
 class SingleEliminationTest extends TestCase
 {
@@ -17,11 +16,11 @@ class SingleEliminationTest extends TestCase
             foreach ($fightersInTree as $numFighters) {
                 $setting = factory(ChampionshipSettings::class)->make([
                     'championship_id' => $this->getChampionship(0)->id,
-                    'fightingAreas' => $numArea,
-                    'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
-                    'hasPreliminary' => 0,
-                    'isTeam' => 0,
-                    'numFighters' => $numFighters
+                    'fightingAreas'   => $numArea,
+                    'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
+                    'hasPreliminary'  => 0,
+                    'isTeam'          => 0,
+                    'numFighters'     => $numFighters,
                 ]);
                 $this->generateTreeWithUI($setting);
                 parent::checkGroupsNumber($setting, $numGroupsExpected, __METHOD__);
@@ -34,9 +33,9 @@ class SingleEliminationTest extends TestCase
     {
         $isTeams = [0, 1];
         $numFights = [
-            1 => [1 => 0, 2 => 1, 3 => 2, 4 => 2, 5 => 4, 6 => 4, 7 => 4, 8 => 4,],
-            2 => [1 => 0, 2 => 0, 3 => 0, 4 => 2, 5 => 4, 6 => 4, 7 => 4, 8 => 4,],
-            4 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 4,],
+            1 => [1 => 0, 2 => 1, 3 => 2, 4 => 2, 5 => 4, 6 => 4, 7 => 4, 8 => 4],
+            2 => [1 => 0, 2 => 0, 3 => 0, 4 => 2, 5 => 4, 6 => 4, 7 => 4, 8 => 4],
+            4 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 4],
         ];
         foreach ($isTeams as $isTeam) {
             $championship = $this->getChampionship($isTeam);
@@ -44,17 +43,16 @@ class SingleEliminationTest extends TestCase
                 foreach ($numFightPerArea as $numFighters => $numFightsExpected) {
                     $setting = factory(ChampionshipSettings::class)->make([
                         'championship_id' => $this->getChampionship($isTeam)->id,
-                        'fightingAreas' => $numArea,
-                        'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
-                        'hasPreliminary' => 0,
-                        'isTeam' => $isTeam,
-                        'numFighters' => $numFighters
+                        'fightingAreas'   => $numArea,
+                        'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
+                        'hasPreliminary'  => 0,
+                        'isTeam'          => $isTeam,
+                        'numFighters'     => $numFighters,
                     ]);
                     $this->generateTreeWithUI($setting);
                     parent::checkFightsNumber($setting, $numFightsExpected, __METHOD__);
                 }
             }
-
         }
     }
 
@@ -64,11 +62,11 @@ class SingleEliminationTest extends TestCase
         $isTeam = 0;
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship($isTeam)->id,
-            'fightingAreas' => 1,
-            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary' => 0,
-            'isTeam' => $isTeam,
-            'numFighters' => 5
+            'fightingAreas'   => 1,
+            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary'  => 0,
+            'isTeam'          => $isTeam,
+            'numFighters'     => 5,
         ]);
         $this->generateTreeWithUI($setting);
 
@@ -111,11 +109,11 @@ class SingleEliminationTest extends TestCase
     {
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship(0)->id,
-            'fightingAreas' => 1,
-            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary' => 0,
-            'isTeam' => 0,
-            'numFighters' => 5
+            'fightingAreas'   => 1,
+            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary'  => 0,
+            'isTeam'          => 0,
+            'numFighters'     => 5,
         ]);
         $this->generateTreeWithUI($setting);
         $competitors = $this->championshipWithComp->competitors; // 5 comp
@@ -135,7 +133,6 @@ class SingleEliminationTest extends TestCase
         $this->assertEquals($competitors->get(2)->id, $fights->get(1)->c1);
         $this->assertEquals($competitors->get(3)->id, $fights->get(1)->c2);
         $this->assertEquals($competitors->get(4)->id, $fights->get(2)->c1);
-
     }
 
     /** @test */
@@ -143,11 +140,11 @@ class SingleEliminationTest extends TestCase
     {
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship(0)->id,
-            'fightingAreas' => 1,
-            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary' => 0,
-            'isTeam' => 0,
-            'numFighters' => 5
+            'fightingAreas'   => 1,
+            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary'  => 0,
+            'isTeam'          => 0,
+            'numFighters'     => 5,
         ]);
         $this->generateTreeWithUI($setting);
         $fight = $this->championshipWithComp->fights->get(0);
@@ -157,7 +154,7 @@ class SingleEliminationTest extends TestCase
             ->press('update');
         if ($fight->c1 != null && $fight->c2 != null) {
             $this->assertNotNull($fight->winner_id);
-        }else{
+        } else {
             $this->assertNull($fight->winner_id);
         }
     }
@@ -168,11 +165,11 @@ class SingleEliminationTest extends TestCase
         // This test is a regression test, used to fail
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship(0)->id,
-            'fightingAreas' => 1,
-            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary' => 1,
-            'isTeam' => 0,
-            'numFighters' => 16,
+            'fightingAreas'   => 1,
+            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary'  => 1,
+            'isTeam'          => 0,
+            'numFighters'     => 16,
         ]);
         $this->generateTreeWithUI($setting)
             ->assertResponseOk();

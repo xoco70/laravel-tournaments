@@ -62,10 +62,8 @@ class PlayOffCompetitorTreeGen extends PlayOffTreeGen
             ->get()
             ->get($numFighterToUpdate - 1);
 
-
         // we must update the right result
         $competitorGroup->competitor_id = $competitor->id;
         $competitorGroup->save();
     }
-
 }

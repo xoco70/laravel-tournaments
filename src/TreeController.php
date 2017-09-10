@@ -81,16 +81,16 @@ class TreeController extends Controller
     {
         if ($isTeam) {
             $championship = Championship::find(2);
-            factory(Team::class, (int)$numFighters)->create(['championship_id' => $championship->id]);
+            factory(Team::class, (int) $numFighters)->create(['championship_id' => $championship->id]);
         } else {
             $championship = Championship::find(1);
-            $users = factory(User::class, (int)$numFighters)->create();
+            $users = factory(User::class, (int) $numFighters)->create();
             foreach ($users as $user) {
                 factory(Competitor::class)->create(
                     ['championship_id' => $championship->id,
-                        'user_id' => $user->id,
-                        'confirmed' => 1,
-                        'short_id' => $user->id,
+                        'user_id'      => $user->id,
+                        'confirmed'    => 1,
+                        'short_id'     => $user->id,
                     ]
                 );
             }
@@ -133,11 +133,11 @@ class TreeController extends Controller
                 $fight->save();
             }
         }
+
         return back();
     }
 
-
-    function getWinnerId($fighters, $scores, $numFighter)
+    public function getWinnerId($fighters, $scores, $numFighter)
     {
         return $scores[$numFighter] != null ? $fighters[$numFighter] : null;
     }

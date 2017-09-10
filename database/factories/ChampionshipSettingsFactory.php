@@ -7,7 +7,8 @@ use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 $factory->define(ChampionshipSettings::class, function (Faker\Generator $faker) use ($factory) {
     $tcs = Championship::all()->pluck('id')->toArray();
 
-    $fightingAreas = [1,2,4,8];
+    $fightingAreas = [1, 2, 4, 8];
+
     return [
         'championship_id'      => $faker->randomElement($tcs),
         'treeType'             => $faker->numberBetween(0, 1),
