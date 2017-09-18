@@ -6,30 +6,11 @@ use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Models\Competitor;
 use Xoco70\LaravelTournaments\Models\FighterGroupCompetitor;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
+use Xoco70\LaravelTournaments\Traits\hasCompetitorsTrait;
 
 class SingleEliminationCompetitorTreeGen extends SingleEliminationTreeGen
 {
-    /**
-     * get Fighter by Id.
-     *
-     * @param $competitorId
-     *
-     * @return Competitor
-     */
-    protected function getFighter($competitorId)
-    {
-        return Competitor::find($competitorId);
-    }
-
-    /**
-     * Fighter is the name for competitor or team, depending on the case.
-     *
-     * @return Collection
-     */
-    protected function getFighters()
-    {
-        return $this->championship->competitors;
-    }
+    use hasCompetitorsTrait;
 
     /**
      * @param $group
@@ -40,10 +21,6 @@ class SingleEliminationCompetitorTreeGen extends SingleEliminationTreeGen
         return $group->syncCompetitors($fighters);
     }
 
-    protected function createByeFighter()
-    {
-        return new Competitor();
-    }
 
     /**
      * @param FightersGroup $group

@@ -6,31 +6,11 @@ use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Models\FighterGroupTeam;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
 use Xoco70\LaravelTournaments\Models\Team;
+use Xoco70\LaravelTournaments\Traits\hasTeamsTrait;
 
 class PlayOffTeamTreeGen extends PlayOffTreeGen
 {
-    /**
-     * get Fighter by Id.
-     *
-     * @param $teamId
-     *
-     * @return Team
-     */
-    protected function getFighter($teamId)
-    {
-        return Team::find($teamId);
-    }
-
-    /**
-     * Fighter is the name for competitor or team, depending on the case.
-     *
-     * @return Collection
-     */
-    protected function getFighters()
-    {
-        return $this->championship->teams;
-    }
-
+    use hasTeamsTrait;
     /**
      * @param FightersGroup $group
      * @param $fighters
@@ -43,11 +23,6 @@ class PlayOffTeamTreeGen extends PlayOffTreeGen
         $group->syncTeams($fighters);
 
         return $group;
-    }
-
-    protected function createByeFighter()
-    {
-        return new Team();
     }
 
     /**

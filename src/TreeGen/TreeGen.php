@@ -21,21 +21,16 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function generateFights();
 
-    abstract protected function createByeFighter();
 
     abstract protected function addFighterToGroup(FightersGroup $group, $fighter, $fighterToUpdate);
 
     abstract protected function getByeGroup($fighters);
-
-    abstract protected function getFighters();
 
     abstract protected function getNumRounds($fightersCount);
 
     abstract protected function chunkAndShuffle(Collection $fightersByEntity);
 
     abstract protected function syncGroup(FightersGroup $group, $fighters);
-
-    abstract protected function getFighter($fighterId);
 
     abstract protected function generateGroupsForRound(Collection $fightersByArea, $round);
 
