@@ -105,10 +105,10 @@ abstract class SingleEliminationTreeGen extends TreeGen
      */
     protected function generateFights()
     {
+
         //  First Round Fights
         $settings = $this->settings;
         $initialRound = 1;
-
         // Very specific case to common case : Preliminary with 3 fighters
         if ($this->championship->hasPreliminary() && $settings->preliminaryGroupSize == 3) {
             // First we make all first fights of all groups
@@ -187,7 +187,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
         $fighters = $this->getFighters();
         $areas = $this->settings->fightingAreas;
         $fighterType = $this->settings->isTeam
-            ? trans_choice('.team', 2)
+            ? trans_choice('laravel-tournaments::core.team', 2)
             : trans_choice('laravel-tournaments::core.competitor', 2);
 
         $minFighterCount = $fighters->count() / $areas;

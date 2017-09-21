@@ -136,7 +136,8 @@ class Championship extends Model
      */
     public function isSingleEliminationType()
     {
-        return $this->settings != null && $this->settings->treeType == ChampionshipSettings::SINGLE_ELIMINATION;
+        return $this->getSettings() != null
+            && $this->getSettings()->treeType == ChampionshipSettings::SINGLE_ELIMINATION;
     }
 
     /**
@@ -241,7 +242,7 @@ class Championship extends Model
 
     public function isPlayoffCompetitor()
     {
-        return !$this->category->isTeam() && $this->isPlayOffType() || $this->hasPreliminary();
+        return !$this->category->isTeam() && $this->isPlayOffType();
     }
 
     public function isPlayoffTeam()

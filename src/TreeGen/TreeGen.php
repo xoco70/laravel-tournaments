@@ -355,7 +355,9 @@ abstract class TreeGen implements TreeGenerable
     {
         // Delete previous fight for this championship
         $arrGroupsId = $this->championship->fightersGroups()->get()->pluck('id');
-        Fight::destroy($arrGroupsId);
+        if (sizeof($arrGroupsId) > 0){
+            Fight::destroy($arrGroupsId);
+        }
     }
 
     /**

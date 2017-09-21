@@ -3,6 +3,7 @@
 namespace Xoco70\LaravelTournaments\TreeGen;
 
 use Illuminate\Support\Collection;
+use Xoco70\LaravelTournaments\Exceptions\TreeGenerationException;
 use Xoco70\LaravelTournaments\Models\SingleEliminationFight;
 
 abstract class PlayOffTreeGen extends TreeGen
@@ -90,9 +91,17 @@ abstract class PlayOffTreeGen extends TreeGen
         $fighters = $this->championship->fighters;
         // This means that when playoff, we only generate 1 group
         // Could be better, for now it is ok
-        if (count($fighters) > 1) {
-            $this->generateGroupsForRound($fighters, 1);
+        $fighterType = $this->settings->isTeam
+            ? trans_choice('laravel-tournaments::core.team', 2)
+            : trans_choice('laravel-tournaments::core.competitor', 2);
+
+        if (count($fighters) <= 1) {
+            throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
+                'number'       => $this->settings->preliminaryGroupSize,
+                'fighter_type' => $fighterType,
+            ]));
         }
+        $this->generateGroupsForRound($fighters, 1);
     }
 
     protected function generateGroupsForRound(Collection $fightersByArea, $round)
