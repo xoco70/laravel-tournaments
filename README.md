@@ -94,6 +94,7 @@ Seed dummy data:
 php artisan db:seed --class=LaravelTournamentSeeder
 
 ```
+> **WARNING**: Don't do this in production, it would wipe all your data. Use this line for demo purpose only
 
 You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
 
