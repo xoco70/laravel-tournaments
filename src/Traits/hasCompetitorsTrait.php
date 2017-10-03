@@ -2,7 +2,6 @@
 
 namespace Xoco70\LaravelTournaments\Traits;
 
-
 use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Models\Competitor;
 
@@ -34,5 +33,4 @@ trait hasCompetitorsTrait
     {
         return new Competitor();
     }
-
 }

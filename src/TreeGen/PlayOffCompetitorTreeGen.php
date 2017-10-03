@@ -2,15 +2,12 @@
 
 namespace Xoco70\LaravelTournaments\TreeGen;
 
-use Illuminate\Support\Collection;
-use Xoco70\LaravelTournaments\Models\Competitor;
 use Xoco70\LaravelTournaments\Models\FighterGroupCompetitor;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
 use Xoco70\LaravelTournaments\Traits\hasCompetitorsTrait;
 
 class PlayOffCompetitorTreeGen extends PlayOffTreeGen
 {
-
     use hasCompetitorsTrait;
 
     /**
@@ -24,7 +21,6 @@ class PlayOffCompetitorTreeGen extends PlayOffTreeGen
         // Add all competitors to Pivot Table
         return $group->syncCompetitors($fighters);
     }
-
 
     /**
      * @param FightersGroup $group

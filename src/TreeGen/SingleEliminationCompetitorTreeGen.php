@@ -2,8 +2,6 @@
 
 namespace Xoco70\LaravelTournaments\TreeGen;
 
-use Illuminate\Support\Collection;
-use Xoco70\LaravelTournaments\Models\Competitor;
 use Xoco70\LaravelTournaments\Models\FighterGroupCompetitor;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
 use Xoco70\LaravelTournaments\Traits\hasCompetitorsTrait;
@@ -20,7 +18,6 @@ class SingleEliminationCompetitorTreeGen extends SingleEliminationTreeGen
     {
         return $group->syncCompetitors($fighters);
     }
-
 
     /**
      * @param FightersGroup $group

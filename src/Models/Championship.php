@@ -235,7 +235,7 @@ class Championship extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
-        public function fightsByRound($round)
+    public function fightsByRound($round)
     {
         return $this->hasManyThrough(Fight::class, FightersGroup::class)->where('round', $round);
     }

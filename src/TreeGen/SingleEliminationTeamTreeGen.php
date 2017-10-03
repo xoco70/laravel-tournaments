@@ -2,16 +2,13 @@
 
 namespace Xoco70\LaravelTournaments\TreeGen;
 
-use Illuminate\Support\Collection;
 use Xoco70\LaravelTournaments\Models\FighterGroupTeam;
 use Xoco70\LaravelTournaments\Models\FightersGroup;
-use Xoco70\LaravelTournaments\Models\Team;
 use Xoco70\LaravelTournaments\Traits\hasTeamsTrait;
 
 class SingleEliminationTeamTreeGen extends SingleEliminationTreeGen
 {
     use hasTeamsTrait;
-    
 
     /**
      * @param FightersGroup $group
