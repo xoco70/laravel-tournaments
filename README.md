@@ -10,6 +10,8 @@ Laravel Tournaments
 
 
 <p align="center">
+<a href="https://packagist.org/packages/xoco70/laravel-tournaments"><img src="https://poser.pugx.org/xoco70/laravel-tournaments/v/stable" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/xoco70/laravel-tournaments"><img src="https://poser.pugx.org/xoco70/laravel-tournaments/downloads" alt="Total Downloads"></a>
 <a href="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/?branch=master"><img src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/quality-score.png?b=master" style="max-width:100%;"></a>
 <a href="https://travis-ci.org/xoco70/laravel-tournaments"><img src="https://travis-ci.org/xoco70/laravel-tournaments.svg?branch=master" alt="Build Status" data-canonical-src="https://travis-ci.org/xoco70/laravel-tournaments.svg?branch=master" style="max-width:100%;"></a>
 <a href="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/?branch=master"><img src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/coverage.png?b=master" alt="Code Coverage" data-canonical-src="https://scrutinizer-ci.com/g/xoco70/laravel-tournaments/badges/coverage.png?b=master" style="max-width:100%;"></a>
