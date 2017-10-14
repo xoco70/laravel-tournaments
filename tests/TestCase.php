@@ -170,7 +170,7 @@ abstract class TestCase extends BaseTestCase
                     'isTeam'                                                 => $setting->isTeam,
                     'Real'                                                   => $count,
                     'Excepted'                                               => $expected,
-                    'numGroupsExpected['.($setting->numFighters - 1).']' => $numGroupsExpected[$setting->numFighters - 1].' / '.$setting->fightingAreas,
+                    'numGroupsExpected['.($setting->numFighters - 1).']'     => $numGroupsExpected[$setting->numFighters - 1].' / '.$setting->fightingAreas,
                 ]
             );
         }
