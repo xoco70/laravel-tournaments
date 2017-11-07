@@ -186,7 +186,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
     {
         $fighters = $this->getFighters();
         $areas = $this->settings->fightingAreas;
-        $fighterType = $this->settings->isTeam
+        $fighterType = $this->championship->category->isTeam
             ? trans_choice('laravel-tournaments::core.team', 2)
             : trans_choice('laravel-tournaments::core.competitor', 2);
 
