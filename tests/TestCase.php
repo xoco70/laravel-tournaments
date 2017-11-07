@@ -162,15 +162,15 @@ abstract class TestCase extends BaseTestCase
         $expected = $numGroupsExpected[$setting->numFighters - 1];
         if ($count != $expected) {
             dd(
-                ['Method'                                                    => $currentTest,
-                    'championship'                                           => $setting->championship->id,
-                    'NumCompetitors'                                         => $setting->numFighters,
-                    'preliminaryGroupSize'                                   => $setting->preliminaryGroupSize,
-                    'NumArea'                                                => $setting->fightingAreas,
-                    'isTeam'                                                 => $setting->isTeam,
-                    'Real'                                                   => $count,
-                    'Excepted'                                               => $expected,
-                    'numGroupsExpected['.($setting->numFighters - 1).']'     => $numGroupsExpected[$setting->numFighters - 1].' / '.$setting->fightingAreas,
+                ['Method'                                                => $currentTest,
+                    'championship'                                       => $setting->championship->id,
+                    'NumCompetitors'                                     => $setting->numFighters,
+                    'preliminaryGroupSize'                               => $setting->preliminaryGroupSize,
+                    'NumArea'                                            => $setting->fightingAreas,
+                    'isTeam'                                             => $setting->isTeam,
+                    'Real'                                               => $count,
+                    'Excepted'                                           => $expected,
+                    'numGroupsExpected['.($setting->numFighters - 1).']' => $numGroupsExpected[$setting->numFighters - 1].' / '.$setting->fightingAreas,
                 ]
             );
         }
