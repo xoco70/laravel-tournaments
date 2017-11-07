@@ -61,7 +61,7 @@ class ChampionshipSettings extends Model
      *
      * @return ChampionshipSettings
      */
-    public static function createOrUpdate(Request $request, Championship $championship): ChampionshipSettings
+    public static function createOrUpdate(Request $request, Championship $championship): self
     {
         $request->request->add(['championship_id' => $championship->id]);
         $arrSettings = $request->except('_token', 'numFighters', 'isTeam');
