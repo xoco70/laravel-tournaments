@@ -14,8 +14,12 @@ class AddUsersFieldsTable extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->string('firstname')->default('firstname');
-            $table->string('lastname')->default('lastname');
+            if (!Schema::hasColumn('users', 'firstname')) {
+                $table->string('firstname')->default('firstname');
+            }
+            if (!Schema::hasColumn('users', 'lastname')) {
+                $table->string('lastname')->default('lastname');
+            }
         });
     }
 
