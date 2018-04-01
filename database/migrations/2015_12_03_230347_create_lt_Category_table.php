@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Xoco70\LaravelTournaments\DBHelpers;
 
-class CreateCategoryTable extends Migration
+class CreateLtCategoryTable extends Migration
 {
     /**
      * Run the migrations.
