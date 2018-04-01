@@ -27,7 +27,6 @@ class CreateLtTeamTable extends Migration
 
                 $table->unique(['championship_id', 'name']);
             });
-
         }
     }
 
