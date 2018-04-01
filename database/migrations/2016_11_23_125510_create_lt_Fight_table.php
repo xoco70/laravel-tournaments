@@ -47,8 +47,6 @@ class CreateLtFightTable extends Migration
                 $table->engine = 'InnoDB';
             });
         }
-
-
     }
 
     /**
