@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Xoco70\LaravelTournaments\DBHelpers;
 
-class CreateCompetitorTeamTable extends Migration
+class CreateLtFightersGroupTeamTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,10 @@ class CreateCompetitorTeamTable extends Migration
      */
     public function up()
     {
-        Schema::create('competitor_team', function (Blueprint $table) {
+        Schema::create('fighters_group_team', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('team_id')->unsigned()->nullable()->index();
-            $table->integer('competitor_id')->unsigned()->index();
+            $table->integer('fighters_group_id')->unsigned()->index();
             $table->integer('order')->unsigned()->nullable();
             $table->timestamps();
 
@@ -27,13 +27,13 @@ class CreateCompetitorTeamTable extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->foreign('competitor_id')
+            $table->foreign('fighters_group_id')
                 ->references('id')
-                ->on('competitor')
+                ->on('fighters_groups')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->unique(['team_id', 'competitor_id']);
+            $table->unique(['team_id', 'fighters_group_id']);
         });
     }
 
@@ -45,7 +45,7 @@ class CreateCompetitorTeamTable extends Migration
     public function down()
     {
         DBHelpers::setFKCheckOff();
-        Schema::dropIfExists('competitor_team');
+        Schema::dropIfExists('fighters_group_team');
         DBHelpers::setFKCheckOn();
     }
 }

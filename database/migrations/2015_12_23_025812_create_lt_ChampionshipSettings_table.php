@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Xoco70\LaravelTournaments\DBHelpers;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 
-class CreateChampionshipSettingsTable extends Migration
+class CreateLtChampionshipSettingsTable extends Migration
 {
     /**
      * Run the migrations.

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Xoco70\LaravelTournaments\DBHelpers;
 
-class CreateTeamTable extends Migration
+class CreateLtTeamTable extends Migration
 {
     public function up()
     {

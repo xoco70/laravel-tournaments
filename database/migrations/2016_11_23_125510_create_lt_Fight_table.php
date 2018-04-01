@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Xoco70\LaravelTournaments\DBHelpers;
 
-class CreateFightTable extends Migration
+class CreateLtFightTable extends Migration
 {
     /**
      * Run the migrations.

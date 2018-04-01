@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Kalnoy\Nestedset\NestedSet;
 use Xoco70\LaravelTournaments\DBHelpers;
 
-class CreateFightersGroupTable extends Migration
+class CreateLtFightersGroupTable extends Migration
 {
     /**
      * Run the migrations.
