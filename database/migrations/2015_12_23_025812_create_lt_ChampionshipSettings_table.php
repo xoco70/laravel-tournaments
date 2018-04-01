@@ -60,7 +60,6 @@ class CreateLtChampionshipSettingsTable extends Migration
                 $table->engine = 'InnoDB';
             });
         }
-
     }
 
     /**

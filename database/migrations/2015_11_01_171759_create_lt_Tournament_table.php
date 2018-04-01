@@ -42,7 +42,6 @@ class CreateLtTournamentTable extends Migration
                 $table->engine = 'InnoDB';
             });
         }
-
     }
 
     public function down()
