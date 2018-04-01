@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Xoco70\LaravelTournaments\DBHelpers;
 
-class AddUsersFieldsTable extends Migration
+class AddUsersFieldsTable2 extends Migration
 {
     /**
      * Run the migrations.

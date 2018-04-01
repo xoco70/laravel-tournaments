@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase
     const DB_PASSWORD = '';
 
     protected $root;
-    protected $baseUrl = 'http://tournament-plugin.dev';
+    protected $baseUrl = 'http://tournament-plugin.test';
 
     protected $settings;
     protected $users;
