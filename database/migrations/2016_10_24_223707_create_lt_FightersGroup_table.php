@@ -15,24 +15,26 @@ class CreateLtFightersGroupTable extends Migration
      */
     public function up()
     {
-        Schema::create('fighters_groups', function (Blueprint $table) {
-            $table->increments('id');
-            $table->tinyInteger('short_id')->unsigned()->nullable();
-            $table->integer('championship_id')->unsigned()->index();
-            $table->tinyInteger('round')->default(0); // Eliminitory, 1/8, 1/4, etc.
-            $table->tinyInteger('area');
-            $table->tinyInteger('order');
-            NestedSet::columns($table);
+        if (!Schema::hasTable('fighters_groups')) {
+            Schema::create('fighters_groups', function (Blueprint $table) {
+                $table->increments('id');
+                $table->tinyInteger('short_id')->unsigned()->nullable();
+                $table->integer('championship_id')->unsigned()->index();
+                $table->tinyInteger('round')->default(0); // Eliminitory, 1/8, 1/4, etc.
+                $table->tinyInteger('area');
+                $table->tinyInteger('order');
+                NestedSet::columns($table);
 
-            $table->timestamps();
-            $table->engine = 'InnoDB';
+                $table->timestamps();
+                $table->engine = 'InnoDB';
 
-            $table->foreign('championship_id')
-                ->references('id')
-                ->onUpdate('cascade')
-                ->on('championship')
-                ->onDelete('cascade');
-        });
+                $table->foreign('championship_id')
+                    ->references('id')
+                    ->onUpdate('cascade')
+                    ->on('championship')
+                    ->onDelete('cascade');
+            });
+        }
     }
 
     /**

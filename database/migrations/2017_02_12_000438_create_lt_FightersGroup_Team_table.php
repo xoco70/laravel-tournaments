@@ -14,27 +14,29 @@ class CreateLtFightersGroupTeamTable extends Migration
      */
     public function up()
     {
-        Schema::create('fighters_group_team', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('team_id')->unsigned()->nullable()->index();
-            $table->integer('fighters_group_id')->unsigned()->index();
-            $table->integer('order')->unsigned()->nullable();
-            $table->timestamps();
+        if (!Schema::hasTable('fighters_group_team')) {
+            Schema::create('fighters_group_team', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('team_id')->unsigned()->nullable()->index();
+                $table->integer('fighters_group_id')->unsigned()->index();
+                $table->integer('order')->unsigned()->nullable();
+                $table->timestamps();
 
-            $table->foreign('team_id')
-                ->references('id')
-                ->on('team')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                $table->foreign('team_id')
+                    ->references('id')
+                    ->on('team')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
 
-            $table->foreign('fighters_group_id')
-                ->references('id')
-                ->on('fighters_groups')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                $table->foreign('fighters_group_id')
+                    ->references('id')
+                    ->on('fighters_groups')
+                    ->onUpdate('cascade')
+                    ->onDelete('cascade');
 
-            $table->unique(['team_id', 'fighters_group_id']);
-        });
+                $table->unique(['team_id', 'fighters_group_id']);
+            });
+        }
     }
 
     /**

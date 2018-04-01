@@ -12,19 +12,21 @@ class CreateLtVenueTable extends Migration
      */
     public function up()
     {
-        Schema::create('venue', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('venue_name');
-            $table->string('address')->nullable();
-            $table->string('details')->nullable();
-            $table->string('city')->nullable();
-            $table->string('CP')->nullable();
-            $table->string('state')->nullable();
-            $table->string('latitude')->nullable();
-            $table->string('longitude')->nullable();
-            $table->timestamps();
-            $table->engine = 'InnoDB';
-        });
+        if (!Schema::hasTable('venue')) {
+            Schema::create('venue', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('venue_name');
+                $table->string('address')->nullable();
+                $table->string('details')->nullable();
+                $table->string('city')->nullable();
+                $table->string('CP')->nullable();
+                $table->string('state')->nullable();
+                $table->string('latitude')->nullable();
+                $table->string('longitude')->nullable();
+                $table->timestamps();
+                $table->engine = 'InnoDB';
+            });
+        }
     }
 
     /**
