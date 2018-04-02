@@ -127,7 +127,7 @@ abstract class TestCase extends BaseTestCase
 
     public function generateTreeWithUI($setting)
     {
-        $this->visit('/')
+        $this->visit('/laravel-tournaments')
             ->select($setting->hasPreliminary, 'hasPreliminary')
             ->select($setting->isTeam, 'isTeam')
             ->select($setting->fightingAreas, 'fightingAreas')

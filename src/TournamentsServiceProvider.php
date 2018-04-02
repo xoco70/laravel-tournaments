@@ -23,6 +23,13 @@ class TournamentsServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../translations', 'laravel-tournaments');
 
         $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-tournaments')], 'laravel-tournaments');
+
+        $router->group(['prefix' => 'laravel-tournaments', 'middleware' => ['web']], function ($router) {
+            $router->get('/', 'Xoco70\LaravelTournaments\TreeController@index')->name('tree.index');
+            $router->post('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@store')->name('tree.store');
+            $router->put('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@update')->name('tree.update');
+        });
+
     }
 
     /**
@@ -32,6 +39,7 @@ class TournamentsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->make(TreeController::class);
         $this->app->make(DBHelpers::class);
     }
 }
