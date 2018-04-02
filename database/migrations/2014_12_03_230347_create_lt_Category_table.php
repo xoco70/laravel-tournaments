@@ -13,7 +13,6 @@ class CreateLtCategoryTable extends Migration
      */
     public function up()
     {
-
         Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -78,7 +77,6 @@ class CreateLtCategoryTable extends Migration
             $table->softDeletes();
             $table->engine = 'InnoDB';
         });
-
     }
 
     /**

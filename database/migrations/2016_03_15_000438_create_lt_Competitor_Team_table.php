@@ -35,7 +35,6 @@ class CreateLtCompetitorTeamTable extends Migration
 
             $table->unique(['team_id', 'competitor_id']);
         });
-
     }
 
     /**

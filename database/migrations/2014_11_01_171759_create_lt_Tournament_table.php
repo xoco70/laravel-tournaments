@@ -31,7 +31,7 @@ class CreateLtTournamentTable extends Migration
             $table->integer('rule_id')->default(1);
             $table->tinyInteger('type')->default(1); // 1= local, 2= state, 3= national, 4=continent, 5=world
             $table->integer('venue_id')->nullable()->unsigned();
-            $table->integer("level_id")->unsigned()->nullable()->default(1); // TODO nullable ???
+            $table->integer('level_id')->unsigned()->nullable()->default(1); // TODO nullable ???
 
             $table->foreign('venue_id')
                 ->references('id')
