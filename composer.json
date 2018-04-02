@@ -6,7 +6,7 @@
   "authors": [
     {
       "name": "juliatzin",
-      "email": "xoco70@hotmail.com"
+      "email": "xoco77777@gmail.com"
     }
   ],
   "autoload": {
@@ -37,18 +37,18 @@
   },
 
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.1.0",
     "kalnoy/nestedset": "^4.3"
   },
   "scripts": {
     "test": "phpunit"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.0",
+    "phpunit/phpunit": "^7.0",
     "fzaninotto/faker": "1.*",
-    "laravel/browser-kit-testing": "^2.0",
-    "orchestra/testbench-browser-kit": "~3.5",
-    "orchestra/database": "~3.1",
-    "symfony/var-dumper": "~3.3.6"
+    "laravel/browser-kit-testing": "^4.0",
+    "orchestra/testbench-browser-kit": "~3.6",
+    "orchestra/database": "~3.6",
+    "symfony/var-dumper": "~4.0"
   }
 }
