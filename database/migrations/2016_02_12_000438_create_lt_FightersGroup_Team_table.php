@@ -35,7 +35,6 @@ class CreateLtFightersGroupTeamTable extends Migration
 
             $table->unique(['team_id', 'fighters_group_id']);
         });
-
     }
 
     /**
