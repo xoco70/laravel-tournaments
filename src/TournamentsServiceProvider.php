@@ -29,7 +29,6 @@ class TournamentsServiceProvider extends ServiceProvider
             $router->post('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@store')->name('tree.store');
             $router->put('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@update')->name('tree.update');
         });
-
     }
 
     /**
