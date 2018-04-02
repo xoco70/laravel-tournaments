@@ -56,6 +56,7 @@ This is still a work in progress. Things could change, things could break. Use i
 > 
 > | Laravel Version | Laravel Tournament Version |
 > |:---------------:|:--------------------------:|
+> |       5.6       |            0.14            |
 > |       5.5       |            0.13            |
 > |       5.4       |            0.11            |
 
@@ -78,7 +79,7 @@ If you use Laravel 5.4, update `config/app.php` by adding an entry for the servi
 Finally, from the command line again, publish the default configuration file:
 
 ```php
-php artisan vendor:publish --force --tag=laravel-tournaments
+php artisan vendor:publish --tag=laravel-tournaments
 ```
 
 ## Run the demo
@@ -312,6 +313,7 @@ Try to increase competitor number, decrease areas or preliminary group size, if 
 
 ## ChangeLog:
 
+- v0.14: Laravel 5.6 / PHP 7.2 support
 - v0.13: Manage third place fight
 - v0.12: Laravel 5.5 version
 - v0.11: Initial Version
