@@ -1,15 +1,18 @@
 <?php
 $prefix = "singleElimination";
-if ($championship->hasPreliminary() && $roundNumber ==1){
+if ($championship->hasPreliminary() && $roundNumber == 1) {
     $prefix = "preliminary";
 }
-$className = $prefix."_select";
-$selectName = $prefix."_fighters[]";
+$className = $prefix . "_select";
+$selectName = $prefix . "_fighters[]";
 
 ?>
 <!-- r = round, m = match, f = fighter -->
-<select name="{{ $selectName }}" class="{{$className}}" {{ $isSuccess ? "id=success" : '' }}>
-    <option {{ $selected == '' ? ' selected' : '' }} ></option>
+@if (isset($show_tree))
+    {{  $fighter->fullName }}
+@else
+    <select name="{{ $selectName }}" class="{{$className}}" {{ $isSuccess ? "id=success" : '' }}>
+        <option {{ $selected == '' ? ' selected' : '' }} ></option>
         @foreach ($championship->fighters as $fighter)
 
             @if ($fighter != null)
@@ -18,5 +21,5 @@ $selectName = $prefix."_fighters[]";
                 </option>
             @endif
         @endforeach
-</select>
-
+    </select>
+@endif
