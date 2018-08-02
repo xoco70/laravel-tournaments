@@ -63,7 +63,7 @@ This is still a work in progress. Things could change, things could break. Use i
 First, you'll need to install the package via Composer:
 
 ```php
-$ composer require "xoco70/laravel-tournaments":^0.13
+$ composer require "xoco70/laravel-tournaments"
 ```
 
 If you use Laravel 5.4, update `config/app.php` by adding an entry for the service provider.
