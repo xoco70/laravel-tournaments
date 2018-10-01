@@ -7,7 +7,7 @@ $factory->define(\Illuminate\Foundation\Auth\User::class, function (Faker\Genera
     return [
         'name'      => $faker->name,
         'email'     => $email,
-        'password'  => bcrypt(str_random(10)),
+        'password'  => app('hash')->make(str_random(10)),
         'firstname' => $faker->firstName,
         'lastname'  => $faker->lastName,
     ];
