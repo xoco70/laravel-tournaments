@@ -32,7 +32,6 @@ class AlterLtUsersTable extends Migration
                 $table->string('password', 60);
             }
         });
-
     }
 
     /**
