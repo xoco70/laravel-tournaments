@@ -3,7 +3,6 @@
 namespace Xoco70\LaravelTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 
 class ChampionshipSettings extends Model

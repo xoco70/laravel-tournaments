@@ -221,7 +221,6 @@ abstract class TestCase extends BaseTestCase
 
     public function initialSeed()
     {
-
         factory(Venue::class, 5)->create();
 
         Category::create(['name' => 'categories.junior', 'gender' => 'X', 'isTeam' => 0, 'ageCategory' => 5, 'ageMin' => '13', 'ageMax' => '15', 'gradeCategory' => 0]);

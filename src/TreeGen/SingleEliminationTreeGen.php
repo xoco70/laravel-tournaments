@@ -194,16 +194,16 @@ abstract class SingleEliminationTreeGen extends TreeGen
 
         if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number'       => $this->settings->preliminaryGroupSize * $areas,
+                'number' => $this->settings->preliminaryGroupSize * $areas,
                 'fighter_type' => $fighterType,
-            ]));
+            ]), 422);
         }
 
         if ($minFighterCount < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number'       => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
+                'number' => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
                 'fighter_type' => $fighterType,
-            ]));
+            ]), 422);
         }
     }
 }
