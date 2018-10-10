@@ -27,14 +27,14 @@ abstract class TestCase extends BaseTestCase
     protected $championshipWithTeam;
 
     const DB_HOST = '127.0.0.1';
-    const DB_NAME = 'plugin';
+    const DB_NAME = 'testbench';
     const DB_USERNAME = 'root';
     const DB_PASSWORD = '';
 
     protected function getPackageProviders($app)
     {
         return [TournamentsServiceProvider::class,
-            ConsoleServiceProvider::class, ];
+            ConsoleServiceProvider::class,];
     }
 
     protected function getChampionship($isTeam)
@@ -54,8 +54,12 @@ abstract class TestCase extends BaseTestCase
         $this->root = new User();
         $this->makeSureDatabaseExists();
         parent::setUp();
-        $this->artisan('migrate', ['--database' => 'testbench']);
-        $this->withFactories(__DIR__.'/../database/factories');
+//        $this->artisan('migrate', ['--database' => static::DB_NAME, '--path' => __DIR__ . '/../database/migrations']);
+        $this->artisan('migrate', [
+            '--database' => static::DB_NAME,
+            '--realpath' => realpath(__DIR__ . '/../database/migrations'),
+        ]);
+        $this->withFactories(__DIR__ . '/../database/factories');
         $this->initialSeed();
 
         $this->tournament = Tournament::with(
@@ -76,7 +80,7 @@ abstract class TestCase extends BaseTestCase
 
     private function makeSureDatabaseExists()
     {
-        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
+        $this->runQuery('CREATE DATABASE IF NOT EXISTS ' . static::DB_NAME);
     }
 
     /**
@@ -90,9 +94,9 @@ abstract class TestCase extends BaseTestCase
     {
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 
@@ -107,7 +111,7 @@ abstract class TestCase extends BaseTestCase
         $command = "mysql -u $dbUsername ";
         $command .= $dbPassword ? " -p$dbPassword" : '';
         $command .= " -e '$query'";
-        exec($command.' 2>/dev/null');
+        exec($command . ' 2>/dev/null');
     }
 
     /**
@@ -118,9 +122,9 @@ abstract class TestCase extends BaseTestCase
         foreach ($users as $user) {
             factory(Competitor::class)->create(
                 [
-                    'user_id'         => $user->id,
+                    'user_id' => $user->id,
                     'championship_id' => $championship->id,
-                    'confirmed'       => 1,
+                    'confirmed' => 1,
                 ]
             );
         }
@@ -155,7 +159,7 @@ abstract class TestCase extends BaseTestCase
             ->where('round', 1)
             ->count();
 
-        if ((int) ($setting->numFighters / $setting->fightingAreas) <= 1) {
+        if ((int)($setting->numFighters / $setting->fightingAreas) <= 1) {
             $this->assertTrue($count == 0);
 
             return;
@@ -163,15 +167,15 @@ abstract class TestCase extends BaseTestCase
         $expected = $numGroupsExpected[$setting->numFighters - 1];
         if ($count != $expected) {
             dd(
-                ['Method'                                                => $currentTest,
-                    'championship'                                       => $setting->championship->id,
-                    'NumCompetitors'                                     => $setting->numFighters,
-                    'preliminaryGroupSize'                               => $setting->preliminaryGroupSize,
-                    'NumArea'                                            => $setting->fightingAreas,
-                    'isTeam'                                             => $setting->isTeam,
-                    'Real'                                               => $count,
-                    'Excepted'                                           => $expected,
-                    'numGroupsExpected['.($setting->numFighters - 1).']' => $numGroupsExpected[$setting->numFighters - 1].' / '.$setting->fightingAreas,
+                ['Method' => $currentTest,
+                    'championship' => $setting->championship->id,
+                    'NumCompetitors' => $setting->numFighters,
+                    'preliminaryGroupSize' => $setting->preliminaryGroupSize,
+                    'NumArea' => $setting->fightingAreas,
+                    'isTeam' => $setting->isTeam,
+                    'Real' => $count,
+                    'Excepted' => $expected,
+                    'numGroupsExpected[' . ($setting->numFighters - 1) . ']' => $numGroupsExpected[$setting->numFighters - 1] . ' / ' . $setting->fightingAreas,
                 ]
             );
         }
@@ -188,7 +192,7 @@ abstract class TestCase extends BaseTestCase
         $groupSize = $setting->hasPreliminary ? $setting->preliminaryGroupSize : 2;
         $count = $this->getFightsCount($setting->championship_id); // For round 1
 
-        if ((int) ($setting->numFighters / $setting->fightingAreas) <= 1
+        if ((int)($setting->numFighters / $setting->fightingAreas) <= 1
             || $setting->numFighters / ($groupSize * $setting->fightingAreas) < 1) {
             $this->assertTrue($count == 0);
 
@@ -196,13 +200,13 @@ abstract class TestCase extends BaseTestCase
         }
 
         if ($count != $numFightsExpected) {
-            dd(['Method'      => $methodName,
+            dd(['Method' => $methodName,
                 'numFighters' => $setting->numFighters,
-                'NumArea'     => $setting->fightingAreas,
-                'groupSize'   => $groupSize,
-                'Real'        => $count,
-                'isTeam'      => $setting->isTeam,
-                'Excepted'    => $numFightsExpected,
+                'NumArea' => $setting->fightingAreas,
+                'groupSize' => $groupSize,
+                'Real' => $count,
+                'isTeam' => $setting->isTeam,
+                'Excepted' => $numFightsExpected,
             ]);
         }
         $this->assertTrue($count == $numFightsExpected);
@@ -242,17 +246,17 @@ abstract class TestCase extends BaseTestCase
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
         $user = factory(User::class)->create(['name' => 'user']);
         Tournament::create([
-            'id'                => 1,
-            'slug'              => md5(uniqid(rand(), true)),
-            'user_id'           => $user->id,
-            'name'              => 'Test Tournament',
-            'dateIni'           => $dateIni,
-            'dateFin'           => $dateIni,
+            'id' => 1,
+            'slug' => md5(uniqid(rand(), true)),
+            'user_id' => $user->id,
+            'name' => 'Test Tournament',
+            'dateIni' => $dateIni,
+            'dateFin' => $dateIni,
             'registerDateLimit' => $dateIni,
-            'sport'             => 1,
-            'type'              => 0,
-            'level_id'          => 7,
-            'venue_id'          => $faker->randomElement($venues),
+            'sport' => 1,
+            'type' => 0,
+            'level_id' => 7,
+            'venue_id' => $faker->randomElement($venues),
 
         ]);
 
@@ -272,8 +276,8 @@ abstract class TestCase extends BaseTestCase
         foreach ($users as $user) {
             factory(Competitor::class)->create([
                 'championship_id' => $championship->id,
-                'user_id'         => $user->id,
-                'confirmed'       => 1,
+                'user_id' => $user->id,
+                'confirmed' => 1,
             ]);
         }
     }
