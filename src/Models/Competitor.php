@@ -2,13 +2,11 @@
 
 namespace Xoco70\LaravelTournaments\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User;
+use App\User;
 
 class Competitor extends Fighter
 {
-    use SoftDeletes;
-    protected $DATES = ['created_at', 'updated_at', 'deleted_at'];
+    protected $DATES = ['created_at', 'updated_at'];
 
     protected $table = 'competitor';
     public $timestamps = true;

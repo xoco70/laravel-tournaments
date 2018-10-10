@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class ChampionshipSettings extends Model
 {
-    use SoftDeletes;
-
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     protected $table = 'championship_settings';
     public $timestamps = true;
