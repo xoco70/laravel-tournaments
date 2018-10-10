@@ -44,8 +44,6 @@ class AlterLtUsersTable extends Migration
                 }
             });
         }
-
-
     }
 
     /**
