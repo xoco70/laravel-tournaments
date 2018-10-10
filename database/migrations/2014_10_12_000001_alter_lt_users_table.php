@@ -14,7 +14,7 @@ class AlterLtUsersTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable(config('laravel-tournaments.user_table'))) {
+        if (!Schema::hasTable(config('laravel-tournaments.user.table'))) {
             Schema::create('users', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name');
