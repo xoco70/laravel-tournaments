@@ -79,7 +79,7 @@ If you use Laravel 5.4, update `config/app.php` by adding an entry for the servi
 Finally, from the command line again, publish the default configuration file:
 
 ```php
-php artisan vendor:publish --tag=laravel-tournaments
+php artisan vendor:publish --tag=laravel-tournaments --force
 ```
 
 ## Run the demo
