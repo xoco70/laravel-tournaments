@@ -26,7 +26,6 @@ class AlterLtUsersTable extends Migration
             });
         } else {
             Schema::table(config('laravel-tournaments.user.table'), function (Blueprint $table) {
-
                 if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'name')) {
                     $table->string('name')->default('name');
                 }
