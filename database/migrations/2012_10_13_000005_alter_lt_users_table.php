@@ -14,24 +14,37 @@ class AlterLtUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table(config('user.table'), function (Blueprint $table) {
-            if (!Schema::hasColumn('name')) {
-                $table->string('name')->default('name');
-            }
-            if (!Schema::hasColumn('firstname')) {
+        if (!Schema::hasTable(config('laravel-tournaments.user_table'))) {
+            Schema::create('users', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name');
                 $table->string('firstname')->default('firstname');
-            }
-            if (!Schema::hasColumn('lastname')) {
                 $table->string('lastname')->default('lastname');
-            }
-            if (!Schema::hasColumn('email')) {
                 $table->string('email')->unique();
-            }
-
-            if (!Schema::hasColumn('password')) {
                 $table->string('password', 60);
-            }
-        });
+                $table->timestamps();
+            });
+        } else {
+            Schema::table(config('laravel-tournaments.user.table'), function (Blueprint $table) {
+                if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'name')) {
+                    $table->string('name')->default('name');
+                }
+                if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'firstname')) {
+                    $table->string('firstname')->default('firstname');
+                }
+                if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'lastname')) {
+                    $table->string('lastname')->default('lastname');
+                }
+                if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'email')) {
+                    $table->string('email')->unique();
+                }
+
+                if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'password')) {
+                    $table->string('password', 60);
+                }
+            });
+        }
+
 
     }
 
