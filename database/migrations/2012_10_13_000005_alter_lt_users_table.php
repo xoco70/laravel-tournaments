@@ -14,7 +14,7 @@ class AlterLtUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table(Config::get('laravel-tournaments.user_table'), function (Blueprint $table) {
+        Schema::table(config('user.table'), function (Blueprint $table) {
             if (!Schema::hasColumn('name')) {
                 $table->string('name')->default('name');
             }
