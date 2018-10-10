@@ -2,7 +2,6 @@
 
 namespace Xoco70\LaravelTournaments;
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -84,7 +83,7 @@ class TreeController extends Controller
             factory(Team::class, (int) $numFighters)->create(['championship_id' => $championship->id]);
         } else {
             $championship = Championship::find(1);
-            $users = factory(User::class, (int) $numFighters)->create();
+            $users = factory(\App\User::class, (int) $numFighters)->create();
             foreach ($users as $user) {
                 factory(Competitor::class)->create(
                     ['championship_id' => $championship->id,
