@@ -18,11 +18,6 @@ use Xoco70\LaravelTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
-    const DB_HOST = '127.0.0.1';
-    const DB_NAME = 'plugin';
-    const DB_USERNAME = 'root';
-    const DB_PASSWORD = '';
-
     protected $root;
     protected $baseUrl = 'http://tournament-plugin.test';
 
@@ -57,6 +52,7 @@ abstract class TestCase extends BaseTestCase
         $this->artisan('migrate', ['--database' => 'testbench']);
         $this->withFactories(__DIR__.'/../database/factories');
         $this->initialSeed();
+
         $this->tournament = Tournament::with(
             'competitors',
             'teams',
@@ -75,7 +71,7 @@ abstract class TestCase extends BaseTestCase
 
     private function makeSureDatabaseExists()
     {
-        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.static::DB_NAME);
+        $this->runQuery('CREATE DATABASE IF NOT EXISTS '.env('DB_DATABASE_TEST'));
     }
 
     /**
@@ -101,8 +97,8 @@ abstract class TestCase extends BaseTestCase
      */
     private function runQuery($query)
     {
-        $dbUsername = static::DB_USERNAME;
-        $dbPassword = static::DB_PASSWORD;
+        $dbUsername = env('DB_DATABASE_USERNAME');
+        $dbPassword = env('DB_DATABASE_PASSWORD');
         $command = "mysql -u $dbUsername ";
         $command .= $dbPassword ? " -p$dbPassword" : '';
         $command .= " -e '$query'";
@@ -225,6 +221,7 @@ abstract class TestCase extends BaseTestCase
 
     public function initialSeed()
     {
+
         factory(Venue::class, 5)->create();
 
         Category::create(['name' => 'categories.junior', 'gender' => 'X', 'isTeam' => 0, 'ageCategory' => 5, 'ageMin' => '13', 'ageMax' => '15', 'gradeCategory' => 0]);
