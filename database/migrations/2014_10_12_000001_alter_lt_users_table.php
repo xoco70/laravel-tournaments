@@ -26,16 +26,15 @@ class AlterLtUsersTable extends Migration
             });
         } else {
             Schema::table(config('laravel-tournaments.user.table'), function (Blueprint $table) {
-                $faker = Faker\Factory::create();
 
                 if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'name')) {
                     $table->string('name')->default('name');
                 }
                 if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'firstname')) {
-                    $table->string('firstname')->default($faker->firstname);
+                    $table->string('firstname')->default('firstname');
                 }
                 if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'lastname')) {
-                    $table->string('lastname')->default($faker->lastname);
+                    $table->string('lastname')->default('lastname');
                 }
                 if (!Schema::hasColumn(config('laravel-tournaments.user.table'), 'email')) {
                     $table->string('email')->unique();
