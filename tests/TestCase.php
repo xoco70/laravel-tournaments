@@ -3,7 +3,6 @@
 namespace Xoco70\LaravelTournaments\Tests;
 
 use Faker\Factory;
-use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use Xoco70\LaravelTournaments\Models\Category;
@@ -51,7 +50,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function setUp()
     {
-        $this->root = new User();
+        $this->root = new \Illuminate\Foundation\Auth\User();
         $this->makeSureDatabaseExists();
         parent::setUp();
 //        $this->artisan('migrate', ['--database' => static::DB_NAME, '--path' => __DIR__ . '/../database/migrations']);
@@ -244,7 +243,7 @@ abstract class TestCase extends BaseTestCase
 
         $faker = Factory::create();
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
-        $user = factory(User::class)->create(['name' => 'user']);
+        $user = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 'user']);
         Tournament::create([
             'id' => 1,
             'slug' => md5(uniqid(rand(), true)),
@@ -267,11 +266,11 @@ abstract class TestCase extends BaseTestCase
 
         $championship = Championship::where('tournament_id', 1)->first();
 
-        $users[] = factory(User::class)->create(['name' => 't1']);
-        $users[] = factory(User::class)->create(['name' => 't2']);
-        $users[] = factory(User::class)->create(['name' => 't3']);
-        $users[] = factory(User::class)->create(['name' => 't4']);
-        $users[] = factory(User::class)->create(['name' => 't5']);
+        $users[] = factory(\App\User::class)->create(['name' => 't1']);
+        $users[] = factory(\App\User::class)->create(['name' => 't2']);
+        $users[] = factory(\App\User::class)->create(['name' => 't3']);
+        $users[] = factory(\App\User::class)->create(['name' => 't4']);
+        $users[] = factory(\App\User::class)->create(['name' => 't5']);
 
         foreach ($users as $user) {
             factory(Competitor::class)->create([

@@ -1,7 +1,7 @@
 <?php
 
 
-$factory->define(\App\User::class, function (Faker\Generator $faker) {
+$factory->define(\Illuminate\Foundation\Auth\User::class, function (Faker\Generator $faker) {
     return [
         'name'               => $faker->name,
         'email'              => $faker->unique()->safeEmail,

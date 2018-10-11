@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Auth\User;
 use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\Competitor;
 
 $factory->define(Competitor::class, function (Faker\Generator $faker) {
     $tcs = Championship::all()->pluck('id')->toArray();
-    $users = User::all()->pluck('id')->toArray();
+    $users = \Illuminate\Foundation\Auth\User::all()->pluck('id')->toArray();
     $championshipId = $faker->randomElement($tcs);
     $championship = Championship::find($championshipId);
     $tournament = $championship->tournament;
