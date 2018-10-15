@@ -17,11 +17,11 @@ class CompetitorSeeder extends Seeder
 
         $championship = Championship::where('tournament_id', 1)->first();
 
-        $users[] = factory(App\User::class)->create(['name' => 't1']);
-        $users[] = factory(App\User::class)->create(['name' => 't2']);
-        $users[] = factory(App\User::class)->create(['name' => 't3']);
-        $users[] = factory(App\User::class)->create(['name' => 't4']);
-        $users[] = factory(App\User::class)->create(['name' => 't5']);
+        $users[] = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 't1']);
+        $users[] = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 't2']);
+        $users[] = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 't3']);
+        $users[] = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 't4']);
+        $users[] = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 't5']);
 
         foreach ($users as $user) {
             factory(Competitor::class)->create([

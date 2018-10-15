@@ -83,7 +83,7 @@ class Championship extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(\Illuminate\Foundation\Auth\User::class, 'competitor', 'championship_id')
+        return $this->belongsToMany(\App\User::class, 'competitor', 'championship_id')
             ->withPivot('confirmed')
             ->withTimestamps();
     }
