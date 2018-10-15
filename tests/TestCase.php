@@ -3,6 +3,7 @@
 namespace Xoco70\LaravelTournaments\Tests;
 
 use Faker\Factory;
+use Illuminate\Foundation\Auth\User;
 use Orchestra\Database\ConsoleServiceProvider;
 use Orchestra\Testbench\BrowserKit\TestCase as BaseTestCase;
 use Xoco70\LaravelTournaments\Models\Category;
@@ -17,6 +18,11 @@ use Xoco70\LaravelTournaments\TournamentsServiceProvider;
 
 abstract class TestCase extends BaseTestCase
 {
+    const DB_HOST = '127.0.0.1';
+    const DB_NAME = 'plugin';
+    const DB_USERNAME = 'root';
+    const DB_PASSWORD = '';
+
     protected $root;
     protected $baseUrl = 'http://tournament-plugin.test';
 
@@ -24,11 +30,6 @@ abstract class TestCase extends BaseTestCase
     protected $users;
     protected $championshipWithComp;
     protected $championshipWithTeam;
-
-    const DB_HOST = '127.0.0.1';
-    const DB_NAME = 'testbench';
-    const DB_USERNAME = 'root';
-    const DB_PASSWORD = '';
 
     protected function getPackageProviders($app)
     {
@@ -50,17 +51,12 @@ abstract class TestCase extends BaseTestCase
      */
     public function setUp()
     {
-        $this->root = new \Illuminate\Foundation\Auth\User();
+        $this->root = new User();
         $this->makeSureDatabaseExists();
         parent::setUp();
-//        $this->artisan('migrate', ['--database' => static::DB_NAME, '--path' => __DIR__ . '/../database/migrations']);
-        $this->artisan('migrate', [
-            '--database' => static::DB_NAME,
-            '--realpath' => realpath(__DIR__.'/../database/migrations'),
-        ]);
+        $this->artisan('migrate', ['--database' => 'testbench']);
         $this->withFactories(__DIR__.'/../database/factories');
         $this->initialSeed();
-
         $this->tournament = Tournament::with(
             'competitors',
             'teams',
@@ -243,7 +239,7 @@ abstract class TestCase extends BaseTestCase
 
         $faker = Factory::create();
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
-        $user = factory(\Illuminate\Foundation\Auth\User::class)->create(['name' => 'user']);
+        $user = factory(User::class)->create(['name' => 'user']);
         Tournament::create([
             'id'                => 1,
             'slug'              => md5(uniqid(rand(), true)),
@@ -266,11 +262,11 @@ abstract class TestCase extends BaseTestCase
 
         $championship = Championship::where('tournament_id', 1)->first();
 
-        $users[] = factory(\App\User::class)->create(['name' => 't1']);
-        $users[] = factory(\App\User::class)->create(['name' => 't2']);
-        $users[] = factory(\App\User::class)->create(['name' => 't3']);
-        $users[] = factory(\App\User::class)->create(['name' => 't4']);
-        $users[] = factory(\App\User::class)->create(['name' => 't5']);
+        $users[] = factory(User::class)->create(['name' => 't1']);
+        $users[] = factory(User::class)->create(['name' => 't2']);
+        $users[] = factory(User::class)->create(['name' => 't3']);
+        $users[] = factory(User::class)->create(['name' => 't4']);
+        $users[] = factory(User::class)->create(['name' => 't5']);
 
         foreach ($users as $user) {
             factory(Competitor::class)->create([

@@ -5,6 +5,7 @@ namespace Xoco70\LaravelTournaments\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User;
 use Xoco70\LaravelTournaments\Contracts\TreeGenerable;
 use Xoco70\LaravelTournaments\TreeGen\PlayOffCompetitorTreeGen;
 use Xoco70\LaravelTournaments\TreeGen\PlayOffTeamTreeGen;
@@ -83,7 +84,7 @@ class Championship extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(\App\User::class, 'competitor', 'championship_id')
+        return $this->belongsToMany(User::class, 'competitor', 'championship_id')
             ->withPivot('confirmed')
             ->withTimestamps();
     }
