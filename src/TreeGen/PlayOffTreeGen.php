@@ -85,6 +85,9 @@ abstract class PlayOffTreeGen extends TreeGen
         return intval(log($numFighters, 2));
     }
 
+    /**
+     * @throws TreeGenerationException
+     */
     protected function generateAllTrees()
     {
         // TODO This is limiting Playoff only have 1 area
@@ -97,9 +100,9 @@ abstract class PlayOffTreeGen extends TreeGen
 
         if (count($fighters) <= 1) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number'       => $this->settings->preliminaryGroupSize,
+                'number' => $this->settings->preliminaryGroupSize,
                 'fighter_type' => $fighterType,
-            ]));
+            ]), 422);
         }
         $this->generateGroupsForRound($fighters, 1);
     }
