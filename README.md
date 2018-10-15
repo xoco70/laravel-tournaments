@@ -63,23 +63,24 @@ This is still a work in progress. Things could change, things could break. Use i
 First, you'll need to install the package via Composer:
 
 ```php
-$ composer require "xoco70/laravel-tournaments"
+composer require "xoco70/laravel-tournaments"
 ```
 
-If you use Laravel 5.4, update `config/app.php` by adding an entry for the service provider.
-
-```php
-'providers' => [
-    // ...
-    Xoco70\LaravelTournaments\TournamentsServiceProvider::class,
-];
-```
+> Optional:
+> If you use Laravel 5.4, update `config/app.php` by adding an entry for the service provider.
+> 
+> ```php
+> 'providers' => [
+>     // ...
+>     Xoco70\LaravelTournaments\TournamentsServiceProvider::class,
+> ];
+> ```
 
 
 Finally, from the command line again, publish the default configuration file:
 
 ```php
-php artisan vendor:publish --tag=laravel-tournaments --force
+php artisan vendor:publish --tag=laravel-tournaments
 ```
 
 ## Run the demo
