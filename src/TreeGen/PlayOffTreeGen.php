@@ -100,7 +100,7 @@ abstract class PlayOffTreeGen extends TreeGen
 
         if (count($fighters) <= 1) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => $this->settings->preliminaryGroupSize,
+                'number'       => $this->settings->preliminaryGroupSize,
                 'fighter_type' => $fighterType,
             ]), 422);
         }
