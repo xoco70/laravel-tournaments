@@ -2,7 +2,7 @@
 
 namespace Xoco70\LaravelTournaments\Models;
 
-use App\User;
+use Illuminate\Foundation\Auth\User;
 
 class Competitor extends Fighter
 {
