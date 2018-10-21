@@ -80,7 +80,7 @@ composer require "xoco70/laravel-tournaments"
 Finally, from the command line again, publish the default configuration file:
 
 ```php
-php artisan vendor:publish --tag=laravel-tournaments
+php artisan vendor:publish --tag=laravel-tournaments --force
 ```
 
 ## Run the demo
