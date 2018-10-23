@@ -56,6 +56,7 @@ This is still a work in progress. Things could change, things could break. Use i
 > 
 > | Laravel Version | Laravel Tournament Version |
 > |:---------------:|:--------------------------:|
+> |       5.7       |            0.15            |
 > |       5.6       |            0.14            |
 > |       5.5       |            0.13            |
 > |       5.4       |            0.11            |
