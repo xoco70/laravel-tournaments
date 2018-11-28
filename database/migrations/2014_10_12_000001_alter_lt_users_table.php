@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
 
 class AlterLtUsersTable extends Migration
@@ -36,7 +35,7 @@ class AlterLtUsersTable extends Migration
                     $table->string('lastname')->default('lastname');
                 }
                 if (!Schema::hasColumn('users', 'email')) {
-                    $table->string('email')->default("user_".rand(100000,999999)."@kendozone.com")->unique();
+                    $table->string('email')->default('user_'.rand(100000, 999999).'@kendozone.com')->unique();
                 }
 
                 if (!Schema::hasColumn('users', 'password')) {
