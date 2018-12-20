@@ -7,7 +7,7 @@ class InstallationTest extends TestCase
     /** @test */
     public function it_installs()
     {
-//        exec('tests/test_installation.sh',$output, $return_code);
-//        self::assertEquals($return_code, 0);
+        exec('tests/test_installation.sh',$output, $return_code);
+        self::assertEquals($return_code, 0);
     }
 }
