@@ -2,9 +2,6 @@
 
 namespace Xoco70\LaravelTournaments\Tests;
 
-use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
-use Xoco70\LaravelTournaments\Models\FightersGroup;
-
 class InstallationTest extends TestCase
 {
     /** @test */
