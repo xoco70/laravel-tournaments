@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# export LARAVEL_VERSION="5.5.*"
+xxxx
 composer create-project laravel/laravel plugin-test "$LARAVEL_VERSION"
 cd plugin-test
 composer require "xoco70/laravel-tournaments:dev-master"
