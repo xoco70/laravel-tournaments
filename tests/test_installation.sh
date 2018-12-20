@@ -8,3 +8,5 @@ touch database/database.sqlite
 php artisan migrate:fresh --database=sqlite --force
 composer dump-autoload
 php artisan db:seed --class=LaravelTournamentSeeder --database=sqlite --force
+cd ..
+rm -rf plugin-test
