@@ -10,7 +10,7 @@ class InstallationTest extends TestCase
     /** @test */
     public function it_installs()
     {
-        exec('composer create-project plugin-test "'.env('LARAVEL_VERSION').'"');
+        exec('composer create-project laravel/laravel plugin-test "'.env('LARAVEL_VERSION').'"');
         exec('cd plugin-test');
         exec('composer require "xoco70/laravel-tournaments:dev-master"');
         exec('php artisan vendor:publish --tag=laravel-tournaments --force');
