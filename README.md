@@ -59,24 +59,12 @@ This is still a work in progress. Things could change, things could break. Use i
 > |       5.7       |            0.15            |
 > |       5.6       |            0.14            |
 > |       5.5       |            0.13            |
-> |       5.4       |            0.11            |
 
 First, you'll need to install the package via Composer:
 
 ```php
 composer require "xoco70/laravel-tournaments"
 ```
-
-> Optional:
-> If you use Laravel 5.4, update `config/app.php` by adding an entry for the service provider.
-> 
-> ```php
-> 'providers' => [
->     // ...
->     Xoco70\LaravelTournaments\TournamentsServiceProvider::class,
-> ];
-> ```
-
 
 Finally, from the command line again, publish the default configuration file:
 
