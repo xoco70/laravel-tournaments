@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-composer global require laravel/installer # do it just on
-~/.composer/vendor/bin/laravel new plugin-test
+# export LARAVEL_VERSION="5.5.*"
+composer create-project laravel/laravel plugin-test "$LARAVEL_VERSION"
 cd plugin-test
 composer require "xoco70/laravel-tournaments:dev-master"
 php artisan vendor:publish --tag=laravel-tournaments --force
