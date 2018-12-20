@@ -28,8 +28,8 @@ install:
   - travis_retry composer install --no-suggest --prefer-dist -n -o
 
 script:
-  - if [ "$TRAVIS_PHP_VERSION" != "7.0" ]; then vendor/bin/phpunit; fi
-  - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml; fi
+  - tests/test_installation.sh
+  - vendor/bin/phpunit
 
 after_script:
   - if [ "$TRAVIS_PHP_VERSION" == "7.0" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
