@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label for="numFighters">Fighter Qty</label>
                 <select class="form-control" id="numFighters" name="numFighters">
-                    @for($i=1;$i<23;$i++)
+                    @for($i=1;$i<60;$i++)
                         <option value="{{$i}}" @if ($numFighters== $i) selected @endif >{{  $i }}</option>
                     @endfor
                 </select>
