@@ -10,6 +10,7 @@ $settings = $championship->getSettings();
 @foreach($championship->fightersGroups()->where('round',1)->get()->groupBy('area') as $groupsByArea)
     <table class="table-bordered" cellpadding="5" cellspacing="0">
         <tr>
+            <th class="p-10">Id</th>
             <th class="p-10">Area</th>
             <th class="p-10"></th>
             <th class="p-10">Competitor 1</th>
@@ -33,6 +34,7 @@ $settings = $championship->getSettings();
             $letter = 'a';
             ?>
             <tr>
+                <td class="p-10 text-center">{{$group->order}}</td>
                 <td class="p-10 text-center">{{$group->area}}</td>
                 @foreach ($fighters as $numFighter => $fighter)
                     <td class="p-10">{{ $letter++ }}</td>
