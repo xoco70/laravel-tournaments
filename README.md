@@ -24,7 +24,7 @@ Laravel Tournaments
 
 * [Features](#features)
 * [Installation](#installation)
-* [Run the demo](#run-the-demo)
+* [Demo](#demo)
 * [Usage](#usage)
 * [Data Model](#data-model)
 * [Models](#models)
@@ -72,7 +72,9 @@ Finally, from the command line again, publish the default configuration file:
 php artisan vendor:publish --tag=laravel-tournaments --force
 ```
 
-## Run the demo
+## Demo
+
+If you want to see plugin in action, you can go to: [https://demo.kendozone.com/laravel-tournaments](https://demo.kendozone.com/laravel-tournaments)
 
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
 
