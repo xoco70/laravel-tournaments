@@ -31,14 +31,10 @@ abstract class PlayOffTreeGen extends TreeGen
      *
      * @return mixed
      */
-    protected function chunkAndShuffle(Collection $fightersByEntity)
+    protected function chunk(Collection $fightersByEntity)
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
-            if (!app()->runningUnitTests()) {
-                $fightersGroup = $fightersGroup->shuffle();
-            }
-
             return $fightersGroup;
         }
 

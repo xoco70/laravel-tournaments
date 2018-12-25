@@ -19,10 +19,10 @@ class PreliminaryFight extends Fight
     }
 
     /**
-     * Save a Fight.
+     * Save all fights.
      *
      * @param Collection $groups
-     * @param int        $numGroup
+     * @param int $numGroup
      */
     public static function saveFights(Collection $groups, $numGroup = 1)
     {
@@ -54,6 +54,40 @@ class PreliminaryFight extends Fight
         }
     }
 
+
+    /**
+     * Save a Fight.
+     *
+     * @param Collection $group
+     * @param int $numGroup
+     * @param int $order
+     */
+    public static function saveFight2(FightersGroup $group, $numGroup = 1, $order = 1) // TODO Rename it, bad name
+    {
+        $competitor1 = $competitor2 = null;
+
+        $fighters = $group->getFightersWithBye();
+        $fighter1 = $fighters->get(0);
+        $fighter2 = $fighters->get(1);
+        $fighter3 = $fighters->get(2);
+
+        switch ($numGroup) {
+            case 1:
+                $competitor1 = $fighter1;
+                $competitor2 = $fighter2;
+                break;
+            case 2:
+                $competitor1 = $fighter2;
+                $competitor2 = $fighter3;
+                break;
+            case 3:
+                $competitor1 = $fighter3;
+                $competitor2 = $fighter1;
+                break;
+        }
+        self::saveFight($group, $competitor1, $competitor2, $order);
+    }
+
     /**
      * @param $group
      * @param $competitor1
@@ -71,7 +105,6 @@ class PreliminaryFight extends Fight
         $fight->short_id = $order++;
         $fight->area = $group->area;
         $fight->save();
-
         return $order;
     }
 }

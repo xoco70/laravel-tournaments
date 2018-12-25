@@ -16,11 +16,11 @@ class SingleEliminationTest extends TestCase
             foreach ($fightersInTree as $numFighters) {
                 $setting = factory(ChampionshipSettings::class)->make([
                     'championship_id' => $this->getChampionship(0)->id,
-                    'fightingAreas'   => $numArea,
-                    'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
-                    'hasPreliminary'  => 0,
-                    'isTeam'          => 0,
-                    'numFighters'     => $numFighters,
+                    'fightingAreas' => $numArea,
+                    'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+                    'hasPreliminary' => 0,
+                    'isTeam' => 0,
+                    'numFighters' => $numFighters,
                 ]);
                 $this->generateTreeWithUI($setting);
                 parent::checkGroupsNumber($setting, $numGroupsExpected, __METHOD__);
@@ -38,16 +38,15 @@ class SingleEliminationTest extends TestCase
             4 => [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 4],
         ];
         foreach ($isTeams as $isTeam) {
-            $championship = $this->getChampionship($isTeam);
             foreach ($numFights as $numArea => $numFightPerArea) {
                 foreach ($numFightPerArea as $numFighters => $numFightsExpected) {
                     $setting = factory(ChampionshipSettings::class)->make([
                         'championship_id' => $this->getChampionship($isTeam)->id,
-                        'fightingAreas'   => $numArea,
-                        'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
-                        'hasPreliminary'  => 0,
-                        'isTeam'          => $isTeam,
-                        'numFighters'     => $numFighters,
+                        'fightingAreas' => $numArea,
+                        'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+                        'hasPreliminary' => 0,
+                        'isTeam' => $isTeam,
+                        'numFighters' => $numFighters,
                     ]);
                     $this->generateTreeWithUI($setting);
                     parent::checkFightsNumber($setting, $numFightsExpected, __METHOD__);
@@ -62,11 +61,11 @@ class SingleEliminationTest extends TestCase
         $isTeam = 0;
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship($isTeam)->id,
-            'fightingAreas'   => 1,
-            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary'  => 0,
-            'isTeam'          => $isTeam,
-            'numFighters'     => 5,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 0,
+            'isTeam' => $isTeam,
+            'numFighters' => 5,
         ]);
         $this->generateTreeWithUI($setting);
 
@@ -83,37 +82,16 @@ class SingleEliminationTest extends TestCase
         }
     }
 
-    /**
-     * @param $key
-     * @param $fight
-     */
-    private function checkParentHasBeenFilled($key, $fight)
-    {
-        $toUpdate = 'c2';
-        if ($key % 2 == 0) { // Even
-            $toUpdate = 'c1';
-        }
-        $parentFight = $fight->group->parent->fights->get(0);
-
-        if (!$fight->c1) {
-            $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
-        }
-
-        if (!$fight->c2) {
-            $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
-        }
-    }
-
     /** @test */
     public function you_can_update_manually_single_elimination_tree_fighters()
     {
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship(0)->id,
-            'fightingAreas'   => 1,
-            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary'  => 0,
-            'isTeam'          => 0,
-            'numFighters'     => 5,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 0,
+            'isTeam' => 0,
+            'numFighters' => 5,
         ]);
         $this->generateTreeWithUI($setting);
         $competitors = $this->championshipWithComp->competitors; // 5 comp
@@ -135,29 +113,30 @@ class SingleEliminationTest extends TestCase
         $this->assertEquals($competitors->get(4)->id, $fights->get(2)->c1);
     }
 
-    /** @test */
-    public function you_can_update_manually_single_elimination_tree_winner_id()
-    {
-        $setting = factory(ChampionshipSettings::class)->make([
-            'championship_id' => $this->getChampionship(0)->id,
-            'fightingAreas'   => 1,
-            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary'  => 0,
-            'isTeam'          => 0,
-            'numFighters'     => 5,
-        ]);
-        $this->generateTreeWithUI($setting);
-        $fight = $this->championshipWithComp->fights->get(0);
-        $this->assertNull($fight->winner_id);
-
-        $this->select(['X', 'X'], 'score[]')
-            ->press('update');
-        if ($fight->c1 != null && $fight->c2 != null) {
-            $this->assertNotNull($fight->winner_id);
-        } else {
-            $this->assertNull($fight->winner_id);
-        }
-    }
+//    /** @test */ don't remember well the this test
+//    public function you_can_update_manually_single_elimination_tree_winner_id()
+//    {
+//        $setting = factory(ChampionshipSettings::class)->make([
+//            'championship_id' => $this->getChampionship(0)->id,
+//            'fightingAreas' => 1,
+//            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+//            'hasPreliminary' => 0,
+//            'isTeam' => 0,
+//            'numFighters' => 5,
+//        ]);
+//        $this->generateTreeWithUI($setting);
+//        $fight = $this->championshipWithComp->fights->get(0);
+//
+//        $this->assertNull($fight->winner_id);
+//        $this->select(['X','X'], 'score[]')
+//            ->press('update');
+//        $fight = $this->championshipWithComp->fights->get(0);
+//        if ($fight->c1 != null && $fight->c2 != null) {
+//            $this->assertNotNull($fight->winner_id);
+//            exit();
+//        }
+//        $this->assertNull($fight->winner_id);
+//    }
 
     /** @test */
     public function it_can_generate_single_elim_tree_with_16_fighters()
@@ -165,13 +144,34 @@ class SingleEliminationTest extends TestCase
         // This test is a regression test, used to fail
         $setting = factory(ChampionshipSettings::class)->make([
             'championship_id' => $this->getChampionship(0)->id,
-            'fightingAreas'   => 1,
-            'treeType'        => ChampionshipSettings::SINGLE_ELIMINATION,
-            'hasPreliminary'  => 1,
-            'isTeam'          => 0,
-            'numFighters'     => 16,
+            'fightingAreas' => 1,
+            'treeType' => ChampionshipSettings::SINGLE_ELIMINATION,
+            'hasPreliminary' => 1,
+            'isTeam' => 0,
+            'numFighters' => 16,
         ]);
         $this->generateTreeWithUI($setting)
             ->assertResponseOk();
+    }
+
+    /**
+     * @param $key
+     * @param $fight
+     */
+    private function checkParentHasBeenFilled($key, $fight)
+    {
+        $toUpdate = 'c2';
+        if ($key % 2 == 0) { // Even
+            $toUpdate = 'c1';
+        }
+        $parentFight = $fight->group->parent->fights->get(0);
+
+        if (!$fight->c1) {
+            $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
+        }
+
+        if (!$fight->c2) {
+            $this->assertEquals($parentFight->$toUpdate, ($fight->c2 ?: null));
+        }
     }
 }

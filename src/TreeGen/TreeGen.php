@@ -27,7 +27,7 @@ abstract class TreeGen implements TreeGenerable
 
     abstract protected function getNumRounds($fightersCount);
 
-    abstract protected function chunkAndShuffle(Collection $fightersByEntity);
+    abstract protected function chunk(Collection $fightersByEntity);
 
     abstract protected function syncGroup(FightersGroup $group, $fighters);
 
@@ -57,22 +57,7 @@ abstract class TreeGen implements TreeGenerable
         $this->generateAllFights();
     }
 
-    /**
-     * Get the biggest entity group.
-     *
-     * @param $userGroups
-     *
-     * @return int
-     */
-    private function getMaxFightersByEntity($userGroups): int
-    {
-        return $userGroups
-            ->sortByDesc(function ($group) {
-                return $group->count();
-            })
-            ->first()
-            ->count();
-    }
+
 
     /**
      * Get Competitor's list ordered by entities
@@ -126,50 +111,7 @@ abstract class TreeGen implements TreeGenerable
         return 64 * $groupSize;
     }
 
-    /**
-     * Repart BYE in the tree,.
-     *
-     * @param $fighterGroups
-     * @param int $max
-     *
-     * @return Collection
-     */
-    private function repart($fighterGroups, $max)
-    {
-        $fighters = new Collection();
-        for ($i = 0; $i < $max; $i++) {
-            foreach ($fighterGroups as $fighterGroup) {
-                $fighter = $fighterGroup->values()->get($i);
-                if ($fighter != null) {
-                    $fighters->push($fighter);
-                }
-            }
-        }
 
-        return $fighters;
-    }
-
-    /**
-     * Insert byes in an homogen way.
-     *
-     * @param Collection $fighters
-     * @param Collection $byeGroup
-     *
-     * @return Collection
-     */
-    private function insertByes(Collection $fighters, Collection $byeGroup)
-    {
-        $bye = count($byeGroup) > 0 ? $byeGroup[0] : [];
-        $sizeFighters = count($fighters);
-        $sizeGroupBy = count($byeGroup);
-
-        $frequency = $sizeGroupBy != 0
-            ? (int) floor($sizeFighters / $sizeGroupBy)
-            : -1;
-
-        // Create Copy of $competitors
-        return $this->getFullFighterList($fighters, $frequency, $sizeGroupBy, $bye);
-    }
 
     /**
      * @param $order
@@ -212,27 +154,7 @@ abstract class TreeGen implements TreeGenerable
         return $group;
     }
 
-    /**
-     * @param $fighters
-     * @param Collection $fighterGroups
-     *
-     * @return Collection
-     */
-    public function adjustFightersGroupWithByes($fighters, $fighterGroups): Collection
-    {
-        $tmpFighterGroups = clone $fighterGroups;
-        $byeGroup = $this->getByeGroup($fighters);
 
-        // Get biggest competitor's group
-        $max = $this->getMaxFightersByEntity($tmpFighterGroups);
-
-        // We reacommodate them so that we can mix them up and they don't fight with another competitor of his entity.
-
-        $fighters = $this->repart($fighterGroups, $max);
-        $fighters = $this->insertByes($fighters, $byeGroup);
-
-        return $fighters;
-    }
 
     /**
      * Get All Groups on previous round.
@@ -266,6 +188,7 @@ abstract class TreeGen implements TreeGenerable
 
     /**
      * Group Fighters by area.
+     * Here is where we fill with empty fighters
      *
      * @throws TreeGenerationException
      *
@@ -273,25 +196,21 @@ abstract class TreeGen implements TreeGenerable
      */
     protected function getFightersByArea()
     {
-        // If previous trees already exists, delete all
         $areas = $this->settings->fightingAreas;
-        $fighters = $this->getFighters();
-
-        // Get Competitor's / Team list ordered by entities ( Federation, Assoc, Club, etc...)
-        $fighterByEntity = $this->getFightersByEntity($fighters); // Chunk(1)
-        $fightersWithBye = $this->adjustFightersGroupWithByes($fighters, $fighterByEntity);
-        // Chunk user by areas
-        return $fightersWithBye->chunk(count($fightersWithBye) / $areas);
+        $fighters = $this->getFighters();   // Get Competitor or Team Objects
+        $fighterByEntity = $this->getFightersByEntity($fighters);   // Chunk it by entities (Fede, Assoc, Club,...)
+        $fightersWithBye = $this->adjustFightersGroupWithByes($fighters, $fighterByEntity);     // Fill with Byes
+        return $fightersWithBye->chunk(count($fightersWithBye) / $areas);   // Chunk user by areas
     }
 
     /**
-     * Attach a parent to every child for nestedSet Navigation.
+     * Logically build the tree ( attach a parent to every child for nestedSet Navigation )
      *
-     * @param $numFightersElim
+     * @param $numFighters
      */
-    protected function addParentToChildren($numFightersElim)
+    protected function addParentToChildren($numFighters)
     {
-        $numRounds = $this->getNumRounds($numFightersElim);
+        $numRounds = $this->getNumRounds($numFighters);
         $groupsDesc = $this->championship
             ->fightersGroups()
             ->where('round', '<', $numRounds)
@@ -309,43 +228,6 @@ abstract class TreeGen implements TreeGenerable
         }
     }
 
-    /**
-     * @param Collection $fighters
-     * @param $frequency
-     * @param $sizeGroupBy
-     * @param $bye
-     *
-     * @return Collection
-     */
-    private function getFullFighterList(Collection $fighters, $frequency, $sizeGroupBy, $bye): Collection
-    {
-        $newFighters = new Collection();
-        $count = 0;
-        $byeCount = 0;
-        foreach ($fighters as $fighter) {
-            if ($this->shouldInsertBye($frequency, $sizeGroupBy, $count, $byeCount)) {
-                $newFighters->push($bye);
-                $byeCount++;
-            }
-            $newFighters->push($fighter);
-            $count++;
-        }
-
-        return $newFighters;
-    }
-
-    /**
-     * @param $frequency
-     * @param $sizeGroupBy
-     * @param $count
-     * @param $byeCount
-     *
-     * @return bool
-     */
-    private function shouldInsertBye($frequency, $sizeGroupBy, $count, $byeCount): bool
-    {
-        return $frequency != -1 && $count % $frequency == 0 && $byeCount < $sizeGroupBy;
-    }
 
     /**
      * Destroy Previous Fights for demo.

@@ -16,7 +16,7 @@ class SingleEliminationWPrelimTest extends TestCase
         $fightersInTree = [1, 2, 3, 4, 5, 6, 7, 8];
         $numPreliminaryGroups = [
             1 => [
-                $preliminaryGroupSize = 3 => [0, 0, 1, 2, 2, 2, 4, 4, 4, 8, 8],
+                $preliminaryGroupSize = 3 => [0, 0, 1, 2, 2, 2, 4, 4, 4, 8, 8], // Group number for 1->11
                 $preliminaryGroupSize = 4 => [0, 0, 0, 1, 2, 2, 2, 2, 4, 4, 4],
                 $preliminaryGroupSize = 5 => [0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 4],
             ],
