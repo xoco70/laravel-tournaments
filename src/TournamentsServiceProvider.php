@@ -14,7 +14,7 @@ class TournamentsServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
         $viewPath = __DIR__.'/../resources/views';
         $this->loadViewsFrom($viewPath, 'laravel-tournaments');
@@ -26,12 +26,6 @@ class TournamentsServiceProvider extends ServiceProvider
         $this->publishes([__DIR__.'/../database/factories' => $this->app->databasePath().'/factories'], 'laravel-tournaments');
         $this->publishes([__DIR__.'/../resources/assets' => public_path('vendor/laravel-tournaments')], 'laravel-tournaments');
         $this->publishes([__DIR__.'/../config/laravel-tournaments.php' => config_path('laravel-tournaments.php')], 'laravel-tournaments');
-
-        $router->group(['prefix' => 'laravel-tournaments', 'middleware' => ['web']], function ($router) {
-            $router->get('/', 'Xoco70\LaravelTournaments\TreeController@index')->name('tree.index');
-            $router->post('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@store')->name('tree.store');
-            $router->put('/championships/{championship}/trees', 'Xoco70\LaravelTournaments\TreeController@update')->name('tree.update');
-        });
     }
 
     /**
@@ -41,7 +35,6 @@ class TournamentsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make(TreeController::class);
         $this->app->make(DBHelpers::class);
     }
 }

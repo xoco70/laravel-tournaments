@@ -9,7 +9,7 @@ $factory->define(Tournament::class, function (Faker\Generator $faker) {
     $venues = Venue::all()->pluck('id')->toArray();
 
     return [
-        'user_id'           => factory(\Illuminate\Foundation\Auth\User::class)->create()->id,
+        'user_id'           => factory(config('laravel-tournaments.user.model'))->create()->id,
         'slug'              => $faker->slug(2),
         'name'              => $faker->name,
         'dateIni'           => $dateIni,

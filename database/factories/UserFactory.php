@@ -1,7 +1,7 @@
 <?php
 
 
-$factory->define(\Illuminate\Foundation\Auth\User::class, function (Faker\Generator $faker) {
+$factory->define(config('laravel-tournaments.user.model'), function (Faker\Generator $faker) {
     return [
         'name'               => $faker->name,
         'email'              => $faker->unique()->safeEmail,

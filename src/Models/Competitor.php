@@ -2,7 +2,6 @@
 
 namespace Xoco70\LaravelTournaments\Models;
 
-use Illuminate\Foundation\Auth\User;
 
 class Competitor extends Fighter
 {
@@ -23,7 +22,8 @@ class Competitor extends Fighter
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+
+        return $this->belongsTo(config('laravel-tournaments.user.model'));
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Xoco70\LaravelTournaments\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User;
 
 /**
  * @property mixed type
@@ -77,7 +76,7 @@ class Tournament extends Model
      */
     public function owner()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(config('laravel-tournaments.user.model'), 'user_id', 'id');
     }
 
     /**
