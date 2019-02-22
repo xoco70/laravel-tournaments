@@ -305,8 +305,9 @@ Try to increase competitor number, decrease areas or preliminary group size, if 
 
 ## ChangeLog:
 
-- v0.14: Laravel 5.6 / PHP 7.2 support
+- v0.15: Update to Laravel 5.7
+- v0.14: Update to Laravel 5.6 / PHP 7.2 support
 - v0.13: Manage third place fight
-- v0.12: Laravel 5.5 version
+- v0.12: Update to Laravel 5.5
 - v0.11: Initial Version
 
