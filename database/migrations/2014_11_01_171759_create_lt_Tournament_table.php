@@ -12,7 +12,7 @@ class CreateLtTournamentTable extends Migration
         Schema::create('tournament', function (Blueprint $table) {
             $table->increments('id');
             //TODO Added ->nullable() to solve FK issue with Sqlite :(
-            $table->Integer('user_id')->unsigned()->nullable()->index();
+            $table->bigInteger('user_id')->unsigned()->nullable()->index();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
