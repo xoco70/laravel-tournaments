@@ -1,6 +1,5 @@
 <?php
 
-
 $factory->define(config('laravel-tournaments.user.model'), function (Faker\Generator $faker) {
     return [
         'name'               => $faker->name,

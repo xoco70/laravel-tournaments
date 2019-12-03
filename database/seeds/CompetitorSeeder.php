@@ -26,8 +26,8 @@ class CompetitorSeeder extends Seeder
         foreach ($users as $user) {
             factory(Competitor::class)->create([
                 'championship_id' => $championship->id,
-                'user_id' => $user->id,
-                'confirmed' => 1,
+                'user_id'         => $user->id,
+                'confirmed'       => 1,
             ]);
         }
     }

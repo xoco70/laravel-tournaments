@@ -1,6 +1,5 @@
 <?php
 
-
 use Xoco70\LaravelTournaments\Models\Category as Cat;
 
 $factory->define(Cat::class, function (Faker\Generator $faker) {

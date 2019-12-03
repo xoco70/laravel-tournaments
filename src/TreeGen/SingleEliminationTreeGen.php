@@ -24,6 +24,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
         // Max number of fighters for the first round
         $treeSize = $this->getTreeSize($fighterCount, $firstRoundGroupSize);
         $byeCount = $treeSize - $fighterCount;
+
         return $this->createByeGroup($byeCount);
     }
 
@@ -91,6 +92,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
             return (new PlayOffCompetitorTreeGen($this->championship, null))->chunk($fightersByEntity);
         }
         $fightersGroup = $fightersByEntity->chunk(2);
+
         return $fightersGroup;
     }
 
@@ -135,7 +137,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Get the group size for the first row
+     * Get the group size for the first row.
      *
      * @return int - return 2 if not preliminary, 3,4,5 otherwise
      */
@@ -147,7 +149,8 @@ abstract class SingleEliminationTreeGen extends TreeGen
     }
 
     /**
-     * Generate all the groups, and assign figthers to group
+     * Generate all the groups, and assign figthers to group.
+     *
      * @throws TreeGenerationException
      */
     protected function generateAllTrees()
@@ -197,14 +200,14 @@ abstract class SingleEliminationTreeGen extends TreeGen
 
         if ($this->settings->hasPreliminary && $fighters->count() / ($this->settings->preliminaryGroupSize * $areas) < 1) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => $this->settings->preliminaryGroupSize * $areas,
+                'number'       => $this->settings->preliminaryGroupSize * $areas,
                 'fighter_type' => $fighterType,
             ]), 422);
         }
 
         if ($minFighterCount < ChampionshipSettings::MIN_COMPETITORS_BY_AREA) {
             throw new TreeGenerationException(trans('laravel-tournaments::core.min_competitor_required', [
-                'number' => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
+                'number'       => ChampionshipSettings::MIN_COMPETITORS_BY_AREA,
                 'fighter_type' => $fighterType,
             ]), 422);
         }
@@ -213,8 +216,9 @@ abstract class SingleEliminationTreeGen extends TreeGen
     /**
      * Insert byes group alternated with full groups.
      *
-     * @param Collection $fighters - List of fighters
-     * @param integer $numByeTotal - Quantity of byes to insert
+     * @param Collection $fighters    - List of fighters
+     * @param int        $numByeTotal - Quantity of byes to insert
+     *
      * @return Collection - Full list of fighters including byes
      */
     private function insertByes(Collection $fighters, $numByeTotal)
@@ -222,7 +226,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
         $bye = $this->createByeFighter();
         $groupSize = $this->firstRoundGroupSize();
         $frequency = $groupSize != 0
-            ? (int)floor(count($fighters) / $groupSize / $groupSize)
+            ? (int) floor(count($fighters) / $groupSize / $groupSize)
             : -1;
         if ($frequency < $groupSize) {
             $frequency = $groupSize;
@@ -245,6 +249,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
             $newFighters->push($fighter);
             $count++;
         }
+
         return $newFighters;
     }
 
@@ -256,15 +261,14 @@ abstract class SingleEliminationTreeGen extends TreeGen
      *
      * @return bool
      */
-    private
-    function shouldInsertBye($frequency, $count, $byeCount, $numByeTotal): bool
+    private function shouldInsertBye($frequency, $count, $byeCount, $numByeTotal): bool
     {
         return $count != 0 && $count % $frequency == 0 && $byeCount < $numByeTotal;
     }
 
-
     /**
-     * Method that fills fighters with Bye Groups at the end
+     * Method that fills fighters with Bye Groups at the end.
+     *
      * @param $fighters
      * @param Collection $fighterGroups
      *
@@ -287,6 +291,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
         // Insert byes to fill the tree.
         // Strategy: first, one group full, one group empty with byes, then groups of 2 fighters
         $fighters = $this->insertByes($fighters, $numBye);
+
         return $fighters;
     }
 
@@ -297,8 +302,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
      *
      * @return int
      */
-    private
-    function getMaxFightersByEntity($userGroups): int
+    private function getMaxFightersByEntity($userGroups): int
     {
         return $userGroups
             ->sortByDesc(function ($group) {
@@ -316,8 +320,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
      *
      * @return Collection
      */
-    private
-    function repart($fighterGroups, $max)
+    private function repart($fighterGroups, $max)
     {
         $fighters = new Collection();
         for ($i = 0; $i < $max; $i++) {
@@ -328,6 +331,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
                 }
             }
         }
+
         return $fighters;
     }
 }

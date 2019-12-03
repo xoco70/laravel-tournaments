@@ -1,6 +1,5 @@
 <?php
 
-
 use Xoco70\LaravelTournaments\Models\Category as Cat;
 use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\Tournament;

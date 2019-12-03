@@ -57,8 +57,6 @@ abstract class TreeGen implements TreeGenerable
         $this->generateAllFights();
     }
 
-
-
     /**
      * Get Competitor's list ordered by entities
      * Countries for Internation Tournament, State for a National Tournament, etc.
@@ -111,8 +109,6 @@ abstract class TreeGen implements TreeGenerable
         return 64 * $groupSize;
     }
 
-
-
     /**
      * @param $order
      * @param $round
@@ -154,8 +150,6 @@ abstract class TreeGen implements TreeGenerable
         return $group;
     }
 
-
-
     /**
      * Get All Groups on previous round.
      *
@@ -188,7 +182,7 @@ abstract class TreeGen implements TreeGenerable
 
     /**
      * Group Fighters by area.
-     * Here is where we fill with empty fighters
+     * Here is where we fill with empty fighters.
      *
      * @throws TreeGenerationException
      *
@@ -204,7 +198,7 @@ abstract class TreeGen implements TreeGenerable
     }
 
     /**
-     * Logically build the tree ( attach a parent to every child for nestedSet Navigation )
+     * Logically build the tree ( attach a parent to every child for nestedSet Navigation ).
      *
      * @param $numFighters
      */
@@ -227,7 +221,6 @@ abstract class TreeGen implements TreeGenerable
             }
         }
     }
-
 
     /**
      * Destroy Previous Fights for demo.

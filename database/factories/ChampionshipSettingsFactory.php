@@ -1,6 +1,5 @@
 <?php
 
-
 use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 
