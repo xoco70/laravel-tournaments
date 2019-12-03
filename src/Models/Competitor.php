@@ -2,7 +2,6 @@
 
 namespace Xoco70\LaravelTournaments\Models;
 
-
 class Competitor extends Fighter
 {
     protected $DATES = ['created_at', 'updated_at'];
@@ -22,7 +21,6 @@ class Competitor extends Fighter
      */
     public function user()
     {
-
         return $this->belongsTo(config('laravel-tournaments.user.model'));
     }
 

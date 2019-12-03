@@ -35,6 +35,7 @@ abstract class PlayOffTreeGen extends TreeGen
     {
         if ($this->championship->hasPreliminary()) {
             $fightersGroup = $fightersByEntity->chunk($this->settings->preliminaryGroupSize);
+
             return $fightersGroup;
         }
 

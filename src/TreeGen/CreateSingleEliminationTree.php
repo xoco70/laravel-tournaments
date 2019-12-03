@@ -32,6 +32,7 @@ class CreateSingleEliminationTree
             $fighters = $item->getFightersWithBye();
             $fighter1 = $fighters->get(0);
             $fighter2 = $fighters->get(1);
+
             return [$fighter1, $fighter2];
         })->flatten()->all();
         $this->numFighters = count($fighters);
@@ -136,7 +137,7 @@ class CreateSingleEliminationTree
             //The minus 3 is to ignore the final, semi final and quarter final rounds
 
             for ($i = 0; $i < $noRounds - 3; $i++) {
-                $tempRounds[] = 'Last ' . $noTeamsInFirstRound;
+                $tempRounds[] = 'Last '.$noTeamsInFirstRound;
                 $noTeamsInFirstRound /= 2;
             }
 
@@ -158,7 +159,7 @@ class CreateSingleEliminationTree
         foreach ($roundTitles as $key => $roundTitle) {
             $left = $key * ($this->matchWrapperWidth + $this->roundSpacing - 1);
 
-            echo '<div class="round-title" style="left: ' . $left . 'px;">' . $roundTitle . '</div>';
+            echo '<div class="round-title" style="left: '.$left.'px;">'.$roundTitle.'</div>';
         }
         echo '</div>';
     }
@@ -171,7 +172,7 @@ class CreateSingleEliminationTree
     public function getPlayerList($selected)
     {
         $html = '<select>
-                <option' . ($selected == '' ? ' selected' : '') . '></option>';
+                <option'.($selected == '' ? ' selected' : '').'></option>';
 
         foreach ($this->championship->fighters as $fighter) {
             $html = $this->addOptionToSelect($selected, $fighter, $html);
@@ -231,12 +232,12 @@ class CreateSingleEliminationTree
     {
         if ($fighter != null) {
             $select = $selected != null && $selected->id == $fighter->id ? ' selected' : '';
-            $html .= '<option' . $select
-                . ' value='
-                . ($fighter->id ?? '')
-                . '>'
-                . $fighter->name
-                . '</option>';
+            $html .= '<option'.$select
+                .' value='
+                .($fighter->id ?? '')
+                .'>'
+                .$fighter->name
+                .'</option>';
         }
 
         return $html;
