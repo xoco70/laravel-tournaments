@@ -1,6 +1,5 @@
 <?php
 
-
 use Xoco70\LaravelTournaments\Models\Tournament;
 use Xoco70\LaravelTournaments\Models\Venue;
 

@@ -22,7 +22,7 @@ class PreliminaryFight extends Fight
      * Save all fights.
      *
      * @param Collection $groups
-     * @param int $numGroup
+     * @param int        $numGroup
      */
     public static function saveFights(Collection $groups, $numGroup = 1)
     {
@@ -54,13 +54,12 @@ class PreliminaryFight extends Fight
         }
     }
 
-
     /**
      * Save a Fight.
      *
      * @param Collection $group
-     * @param int $numGroup
-     * @param int $order
+     * @param int        $numGroup
+     * @param int        $order
      */
     public static function saveFight2(FightersGroup $group, $numGroup = 1, $order = 1) // TODO Rename it, bad name
     {
@@ -105,6 +104,7 @@ class PreliminaryFight extends Fight
         $fight->short_id = $order++;
         $fight->area = $group->area;
         $fight->save();
+
         return $order;
     }
 }
