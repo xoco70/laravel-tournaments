@@ -10,7 +10,7 @@ return [
      | The name of the table to create in the database
      |
      */
-//    'user_table' => 'users',
+    //    'user_table' => 'users',
     'user' => [
         'table'       => 'users',
         'primary_key' => 'id',
