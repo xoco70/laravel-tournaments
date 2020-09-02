@@ -194,6 +194,7 @@ abstract class TreeGen implements TreeGenerable
         $fighters = $this->getFighters();   // Get Competitor or Team Objects
         $fighterByEntity = $this->getFightersByEntity($fighters);   // Chunk it by entities (Fede, Assoc, Club,...)
         $fightersWithBye = $this->adjustFightersGroupWithByes($fighters, $fighterByEntity);     // Fill with Byes
+
         return $fightersWithBye->chunk(count($fightersWithBye) / $areas);   // Chunk user by areas
     }
 
@@ -303,6 +304,7 @@ abstract class TreeGen implements TreeGenerable
         $areaSize = $numGroups / ($totalAreas * pow(2, $round - 1));
 
         $numArea = intval(ceil($order / $areaSize)); // if round == 4, and second match 2/2 = 1 BAD
+
         return $numArea;
     }
 
