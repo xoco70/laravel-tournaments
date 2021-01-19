@@ -10,7 +10,7 @@ return [
      | The name of the table to create in the database
      |
      */
-//    'user_table' => 'users',
+    //    'user_table' => 'users',
     'user' => [
         'table'       => 'users',
         'primary_key' => 'id',
@@ -25,11 +25,11 @@ return [
         '4' => '1/2 Final',
         '5' => 'Final',
     ],
-//    'gender' => [
-//        '1' => '-',
-//        '2' => 'M',
-//        '3' => 'F',
-//    ],
+    //    'gender' => [
+    //        '1' => '-',
+    //        '2' => 'M',
+    //        '3' => 'F',
+    //    ],
 
     'preliminaryGroupSize' => [3 => 3, 4 => 4, 5 => 5],
     'preliminaryPassing'   => [1 => 1], // , 2 => 2, 3 => 3
