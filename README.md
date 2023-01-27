@@ -45,11 +45,6 @@ Laravel Tournaments
 - Modify Single Elimination Tree generation on the fly
 - Use teams instead of competitors
 
-
-## Warning
-
-This is still a work in progress. Things could change, things could break. Use it at your own risks in production
-
 ## Installation
 > **NOTE**: Depending on your version of Laravel, you should install a different
 > version of the package:
