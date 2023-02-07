@@ -3,7 +3,7 @@
 use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\ChampionshipSettings;
 
-$factory->define(ChampionshipSettings::class, function (Faker\Generator $faker) use ($factory) {
+$factory->define(ChampionshipSettings::class, function (Faker\Generator $faker) {
     $tcs = Championship::all()->pluck('id')->toArray();
 
     $fightingAreas = [1, 2, 4, 8];
