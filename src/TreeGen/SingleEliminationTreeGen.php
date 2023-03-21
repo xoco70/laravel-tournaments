@@ -70,6 +70,7 @@ abstract class SingleEliminationTreeGen extends TreeGen
             $numFightersElim = $numFighters / $this->settings->preliminaryGroupSize * 2;
             // We calculate how much rounds we will have
             $numRounds = intval(log($numFightersElim, 2)); // 3 rounds, but begining from round 2 ( ie => 4)
+
             return $this->pushGroups($numRounds, $numFightersElim);
         }
         // We calculate how much rounds we will have
