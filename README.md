@@ -51,7 +51,7 @@ Laravel Tournaments
 > 
 > | Laravel Version | Laravel Tournament Version |
 > |:---------------:|:--------------------------:|
-> |        8        |            0.16            |
+> |        8        |            0.17            |
 > |    5.8 -> 7     |            0.16            |
 > |       5.7       |            0.15            |
 > |       5.6       |            0.14            |
