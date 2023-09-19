@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Xoco70\LaravelTournaments\Models\Championship;
 use Xoco70\LaravelTournaments\Models\Tournament;
@@ -8,7 +10,7 @@ use Xoco70\LaravelTournaments\Models\Venue;
 class TournamentSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeders.
      *
      * @return void
      */
@@ -17,7 +19,7 @@ class TournamentSeeder extends Seeder
         $venues = Venue::all()->pluck('id')->toArray();
 
         Tournament::truncate();
-        $faker = Faker\Factory::create();
+        $faker = \Faker\Factory::create();
         $dateIni = $faker->dateTimeBetween('now', '+2 weeks')->format('Y-m-d');
 
         Tournament::create([

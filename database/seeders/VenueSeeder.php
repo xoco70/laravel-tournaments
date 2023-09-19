@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Xoco70\LaravelTournaments\Models\Venue;
@@ -7,7 +9,7 @@ use Xoco70\LaravelTournaments\Models\Venue;
 class VenueSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeders.
      *
      * @return void
      */
