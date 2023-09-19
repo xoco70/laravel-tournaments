@@ -48,8 +48,8 @@
     "phpunit/phpunit": "^8.5",
     "fzaninotto/faker": "1.*",
     "laravel/browser-kit-testing": "^6.0",
-    "orchestra/testbench-browser-kit": "~5.0",
-    "orchestra/database": "~5.1",
+    "orchestra/testbench-browser-kit": "~6.0",
+    "orchestra/database": "~6.1",
     "symfony/var-dumper": "~5.0"
   }
 }
