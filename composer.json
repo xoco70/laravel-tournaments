@@ -37,8 +37,9 @@
   },
 
   "require": {
-    "php": ">=7.2.5",
-    "kalnoy/nestedset": "^5.1"
+    "php": ">=7.4",
+    "kalnoy/nestedset": "^6.0",
+    "laravel/legacy-factories": "^1.3"
   },
   "scripts": {
     "test": "phpunit"
