@@ -51,7 +51,8 @@ Laravel Tournaments
 > 
 > | Laravel Version | Laravel Tournament Version |
 > |:---------------:|:--------------------------:|
-> |       5.8       |            0.16            |
+> |        8        |            0.16            |
+> |    5.8 -> 7     |            0.16            |
 > |       5.7       |            0.15            |
 > |       5.6       |            0.14            |
 > |       5.5       |            0.13            |
@@ -70,8 +71,6 @@ php artisan vendor:publish --tag=laravel-tournaments --force
 
 ## Demo
 
-If you want to see plugin in action, you can go to: [https://demo.kendozone.com/laravel-tournaments](https://demo.kendozone.com/laravel-tournaments)
-
 To run the demo, you need to generate Tournaments, Championships, Users, Competitors and Settings
 
 Run Migrations:
@@ -87,7 +86,22 @@ php artisan db:seed --class=LaravelTournamentSeeder
 ```
 > **WARNING**: Don't do this in production, it would wipe all your data. Use this line for demo purpose only
 
-You will be able to access the demo at `http://yourdomain.com/laravel-tournaments`
+Add TreeController ( you can find it in [demo repository](https://github.com/xoco70/laravel-tournaments-demo/blob/master/app/Http/Controllers/TreeController.php))
+
+Add your custom routes
+
+```php
+Route::get('/', 'App\Http\Controllers\TreeController@index')->name('tree.index');
+Route::post('/championships/{championship}/trees', 'App\Http\Controllers\TreeController@store')->name('tree.store');
+Route::put('/championships/{championship}/trees', 'App\Http\Controllers\TreeController@update')->name('tree.update');
+```
+
+```php
+php artisan db:seed --class=LaravelTournamentSeeder
+
+```
+
+You will be able to access the demo at `http://yourdomain.com/`
 
 ## Usage
 ```php
@@ -301,6 +315,7 @@ Try to increase competitor number, decrease areas or preliminary group size, if 
 
 ## ChangeLog:
 
+- v0.17: Update to Laravel 8
 - v0.16: Update to Laravel 5.8
 - v0.15: Update to Laravel 5.7
 - v0.14: Update to Laravel 5.6 / PHP 7.2 support
